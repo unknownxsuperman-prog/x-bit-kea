@@ -1,0 +1,378 @@
+[
+  {
+    "branch_id": "AERO",
+    "display_name": "Aerospace Engineering",
+    "aliases": [
+      "Aerospace Engineering",
+      "B.E. Aerospace Engineering",
+      "B.Tech Aerospace Engineering",
+      "B.Tech in Aerospace Engineering",
+      "Aerospace Engg",
+      "Aero"
+    ]
+  },
+  {
+    "branch_id": "AERON",
+    "display_name": "Aeronautical Engineering",
+    "aliases": [
+      "Aeronautical Engineering",
+      "B.E. Aeronautical Engineering",
+      "B.Tech Aeronautical Engineering",
+      "B.Tech in Aeronautical Engineering",
+      "Aeronautical Engg"
+    ]
+  },
+  {
+    "branch_id": "AUTO",
+    "display_name": "Automobile Engineering",
+    "aliases": [
+      "Automobile Engineering",
+      "B.E. Automobile Engineering",
+      "B.Tech Automobile Engineering",
+      "B.Tech in Automobile Engineering",
+      "Automobile Engg",
+      "Auto Engg"
+    ]
+  },
+  {
+    "branch_id": "AIDS",
+    "display_name": "Artificial Intelligence and Data Science",
+    "aliases": [
+      "Artificial Intelligence and Data Science",
+      "AI and Data Science",
+      "AI & Data Science",
+      "AIDS",
+      "B.E. Artificial Intelligence and Data Science",
+      "B.Tech Artificial Intelligence and Data Science",
+      "B.Tech in Artificial Intelligence and Data Science",
+      "AI DS"
+    ]
+  },
+  {
+    "branch_id": "AIML",
+    "display_name": "Artificial Intelligence and Machine Learning",
+    "aliases": [
+      "Artificial Intelligence and Machine Learning",
+      "AI and Machine Learning",
+      "AI & Machine Learning",
+      "AIML",
+      "B.E. Artificial Intelligence and Machine Learning",
+      "B.Tech Artificial Intelligence and Machine Learning",
+      "B.Tech in Artificial Intelligence and Machine Learning",
+      "AI ML"
+    ]
+  },
+  {
+    "branch_id": "BME",
+    "display_name": "Bio Medical Engineering",
+    "aliases": [
+      "Bio Medical Engineering",
+      "Biomedical Engineering",
+      "B.E. Bio Medical Engineering",
+      "B.Tech Bio Medical Engineering",
+      "B.Tech in Bio Medical Engineering",
+      "Bio Medical Engg",
+      "BME"
+    ]
+  },
+  {
+    "branch_id": "BT",
+    "display_name": "Bio Technology",
+    "aliases": [
+      "Bio Technology",
+      "Biotechnology",
+      "B.E. Bio Technology",
+      "B.Tech Bio Technology",
+      "B.Tech in Bio Technology",
+      "Bio Tech",
+      "BT"
+    ]
+  },
+  {
+    "branch_id": "CHE",
+    "display_name": "Chemical Engineering",
+    "aliases": [
+      "Chemical Engineering",
+      "B.E. Chemical Engineering",
+      "B.Tech Chemical Engineering",
+      "B.Tech in Chemical Engineering",
+      "Chemical Engg",
+      "Chem Engg"
+    ]
+  },
+  {
+    "branch_id": "CIV",
+    "display_name": "Civil Engineering",
+    "aliases": [
+      "Civil Engineering",
+      "B.E. Civil Engineering",
+      "B.Tech Civil Engineering",
+      "B.Tech in Civil Engineering",
+      "Civil Engg",
+      "CE"
+    ]
+  },
+  {
+    "branch_id": "CSD",
+    "display_name": "Computer Science and Design",
+    "aliases": [
+      "Computer Science and Design",
+      "B.E. Computer Science and Design",
+      "B.Tech Computer Science and Design",
+      "B.Tech in Computer Science and Design",
+      "CSD"
+    ]
+  },
+  {
+    "branch_id": "CSE",
+    "display_name": "Computer Science and Engineering",
+    "aliases": [
+      "Computer Science and Engineering",
+      "Computer Science & Engineering",
+      "CSE",
+      "B.E. Computer Science and Engineering",
+      "B.Tech Computer Science and Engineering",
+      "B.Tech in Computer Science and Engineering",
+      "CS Engg",
+      "Computer Science Engg"
+    ]
+  },
+  {
+    "branch_id": "CSE_AIML",
+    "display_name": "Computer Science and Engineering (Artificial Intelligence and Machine Learning)",
+    "aliases": [
+      "Computer Science and Engineering (Artificial Intelligence and Machine Learning)",
+      "CSE (AI & ML)",
+      "CSE in Artificial Intelligence and Machine Learning",
+      "B.E. Computer Science and Engineering (Artificial Intelligence and Machine Learning)",
+      "B.Tech Computer Science and Engineering (Artificial Intelligence and Machine Learning)",
+      "B.Tech in CSE (AI and ML)",
+      "CSE with AIML"
+    ]
+  },
+  {
+    "branch_id": "CSE_CYBER",
+    "display_name": "Computer Science and Engineering (Cyber Security)",
+    "aliases": [
+      "Computer Science and Engineering (Cyber Security)",
+      "CSE (Cyber Security)",
+      "CSE Cyber Security",
+      "B.E. Computer Science and Engineering (Cyber Security)",
+      "B.Tech Computer Science and Engineering (Cyber Security)",
+      "B.Tech in CSE (Cyber Security)",
+      "CSE with Cyber Security"
+    ]
+  },
+  {
+    "branch_id": "CSE_DS",
+    "display_name": "Computer Science and Engineering (Data Science)",
+    "aliases": [
+      "Computer Science and Engineering (Data Science)",
+      "CSE (Data Science)",
+      "CSE Data Science",
+      "B.E. Computer Science and Engineering (Data Science)",
+      "B.Tech Computer Science and Engineering (Data Science)",
+      "B.Tech in CSE (Data Science)",
+      "CSE with Data Science"
+    ]
+  },
+  {
+    "branch_id": "CSE_IOT",
+    "display_name": "Computer Science and Engineering (Internet of Things and Cyber Security Including Blockchain Technology)",
+    "aliases": [
+      "Computer Science and Engineering (Internet of Things and Cyber Security Including Blockchain Technology)",
+      "CSE (IoT and Cyber Security including Blockchain)",
+      "CSE IoT & Cyber Security with Blockchain",
+      "B.E. Computer Science and Engineering (Internet of Things and Cyber Security Including Blockchain Technology)",
+      "B.Tech Computer Science and Engineering (Internet of Things and Cyber Security Including Blockchain Technology)",
+      "B.Tech in CSE (IoT and Cyber Security including Blockchain)",
+      "CSE with IoT and Blockchain"
+    ]
+  },
+  {
+    "branch_id": "EEE",
+    "display_name": "Electrical and Electronics Engineering",
+    "aliases": [
+      "Electrical and Electronics Engineering",
+      "Electrical & Electronics Engineering",
+      "EEE",
+      "B.E. Electrical and Electronics Engineering",
+      "B.Tech Electrical and Electronics Engineering",
+      "B.Tech in Electrical and Electronics Engineering",
+      "Electrical and Electronics Engg"
+    ]
+  },
+  {
+    "branch_id": "ECE",
+    "display_name": "Electronics and Communication Engineering",
+    "aliases": [
+      "Electronics and Communication Engineering",
+      "Electronics & Communication Engineering",
+      "ECE",
+      "B.E. Electronics and Communication Engineering",
+      "B.Tech Electronics and Communication Engineering",
+      "B.Tech in Electronics and Communication Engineering",
+      "Electronics and Comm Engg"
+    ]
+  },
+  {
+    "branch_id": "ECE_COMP",
+    "display_name": "Electronics and Computer Engineering",
+    "aliases": [
+      "Electronics and Computer Engineering",
+      "Electronics & Computer Engineering",
+      "B.E. Electronics and Computer Engineering",
+      "B.Tech Electronics and Computer Engineering",
+      "B.Tech in Electronics and Computer Engineering",
+      "Electronics and Computer Engg"
+    ]
+  },
+  {
+    "branch_id": "VLSI",
+    "display_name": "Electronics Engineering (VLSI Design and Technology)",
+    "aliases": [
+      "Electronics Engineering (VLSI Design and Technology)",
+      "VLSI Design and Technology",
+      "VLSI",
+      "B.E. Electronics Engineering (VLSI Design and Technology)",
+      "B.Tech Electronics Engineering (VLSI Design and Technology)",
+      "B.Tech in VLSI",
+      "Electronics VLSI"
+    ]
+  },
+  {
+    "branch_id": "EIE",
+    "display_name": "Electronics and Instrumentation Engineering",
+    "aliases": [
+      "Electronics and Instrumentation Engineering",
+      "Electronics & Instrumentation Engineering",
+      "EIE",
+      "B.E. Electronics and Instrumentation Engineering",
+      "B.Tech Electronics and Instrumentation Engineering",
+      "B.Tech in Electronics and Instrumentation Engineering",
+      "Electronics and Instrumentation Engg"
+    ]
+  },
+  {
+    "branch_id": "ETE",
+    "display_name": "Electronics and Telecommunication Engineering",
+    "aliases": [
+      "Electronics and Telecommunication Engineering",
+      "Electronics & Telecommunication Engineering",
+      "ETE",
+      "B.E. Electronics and Telecommunication Engineering",
+      "B.Tech Electronics and Telecommunication Engineering",
+      "B.Tech in Electronics and Telecommunication Engineering",
+      "Electronics and Telecom Engg"
+    ]
+  },
+  {
+    "branch_id": "IEM",
+    "display_name": "Industrial Engineering and Management",
+    "aliases": [
+      "Industrial Engineering and Management",
+      "Industrial Engineering & Management",
+      "IEM",
+      "B.E. Industrial Engineering and Management",
+      "B.Tech Industrial Engineering and Management",
+      "B.Tech in Industrial Engineering and Management",
+      "Industrial Engg and Mgmt"
+    ]
+  },
+  {
+    "branch_id": "IIOT",
+    "display_name": "Industrial IoT",
+    "aliases": [
+      "Industrial IoT",
+      "Industrial Internet of Things",
+      "IIoT",
+      "B.E. Industrial IoT",
+      "B.Tech Industrial IoT",
+      "B.Tech in Industrial IoT"
+    ]
+  },
+  {
+    "branch_id": "ISE",
+    "display_name": "Information Science and Engineering",
+    "aliases": [
+      "Information Science and Engineering",
+      "Information Science & Engineering",
+      "ISE",
+      "B.E. Information Science and Engineering",
+      "B.Tech Information Science and Engineering",
+      "B.Tech in Information Science and Engineering",
+      "IS Engg"
+    ]
+  },
+  {
+    "branch_id": "MECH",
+    "display_name": "Mechanical Engineering",
+    "aliases": [
+      "Mechanical Engineering",
+      "Mechanical Engg",
+      "Mech Engg",
+      "ME",
+      "B.E. Mechanical Engineering",
+      "B.Tech Mechanical Engineering",
+      "B.Tech in Mechanical Engineering"
+    ]
+  },
+  {
+    "branch_id": "MEDE",
+    "display_name": "Medical Electronics Engineering",
+    "aliases": [
+      "Medical Electronics Engineering",
+      "Medical Electronics",
+      "B.E. Medical Electronics Engineering",
+      "B.Tech Medical Electronics Engineering",
+      "B.Tech in Medical Electronics Engineering",
+      "Med Electronics"
+    ]
+  },
+  {
+    "branch_id": "MINING",
+    "display_name": "Mining Engineering",
+    "aliases": [
+      "Mining Engineering",
+      "Mining Engg",
+      "B.E. Mining Engineering",
+      "B.Tech Mining Engineering",
+      "B.Tech in Mining Engineering"
+    ]
+  },
+  {
+    "branch_id": "RAI",
+    "display_name": "Robotics and Artificial Intelligence",
+    "aliases": [
+      "Robotics and Artificial Intelligence",
+      "Robotics & AI",
+      "RAI",
+      "B.E. Robotics and Artificial Intelligence",
+      "B.Tech Robotics and Artificial Intelligence",
+      "B.Tech in Robotics and Artificial Intelligence",
+      "Robotics and AI"
+    ]
+  },
+  {
+    "branch_id": "SILK",
+    "display_name": "Silk Technology",
+    "aliases": [
+      "Silk Technology",
+      "Silk Tech",
+      "B.E. Silk Technology",
+      "B.Tech Silk Technology",
+      "B.Tech in Silk Technology"
+    ]
+  },
+  {
+    "branch_id": "TEXTILE",
+    "display_name": "Textile Technology",
+    "aliases": [
+      "Textile Technology",
+      "Textile Tech",
+      "B.E. Textile Technology",
+      "B.Tech Textile Technology",
+      "B.Tech in Textile Technology"
+    ]
+  }
+]
