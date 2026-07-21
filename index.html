@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>x-bit · Proton</title>
 <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -23,15 +23,17 @@
   --border:rgba(0,0,0,0.08); --border-strong:rgba(0,0,0,0.16); --border-focus:rgba(0,0,0,0.5);
   --text-0:#0a0a0a; --text-1:#1c1c1e; --text-2:#6b6b6f; --text-3:#a2a2a6;
 }
+html{ height:100%; }
 body{
   background:var(--bg); color:var(--text-1); font-family:var(--font-d);
-  height:100vh; overflow:hidden; -webkit-font-smoothing:antialiased;
+  height:100vh; height:calc(var(--vh, 1vh) * 100); overflow:hidden; -webkit-font-smoothing:antialiased;
   display:flex; flex-direction:column; transition:background .3s,color .3s;
+  width:100%; max-width:100vw; overflow-x:hidden;
 }
 /* ═══ TOP BAR ═══ */
 .topbar{
   display:flex; align-items:center; justify-content:space-between;
-  padding:16px 18px 10px; flex-shrink:0;
+  padding:calc(14px + env(safe-area-inset-top)) 18px 10px; flex-shrink:0;
 }
 .icon-btn{
   width:38px; height:38px; border-radius:50%; background:var(--surface-2);
@@ -92,7 +94,7 @@ body{
 .subj-input{ text-align:center; font-weight:700; font-size:1rem; padding:10px 6px; }
 .xin{
   width:100%; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-xs);
-  padding:11px 13px; color:var(--text-0); font-family:var(--font-d); font-size:.85rem; font-weight:500;
+  padding:11px 13px; color:var(--text-0); font-family:var(--font-d); font-size:16px; font-weight:500;
   outline:none; transition:.2s;
 }
 .xin:focus{ border-color:var(--border-focus); }
@@ -157,6 +159,14 @@ body{
 .upload-dz i{ font-size:1.1rem; color:var(--text-2); margin-bottom:8px; display:block; }
 .upload-dz span{ font-size:.72rem; color:var(--text-2); }
 
+/* small non-interactive logo loading badge — replaces fa-spin loaders */
+.loading-badge{
+  width:64px; height:64px; flex-shrink:0; border-radius:14px; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; pointer-events:none; touch-action:none;
+}
+.loading-badge iframe{ width:100%; height:100%; border:none; pointer-events:none; touch-action:none; background:transparent; }
+.loading-line{ display:flex; align-items:center; gap:10px; }
+
 /* ═══ SIDEBAR ═══ */
 .sb-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:400; opacity:0; pointer-events:none; transition:.25s; }
 .sb-backdrop.open{ opacity:1; pointer-events:all; }
@@ -200,7 +210,7 @@ body{
 .onboard-eyebrow{ font-family:var(--font-m); font-size:.58rem; color:var(--text-3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:18px; }
 .onboard-card h2{ font-size:1.4rem; font-weight:800; color:var(--text-0); letter-spacing:-0.03em; margin-bottom:26px; line-height:1.2; }
 .onboard-card h2 span{ color:var(--text-3); }
-.onboard-input{ width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; color:var(--text-0); font-family:var(--font-d); font-size:1.05rem; font-weight:500; outline:none; margin-bottom:26px; }
+.onboard-input{ width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; color:var(--text-0); font-family:var(--font-d); font-size:16px; font-weight:500; outline:none; margin-bottom:26px; }
 .onboard-input:focus{ border-color:var(--text-0); }
 .onboard-btn{ width:100%; background:var(--text-0); color:var(--bg); border:none; border-radius:var(--r-xs); padding:13px; font-family:var(--font-d); font-size:.68rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; }
 .onboard-btn:disabled{ opacity:.25; }
@@ -226,7 +236,7 @@ body{
 .composer-box{ background:var(--surface-2); border:1px solid var(--border); border-radius:24px; padding:10px 8px 10px 18px; display:flex; align-items:flex-end; gap:8px; }
 .composer-input{
   flex:1; background:none; border:none; outline:none; resize:none; color:var(--text-0); font-family:var(--font-d);
-  font-size:.88rem; max-height:100px; padding:8px 0; line-height:1.4;
+  font-size:16px; max-height:100px; padding:8px 0; line-height:1.4;
 }
 .composer-input::placeholder{ color:var(--text-3); }
 .composer-actions{ display:flex; align-items:center; gap:4px; flex-shrink:0; }
@@ -450,6 +460,13 @@ function loadChat(id){
    MESSAGE RENDERING
    ══════════════════════════════════════════════════════════ */
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* small non-interactive logo-animation loader, used instead of a plain fa-spin icon.
+   loading.html is expected to sit in the same repo as this file. touch/pointer
+   events are fully blocked on it — it's decorative only, never tappable. */
+function loadingLine(text){
+  return `<div class="loading-line"><div class="loading-badge"><iframe src="./loading.html" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span>${escapeHtml(text)}</span></div>`;
+}
 
 function appendRawBubble(role, html){
   document.getElementById('emptyHero').style.display = 'none';
@@ -880,7 +897,7 @@ function wireCollegeCard(card){
       return;
     }
     userSays(`Predict colleges — ${flowState.category} · rank ${rank} · ${selectedBranchEntry.display_name}`);
-    protonSays(`<i class="fa-solid fa-circle-notch fa-spin"></i> Searching ${flowState.dataset==='enghk'?'Engineering (HK)':'Engineering'} colleges…`);
+    protonSays(loadingLine(`Searching ${flowState.dataset==='enghk'?'Engineering (HK)':'Engineering'} colleges…`));
     try{
       const dataset = await loadDataset(flowState.dataset);
       const aliasPool = [selectedBranchEntry.display_name, ...(selectedBranchEntry.aliases||[])];
@@ -942,11 +959,11 @@ document.getElementById('rpClose').addEventListener('click', ()=> document.getEl
    ══════════════════════════════════════════════════════════ */
 function pillPriorityListStart(){
   const uploadId = 'pl_upload_' + Date.now();
-  const html = `Upload your KEA priority list PDF. The file name must start with <b>options_</b> (this confirms it's the official priority-list export).
+  const html = `Upload your KEA priority list PDF (the official <b>Option Entry</b> export — filename usually contains "option", e.g. OptionEntry_1234567.pdf).
     <div class="upload-dz" id="${uploadId}" style="margin-top:12px;">
-      <input type="file" accept="application/pdf" id="${uploadId}_input">
+      <input type="file" accept=".pdf,application/pdf" id="${uploadId}_input">
       <i class="fa-solid fa-file-arrow-up"></i>
-      <span>Tap to select your options_*.pdf file</span>
+      <span>Tap to select your priority list PDF</span>
     </div>`;
   const row = protonSays(html, 'Upload your priority list PDF');
   const input = row.querySelector(`#${uploadId}_input`);
@@ -954,8 +971,9 @@ function pillPriorityListStart(){
     const file = e.target.files[0];
     if(!file) return;
     userSays(`Uploaded: ${file.name}`);
-    if(!/^options_/i.test(file.name)){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> That doesn't look like the right file. Please upload the priority-list PDF whose file name starts with <b>options_</b> (e.g. options_1234567.pdf).`);
+    const normalizedName = file.name.toLowerCase().replace(/[^a-z]/g, '');
+    if(!normalizedName.includes('option')){
+      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> That doesn't look like the right file. Please upload the official KEA priority-list PDF — the filename should contain <b>"option"</b> (e.g. OptionEntry_1234567.pdf).`);
       return;
     }
     handlePriorityListPdf(file);
@@ -963,7 +981,7 @@ function pillPriorityListStart(){
 }
 
 async function handlePriorityListPdf(file){
-  protonSays(`<i class="fa-solid fa-circle-notch fa-spin"></i> Reading your priority list…`);
+  protonSays(loadingLine('Reading your priority list…'));
   try{
     const ab = await file.arrayBuffer();
     const options = await parsePriorityPdf(ab);
@@ -1024,7 +1042,7 @@ function wirePriorityCard(card, options){
       protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Please choose a dataset, category and rank first.`);
       return;
     }
-    protonSays(`<i class="fa-solid fa-circle-notch fa-spin"></i> Matching your priority list…`);
+    protonSays(loadingLine('Matching your priority list…'));
     try{
       const dataset = await loadDataset(chosenDs);
       const results = matchPriorityOptions(dataset, options, category, rank);
@@ -1141,6 +1159,24 @@ function initComposer(){
     userSays('Priority List');
     pillPriorityListStart();
   });
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE VIEWPORT FIX — 100vh is unreliable on mobile browsers
+   because it doesn't account for the address bar / keyboard.
+   We track real innerHeight (and visualViewport, for keyboard)
+   and expose it as --vh for the CSS above.
+   ══════════════════════════════════════════════════════════ */
+function setVH(){
+  const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
+  document.documentElement.style.setProperty('--vh', vh + 'px');
+}
+setVH();
+window.addEventListener('resize', setVH);
+window.addEventListener('orientationchange', ()=>setTimeout(setVH,100));
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', setVH);
+  window.visualViewport.addEventListener('scroll', setVH);
 }
 
 /* ══════════════════════════════════════════════════════════
