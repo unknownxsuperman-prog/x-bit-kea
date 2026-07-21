@@ -1,0 +1,1217 @@
+[
+  {
+    "input": "bro i got 124 in kcet and 84.4 in boards predict rank 😭",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 124,
+        "boardPercentage": 84.4
+      }
+    }
+  },
+  {
+    "input": "14k gm can i get cse in bangalore?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 14000,
+        "category": "GM",
+        "branch": "Computer Science and Engineering",
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "kcet 118 marks bro",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 118
+      },
+      "missing": [
+        "boardPercentage"
+      ]
+    }
+  },
+  {
+    "input": "135 kcet, board is okay. worth it for tops college?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 135,
+        "gradeQualifier": "Top College"
+      },
+      "missing": [
+        "boardPercentage"
+      ]
+    }
+  },
+  {
+    "input": "If I score 148 in KCET, what's my chances for AI?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 148,
+        "targetBranch": "Artificial Intelligence"
+      },
+      "missing": [
+        "boardPercentage"
+      ]
+    }
+  },
+  {
+    "input": "I scored 92% in boards and 105 KCET. Where should I apply?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "boardPercentage": 92,
+        "kcetMarks": 105
+      },
+      "missing": [
+        "targetBranch"
+      ]
+    }
+  },
+  {
+    "input": "128 KCET, 75% boards. Which branch is safest?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 128,
+        "boardPercentage": 75
+      },
+      "missing": [
+        "targetBranch"
+      ]
+    }
+  },
+  {
+    "input": "Rank 8000, trying for Civil. Thoughts?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 8000,
+        "branch": "Civil Engineering"
+      }
+    }
+  },
+  {
+    "input": "My score is 150/150. What rank do I get?",
+    "output": {
+      "intent": "rank_inquiry",
+      "entities": {
+        "kcetMarks": 150,
+        "gradingScale": "Perfect Score"
+      }
+    }
+  },
+  {
+    "input": "95% boards, 120 KCET. Is this enough for a good college?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "boardPercentage": 95,
+        "kcetMarks": 120
+      }
+    }
+  },
+  {
+    "input": "108 KCET marks. Does this mean anything?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 108
+      },
+      "missing": [
+        "contextualInformation"
+      ]
+    }
+  },
+  {
+    "input": "Targeting CS, rank 18k. Is it tight?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 18000,
+        "branch": "Computer Science"
+      }
+    }
+  },
+  {
+    "input": "KCET score 130. What is the typical branch range?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 130
+      }
+    }
+  },
+  {
+    "input": "Low score, 85 KCET. Any hope for anything?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 85,
+        "sentiment": "Low/Difficult"
+      }
+    }
+  },
+  {
+    "input": "Boards 90%, KCET 145. Must get into IIT equivalent.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "boardPercentage": 90,
+        "kcetMarks": 145,
+        "targetLevel": "Elite/IIT Equivalent"
+      }
+    }
+  },
+  {
+    "input": "105 KCET. Hope for the best.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 105
+      }
+    }
+  },
+  {
+    "input": "My rank is 500. Which college to join in Pune?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "rank": 500,
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "KCET 125. Is mechanical possible?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 125,
+        "branch": "Mechanical Engineering"
+      }
+    }
+  },
+  {
+    "input": "I struggled, got 88 KCET. My friends scored much higher.",
+    "output": {
+      "intent": "self_assessment",
+      "entities": {
+        "kcetMarks": 88,
+        "comparison": "Below Peers"
+      }
+    }
+  },
+  {
+    "input": "What if I score 140 in KCET? Is that a solid rank?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 140,
+        "evaluationRequest": true
+      }
+    }
+  },
+  {
+    "input": "Need advice on admission. KCET 109.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "kcetMarks": 109
+      }
+    }
+  },
+  {
+    "input": "Boards 80%, trying for a decent engineering course.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 80
+      },
+      "missing": [
+        "KCETScore"
+      ]
+    }
+  },
+  {
+    "input": "My rank is 25k. Any chance for anything?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "rank": 25000
+      }
+    }
+  },
+  {
+    "input": "KCET 95. Where should I focus my applications?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 95
+      }
+    }
+  },
+  {
+    "input": "If my rank is under 500, what branches are good?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "rank": 500
+      }
+    }
+  },
+  {
+    "input": "I bombed the boards, 60%. KCET helped?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 60,
+        "contextualFocus": "KCET Dependence"
+      }
+    }
+  },
+  {
+    "input": "KCET 132, targeting Thermal Engineering.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 132,
+        "targetBranch": "Thermal Engineering"
+      }
+    }
+  },
+  {
+    "input": "Help me predict rank with my 100 KCET score.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 100
+      }
+    }
+  },
+  {
+    "input": "Need to know if 110 KCET is respectable.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 110
+      }
+    }
+  },
+  {
+    "input": "Boards 85%, KCET 130. What is the outcome?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "boardPercentage": 85,
+        "kcetMarks": 130
+      }
+    }
+  },
+  {
+    "input": "My rank is 20k. Trying for CS in Coimbatore.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 20000,
+        "branch": "Computer Science",
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "KCET 145. Are there chances for a top tier college?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 145
+      }
+    }
+  },
+  {
+    "input": "90 KCET. Should I worry about the competition?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 90
+      }
+    }
+  },
+  {
+    "input": "My score was 120. Is that good enough?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 120
+      }
+    }
+  },
+  {
+    "input": "Boards 70%. KCET needed for anything good?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 70
+      },
+      "missing": [
+        "kcetMarks"
+      ]
+    }
+  },
+  {
+    "input": "102 KCET. What kind of placement do I expect?",
+    "output": {
+      "intent": "career_advice",
+      "entities": {
+        "kcetMarks": 102
+      }
+    }
+  },
+  {
+    "input": "Rank 35k. Any chance for placement?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "rank": 35000
+      }
+    }
+  },
+  {
+    "input": "KCET 140. Should I aim higher or settle?",
+    "output": {
+      "intent": "goal_setting",
+      "entities": {
+        "kcetMarks": 140
+      }
+    }
+  },
+  {
+    "input": "Boards 99%, KCET 125. Tell me my future!",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "boardPercentage": 99,
+        "kcetMarks": 125
+      }
+    }
+  },
+  {
+    "input": "107 KCET. Hope I made it.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 107
+      }
+    }
+  },
+  {
+    "input": "KCET 115. Targeting chemical engineering, doable?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 115,
+        "branch": "Chemical Engineering"
+      }
+    }
+  },
+  {
+    "input": "My percentage is 78%, KCET score required?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 78,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "129 KCET. Which college tier does this fit?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 129
+      }
+    }
+  },
+  {
+    "input": "Rank 10k. Trying for IT in Pune.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 10000,
+        "branch": "Information Technology",
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "98 KCET. Is this automatically topper level?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 98
+      }
+    }
+  },
+  {
+    "input": "Boards 82%. Aiming high, what KCET score?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 82,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "112 KCET. Is it worth trying for CS?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 112,
+        "branch": "Computer Science"
+      }
+    }
+  },
+  {
+    "input": "My overall is 86%. What rank range to aim for?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "overallPercentage": 86
+      }
+    }
+  },
+  {
+    "input": "KCET 149. Trying for the best college possible.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 149,
+        "goal": "Top Tier"
+      }
+    }
+  },
+  {
+    "input": "85 KCET. I need a good safety net option.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 85,
+        "goal": "Safety Option"
+      }
+    }
+  },
+  {
+    "input": "KCET score 103. Where do I stand?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 103
+      }
+    }
+  },
+  {
+    "input": "Boards 72%, going for engineering.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 72,
+        "goal": "Engineering Admission"
+      }
+    }
+  },
+  {
+    "input": "138 KCET. My future depends on this!",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 138
+      }
+    }
+  },
+  {
+    "input": "Rank is 15k. Aiming for any branch in Chennai?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 15000,
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "KCET 100. Is that average or above?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 100
+      }
+    }
+  },
+  {
+    "input": "Boards 93%, KCET predicted score needed.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 93,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "My rank is 22k. CS in Kochi?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 22000,
+        "branch": "Computer Science",
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "KCET 119. Is this good enough for mass recruiters?",
+    "output": {
+      "intent": "career_advice",
+      "entities": {
+        "kcetMarks": 119
+      }
+    }
+  },
+  {
+    "input": "75% boards, aiming for decent package.",
+    "output": {
+      "intent": "career_advice",
+      "entities": {
+        "boardPercentage": 75,
+        "goal": "Decent Placement Package"
+      }
+    }
+  },
+  {
+    "input": "124 KCET, 80% boards. Prediction time?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 124,
+        "boardPercentage": 80
+      }
+    }
+  },
+  {
+    "input": "Rank 19k. My options are closing down.",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "rank": 19000,
+        "sentiment": "High Pressure"
+      }
+    }
+  },
+  {
+    "input": "KCET 133. Any thoughts on placement chances?",
+    "output": {
+      "intent": "career_advice",
+      "entities": {
+        "kcetMarks": 133
+      }
+    }
+  },
+  {
+    "input": "96% boards, need to convert this into admission success.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 96,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "109 KCET. How far off the cutoff am I?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 109
+      }
+    }
+  },
+  {
+    "input": "Low score, 80 KCET. Should I still apply anywhere?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 80,
+        "goal": "Seeking Options"
+      }
+    }
+  },
+  {
+    "input": "Boards 76%, aiming for a decent university.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "boardPercentage": 76,
+        "goal": "Decent University Admission"
+      }
+    }
+  },
+  {
+    "input": "KCET 140. Worth pursuing high competition branch?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 140,
+        "competitionLevel": "High"
+      }
+    }
+  },
+  {
+    "input": "My rank is 12k. Can I safely say I got in?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "rank": 12000
+      }
+    }
+  },
+  {
+    "input": "105 KCET. What's the safest branch choice?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 105,
+        "goal": "Safe Branch Recommendation"
+      }
+    }
+  },
+  {
+    "input": "Boards 88%, KCET needed to match the potential.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 88,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "KCET 130. How many colleges are reachable?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 130
+      }
+    }
+  },
+  {
+    "input": "Rank 17k. I need good advice fast.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "rank": 17000
+      }
+    }
+  },
+  {
+    "input": "118 KCET. Where does this put me nationally?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 118
+      }
+    }
+  },
+  {
+    "input": "70 KCET. Is admission possible at all?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 70,
+        "goal": "Admission Feasibility Check"
+      }
+    }
+  },
+  {
+    "input": "Boards 91%, KCET score prediction needed.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 91,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "142 KCET. Worth chasing specialized branches?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 142,
+        "focus": "Specialized Branches"
+      }
+    }
+  },
+  {
+    "input": "My rank is 28k. Hoping for anything in electrical.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 28000,
+        "branch": "Electrical Engineering"
+      }
+    }
+  },
+  {
+    "input": "KCET 126. How competitive is this score?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 126
+      }
+    }
+  },
+  {
+    "input": "Boards 84%, KCET conversion needed.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 84,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "108 KCET. Is this generally acceptable?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 108
+      }
+    }
+  },
+  {
+    "input": "Rank 16k. Trying to secure a good college package.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 16000,
+        "goal": "Good Placement Package"
+      }
+    }
+  },
+  {
+    "input": "KCET 150. All systems go!",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 150
+      }
+    }
+  },
+  {
+    "input": "79 KCET. Praying for a placement somewhere.",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 79,
+        "goal": "Placement Focus"
+      }
+    }
+  },
+  {
+    "input": "Boards 94%, KCET needed to dominate.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 94,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "120 KCET. Mechanical options?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 120,
+        "branch": "Mechanical Engineering"
+      }
+    }
+  },
+  {
+    "input": "My rank is 9k. I feel lucky.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "rank": 9000,
+        "sentiment": "Confident"
+      }
+    }
+  },
+  {
+    "input": "KCET 106. Where does this fit in the competitive landscape?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 106
+      }
+    }
+  },
+  {
+    "input": "Boards 65%, KCET is my savior.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 65,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "135 KCET. Is this safe for my future?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 135
+      }
+    }
+  },
+  {
+    "input": "Rank 14k. Trying to beat the competition.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 14000,
+        "competitionLevel": "High"
+      }
+    }
+  },
+  {
+    "input": "KCET 89. What's the outlook?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 89
+      }
+    }
+  },
+  {
+    "input": "Boards 74%, aiming for somewhere decent.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "boardPercentage": 74,
+        "goal": "Decent Admission"
+      }
+    }
+  },
+  {
+    "input": "110 KCET. Do I need boards too?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "kcetMarks": 110,
+        "contextualQuestion": "Board Weightage"
+      }
+    }
+  },
+  {
+    "input": "My rank is 18k. Any hope for a good branch?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 18000,
+        "goal": "Good Branch Secured"
+      }
+    }
+  },
+  {
+    "input": "KCET 102. Trying for CS, is it possible?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 102,
+        "branch": "Computer Science"
+      }
+    }
+  },
+  {
+    "input": "78 KCET. What's my placement probability?",
+    "output": {
+      "intent": "career_advice",
+      "entities": {
+        "kcetMarks": 78
+      }
+    }
+  },
+  {
+    "input": "Boards 90%, need to capitalize on this.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 90,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "KCET 128. Aiming for a secure college.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 128,
+        "goal": "Secure College Admission"
+      }
+    }
+  },
+  {
+    "input": "Rank 6k. Which branch should I finalize?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "rank": 6000
+      }
+    }
+  },
+  {
+    "input": "139 KCET. Praying for a top college offer.",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 139,
+        "goal": "Top College Offer"
+      }
+    }
+  },
+  {
+    "input": "KCET 107. How many college choices do I have?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 107
+      }
+    }
+  },
+  {
+    "input": "Boards 68%. Need to scrape through engineering.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 68,
+        "goal": "Engineering Admission"
+      }
+    }
+  },
+  {
+    "input": "125 KCET. My thoughts on the outcome are mixed.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 125,
+        "sentiment": "Mixed/Uncertain"
+      }
+    }
+  },
+  {
+    "input": "Rank 15k. Is this okay for a good career?",
+    "output": {
+      "intent": "career_advice",
+      "entities": {
+        "rank": 15000
+      }
+    }
+  },
+  {
+    "input": "KCET 99. Fingers crossed!",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 99
+      }
+    }
+  },
+  {
+    "input": "75% boards. What KCET needs to secure a seat?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 75,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "113 KCET. Worth going for competitive branches?",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 113,
+        "competitionLevel": "Competitive"
+      }
+    }
+  },
+  {
+    "input": "My score is 145. Praying for a miracle.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 145,
+        "sentiment": "Hopeful/High Stakes"
+      }
+    }
+  },
+  {
+    "input": "Boards 83%, what's the goal for KCET?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 83,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "KCET 129. Targeting Civil branch.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "kcetMarks": 129,
+        "branch": "Civil Engineering"
+      }
+    }
+  },
+  {
+    "input": "Rank 10k. My dream is fulfilled.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "rank": 10000,
+        "sentiment": "Achieved Goal"
+      }
+    }
+  },
+  {
+    "input": "104 KCET. Where does this land me?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 104
+      }
+    }
+  },
+  {
+    "input": "Boards 60%, aiming for anything reliable.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 60,
+        "goal": "Reliable Admission"
+      }
+    }
+  },
+  {
+    "input": "KCET 137. Is this rank worth mentioning?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 137
+      }
+    }
+  },
+  {
+    "input": "My rank is 21k. Any lifeline?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "rank": 21000,
+        "sentiment": "Desperate/Low Expectation"
+      }
+    }
+  },
+  {
+    "input": "127 KCET. How many choices left?",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 127
+      }
+    }
+  },
+  {
+    "input": "Boards 89%, KCET required to match the potential.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 89,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "100 KCET. Is this sufficient for a good college?",
+    "output": {
+      "intent": "eligibility_check",
+      "entities": {
+        "kcetMarks": 100,
+        "goal": "Good College Admission Check"
+      }
+    }
+  },
+  {
+    "input": "Rank 14k. Trying for AI in Hyderabad.",
+    "output": {
+      "intent": "college_prediction",
+      "entities": {
+        "rank": 14000,
+        "branch": "Artificial Intelligence",
+        "location": "Bangalore"
+      }
+    }
+  },
+  {
+    "input": "KCET 114. What kind of branch should I consider?",
+    "output": {
+      "intent": "college_suggestion",
+      "entities": {
+        "kcetMarks": 114,
+        "goal": "Branch Suggestion"
+      }
+    }
+  },
+  {
+    "input": "Boards 71%, hoping KCET elevates the profile.",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "boardPercentage": 71,
+        "kcetMarks_missing": true
+      }
+    }
+  },
+  {
+    "input": "130 KCET. Where should I focus my next step?",
+    "output": {
+      "intent": "advice_seeking",
+      "entities": {
+        "kcetMarks": 130,
+        "stage": "Decision Making"
+      }
+    }
+  },
+  {
+    "input": "My score is 90. Fingers crossed for the best.",
+    "output": {
+      "intent": "rank_prediction",
+      "entities": {
+        "kcetMarks": 90,
+        "sentiment": "Optimistic"
+      }
+    }
+  }
+]
