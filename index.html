@@ -161,7 +161,7 @@ body{
 
 /* small non-interactive logo loading badge — replaces fa-spin loaders */
 .loading-badge{
-  width:64px; height:64px; flex-shrink:0; border-radius:14px; overflow:hidden;
+  width:28px; height:28px; flex-shrink:0; border-radius:8px; overflow:hidden;
   display:flex; align-items:center; justify-content:center; pointer-events:none; touch-action:none;
 }
 .loading-badge iframe{ width:100%; height:100%; border:none; pointer-events:none; touch-action:none; background:transparent; }
@@ -1128,6 +1128,255 @@ function renderPriorityResults(results){
 }
 
 /* ══════════════════════════════════════════════════════════
+   SMART CHAT ENGINE — lightweight tokenizer + similarity classifier
+   Trained against ./trainingset.json (KCET intents+entities) and
+   ./trainingset1.json (normal chat pairs). No training loop — pure
+   bag-of-words / Jaccard nearest-neighbor, so it loads instantly.
+   ══════════════════════════════════════════════════════════ */
+let kcetTrainingSet = [];
+let chatTrainingSet = [];
+let smartDataReady = false;
+
+async function loadTrainingData(){
+  try{ kcetTrainingSet = await fetch('./trainingset.json').then(r=>r.json()); }
+  catch(e){ console.warn('trainingset.json not found yet — KCET intent matching disabled', e); kcetTrainingSet = []; }
+  try{ chatTrainingSet = await fetch('./trainingset1.json').then(r=>r.json()); }
+  catch(e){ console.warn('trainingset1.json not found yet — normal chat matching disabled', e); chatTrainingSet = []; }
+  kcetTrainingSet.forEach(ex => ex._tokens = new Set(patternTokens(ex.input)));
+  chatTrainingSet.forEach(ex => ex._tokens = new Set(tokenize(ex.input)));
+  smartDataReady = true;
+}
+
+function normalizeText(s){
+  return s.toLowerCase().replace(/[^\w\s%.]/g,' ').replace(/\s+/g,' ').trim();
+}
+function tokenize(s){ return normalizeText(s).split(' ').filter(Boolean); }
+// pattern-token version collapses numbers so "124 kcet" and "89 kcet" match the same pattern
+function patternTokens(s){ return normalizeText(s).replace(/\d+\.?\d*/g,'#num#').split(' ').filter(Boolean); }
+
+function jaccard(a, b){
+  let inter = 0;
+  for(const t of a) if(b.has(t)) inter++;
+  const union = a.size + b.size - inter;
+  return union ? inter/union : 0;
+}
+function classifyKcetIntent(text){
+  if(!kcetTrainingSet.length) return null;
+  const q = new Set(patternTokens(text));
+  let best=null, bestScore=0;
+  for(const ex of kcetTrainingSet){
+    const sc = jaccard(q, ex._tokens);
+    if(sc > bestScore){ bestScore = sc; best = ex; }
+  }
+  return best ? { intent: best.output.intent, score: bestScore } : null;
+}
+function classifyChat(text){
+  if(!chatTrainingSet.length) return null;
+  const q = new Set(tokenize(text));
+  let best=null, bestScore=0;
+  for(const ex of chatTrainingSet){
+    const sc = jaccard(q, ex._tokens);
+    if(sc > bestScore){ bestScore = sc; best = ex; }
+  }
+  return best && bestScore > 0.3 ? best : null;
+}
+
+/* ── ENTITY EXTRACTION (rule-based, keyword-anchored) ── */
+const KARNATAKA_CITIES = ['bangalore','bengaluru','mysore','mysuru','mangalore','mangaluru','hubli','hubballi','belgaum','belagavi','dharwad','shimoga','shivamogga','hassan','tumkur','tumakuru','davangere','bellary','ballari','gulbarga','kalaburagi','bidar','raichur','udupi','chikmagalur','kolar','mandya','chitradurga','bagalkot','hospet','bijapur','vijayapura'];
+const BRANCH_SHORTHAND = {
+  cse:'Computer Science and Engineering', cs:'Computer Science and Engineering',
+  ise:'Information Science and Engineering', it:'Information Technology',
+  ai:'Artificial Intelligence', 'ai/ml':'Artificial Intelligence and Machine Learning', aiml:'Artificial Intelligence and Machine Learning', ml:'Machine Learning',
+  ece:'Electronics and Communication Engineering', eee:'Electrical & Electronics Engineering',
+  mech:'Mechanical Engineering', mechanical:'Mechanical Engineering',
+  civil:'Civil Engineering', chem:'Chemical Engineering', chemical:'Chemical Engineering',
+  aero:'Aerospace Engineering', aeronautical:'Aeronautical Engineering'
+};
+const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a,b)=>b.length-a.length);
+
+function extractEntities(text){
+  const t = ' ' + text.toLowerCase() + ' ';
+  const e = {};
+
+  let m = t.match(/(\d+(?:\.\d+)?)\s*(?:marks?)?\s*(?:in\s*)?(?:kcet|cet)\b/) || t.match(/\b(?:kcet|cet)\b[^\d]{0,8}(\d+(?:\.\d+)?)/);
+  if(m){ const v=parseFloat(m[1]); if(v<=180) e.kcetMarks = v; }
+
+  let bm = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in\s*)?(?:boards?|2nd\s*pu|puc?)\b/) || t.match(/\b(?:boards?|puc?)\b[^\d]{0,8}(\d+(?:\.\d+)?)/);
+  if(bm){ const v=parseFloat(bm[1]); if(v<=100) e.boardPercentage = v; }
+
+  // rank: explicit "rank <n>" OR shorthand "<n>k"
+  let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?/);
+  if(!rm) rm = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/);
+  if(rm){ let v=parseFloat(rm[1]); if(rm[2] || / k\b/.test(rm[0])) v*=1000; e.rank = Math.round(v); }
+
+  for(const code of ALL_CATEGORY_CODES){
+    const re = new RegExp('\\b' + code.toLowerCase() + '\\b');
+    if(re.test(t)){ e.category = code; break; }
+  }
+
+  for(const short in BRANCH_SHORTHAND){
+    const re = new RegExp('\\b' + short.replace(/[/]/g,'\\/') + '\\b');
+    if(re.test(t)){ e.branch = BRANCH_SHORTHAND[short]; break; }
+  }
+
+  for(const city of KARNATAKA_CITIES){
+    if(t.includes(city)) { e.location = city.charAt(0).toUpperCase()+city.slice(1); break; }
+  }
+  if(!e.location){
+    const lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/);
+    if(lm && !['This','That','My','The'].includes(lm[1])) e.location = lm[1];
+  }
+  return e;
+}
+function extractCategoryOnly(text){
+  const t = ' ' + text.toLowerCase() + ' ';
+  for(const code of ALL_CATEGORY_CODES){
+    if(new RegExp('\\b'+code.toLowerCase()+'\\b').test(t)) return code;
+  }
+  return null;
+}
+
+/* ── TEMP "THINKING" BADGE (not persisted, ~1s) ── */
+function sleep(ms){ return new Promise(res=>setTimeout(res, ms)); }
+function showTempThinking(){
+  document.getElementById('emptyHero').style.display='none';
+  const body = document.getElementById('chatBody'); body.style.display='block';
+  const row = document.createElement('div');
+  row.className = 'msg-row assistant';
+  row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${loadingLine('Thinking…')}</div>`;
+  body.appendChild(row);
+  document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
+  return row;
+}
+
+/* ── SLOT-FILLING MEMORY (one level: remembers a partially-complete
+   KCET query across turns, e.g. rank+branch known, category missing) ── */
+let pendingSmartQuery = null; // { rank, category, branch, location, needs }
+
+/* ── COLLEGE SEARCH (rank±category±branch±location, NOT capped unless UI trims) ── */
+async function searchCollegesSmart({ rank, category, branch, location }){
+  const dataset = await loadDataset(HK_CATEGORIES.includes(category) ? 'enghk' : 'eng');
+  const lowerBound = rank - 1500;
+  const branchAliasPool = branch ? [branch] : null;
+  const results = [];
+  for(const college of dataset){
+    if(location && !(college.location||'').toLowerCase().includes(location.toLowerCase())) continue;
+    if(!college.branches) continue;
+    if(branchAliasPool){
+      const key = matchBranchKey(branchAliasPool, college.branches);
+      if(!key) continue;
+      const cutoff = college.branches[key][category];
+      if(cutoff==null || cutoff < lowerBound) continue;
+      results.push({ id:college.id, name:college.name, location:college.location||'Karnataka', branch:key, cutoff, dist:Math.abs(cutoff-rank) });
+    } else {
+      let bestKey=null, bestCutoff=null, bestDist=Infinity;
+      for(const [bkey, cd] of Object.entries(college.branches)){
+        const cutoff = cd[category];
+        if(cutoff==null || cutoff < lowerBound) continue;
+        const dist = Math.abs(cutoff-rank);
+        if(dist < bestDist){ bestDist=dist; bestKey=bkey; bestCutoff=cutoff; }
+      }
+      if(bestKey) results.push({ id:college.id, name:college.name, location:college.location||'Karnataka', branch:bestKey, cutoff:bestCutoff, dist:bestDist });
+    }
+  }
+  results.sort((a,b)=>a.dist-b.dist);
+  return results;
+}
+
+function buildSmartCollegeAnswer(results, { rank, branch, location, category }){
+  const branchLabel = branch ? escapeHtml(branch) : null;
+  if(!results.length){
+    let html = `Doesn't look likely${branchLabel?` for <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''} at rank ${rank.toLocaleString('en-IN')} (${category}) — no eligible seats this round.`;
+    return html;
+  }
+  const shown = results.slice(0,5);
+  const names = results.slice(0,3).map(r=>getShortName(r.name)).join(', ');
+  let html = `Yes — you could get${branchLabel?` <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''}. <b>${results.length}</b> matching option${results.length>1?'s':''}, closest: ${escapeHtml(names)}${results.length>3?` +${results.length-3} more`:''}.`;
+  html += `<div style="margin-top:10px;">` + shown.map(r=>collegeCardHtml(r, category)).join('') + `</div>`;
+  if(results.length>5){
+    html += `<div class="chip-row"><div class="mini-chip" data-action="see-more-smart">See all ${results.length}${location?` in ${escapeHtml(location)}`:''}</div></div>`;
+  }
+  return html;
+}
+
+/* ── MAIN ROUTER ── */
+async function handleSmartMessage(rawText){
+  const thinkingRow = showTempThinking();
+  await sleep(900);
+  thinkingRow.remove();
+
+  let entities = extractEntities(rawText);
+
+  // merge with any pending slot-fill context from a previous turn
+  if(pendingSmartQuery){
+    const merged = Object.assign({}, pendingSmartQuery.known, entities);
+    if(!merged.category){ const c = extractCategoryOnly(rawText); if(c) merged.category = c; }
+    entities = merged;
+  }
+
+  const kcetGuess = classifyKcetIntent(rawText);
+  const looksKcetRelated = entities.kcetMarks!=null || entities.boardPercentage!=null || entities.rank!=null ||
+    entities.category || entities.branch || /\b(kcet|cet|rank|board|puc?)\b/i.test(rawText) || !!pendingSmartQuery;
+
+  if(looksKcetRelated){
+    await routeKcetQuery(kcetGuess ? kcetGuess.intent : 'rank_prediction', entities);
+    return;
+  }
+
+  const chatGuess = classifyChat(rawText);
+  if(chatGuess){ protonSays(escapeHtmlKeepEmoji(chatGuess.output)); return; }
+
+  protonSays(`I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or just tell me your boards % and KCET score together.`);
+}
+// chat training answers already contain emoji/punctuation only — safe to render directly, still escape angle brackets defensively
+function escapeHtmlKeepEmoji(s){ return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+async function routeKcetQuery(intent, entities){
+  // 1) derive rank if we have both marks components but no rank yet
+  if(entities.rank==null && entities.kcetMarks!=null && entities.boardPercentage!=null){
+    const kcetPct = (Math.min(180, entities.kcetMarks)/180)*100;
+    const finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
+    entities.rank = kcetEngine.predictRank(finalPct);
+    protonSays(`Based on <b>${entities.boardPercentage}%</b> boards and <b>${entities.kcetMarks}</b> KCET marks, your estimated rank is <b>${entities.rank.toLocaleString('en-IN')}</b>.`);
+  }
+
+  // 2) pure rank-prediction intent with no college ask — stop here if nothing else was requested
+  const wantsCollege = intent!=='rank_prediction' && intent!=='rank_inquiry' || entities.category || entities.branch || entities.location;
+
+  if(entities.rank==null){
+    pendingSmartQuery = { known: entities, needs:['rank'] };
+    protonSays(`Got it — what's your KCET score (or boards % + KCET score) so I can estimate your rank?`);
+    return;
+  }
+  if(!wantsCollege){
+    pendingSmartQuery = null;
+    return;
+  }
+  if(!entities.category){
+    pendingSmartQuery = { known: entities, needs:['category'] };
+    protonSays(`Rank ${entities.rank.toLocaleString('en-IN')} noted. Which category should I check against — GM, 1G, 2AG, SC, ST…?`);
+    return;
+  }
+
+  pendingSmartQuery = null;
+  const thinkingRow2 = showTempThinking();
+  try{
+    const results = await searchCollegesSmart(entities);
+    thinkingRow2.remove();
+    const row = protonSays(buildSmartCollegeAnswer(results, entities), `${results.length} matches`);
+    const seeMore = row.querySelector('[data-action="see-more-smart"]');
+    if(seeMore){
+      seeMore.addEventListener('click', ()=> openResultsPage(
+        `All matches${entities.location?` · ${entities.location}`:''}`, results, entities.category
+      ));
+    }
+  }catch(e){
+    thinkingRow2.remove();
+    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
    COMPOSER
    ══════════════════════════════════════════════════════════ */
 function initComposer(){
@@ -1139,10 +1388,7 @@ function initComposer(){
     if(!text) return;
     userSays(text);
     input.value=''; input.style.height='auto';
-    const handled = handleDirectRankChat(text);
-    if(!handled){
-      protonSays(`I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or tell me your boards % and KCET % together (e.g. "I got 92% in boards and 88% in KCET, predict my rank").`);
-    }
+    handleSmartMessage(text);
   }
   sendBtn.addEventListener('click', send);
   input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
@@ -1160,6 +1406,7 @@ function initComposer(){
     pillPriorityListStart();
   });
 }
+
 
 /* ══════════════════════════════════════════════════════════
    MOBILE VIEWPORT FIX — 100vh is unreliable on mobile browsers
@@ -1185,6 +1432,7 @@ if(window.visualViewport){
 initOnboarding();
 initSidebar();
 initComposer();
+loadTrainingData();
 currentChatId = 'c_' + Date.now();
 </script>
 </body>
