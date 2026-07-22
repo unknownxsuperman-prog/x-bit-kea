@@ -1138,10 +1138,24 @@ let chatTrainingSet = [];
 let smartDataReady = false;
 
 async function loadTrainingData(){
-  try{ kcetTrainingSet = await fetch('./trainingset.json').then(r=>r.json()); }
-  catch(e){ console.warn('trainingset.json not found yet — KCET intent matching disabled', e); kcetTrainingSet = []; }
-  try{ chatTrainingSet = await fetch('./trainingset1.json').then(r=>r.json()); }
-  catch(e){ console.warn('trainingset1.json not found yet — normal chat matching disabled', e); chatTrainingSet = []; }
+  try{
+    const r = await fetch('./trainingset.json');
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    kcetTrainingSet = await r.json();
+    console.info(`[x-bit] trainingset.json loaded: ${kcetTrainingSet.length} examples`);
+  }catch(e){
+    console.error('[x-bit] trainingset.json failed to load:', e.message, '— check the exact filename/case in your repo (it is case-sensitive on GitHub Pages).');
+    kcetTrainingSet = [];
+  }
+  try{
+    const r2 = await fetch('./trainingset1.json');
+    if(!r2.ok) throw new Error('HTTP ' + r2.status);
+    chatTrainingSet = await r2.json();
+    console.info(`[x-bit] trainingset1.json loaded: ${chatTrainingSet.length} examples`);
+  }catch(e){
+    console.error('[x-bit] trainingset1.json failed to load:', e.message, '— check the exact filename/case in your repo (it is case-sensitive on GitHub Pages).');
+    chatTrainingSet = [];
+  }
   kcetTrainingSet.forEach(ex => ex._tokens = new Set(patternTokens(ex.input)));
   chatTrainingSet.forEach(ex => ex._tokens = new Set(tokenize(ex.input)));
   smartDataReady = true;
@@ -1173,6 +1187,7 @@ function classifyKcetIntent(text){
 function classifyChat(text){
   if(!chatTrainingSet.length) return null;
   const q = new Set(tokenize(text));
+  if(!q.size) return null;
   let best=null, bestScore=0;
   for(const ex of chatTrainingSet){
     const sc = jaccard(q, ex._tokens);
@@ -1194,20 +1209,65 @@ const BRANCH_SHORTHAND = {
 };
 const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a,b)=>b.length-a.length);
 
+/* subject-wise marks: "physics 88 chem 92 maths 95" (in either order, either side of the number) */
+const SUBJ_RE = { physics:/phy(?:sics)?/, chemistry:/chem(?:istry)?/, maths:/math(?:s|ematics)?/ };
+function extractSubjectMarks(segment){
+  const marks = {};
+  for(const [subj, re] of Object.entries(SUBJ_RE)){
+    const after = new RegExp(re.source + '\\D{0,4}(\\d{1,3}(?:\\.\\d+)?)', 'i');
+    const before = new RegExp('(\\d{1,3}(?:\\.\\d+)?)\\D{0,4}' + re.source, 'i');
+    const mm = segment.match(after) || segment.match(before);
+    if(mm) marks[subj] = parseFloat(mm[1]);
+  }
+  if(marks.physics!=null && marks.chemistry!=null && marks.maths!=null) return marks;
+  return null;
+}
+/* boards OR kcet, handling subjects -> total marks -> percentage, in that priority.
+   Searches the FULL text directly with a tight, keyword-anchored gap (rather than
+   pre-slicing into segments) so it works regardless of which keyword/number comes first. */
+function findScoreBlock(text, keywordSrc, maxTotal, subjectMax){
+  const subj = extractSubjectMarks(text);
+  if(subj && subj.physics<=subjectMax && subj.chemistry<=subjectMax && subj.maths<=subjectMax){
+    const total = subj.physics + subj.chemistry + subj.maths;
+    return { total, pct: (total/maxTotal)*100 };
+  }
+  // keyword-before-number is checked first (tighter, less prone to reaching across
+  // into a neighboring clause than the number-before-keyword pattern below)
+  let pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,4}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
+                 text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*%\\s*(?:in\\s*)?' + keywordSrc, 'i'));
+  if(pctMatch){ const v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v/100)*maxTotal }; }
+  let totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,6}(\\d+(?:\\.\\d+)?)', 'i')) ||
+                    text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*(?:marks?)?\\s*(?:in\\s*)?' + keywordSrc, 'i'));
+  if(totalMatch){
+    const v = parseFloat(totalMatch[1]);
+    if(v <= maxTotal){
+      const pct = v <= 100 ? v : (v/maxTotal)*100;
+      return { pct, total: v>100 ? v : (v/100)*maxTotal };
+    }
+  }
+  return null;
+}
+
 function extractEntities(text){
   const t = ' ' + text.toLowerCase() + ' ';
   const e = {};
 
-  let m = t.match(/(\d+(?:\.\d+)?)\s*(?:marks?)?\s*(?:in\s*)?(?:kcet|cet)\b/) || t.match(/\b(?:kcet|cet)\b[^\d]{0,8}(\d+(?:\.\d+)?)/);
-  if(m){ const v=parseFloat(m[1]); if(v<=180) e.kcetMarks = v; }
+  const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100);
+  if(boardsResult) e.boardPercentage = boardsResult.pct;
 
-  let bm = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in\s*)?(?:boards?|2nd\s*pu|puc?)\b/) || t.match(/\b(?:boards?|puc?)\b[^\d]{0,8}(\d+(?:\.\d+)?)/);
-  if(bm){ const v=parseFloat(bm[1]); if(v<=100) e.boardPercentage = v; }
+  const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60);
+  if(kcetResult) e.kcetMarks = kcetResult.total;
 
-  // rank: explicit "rank <n>" OR shorthand "<n>k"
-  let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?/);
-  if(!rm) rm = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/);
-  if(rm){ let v=parseFloat(rm[1]); if(rm[2] || / k\b/.test(rm[0])) v*=1000; e.rank = Math.round(v); }
+  // rank: explicit "rank <n>" (optionally "k" shorthand) OR bare "<n>k" shorthand
+  let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?\b/);
+  if(rm){
+    let v = parseFloat(rm[1]);
+    if(rm[2]) v *= 1000;
+    e.rank = Math.round(v);
+  } else {
+    const km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/);
+    if(km) e.rank = Math.round(parseFloat(km[1]) * 1000);
+  }
 
   for(const code of ALL_CATEGORY_CODES){
     const re = new RegExp('\\b' + code.toLowerCase() + '\\b');
