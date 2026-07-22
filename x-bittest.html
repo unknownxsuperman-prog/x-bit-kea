@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
 <title>x-bit · Proton</title>
 <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -11,6 +12,7 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
+  color-scheme: dark;
   --bg:#000; --surface:#0a0a0a; --surface-2:#111; --surface-3:#161616;
   --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.16); --border-focus:rgba(255,255,255,0.5);
   --text-0:#fff; --text-1:#e8e8e8; --text-2:#8a8a8a; --text-3:#454545;
@@ -19,6 +21,7 @@
   --r:16px; --r-sm:12px; --r-xs:8px;
 }
 [data-theme="light"]{
+  color-scheme: light;
   --bg:#f4f4f6; --surface:#fff; --surface-2:#f0f0f2; --surface-3:#e9e9ec;
   --border:rgba(0,0,0,0.08); --border-strong:rgba(0,0,0,0.16); --border-focus:rgba(0,0,0,0.5);
   --text-0:#0a0a0a; --text-1:#1c1c1e; --text-2:#6b6b6f; --text-3:#a2a2a6;
@@ -166,36 +169,43 @@ body{
 }
 .loading-badge iframe{ width:100%; height:100%; border:none; pointer-events:none; touch-action:none; background:transparent; }
 .loading-line{ display:flex; align-items:center; gap:10px; }
+.shine-text{
+  background: linear-gradient(90deg, var(--text-3) 0%, var(--text-0) 50%, var(--text-3) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shineSweep 1.3s linear infinite;
+}
+@keyframes shineSweep{ 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
 
 /* ═══ SIDEBAR ═══ */
 .sb-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:400; opacity:0; pointer-events:none; transition:.25s; }
 .sb-backdrop.open{ opacity:1; pointer-events:all; }
 .sidebar{
-  position:fixed; top:0; left:-300px; width:280px; height:100vh; background:var(--surface);
+  position:fixed; top:0; left:-300px; width:280px; height:100vh; height:calc(var(--vh, 1vh) * 100); background:var(--surface);
   border-right:1px solid var(--border); z-index:401; transition:left .35s cubic-bezier(.16,1,.3,1);
-  display:flex; flex-direction:column;
+  display:flex; flex-direction:column; overflow:hidden;
 }
 .sidebar.open{ left:0; }
-.sb-top{ padding:20px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+.sb-top{ padding:calc(20px + env(safe-area-inset-top)) 18px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; flex-shrink:0; }
 .sb-blob{ width:42px; height:42px; border-radius:50%; background:var(--text-0); color:var(--bg); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.05rem; flex-shrink:0; }
 .sb-name{ font-size:.88rem; font-weight:700; color:var(--text-0); }
 .sb-tag{ font-family:var(--font-m); font-size:.55rem; color:var(--text-3); margin-top:3px; letter-spacing:.08em; }
 .sb-newchat{
   margin:14px 18px 6px; padding:11px; border:1px solid var(--border-strong); border-radius:var(--r-xs);
   display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; font-family:var(--font-m);
-  font-size:.65rem; letter-spacing:.06em; color:var(--text-1); transition:.2s;
+  font-size:.65rem; letter-spacing:.06em; color:var(--text-1); transition:.2s; flex-shrink:0;
 }
 .sb-newchat:hover{ background:var(--text-0); color:var(--bg); border-color:var(--text-0); }
-.sb-section-label{ font-family:var(--font-m); font-size:.52rem; color:var(--text-3); letter-spacing:.15em; text-transform:uppercase; padding:14px 18px 6px; }
-.sb-recent{ flex:1; overflow-y:auto; padding:0 10px; }
+.sb-section-label{ font-family:var(--font-m); font-size:.52rem; color:var(--text-3); letter-spacing:.15em; text-transform:uppercase; padding:14px 18px 6px; flex-shrink:0; }
+.sb-recent{ flex:1; overflow-y:auto; padding:0 10px; min-height:0; }
 .sb-recent-item{ padding:10px 10px; border-radius:var(--r-xs); cursor:pointer; transition:.15s; margin-bottom:2px; }
 .sb-recent-item:hover{ background:var(--surface-2); }
 .sb-recent-item .rt-title{ font-size:.75rem; font-weight:600; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .sb-recent-item .rt-sub{ font-family:var(--font-m); font-size:.55rem; color:var(--text-3); margin-top:2px; }
 .sb-empty{ padding:20px 18px; font-family:var(--font-m); font-size:.6rem; color:var(--text-3); text-align:center; }
-.sb-footer{ border-top:1px solid var(--border); padding:14px 18px 18px; }
+.sb-footer{ border-top:1px solid var(--border); padding:14px 18px calc(18px + env(safe-area-inset-bottom)); flex-shrink:0; background:var(--surface); }
 .sb-dark-row{ display:flex; align-items:center; justify-content:space-between; }
-.sb-dark-label{ font-size:.75rem; font-weight:600; color:var(--text-1); display:flex; align-items:center; gap:8px; }
+.sb-dark-label{ font-size:.75rem; font-weight:700; color:var(--text-0); display:flex; align-items:center; gap:8px; }
 .toggle-pill{ position:relative; width:44px; height:25px; flex-shrink:0; }
 .toggle-pill input{ display:none; }
 .toggle-track{ position:absolute; inset:0; background:var(--surface-3); border:1px solid var(--border-strong); border-radius:20px; cursor:pointer; transition:.25s; }
@@ -289,7 +299,7 @@ body{
 <div class="topbar">
   <button class="icon-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
   <div class="topbar-title">
-    <img src="./logo.png" alt="x-bit" onerror="this.style.display='none'">
+    <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'">
     <span>x-bit proton</span>
     <span class="status-dot"></span>
   </div>
@@ -299,7 +309,7 @@ body{
 <!-- ═══ CHAT ═══ -->
 <div class="chat-wrap" id="chatWrap">
   <div class="empty-hero" id="emptyHero">
-    <img src="./logo.png" alt="" onerror="this.style.display='none'">
+    <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'">
     <div class="eh-title" id="heroGreeting">Hey there</div>
     <div class="eh-sub">Powered by x0s</div>
   </div>
@@ -392,7 +402,16 @@ function initSidebar(){
 
   const darkToggle = document.getElementById('darkToggle');
   let dark = LS.get('dark_mode', true);
-  function applyTheme(){ document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light'); darkToggle.checked = dark; }
+  function applyTheme(){
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    darkToggle.checked = dark;
+    // update logos based on theme
+    const logoFile = dark ? './logo.png' : './logo1.png';
+    const topbarLogo = document.getElementById('topbarLogo');
+    const heroLogo = document.getElementById('heroLogo');
+    if(topbarLogo){ topbarLogo.src = logoFile; topbarLogo.style.display = ''; }
+    if(heroLogo){ heroLogo.src = logoFile; heroLogo.style.display = ''; }
+  }
   applyTheme();
   darkToggle.addEventListener('change', ()=>{ dark = darkToggle.checked; LS.set('dark_mode', dark); applyTheme(); });
 }
@@ -426,18 +445,53 @@ function saveCurrentChat(){
   };
   LS.set('chats', all);
 }
+let recentChatsExpanded = false;
+const RECENT_CHATS_CAP = 5;
+
 function renderRecentChats(){
   const container = document.getElementById('sbRecent');
   const all = LS.get('chats', {});
   const list = Object.values(all).sort((a,b)=>b.updatedAt-a.updatedAt);
   if(!list.length){ container.innerHTML = '<div class="sb-empty">No chats yet</div>'; return; }
-  container.innerHTML = list.map(c => {
+
+  const shown = recentChatsExpanded ? list : list.slice(0, RECENT_CHATS_CAP);
+  container.innerHTML = shown.map(c => {
     const date = new Date(c.updatedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
     return `<div class="sb-recent-item" data-id="${c.id}"><div class="rt-title">${escapeHtml(c.title||'New chat')}</div><div class="rt-sub">${date}</div></div>`;
   }).join('');
-  container.querySelectorAll('.sb-recent-item').forEach(el=>{
-    el.addEventListener('click', ()=> loadChat(el.getAttribute('data-id')));
+
+  if(list.length > RECENT_CHATS_CAP){
+    container.innerHTML += `<div class="sb-recent-item" id="sbShowMoreBtn" style="text-align:center;"><span class="link-hint">${recentChatsExpanded ? 'Show less' : `Show more (+${list.length - RECENT_CHATS_CAP})`}</span></div>`;
+    document.getElementById('sbShowMoreBtn').addEventListener('click', ()=>{ recentChatsExpanded = !recentChatsExpanded; renderRecentChats(); });
+  }
+
+  // long-press (touch + mouse) to delete; short tap still opens the chat
+  container.querySelectorAll('.sb-recent-item[data-id]').forEach(el=>{
+    let pressTimer = null, longPressed = false;
+    const start = ()=>{
+      longPressed = false;
+      pressTimer = setTimeout(()=>{
+        longPressed = true;
+        if(navigator.vibrate) navigator.vibrate(15);
+        if(confirm('Delete this chat? This can\'t be undone.')) deleteChat(el.getAttribute('data-id'));
+      }, 550);
+    };
+    const cancel = ()=>{ if(pressTimer) clearTimeout(pressTimer); };
+    el.addEventListener('touchstart', start, {passive:true});
+    el.addEventListener('touchend', cancel);
+    el.addEventListener('touchmove', cancel);
+    el.addEventListener('mousedown', start);
+    el.addEventListener('mouseup', cancel);
+    el.addEventListener('mouseleave', cancel);
+    el.addEventListener('click', ()=>{ if(!longPressed) loadChat(el.getAttribute('data-id')); });
   });
+}
+function deleteChat(id){
+  const all = LS.get('chats', {});
+  delete all[id];
+  LS.set('chats', all);
+  if(id === currentChatId){ startNewChat(); }
+  renderRecentChats();
 }
 function loadChat(id){
   const all = LS.get('chats', {});
@@ -461,11 +515,11 @@ function loadChat(id){
    ══════════════════════════════════════════════════════════ */
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-/* small non-interactive logo-animation loader, used instead of a plain fa-spin icon.
-   loading.html is expected to sit in the same repo as this file. touch/pointer
-   events are fully blocked on it — it's decorative only, never tappable. */
+/* small non-interactive logo-animation loader, uses theme-appropriate file */
 function loadingLine(text){
-  return `<div class="loading-line"><div class="loading-badge"><iframe src="./loading.html" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span>${escapeHtml(text)}</span></div>`;
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
+  return `<div class="loading-line"><div class="loading-badge"><iframe src="${loadingFile}" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
 }
 
 function appendRawBubble(role, html){
@@ -1225,7 +1279,7 @@ function extractSubjectMarks(segment){
 /* boards OR kcet, handling subjects -> total marks -> percentage, in that priority.
    Searches the FULL text directly with a tight, keyword-anchored gap (rather than
    pre-slicing into segments) so it works regardless of which keyword/number comes first. */
-function findScoreBlock(text, keywordSrc, maxTotal, subjectMax){
+function findScoreBlock(text, keywordSrc, maxTotal, subjectMax, ambiguousDefault){
   const subj = extractSubjectMarks(text);
   if(subj && subj.physics<=subjectMax && subj.chemistry<=subjectMax && subj.maths<=subjectMax){
     const total = subj.physics + subj.chemistry + subj.maths;
@@ -1238,13 +1292,27 @@ function findScoreBlock(text, keywordSrc, maxTotal, subjectMax){
   let pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
                  text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*%\\s*(?:in\\s*)?' + keywordSrc, 'i'));
   if(pctMatch){ const v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v/100)*maxTotal }; }
+
+  // explicit "marks" keyword always wins, regardless of the ambiguous default below
+  let explicitMarks = text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*marks?\\s*(?:in\\s*)?' + keywordSrc, 'i')) ||
+                       text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*marks', 'i'));
+  if(explicitMarks){ const v = parseFloat(explicitMarks[1]); if(v<=maxTotal) return { total: v, pct: (v/maxTotal)*100 }; }
+
   let totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)', 'i')) ||
                     text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*(?:marks?)?\\s*(?:in\\s*)?' + keywordSrc, 'i'));
   if(totalMatch){
     const v = parseFloat(totalMatch[1]);
     if(v <= maxTotal){
-      const pct = v <= 100 ? v : (v/maxTotal)*100;
-      return { pct, total: v>100 ? v : (v/100)*maxTotal };
+      if(v > 100){
+        // unambiguous: a percentage can't exceed 100, so this must be raw marks
+        return { total: v, pct: (v/maxTotal)*100 };
+      }
+      // ambiguous zone (0-100 fits both scales) — resolve per subject:
+      // boards defaults to PERCENTAGE (97/300 marks would mean a failing student — illogical
+      // for someone asking about college prediction). KCET defaults to MARKS (that's how
+      // students naturally report KCET scores, e.g. "I got 89 KCET" means 89 marks, not 89%).
+      if(ambiguousDefault === 'marks') return { total: v, pct: (v/maxTotal)*100 };
+      return { pct: v, total: (v/100)*maxTotal };
     }
   }
   return null;
@@ -1254,10 +1322,10 @@ function extractEntities(text){
   const t = ' ' + text.toLowerCase() + ' ';
   const e = {};
 
-  const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100);
+  const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100, 'percentage');
   if(boardsResult) e.boardPercentage = boardsResult.pct;
 
-  const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60);
+  const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60, 'marks');
   if(kcetResult) e.kcetMarks = kcetResult.total;
 
   // rank: explicit "rank <n>" (optionally "k" shorthand) OR bare "<n>k" shorthand
@@ -1364,7 +1432,7 @@ function buildSmartCollegeAnswer(results, { rank, branch, location, category }){
 /* ── MAIN ROUTER ── */
 async function handleSmartMessage(rawText){
   const thinkingRow = showTempThinking();
-  await sleep(900);
+  await sleep(1600);
   thinkingRow.remove();
 
   let entities = extractEntities(rawText);
