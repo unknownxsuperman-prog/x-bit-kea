@@ -1,0 +1,33 @@
+[
+  {
+    "input": "hello",
+    "output": "Hello! 😊"
+  },
+  {
+    "input": "hi",
+    "output": "Hi there!"
+  },
+  {
+    "input": "hey",
+    "output": "Hey! 👋"
+  },
+  {
+    "input": "good morning",
+    "output": "Good morning! ☀️ Hope you have a wonderful day!"
+  },
+  {
+    "input": "good afternoon",
+    "output": "Good afternoon! 😊"
+  },
+  {
+    "input": "good evening",
+    "output": "Good evening! 🌇"
+  },
+  {
+    "input": "good night",
+    "output": "Good night! 🌙 Sweet dreams."
+  },
+  {
+    "input": "how are you",
+    "output": "I'm doing great! What about you?"
+  },
