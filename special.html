@@ -1,0 +1,3180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark light">
+
+    <!-- PWA Manifest & Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="x-bit Proton">
+
+    <title>x-bit · Proton</title>
+    <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
+    </script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            color-scheme: dark;
+            --bg: #000;
+            --surface: #0a0a0a;
+            --surface-2: #111;
+            --surface-3: #161616;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --border-focus: rgba(255, 255, 255, 0.5);
+            --text-0: #fff;
+            --text-1: #e8e8e8;
+            --text-2: #8a8a8a;
+            --text-3: #454545;
+            --accent: #fff;
+            --danger: #ff453a;
+            --success: #30d158;
+            --warning: #ff9f0a;
+            --font-d: 'Space Grotesk', sans-serif;
+            --font-m: 'DM Mono', monospace;
+            --r: 16px;
+            --r-sm: 12px;
+            --r-xs: 8px;
+        }
+        [data-theme="light"] {
+            color-scheme: light;
+            --bg: #f4f4f6;
+            --surface: #fff;
+            --surface-2: #f0f0f2;
+            --surface-3: #e9e9ec;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-strong: rgba(0, 0, 0, 0.16);
+            --border-focus: rgba(0, 0, 0, 0.5);
+            --text-0: #0a0a0a;
+            --text-1: #1c1c1e;
+            --text-2: #6b6b6f;
+            --text-3: #a2a2a6;
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text-1);
+            font-family: var(--font-d);
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            transition: background .3s, color .3s;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        /* ═══ TOP BAR ═══ */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: calc(14px + env(safe-area-inset-top)) 18px 10px;
+            flex-shrink: 0;
+        }
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: .85rem;
+            transition: .2s;
+        }
+        .icon-btn:hover {
+            border-color: var(--border-strong);
+        }
+        .topbar-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topbar-title img {
+            height: 22px;
+            width: auto;
+            display: block;
+        }
+        .topbar-title .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: .6;
+        }
+        .topbar-title span {
+            font-weight: 700;
+            font-size: .92rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* ═══ CHAT AREA ═══ */
+        .chat-wrap {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 16px 12px;
+            scroll-behavior: smooth;
+        }
+        .chat-wrap::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-wrap::-webkit-scrollbar-thumb {
+            background: var(--border-strong);
+            border-radius: 4px;
+        }
+
+        .empty-hero {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 14px;
+            padding-bottom: 10vh;
+        }
+        .empty-hero img {
+            width: 72px;
+            height: 72px;
+            opacity: .92;
+        }
+        .empty-hero .eh-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-0);
+        }
+        .empty-hero .eh-sub {
+            font-family: var(--font-m);
+            font-size: .7rem;
+            color: var(--text-3);
+            letter-spacing: .05em;
+        }
+
+        .msg-row {
+            display: flex;
+            margin-bottom: 14px;
+            animation: msgIn .25s cubic-bezier(.16, 1, .3, 1) both;
+        }
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .msg-row.user {
+            justify-content: flex-end;
+        }
+        .msg-bubble {
+            max-width: 82%;
+            padding: 12px 16px;
+            border-radius: var(--r-sm);
+            font-size: .86rem;
+            line-height: 1.55;
+        }
+        .msg-row.user .msg-bubble {
+            background: var(--text-0);
+            color: var(--bg);
+            border-bottom-right-radius: 4px;
+        }
+        .msg-row.assistant .msg-bubble {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+            max-width: 92%;
+        }
+        .msg-row.assistant {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .msg-tag {
+            font-family: var(--font-m);
+            font-size: .5rem;
+            color: var(--text-3);
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            margin: 0 2px 5px;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .mini-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: 1px solid var(--border-strong);
+            border-radius: 20px;
+            padding: 7px 13px;
+            font-family: var(--font-m);
+            font-size: .62rem;
+            color: var(--text-1);
+            cursor: pointer;
+            transition: .2s;
+            letter-spacing: .03em;
+        }
+        .mini-chip:hover {
+            background: var(--text-0);
+            color: var(--bg);
+            border-color: var(--text-0);
+        }
+        .mini-chip i {
+            font-size: .6rem;
+        }
+
+        /* ═══ CARD (forms rendered inline in chat) ═══ */
+        .chat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 18px;
+            margin-top: 4px;
+            width: 100%;
+            max-width: 420px;
+        }
+        .chat-card-title {
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--text-0);
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+        .mode-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3px;
+            margin-bottom: 14px;
+        }
+        .mode-tab {
+            flex: 1;
+            text-align: center;
+            padding: 7px 4px;
+            border-radius: 16px;
+            font-family: var(--font-m);
+            font-size: .6rem;
+            letter-spacing: .05em;
+            color: var(--text-2);
+            cursor: pointer;
+            transition: .2s;
+        }
+        .mode-tab.active {
+            background: var(--text-0);
+            color: var(--bg);
+            font-weight: 600;
+        }
+        .field-mini-label {
+            font-family: var(--font-m);
+            font-size: .55rem;
+            color: var(--text-3);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .subj-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .subj-input {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 10px 6px;
+        }
+        .xin {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xs);
+            padding: 11px 13px;
+            color: var(--text-0);
+            font-family: var(--font-d);
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            transition: .2s;
+        }
+        .xin:focus {
+            border-color: var(--border-focus);
+        }
+        .xin::placeholder {
+            color: var(--text-3);
+        }
+        .field-block {
+            margin-bottom: 12px;
+        }
+        .section-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 14px 0;
+        }
+        .btn-solid {
+            width: 100%;
+            background: var(--text-0);
+            color: var(--bg);
+            border: none;
+            border-radius: var(--r-xs);
+            padding: 13px;
+            font-family: var(--font-d);
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: .2s;
+            margin-top: 6px;
+        }
+        .btn-solid:hover {
+            opacity: .88;
+        }
+        .btn-solid:disabled {
+            opacity: .3;
+            cursor: not-allowed;
+        }
+        .btn-ghost {
+            width: 100%;
+            background: transparent;
+            color: var(--text-1);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-xs);
+            padding: 11px;
+            font-family: var(--font-m);
+            font-size: .65rem;
+            letter-spacing: .06em;
+            cursor: pointer;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .btn-ghost:hover {
+            border-color: var(--text-0);
+        }
+        .link-hint {
+            font-family: var(--font-m);
+            font-size: .62rem;
+            color: var(--text-2);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+        .link-hint:hover {
+            color: var(--text-0);
+        }
+
+        .rank-result {
+            text-align: center;
+            padding: 8px 0 4px;
+        }
+        .rank-result .rr-label {
+            font-family: var(--font-m);
+            font-size: .55rem;
+            color: var(--text-3);
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .rank-result .rr-value {
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-0);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .rr-meta {
+            font-family: var(--font-m);
+            font-size: .62rem;
+            color: var(--text-2);
+            margin-bottom: 14px;
+        }
+
+        .dd-mini {
+            position: relative;
+        }
+        .dd-mini-trigger {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xs);
+            padding: 11px 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-size: .83rem;
+            font-weight: 500;
+            color: var(--text-0);
+            transition: .2s;
+        }
+        .dd-mini-trigger.placeholder {
+            color: var(--text-3);
+        }
+        .dd-mini-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: var(--surface-3);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-xs);
+            z-index: 50;
+            display: none;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .dd-mini-menu.show {
+            display: block;
+        }
+        .dd-mini-item {
+            padding: 10px 13px;
+            font-size: .76rem;
+            color: var(--text-2);
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+        }
+        .dd-mini-item:last-child {
+            border-bottom: none;
+        }
+        .dd-mini-item:hover {
+            background: var(--surface-2);
+            color: var(--text-0);
+        }
+
+        .college-result-card {
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            background: var(--surface-2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .college-result-card:hover {
+            background: var(--surface-3);
+            border-color: var(--border-strong);
+        }
+        .crc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .crc-name {
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--text-0);
+            line-height: 1.35;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-color: rgba(255, 255, 255, 0.2);
+        }
+        .crc-cutoff {
+            font-family: var(--font-m);
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--text-1);
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .crc-meta {
+            font-family: var(--font-m);
+            font-size: .58rem;
+            color: var(--text-3);
+        }
+
+        .upload-dz {
+            border: 1.5px dashed var(--border-strong);
+            border-radius: var(--r-sm);
+            padding: 22px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+            position: relative;
+        }
+        .upload-dz:hover {
+            border-color: var(--text-0);
+            background: var(--surface-2);
+        }
+        .upload-dz input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .upload-dz i {
+            font-size: 1.1rem;
+            color: var(--text-2);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .upload-dz span {
+            font-size: .72rem;
+            color: var(--text-2);
+        }
+
+        .loading-badge {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            touch-action: none;
+        }
+        .loading-badge iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+            touch-action: none;
+            background: transparent;
+        }
+        .loading-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .shine-text {
+            background: linear-gradient(90deg, var(--text-3) 0%, var(--text-0) 50%, var(--text-3) 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shineSweep 1.3s linear infinite;
+        }
+        @keyframes shineSweep {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* ═══ SIDEBAR ═══ */
+        .sb-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+            z-index: 400;
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s;
+        }
+        .sb-backdrop.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            z-index: 401;
+            transition: left .35s cubic-bezier(.16, 1, .3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sb-top {
+            padding: calc(20px + env(safe-area-inset-top)) 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .sb-blob {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--text-0);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+        .sb-name {
+            font-size: .88rem;
+            font-weight: 700;
+            color: var(--text-0);
+        }
+        .sb-tag {
+            font-family: var(--font-m);
+            font-size: .55rem;
+            color: var(--text-3);
+            margin-top: 3px;
+            letter-spacing: .08em;
+        }
+        .sb-tag.pro {
+            color: var(--success);
+            letter-spacing: .06em;
+        }
+        .sb-tag.pro .pro-badge {
+            background: var(--success);
+            color: #000;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: .45rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            margin-left: 4px;
+            text-transform: uppercase;
+        }
+        .sb-newchat {
+            margin: 14px 18px 6px;
+            padding: 11px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-family: var(--font-m);
+            font-size: .65rem;
+            letter-spacing: .06em;
+            color: var(--text-1);
+            transition: .2s;
+            flex-shrink: 0;
+        }
+        .sb-newchat:hover {
+            background: var(--text-0);
+            color: var(--bg);
+            border-color: var(--text-0);
+        }
+        .sb-section-label {
+            font-family: var(--font-m);
+            font-size: .52rem;
+            color: var(--text-3);
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            padding: 14px 18px 6px;
+            flex-shrink: 0;
+        }
+        .sb-recent {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 10px;
+            min-height: 0;
+        }
+        .sb-recent-item {
+            padding: 10px 10px;
+            border-radius: var(--r-xs);
+            cursor: pointer;
+            transition: .15s;
+            margin-bottom: 2px;
+        }
+        .sb-recent-item:hover {
+            background: var(--surface-2);
+        }
+        .sb-recent-item .rt-title {
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--text-1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sb-recent-item .rt-sub {
+            font-family: var(--font-m);
+            font-size: .55rem;
+            color: var(--text-3);
+            margin-top: 2px;
+        }
+        .sb-empty {
+            padding: 20px 18px;
+            font-family: var(--font-m);
+            font-size: .6rem;
+            color: var(--text-3);
+            text-align: center;
+        }
+        .sb-footer {
+            border-top: 1px solid var(--border);
+            padding: 14px 18px calc(18px + env(safe-area-inset-bottom));
+            flex-shrink: 0;
+            background: var(--surface);
+        }
+        .sb-dark-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sb-dark-label {
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--text-0);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toggle-pill {
+            position: relative;
+            width: 44px;
+            height: 25px;
+            flex-shrink: 0;
+        }
+        .toggle-pill input {
+            display: none;
+        }
+        .toggle-track {
+            position: absolute;
+            inset: 0;
+            background: var(--surface-3);
+            border: 1px solid var(--border-strong);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .toggle-track::before {
+            content: '';
+            position: absolute;
+            width: 19px;
+            height: 19px;
+            left: 2px;
+            top: 2px;
+            background: var(--text-0);
+            border-radius: 50%;
+            transition: .25s cubic-bezier(.16, 1, .3, 1);
+        }
+        .toggle-pill input:checked+.toggle-track::before {
+            transform: translateX(19px);
+            background: var(--bg);
+        }
+        .toggle-pill input:checked+.toggle-track {
+            background: var(--text-0);
+        }
+
+        /* ═══ ONBOARDING ═══ */
+        .onboard-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .97);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .onboard-overlay.hidden {
+            display: none;
+        }
+        .onboard-card {
+            width: 88%;
+            max-width: 340px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r);
+            background: var(--surface);
+            padding: 38px 28px;
+            animation: msgIn .35s cubic-bezier(.16, 1, .3, 1) both;
+        }
+        .onboard-eyebrow {
+            font-family: var(--font-m);
+            font-size: .58rem;
+            color: var(--text-3);
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .onboard-card h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-0);
+            letter-spacing: -0.03em;
+            margin-bottom: 26px;
+            line-height: 1.2;
+        }
+        .onboard-card h2 span {
+            color: var(--text-3);
+        }
+        .onboard-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-strong);
+            padding: 10px 0;
+            color: var(--text-0);
+            font-family: var(--font-d);
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            margin-bottom: 26px;
+        }
+        .onboard-input:focus {
+            border-color: var(--text-0);
+        }
+        .onboard-btn {
+            width: 100%;
+            background: var(--text-0);
+            color: var(--bg);
+            border: none;
+            border-radius: var(--r-xs);
+            padding: 13px;
+            font-family: var(--font-d);
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .onboard-btn:disabled {
+            opacity: .25;
+        }
+
+        /* ═══ FULL RESULTS PAGE ═══ */
+        .results-page {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 800;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+        }
+        .results-page.open {
+            transform: translateY(0);
+        }
+        .rp-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .rp-header h3 {
+            font-size: .95rem;
+            font-weight: 700;
+            flex: 1;
+        }
+        .rp-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 18px 40px;
+        }
+
+        /* ═══ COMPOSER ═══ */
+        .composer-wrap {
+            flex-shrink: 0;
+            padding: 8px 14px calc(14px + env(safe-area-inset-bottom));
+        }
+        .pill-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            align-items: center;
+        }
+        .pill-row::-webkit-scrollbar {
+            display: none;
+        }
+        .cmd-pill {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-family: var(--font-m);
+            font-size: .63rem;
+            color: var(--text-1);
+            cursor: pointer;
+            transition: .2s;
+            white-space: nowrap;
+        }
+        .cmd-pill:hover {
+            background: var(--text-0);
+            color: var(--bg);
+            border-color: var(--text-0);
+        }
+        .cmd-pill i {
+            font-size: .62rem;
+        }
+
+        /* ── model selector (in pill-row) ── */
+        .model-selector-wrap {
+            position: relative;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        .model-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-family: var(--font-m);
+            font-size: .63rem;
+            color: var(--text-1);
+            cursor: pointer;
+            transition: .2s;
+            white-space: nowrap;
+        }
+        .model-selector-btn:hover {
+            border-color: var(--text-0);
+        }
+        .model-selector-btn .model-name {
+            font-weight: 600;
+            color: var(--text-0);
+        }
+        .model-selector-btn .model-badge {
+            font-size: .45rem;
+            background: var(--text-3);
+            color: var(--bg);
+            padding: 0 6px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+        .model-selector-btn .model-badge.pro-badge {
+            background: var(--success);
+            color: #000;
+        }
+        .model-selector-btn i {
+            font-size: .5rem;
+            opacity: .6;
+        }
+        .model-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            min-width: 160px;
+            background: var(--surface-3);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm);
+            padding: 4px;
+            display: none;
+            z-index: 60;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .6);
+            overflow: hidden;
+        }
+        .model-dropdown.open {
+            display: block;
+        }
+        .model-option {
+            padding: 10px 14px;
+            border-radius: var(--r-xs);
+            font-family: var(--font-d);
+            font-size: .78rem;
+            font-weight: 500;
+            color: var(--text-2);
+            cursor: pointer;
+            transition: .15s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .model-option:hover {
+            background: var(--surface-2);
+            color: var(--text-0);
+        }
+        .model-option.active {
+            background: var(--text-0);
+            color: var(--bg);
+            font-weight: 700;
+        }
+        .model-option .opt-badge {
+            font-family: var(--font-m);
+            font-size: .45rem;
+            background: var(--text-3);
+            color: var(--bg);
+            padding: 0 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+        .model-option .opt-badge.pro-badge {
+            background: var(--success);
+            color: #000;
+        }
+        .model-option .opt-lock {
+            font-size: .6rem;
+            color: var(--text-3);
+            margin-left: 6px;
+        }
+
+        /* ═══ SUBSCRIPTION MODAL ═══ */
+        .sub-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 950;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .sub-overlay.show {
+            display: flex;
+            animation: connFadeIn .3s ease;
+        }
+        @keyframes connFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .sub-card {
+            width: 88%;
+            max-width: 360px;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r);
+            background: var(--surface);
+            padding: 36px 28px 28px;
+            animation: msgIn .35s cubic-bezier(.16, 1, .3, 1) both;
+            text-align: center;
+        }
+        .sub-card .sub-icon {
+            font-size: 2.4rem;
+            color: var(--text-0);
+            margin-bottom: 12px;
+        }
+        .sub-card h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-0);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+        .sub-card .sub-price {
+            font-family: var(--font-m);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-0);
+            margin-bottom: 4px;
+        }
+        .sub-card .sub-price span {
+            font-size: .8rem;
+            font-weight: 400;
+            color: var(--text-3);
+        }
+        .sub-card .sub-desc {
+            font-size: .8rem;
+            color: var(--text-2);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .sub-card .sub-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 14px 0 18px;
+        }
+        .sub-card .coupon-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .sub-card .coupon-row .xin {
+            flex: 1;
+            font-size: .85rem;
+            padding: 10px 13px;
+            text-transform: lowercase;
+            letter-spacing: .03em;
+        }
+        .sub-card .coupon-row .btn-solid {
+            flex: 0 0 auto;
+            width: auto;
+            padding: 10px 18px;
+            margin-top: 0;
+            font-size: .65rem;
+        }
+        .sub-card .sub-status {
+            font-size: .85rem;
+            font-weight: 600;
+            min-height: 28px;
+            margin-bottom: 10px;
+        }
+        .sub-card .sub-status.success {
+            color: var(--success);
+        }
+        .sub-card .sub-status.error {
+            color: var(--danger);
+        }
+        .sub-card .sub-close {
+            margin-top: 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-3);
+            font-family: var(--font-d);
+            font-size: .7rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: .2s;
+        }
+        .sub-card .sub-close:hover {
+            color: var(--text-0);
+        }
+
+        .composer-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 6px 6px 6px 14px;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+        }
+        .composer-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            resize: none;
+            color: var(--text-0);
+            font-family: var(--font-d);
+            font-size: 16px;
+            max-height: 100px;
+            padding: 8px 0;
+            line-height: 1.4;
+            min-height: 38px;
+        }
+        .composer-input::placeholder {
+            color: var(--text-3);
+        }
+        .composer-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+        .comp-icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: .85rem;
+            transition: .2s;
+        }
+        .comp-icon-btn:hover {
+            color: var(--text-0);
+        }
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--text-0);
+            color: var(--bg);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: .85rem;
+            transition: .2s;
+        }
+        .send-btn:hover {
+            opacity: .85;
+        }
+        .send-btn:disabled {
+            opacity: .25;
+            cursor: not-allowed;
+        }
+
+        /* ═══ CONNECT OVERLAY ═══ */
+        .connect-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .connect-overlay.show {
+            display: flex;
+            animation: connFadeIn .3s ease;
+        }
+        .conn-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .conn-track {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .conn-node {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: connNodePulse 1.6s ease-in-out infinite;
+        }
+        .conn-node-right {
+            animation-delay: .35s;
+        }
+        @keyframes connNodePulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.14);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+            }
+        }
+        .conn-icon {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+        .conn-beam {
+            width: 130px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.14);
+            position: relative;
+            flex-shrink: 0;
+        }
+        .conn-beam-fill {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, #fff 50%, transparent);
+            background-size: 55% 100%;
+            background-repeat: no-repeat;
+            background-position: -55% 0;
+            animation: connBeamSweep 1.6s linear infinite;
+        }
+        @keyframes connBeamSweep {
+            0% {
+                background-position: -55% 0;
+            }
+            100% {
+                background-position: 155% 0;
+            }
+        }
+        .conn-particle {
+            position: absolute;
+            top: 50%;
+            width: 5px;
+            height: 5px;
+            margin-top: -2.5px;
+            border-radius: 50%;
+            background: #fff;
+            opacity: 0;
+            box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.6);
+            animation: connParticleTravel 1.6s ease-in-out infinite;
+        }
+        .conn-particle.p2 {
+            animation-delay: .35s;
+        }
+        .conn-particle.p3 {
+            animation-delay: .7s;
+        }
+        @keyframes connParticleTravel {
+            0% {
+                left: 0%;
+                opacity: 0;
+            }
+            12% {
+                opacity: 1;
+            }
+            88% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+        .conn-track.reverse .conn-beam-fill,
+        .conn-track.reverse .conn-particle {
+            animation-direction: reverse;
+        }
+        .conn-eyebrow {
+            font-family: var(--font-m);
+            font-size: .55rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .conn-label {
+            color: #fff;
+            font-family: var(--font-d);
+            font-size: .95rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        @media(max-width:420px) {
+            .msg-bubble {
+                max-width: 90%;
+            }
+            .chat-card {
+                max-width: 100%;
+            }
+            .model-selector-btn {
+                padding: 6px 10px;
+                font-size: .55rem;
+            }
+            .model-selector-btn .model-name {
+                font-size: .6rem;
+            }
+            .sub-card {
+                padding: 28px 18px 22px;
+            }
+        }
+
+        /* toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--surface-3);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm);
+            padding: 14px 24px;
+            font-family: var(--font-d);
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--text-0);
+            z-index: 999;
+            opacity: 0;
+            transition: all .35s cubic-bezier(.16, 1, .3, 1);
+            pointer-events: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast-notification .toast-icon {
+            font-size: 1.1rem;
+        }
+        .toast-notification .toast-icon.success {
+            color: var(--success);
+        }
+        .toast-notification .toast-icon.warning {
+            color: var(--warning);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ TOAST ═══ -->
+    <div class="toast-notification" id="toastNotif">
+        <span class="toast-icon" id="toastIcon"><i class="fa-solid fa-check-circle"></i></span>
+        <span id="toastMsg">Pro member!</span>
+    </div>
+
+    <!-- ═══ SUBSCRIPTION MODAL ═══ -->
+    <div class="sub-overlay" id="subOverlay">
+        <div class="sub-card">
+            <div class="sub-icon">🚀</div>
+            <h2>x-bit2.0</h2>
+            <div class="sub-price">₹199 <span>/ month</span></div>
+            <div class="sub-desc">Unlock the full power of x-bit2.0 with priority access, faster responses, and advanced reasoning.</div>
+            <div class="sub-divider"></div>
+            <div class="coupon-row">
+                <input type="text" class="xin" id="couponInput" placeholder="Coupon code" autocomplete="off" spellcheck="false" maxlength="30">
+                <button class="btn-solid" id="couponApplyBtn">Apply</button>
+            </div>
+            <div class="sub-status" id="subStatus"></div>
+            <button class="sub-close" id="subCloseBtn">Maybe later</button>
+        </div>
+    </div>
+
+    <!-- ═══ CONNECT OVERLAY ═══ -->
+    <div class="connect-overlay" id="connectOverlay">
+        <div class="conn-card">
+            <div class="conn-track" id="connTrack">
+                <div class="conn-node conn-node-left">
+                    <img src="./logo.svg" class="conn-icon" id="connLeft" alt="Proton">
+                </div>
+                <div class="conn-beam">
+                    <div class="conn-beam-fill"></div>
+                    <span class="conn-particle p1"></span>
+                    <span class="conn-particle p2"></span>
+                    <span class="conn-particle p3"></span>
+                </div>
+                <div class="conn-node conn-node-right">
+                    <img src="./xoslink.png" class="conn-icon" id="connRight" alt="x0s">
+                </div>
+            </div>
+            <div class="conn-eyebrow">x0s network</div>
+            <div class="conn-label" id="connLabel">Connecting to x0s…</div>
+        </div>
+    </div>
+
+    <!-- ═══ ONBOARDING ═══ -->
+    <div class="onboard-overlay" id="onboardModal">
+        <div class="onboard-card">
+            <div class="onboard-eyebrow">x-bit · Proton</div>
+            <h2>What's<br><span>your name?</span></h2>
+            <input type="text" class="onboard-input" id="onboardNameInput" placeholder="Enter your name" autocomplete="off" spellcheck="false" maxlength="30">
+            <button class="onboard-btn" id="onboardSubmitBtn" disabled>Continue</button>
+        </div>
+    </div>
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <div class="sb-backdrop" id="sbBackdrop"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sb-top">
+            <div class="sb-blob" id="sbBlob">?</div>
+            <div>
+                <div class="sb-name" id="sbName">User</div>
+                <div class="sb-tag" id="sbTag">x-bit · Proton</div>
+            </div>
+        </div>
+        <div class="sb-newchat" id="sbNewChat"><i class="fa-solid fa-plus"></i> New chat</div>
+        <div class="sb-section-label">Recent chats</div>
+        <div class="sb-recent" id="sbRecent"></div>
+        <div class="sb-footer">
+            <div class="sb-dark-row">
+                <div class="sb-dark-label"><i class="fa-solid fa-moon"></i> Dark mode</div>
+                <label class="toggle-pill">
+                    <input type="checkbox" id="darkToggle" checked>
+                    <span class="toggle-track"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ TOP BAR ═══ -->
+    <div class="topbar">
+        <button class="icon-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
+        <div class="topbar-title">
+            <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'">
+            <span>x-bit proton</span>
+            <span class="status-dot"></span>
+        </div>
+        <button class="icon-btn" id="newChatTopBtn"><i class="fa-regular fa-pen-to-square"></i></button>
+    </div>
+
+    <!-- ═══ CHAT ═══ -->
+    <div class="chat-wrap" id="chatWrap">
+        <div class="empty-hero" id="emptyHero">
+            <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'">
+            <div class="eh-title" id="heroGreeting">Hey there</div>
+            <div class="eh-sub">Powered by x0s</div>
+        </div>
+        <div id="chatBody" style="display:none;"></div>
+    </div>
+
+    <!-- ═══ RESULTS PAGE ═══ -->
+    <div class="results-page" id="resultsPage">
+        <div class="rp-header">
+            <button class="icon-btn" id="rpClose"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3 id="rpTitle">All matches</h3>
+        </div>
+        <div class="rp-body" id="rpBody"></div>
+    </div>
+
+    <!-- ═══ COMPOSER ═══ -->
+    <div class="composer-wrap">
+        <div class="pill-row">
+            <div class="cmd-pill" id="pillRank"><i class="fa-solid fa-chart-line"></i> Rank Prediction</div>
+            <div class="cmd-pill" id="pillCollege"><i class="fa-solid fa-building-columns"></i> College Prediction</div>
+            <div class="cmd-pill" id="pillPriority"><i class="fa-solid fa-list-ol"></i> Priority List</div>
+
+            <!-- model selector -->
+            <div class="model-selector-wrap" id="modelSelectorWrap">
+                <div class="model-selector-btn" id="modelSelectorBtn">
+                    <span class="model-name" id="currentModelLabel">x-bit1.0</span>
+                    <span class="model-badge" id="modelBadge">free</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="model-dropdown" id="modelDropdown">
+                    <div class="model-option active" data-model="1.0">
+                        <span>x-bit1.0</span>
+                        <span class="opt-badge">free</span>
+                    </div>
+                    <div class="model-option" data-model="2.0">
+                        <span>x-bit2.0</span>
+                        <span class="opt-badge pro-badge">pro</span>
+                        <span class="opt-lock"><i class="fa-solid fa-lock"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="composer-box">
+            <textarea class="composer-input" id="composerInput" placeholder="Message Proton…" rows="1"></textarea>
+            <div class="composer-actions">
+                <button class="comp-icon-btn"><i class="fa-solid fa-microphone"></i></button>
+                <button class="send-btn" id="sendBtn"><i class="fa-solid fa-arrow-up"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ══════════════════════════════════════════════════════════
+           CONFIG / CONSTANTS
+           ══════════════════════════════════════════════════════════ */
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const GENERAL_CATEGORIES = ['1G', '1K', '1R', '2AG', '2AK', '2AR', '2BG', '2BK', '2BR', '3AG', '3AK', '3AR', '3BG',
+            '3BK', '3BR', 'GM', 'GMK', 'GMP', 'GMR', 'NRI', 'OPN', 'OTH', 'S1G', 'S1K', 'S1R', 'S2G', 'S2K', 'S2R', 'S3G',
+            'S3K', 'S3R', 'S4G', 'S4K', 'S4R', 'STG', 'STK', 'STR'
+        ];
+        const HK_CATEGORIES = ['1H', '1KH', '1RH', '2AH', '2AKH', '2ARH', '2BH', '2BKH', '2BRH', '3AH', '3AKH', '3ARH', '3BH',
+            '3BKH', '3BRH', 'GMH', 'GMKH', 'GMPH', 'GMRH', 'S1H', 'S1KH', 'S1RH', 'S2H', 'S2KH', 'S2RH', 'S3H', 'S3KH',
+            'S3RH', 'S4H', 'S4KH', 'S4RH', 'STH', 'STKH', 'STRH'
+        ];
+
+        /* ══════════════════════════════════════════════════════════
+           LOCAL STORAGE HELPERS
+           ══════════════════════════════════════════════════════════ */
+        const LS = {
+            get(k, def) { try { const v = localStorage.getItem('xbit_' + k); return v !== null ? JSON.parse(v) : def; }
+            catch { return def; } },
+            set(k, v) { try { localStorage.setItem('xbit_' + k, JSON.stringify(v)); } catch {} }
+        };
+
+        /* ══════════════════════════════════════════════════════════
+           PRO STATUS & MODEL SELECTOR
+           ══════════════════════════════════════════════════════════ */
+        // Hash of "nayana" — computed with: (h*31+c) & 0xFFFFFFFF → hex
+        const COUPON_HASH = 'c14a0fae';
+
+        function hashString(str) {
+            let h = 0;
+            for (let i = 0; i < str.length; i++) {
+                h = ((h << 5) - h) + str.charCodeAt(i);
+                h = h & 0xFFFFFFFF;
+            }
+            return h.toString(16);
+        }
+
+        let isPro = LS.get('pro_status', false);
+        let proCode = LS.get('pro_code', '');
+
+        function setProStatus(code) {
+            isPro = true;
+            proCode = code;
+            LS.set('pro_status', true);
+            LS.set('pro_code', code);
+            updateProfilePro();
+            updateModelSelector();
+            showToast('🎉 Now you are a Pro member!', 'success');
+        }
+
+        function updateProfilePro() {
+            const tag = document.getElementById('sbTag');
+            if (isPro && proCode) {
+                tag.innerHTML = `x-bit · Proton · Pro · <span style="color:var(--success);font-weight:600;">${escapeHtml(proCode)}</span>`;
+                tag.classList.add('pro');
+            } else {
+                tag.textContent = 'x-bit · Proton';
+                tag.classList.remove('pro');
+            }
+        }
+
+        function updateModelSelector() {
+            const label = document.getElementById('currentModelLabel');
+            const badge = document.getElementById('modelBadge');
+            const current = LS.get('selected_model', '1.0');
+            if (current === '2.0' && !isPro) {
+                // fallback to 1.0 if pro was revoked (shouldn't happen)
+                LS.set('selected_model', '1.0');
+                label.textContent = 'x-bit1.0';
+                badge.textContent = 'free';
+                badge.className = 'model-badge';
+                return;
+            }
+            label.textContent = current === '1.0' ? 'x-bit1.0' : 'x-bit2.0';
+            if (current === '2.0') {
+                badge.textContent = 'pro';
+                badge.className = 'model-badge pro-badge';
+            } else {
+                badge.textContent = 'free';
+                badge.className = 'model-badge';
+            }
+            // update dropdown active state
+            document.querySelectorAll('.model-option').forEach(el => {
+                el.classList.toggle('active', el.dataset.model === current);
+            });
+        }
+
+        let selectedModel = LS.get('selected_model', '1.0');
+
+        /* ── model selector UI ── */
+        const modelBtn = document.getElementById('modelSelectorBtn');
+        const modelDropdown = document.getElementById('modelDropdown');
+
+        modelBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            modelDropdown.classList.toggle('open');
+        });
+
+        document.addEventListener('click', () => { modelDropdown.classList.remove('open'); });
+
+        document.querySelectorAll('.model-option').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const model = opt.dataset.model;
+                if (model === '1.0') {
+                    selectedModel = '1.0';
+                    LS.set('selected_model', '1.0');
+                    updateModelSelector();
+                    modelDropdown.classList.remove('open');
+                    showToast('Switched to x-bit1.0', '');
+                    return;
+                }
+                // model 2.0
+                if (isPro) {
+                    selectedModel = '2.0';
+                    LS.set('selected_model', '2.0');
+                    updateModelSelector();
+                    modelDropdown.classList.remove('open');
+                    showToast('Switched to x-bit2.0 Pro', 'success');
+                    return;
+                }
+                // not pro → show subscription modal
+                modelDropdown.classList.remove('open');
+                document.getElementById('subOverlay').classList.add('show');
+                document.getElementById('subStatus').textContent = '';
+                document.getElementById('subStatus').className = 'sub-status';
+                document.getElementById('couponInput').value = '';
+                document.getElementById('couponInput').focus();
+            });
+        });
+
+        /* ── subscription modal ── */
+        const subOverlay = document.getElementById('subOverlay');
+        const subCloseBtn = document.getElementById('subCloseBtn');
+        const couponInput = document.getElementById('couponInput');
+        const couponApplyBtn = document.getElementById('couponApplyBtn');
+        const subStatus = document.getElementById('subStatus');
+
+        function closeSubModal() {
+            subOverlay.classList.remove('show');
+            subStatus.textContent = '';
+            subStatus.className = 'sub-status';
+        }
+
+        subCloseBtn.addEventListener('click', closeSubModal);
+        subOverlay.addEventListener('click', (e) => { if (e.target === subOverlay) closeSubModal(); });
+
+        couponApplyBtn.addEventListener('click', () => {
+            const code = couponInput.value.trim().toLowerCase();
+            if (!code) {
+                subStatus.textContent = 'Please enter a coupon code.';
+                subStatus.className = 'sub-status error';
+                return;
+            }
+            const hashed = hashString(code);
+            if (hashed === COUPON_HASH) {
+                subStatus.textContent = '✅ Coupon applied! You are now a Pro member.';
+                subStatus.className = 'sub-status success';
+                setProStatus(code);
+                selectedModel = '2.0';
+                LS.set('selected_model', '2.0');
+                updateModelSelector();
+                setTimeout(() => {
+                    closeSubModal();
+                    showToast('🚀 Welcome to x-bit2.0 Pro!', 'success');
+                }, 800);
+            } else {
+                subStatus.textContent = '❌ Invalid coupon code. Please try again.';
+                subStatus.className = 'sub-status error';
+                couponInput.value = '';
+                couponInput.focus();
+            }
+        });
+
+        couponInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault();
+                couponApplyBtn.click(); }
+        });
+
+        /* ── toast ── */
+        let toastTimer = null;
+
+        function showToast(msg, type) {
+            const el = document.getElementById('toastNotif');
+            const icon = document.getElementById('toastIcon');
+            const msgEl = document.getElementById('toastMsg');
+            msgEl.textContent = msg;
+            if (type === 'success') {
+                icon.className = 'toast-icon success';
+                icon.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
+            } else if (type === 'warning') {
+                icon.className = 'toast-icon warning';
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                icon.className = 'toast-icon';
+                icon.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+            }
+            el.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { el.classList.remove('show'); }, 2800);
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           ONBOARDING
+           ══════════════════════════════════════════════════════════ */
+        let userName = LS.get('username', '');
+
+        function initOnboarding() {
+            const modal = document.getElementById('onboardModal');
+            if (userName) { modal.classList.add('hidden');
+                applyIdentity(); return; }
+            const input = document.getElementById('onboardNameInput');
+            const btn = document.getElementById('onboardSubmitBtn');
+            input.addEventListener('input', () => { btn.disabled = input.value.trim().length === 0; });
+            input.addEventListener('keydown', e => { if (e.key === 'Enter' && input.value.trim()) submit(); });
+            btn.addEventListener('click', submit);
+
+            function submit() {
+                const name = input.value.trim();
+                if (!name) return;
+                userName = name;
+                LS.set('username', name);
+                modal.classList.add('hidden');
+                applyIdentity();
+            }
+            setTimeout(() => input.focus(), 350);
+        }
+
+        function applyIdentity() {
+            const letter = userName.charAt(0).toUpperCase();
+            document.getElementById('sbBlob').textContent = letter;
+            document.getElementById('sbName').textContent = userName;
+            const hr = new Date().getHours();
+            const greet = hr < 12 ? 'good morning' : hr < 17 ? 'good afternoon' : 'good evening';
+            document.getElementById('heroGreeting').textContent = `Hey ${userName}, ${greet}`;
+            updateProfilePro();
+            updateModelSelector();
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           SIDEBAR + DARK MODE
+           ══════════════════════════════════════════════════════════ */
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sbBackdrop');
+            document.getElementById('menuBtn').addEventListener('click', () => { sidebar.classList.add('open');
+                backdrop.classList.add('open');
+                renderRecentChats(); });
+            backdrop.addEventListener('click', () => { sidebar.classList.remove('open');
+                backdrop.classList.remove('open'); });
+            document.getElementById('sbNewChat').addEventListener('click', startNewChat);
+            document.getElementById('newChatTopBtn').addEventListener('click', startNewChat);
+
+            const darkToggle = document.getElementById('darkToggle');
+            let dark = LS.get('dark_mode', true);
+
+            function applyTheme() {
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                darkToggle.checked = dark;
+                const logoFile = dark ? './logo.png' : './logo1.png';
+                const topbarLogo = document.getElementById('topbarLogo');
+                const heroLogo = document.getElementById('heroLogo');
+                if (topbarLogo) { topbarLogo.src = logoFile;
+                    topbarLogo.style.display = ''; }
+                if (heroLogo) { heroLogo.src = logoFile;
+                    heroLogo.style.display = ''; }
+            }
+            applyTheme();
+            darkToggle.addEventListener('change', () => { dark = darkToggle.checked;
+                LS.set('dark_mode', dark);
+                applyTheme(); });
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           CHAT STATE / RECENT CHATS
+           ══════════════════════════════════════════════════════════ */
+        let currentChatId = null;
+        let currentChatMessages = [];
+
+        function startNewChat() {
+            saveCurrentChat();
+            currentChatId = 'c_' + Date.now();
+            currentChatMessages = [];
+            document.getElementById('chatBody').innerHTML = '';
+            document.getElementById('chatBody').style.display = 'none';
+            document.getElementById('emptyHero').style.display = 'flex';
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sbBackdrop').classList.remove('open');
+            flowState = null;
+        }
+
+        function saveCurrentChat() {
+            if (!currentChatId || currentChatMessages.length === 0) return;
+            const all = LS.get('chats', {});
+            const firstUserMsg = currentChatMessages.find(m => m.role === 'user');
+            all[currentChatId] = {
+                id: currentChatId,
+                title: firstUserMsg ? firstUserMsg.plain.slice(0, 42) : 'New chat',
+                updatedAt: Date.now(),
+                messages: currentChatMessages
+            };
+            LS.set('chats', all);
+        }
+        let recentChatsExpanded = false;
+        const RECENT_CHATS_CAP = 5;
+
+        function renderRecentChats() {
+            const container = document.getElementById('sbRecent');
+            const all = LS.get('chats', {});
+            const list = Object.values(all).sort((a, b) => b.updatedAt - a.updatedAt);
+            if (!list.length) { container.innerHTML = '<div class="sb-empty">No chats yet</div>'; return; }
+
+            const shown = recentChatsExpanded ? list : list.slice(0, RECENT_CHATS_CAP);
+            container.innerHTML = shown.map(c => {
+                const date = new Date(c.updatedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+                return `<div class="sb-recent-item" data-id="${c.id}"><div class="rt-title">${escapeHtml(c.title||'New chat')}</div><div class="rt-sub">${date}</div></div>`;
+            }).join('');
+
+            if (list.length > RECENT_CHATS_CAP) {
+                container.innerHTML +=
+                    `<div class="sb-recent-item" id="sbShowMoreBtn" style="text-align:center;"><span class="link-hint">${recentChatsExpanded ? 'Show less' : `Show more (+${list.length - RECENT_CHATS_CAP})`}</span></div>`;
+                document.getElementById('sbShowMoreBtn').addEventListener('click', () => { recentChatsExpanded = !
+                        recentChatsExpanded;
+                    renderRecentChats(); });
+            }
+
+            container.querySelectorAll('.sb-recent-item[data-id]').forEach(el => {
+                let pressTimer = null,
+                    longPressed = false;
+                const start = () => {
+                    longPressed = false;
+                    pressTimer = setTimeout(() => {
+                        longPressed = true;
+                        if (navigator.vibrate) navigator.vibrate(15);
+                        if (confirm('Delete this chat? This can\'t be undone.')) deleteChat(el.getAttribute(
+                        'data-id'));
+                    }, 550);
+                };
+                const cancel = () => { if (pressTimer) clearTimeout(pressTimer); };
+                el.addEventListener('touchstart', start, { passive: true });
+                el.addEventListener('touchend', cancel);
+                el.addEventListener('touchmove', cancel);
+                el.addEventListener('mousedown', start);
+                el.addEventListener('mouseup', cancel);
+                el.addEventListener('mouseleave', cancel);
+                el.addEventListener('click', () => { if (!longPressed) loadChat(el.getAttribute('data-id')); });
+            });
+        }
+
+        function deleteChat(id) {
+            const all = LS.get('chats', {});
+            delete all[id];
+            LS.set('chats', all);
+            if (id === currentChatId) { startNewChat(); }
+            renderRecentChats();
+        }
+
+        function loadChat(id) {
+            const all = LS.get('chats', {});
+            const chat = all[id];
+            if (!chat) return;
+            saveCurrentChat();
+            currentChatId = chat.id;
+            currentChatMessages = chat.messages;
+            const body = document.getElementById('chatBody');
+            body.innerHTML = '';
+            chat.messages.forEach(m => appendRawBubble(m.role, m.html));
+            body.style.display = 'block';
+            document.getElementById('emptyHero').style.display = 'none';
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sbBackdrop').classList.remove('open');
+            document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           MESSAGE RENDERING
+           ══════════════════════════════════════════════════════════ */
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;',
+                '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
+
+        function loadingLine(text) {
+            const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
+            return `<div class="loading-line"><div class="loading-badge"><iframe src="${loadingFile}" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
+        }
+
+        function appendRawBubble(role, html) {
+            document.getElementById('emptyHero').style.display = 'none';
+            const body = document.getElementById('chatBody');
+            body.style.display = 'block';
+            const row = document.createElement('div');
+            row.className = 'msg-row ' + role;
+            if (role === 'assistant') {
+                row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${html}</div>`;
+            } else {
+                row.innerHTML = `<div class="msg-bubble">${html}</div>`;
+            }
+            body.appendChild(row);
+            document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
+            return row;
+        }
+
+        function pushMessage(role, html, plain) {
+            if (!currentChatId) currentChatId = 'c_' + Date.now();
+            currentChatMessages.push({ role, html, plain: plain || html.replace(/<[^>]+>/g, '').trim(), ts: Date.now() });
+            const row = appendRawBubble(role, html);
+            saveCurrentChat();
+            return row;
+        }
+
+        function userSays(text) { pushMessage('user', escapeHtml(text), text); }
+
+        function protonSays(html, plain) { return pushMessage('assistant', html, plain); }
+
+        /* ══════════════════════════════════════════════════════════
+           RANK PREDICTOR ENGINE
+           ══════════════════════════════════════════════════════════ */
+        class KCETRankPredictor {
+            constructor() {
+                this.totalCandidates = 315000;
+                this.anchors = [
+                    { p: 100.0, r: 1 }, { p: 98.50, r: 10 }, { p: 96.00, r: 100 }, { p: 92.50, r: 1000 },
+                    { p: 88.50, r: 3000 },
+                    { p: 85.00, r: 5500 }, { p: 81.50, r: 9000 }, { p: 77.00, r: 15000 }, { p: 72.00, r: 25000 },
+                    { p: 65.00, r: 50000 }, { p: 58.00, r: 75000 }, { p: 0.00, r: 315000 }
+                ];
+                this.formulas = [];
+                this._compile();
+            }
+            _compile() {
+                for (let i = 0; i < this.anchors.length - 1; i++) {
+                    const up = this.anchors[i],
+                        lo = this.anchors[i + 1];
+                    const M = (Math.log(lo.r) - Math.log(up.r)) / (lo.p - up.p);
+                    const C = Math.log(up.r) - M * up.p;
+                    this.formulas.push({ maxP: up.p, minP: lo.p, M, C });
+                }
+            }
+            predictRank(pct) {
+                if (pct >= 100) return 1;
+                if (pct <= 0) return this.totalCandidates;
+                for (const f of this.formulas) {
+                    if (pct <= f.maxP && pct > f.minP) {
+                        let rank = Math.exp(f.M * pct + f.C);
+                        const upR = this.anchors.find(a => a.p === f.maxP).r,
+                            loR = this.anchors.find(a => a.p === f.minP).r;
+                        return Math.round(Math.max(Math.min(upR, loR), Math.min(Math.max(upR, loR), rank)));
+                    }
+                }
+                return this.totalCandidates;
+            }
+        }
+        const kcetEngine = new KCETRankPredictor();
+
+        function computeFinalPercentage(boardsPct, kcetPct) { return (boardsPct / 2) + (kcetPct / 2); }
+
+        /* ══════════════════════════════════════════════════════════
+           FLOW STATE
+           ══════════════════════════════════════════════════════════ */
+        let flowState = null;
+
+        /* ══════════════════════════════════════════════════════════
+           CONNECT OVERLAY
+           ══════════════════════════════════════════════════════════ */
+        function showConnectOverlay(direction, callback) {
+            const overlay = document.getElementById('connectOverlay');
+            const track = document.getElementById('connTrack');
+            const leftIcon = document.getElementById('connLeft');
+            const rightIcon = document.getElementById('connRight');
+            const label = document.getElementById('connLabel');
+
+            if (direction === 'toXos') {
+                leftIcon.src = './logo.svg';
+                rightIcon.src = './xoslink.png';
+                label.textContent = 'Connecting to x0s…';
+                track.classList.remove('reverse');
+            } else {
+                leftIcon.src = './xoslink.png';
+                rightIcon.src = './logo.svg';
+                label.textContent = 'Returning to Proton…';
+                track.classList.add('reverse');
+            }
+
+            overlay.classList.add('show');
+            setTimeout(() => {
+                overlay.classList.remove('show');
+                if (callback) callback();
+            }, 1800);
+        }
+
+        function openXosLink(code) {
+            showConnectOverlay('toXos', () => {
+                const url = `https://unknownxsuperman-prog.github.io/anushdecodes/int2t.html?code=${code}`;
+                window.open(url, '_blank');
+            });
+        }
+
+        function handleIncomingCollegeData() {
+            const params = new URLSearchParams(window.location.search);
+            const college = params.get('college');
+            const branch = params.get('branch');
+            const cutoff = params.get('cutoff');
+            const category = params.get('category');
+            const code = params.get('code');
+
+            if (college && branch && cutoff) {
+                showConnectOverlay('fromXos', () => {
+                    const url = window.location.href.split('?')[0];
+                    window.history.replaceState({}, document.title, url);
+                    setTimeout(() => {
+                        const msg =
+                            `The KCET 2026 cutoff for <b>${escapeHtml(branch)}</b> at <b>${escapeHtml(college)}</b> (${category || 'GM'}) is <b>${parseInt(cutoff).toLocaleString('en-IN')}</b>.`;
+                        protonSays(msg, `KCET 2026 cutoff for ${branch} at ${college} is ${cutoff}`);
+                    }, 300);
+                });
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           PILL 1 — RANK PREDICTION
+           ══════════════════════════════════════════════════════════ */
+        function openRankPredictionCard(onComplete) {
+            const cardId = 'rankcard_' + Date.now();
+            const html = `
+                <div class="chat-card" id="${cardId}">
+                  <div class="chat-card-title">Enter details to predict your rank</div>
+                  <div class="field-mini-label">2nd PU Boards</div>
+                  <div class="mode-tabs" data-group="boards">
+                    <div class="mode-tab active" data-mode="subjects">Subjects</div>
+                    <div class="mode-tab" data-mode="total">Total marks</div>
+                    <div class="mode-tab" data-mode="percent">Percentage</div>
+                  </div>
+                  <div class="mode-panel" data-panel="boards-subjects">
+                    <div class="subj-grid">
+                      <input type="number" class="xin subj-input b-phy" placeholder="PHY" min="0" max="100">
+                      <input type="number" class="xin subj-input b-chem" placeholder="CHEM" min="0" max="100">
+                      <input type="number" class="xin subj-input b-math" placeholder="MATH" min="0" max="100">
+                    </div>
+                  </div>
+                  <div class="mode-panel" data-panel="boards-total" style="display:none;">
+                    <input type="number" class="xin b-total" placeholder="Total marks (out of 300)" min="0" max="300">
+                  </div>
+                  <div class="mode-panel" data-panel="boards-percent" style="display:none;">
+                    <input type="number" class="xin b-pct" placeholder="Total percentage" min="0" max="100">
+                  </div>
+                  <div class="section-divider"></div>
+                  <div class="field-mini-label">KCET Score</div>
+                  <div class="mode-tabs" data-group="kcet">
+                    <div class="mode-tab active" data-mode="subjects">Subjects</div>
+                    <div class="mode-tab" data-mode="total">Total marks</div>
+                    <div class="mode-tab" data-mode="percent">Percentage</div>
+                  </div>
+                  <div class="mode-panel" data-panel="kcet-subjects">
+                    <div class="subj-grid">
+                      <input type="number" class="xin subj-input k-phy" placeholder="PHY" min="0" max="60">
+                      <input type="number" class="xin subj-input k-chem" placeholder="CHEM" min="0" max="60">
+                      <input type="number" class="xin subj-input k-math" placeholder="MATH" min="0" max="60">
+                    </div>
+                  </div>
+                  <div class="mode-panel" data-panel="kcet-total" style="display:none;">
+                    <input type="number" class="xin k-total" placeholder="Total marks (out of 180)" min="0" max="180">
+                  </div>
+                  <div class="mode-panel" data-panel="kcet-percent" style="display:none;">
+                    <input type="number" class="xin k-pct" placeholder="Total percentage" min="0" max="100">
+                  </div>
+                  <button class="btn-solid" data-action="predict-rank"><i class="fa-solid fa-wand-magic-sparkles"></i> Predict Rank</button>
+                </div>`;
+            const row = protonSays(html, 'Enter details to predict your rank');
+            const card = row.querySelector('.chat-card');
+            wireRankCard(card, onComplete);
+        }
+
+        function wireRankCard(card, onComplete) {
+            card.querySelectorAll('.mode-tabs').forEach(tabGroup => {
+                const group = tabGroup.getAttribute('data-group');
+                tabGroup.querySelectorAll('.mode-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabGroup.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        const mode = tab.getAttribute('data-mode');
+                        card.querySelectorAll(`.mode-panel[data-panel^="${group}"]`).forEach(p => p.style
+                            .display = 'none');
+                        card.querySelector(`.mode-panel[data-panel="${group}-${mode}"]`).style.display =
+                        'block';
+                    });
+                });
+            });
+
+            function clamp(el, max) {
+                el.addEventListener('input', () => {
+                    let v = parseFloat(el.value);
+                    if (isNaN(v)) return;
+                    if (v > max) el.value = max;
+                    if (v < 0) el.value = 0;
+                });
+            }
+            ['b-phy', 'b-chem', 'b-math'].forEach(c => clamp(card.querySelector('.' + c), 100));
+            clamp(card.querySelector('.b-total'), 300);
+            clamp(card.querySelector('.b-pct'), 100);
+            ['k-phy', 'k-chem', 'k-math'].forEach(c => clamp(card.querySelector('.' + c), 60));
+            clamp(card.querySelector('.k-total'), 180);
+            clamp(card.querySelector('.k-pct'), 100);
+
+            card.querySelector('[data-action="predict-rank"]').addEventListener('click', () => {
+                const boardsPct = readBoardsPercent(card);
+                const kcetPct = readKcetPercent(card);
+                if (boardsPct === null || kcetPct === null) {
+                    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Fill in at least one boards field and one KCET field to predict your rank.`);
+                    return;
+                }
+                const finalPct = computeFinalPercentage(boardsPct, kcetPct);
+                const rank = kcetEngine.predictRank(finalPct);
+                renderRankResult(rank, boardsPct, kcetPct, finalPct, onComplete);
+            });
+        }
+
+        function readBoardsPercent(card) {
+            const phy = parseFloat(card.querySelector('.b-phy').value),
+                chem = parseFloat(card.querySelector('.b-chem').value),
+                math = parseFloat(card.querySelector('.b-math').value);
+            if (!isNaN(phy) && !isNaN(chem) && !isNaN(math)) return ((phy + chem + math) / 300) * 100;
+            const total = parseFloat(card.querySelector('.b-total').value);
+            if (!isNaN(total)) return (Math.min(300, total) / 300) * 100;
+            const pct = parseFloat(card.querySelector('.b-pct').value);
+            if (!isNaN(pct)) return Math.min(100, pct);
+            return null;
+        }
+
+        function readKcetPercent(card) {
+            const phy = parseFloat(card.querySelector('.k-phy').value),
+                chem = parseFloat(card.querySelector('.k-chem').value),
+                math = parseFloat(card.querySelector('.k-math').value);
+            if (!isNaN(phy) && !isNaN(chem) && !isNaN(math)) return ((phy + chem + math) / 180) * 100;
+            const total = parseFloat(card.querySelector('.k-total').value);
+            if (!isNaN(total)) return (Math.min(180, total) / 180) * 100;
+            const pct = parseFloat(card.querySelector('.k-pct').value);
+            if (!isNaN(pct)) return Math.min(100, pct);
+            return null;
+        }
+
+        function renderRankResult(rank, boardsPct, kcetPct, finalPct, onComplete) {
+            const resId = 'rankres_' + Date.now();
+            const html = `
+                <div class="rank-result" id="${resId}">
+                  <div class="rr-label">Estimated KCET Rank</div>
+                  <div class="rr-value">${rank.toLocaleString('en-IN')}</div>
+                  <div class="rr-meta">Boards ${boardsPct.toFixed(1)}% · KCET ${kcetPct.toFixed(1)}% · Combined ${finalPct.toFixed(1)}%</div>
+                  <div class="chip-row" style="justify-content:center;">
+                    <div class="mini-chip" data-action="websearch"><i class="fa-solid fa-magnifying-glass"></i> Search colleges for this rank</div>
+                    <div class="mini-chip" data-action="predict-college"><i class="fa-solid fa-arrow-right"></i> Predict College</div>
+                  </div>
+                </div>`;
+            const row = protonSays(html, `Estimated rank: ${rank}`);
+            const block = row.querySelector('.rank-result');
+            block.querySelector('[data-action="websearch"]').addEventListener('click', () => {
+                window.open(
+                    `https://www.google.com/search?q=KCET+rank+${rank}+eligible+engineering+colleges+Karnataka`,
+                    '_blank');
+            });
+            block.querySelector('[data-action="predict-college"]').addEventListener('click', () => {
+                if (onComplete) onComplete(rank);
+                else startCollegePredictionFlow(rank);
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           NLP QUICK-PARSE
+           ══════════════════════════════════════════════════════════ */
+        function tryParseRankRequest(text) {
+            const t = text.toLowerCase();
+            if (!/rank/.test(t)) return null;
+            if (!/(board|pu|kcet|cet)/.test(t)) return null;
+
+            const boardsMatch = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:boards|pu|2nd\s*pu|puc)/) ||
+                t.match(/(?:boards|pu|2nd\s*pu|puc)[^\d]{0,10}(\d+(?:\.\d+)?)/);
+            const kcetMatch = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:kcet|cet)/) ||
+                t.match(/(?:kcet|cet)[^\d]{0,10}(\d+(?:\.\d+)?)/);
+            if (!boardsMatch || !kcetMatch) return null;
+
+            const boardsNum = parseFloat(boardsMatch[1]);
+            const kcetNum = parseFloat(kcetMatch[1]);
+            const wantsPercent = /%|percent/.test(t);
+
+            let boardsPct, kcetPct;
+            if (wantsPercent || boardsNum <= 100) { boardsPct = boardsNum; } else { boardsPct = (Math.min(300,
+                boardsNum) / 300) * 100; }
+            if (kcetNum <= 100 && (wantsPercent || kcetNum <= 100)) { kcetPct = kcetNum; } else { kcetPct = (Math.min(
+                180, kcetNum) / 180) * 100; }
+            if (kcetNum > 100) kcetPct = (Math.min(180, kcetNum) / 180) * 100;
+
+            return { boardsPct, kcetPct };
+        }
+
+        function handleDirectRankChat(text) {
+            const parsed = tryParseRankRequest(text);
+            if (!parsed) return false;
+            const finalPct = computeFinalPercentage(parsed.boardsPct, parsed.kcetPct);
+            const rank = kcetEngine.predictRank(finalPct);
+            const html =
+                `Based on <b>${parsed.boardsPct.toFixed(1)}%</b> in boards and <b>${parsed.kcetPct.toFixed(1)}%</b> in KCET, your estimated combined score is <b>${finalPct.toFixed(1)}%</b>.
+                <div class="rank-result" style="text-align:left;padding-top:10px;">
+                  <div class="rr-label">Estimated Rank</div>
+                  <div class="rr-value" style="font-size:1.8rem;">${rank.toLocaleString('en-IN')}</div>
+                </div>
+                <div class="chip-row"><div class="mini-chip" data-action="predict-college-direct"><i class="fa-solid fa-arrow-right"></i> Predict College for this rank</div></div>`;
+            const row = protonSays(html, `Estimated rank: ${rank}`);
+            row.querySelector('[data-action="predict-college-direct"]').addEventListener('click', () => {
+                startCollegePredictionFlow(rank);
+            });
+            return true;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           DATA LOADING
+           ══════════════════════════════════════════════════════════ */
+        const datasetCache = {};
+        let branchAliasesCache = null;
+
+        function loadDataset(which) {
+            return new Promise((resolve, reject) => {
+                if (datasetCache[which]) return resolve(datasetCache[which]);
+                const src = which === 'enghk' ? './firstroundenghk.js' : './firstroundeng.js';
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    const data = window.XOS_CUTOFF || [];
+                    datasetCache[which] = data;
+                    window.XOS_CUTOFF = undefined;
+                    resolve(data);
+                };
+                script.onerror = () => reject(new Error(`Could not load ${src}`));
+                document.body.appendChild(script);
+            });
+        }
+
+        function loadBranchAliases() {
+            if (branchAliasesCache) return Promise.resolve(branchAliasesCache);
+            return fetch('./branch-aliases.json').then(r => r.json()).then(data => { branchAliasesCache = data; return data; });
+        }
+
+        function normBranch(s) { return s.toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+        function matchBranchKey(aliasList, branchKeysOfCollege) {
+            const keys = Object.keys(branchKeysOfCollege);
+            const candidates = aliasList.map(normBranch);
+            for (const k of keys) { const nk = normBranch(k); if (candidates.includes(nk)) return k; }
+            for (const k of keys) { const nk = normBranch(k); if (candidates.some(c => nk.includes(c) || c.includes(nk)))
+                return k; }
+            let best = null,
+                bestScore = 0;
+            for (const k of keys) {
+                const bw = new Set(normBranch(k).split(' ').filter(w => w.length > 1));
+                for (const c of candidates) {
+                    const cw = new Set(c.split(' ').filter(w => w.length > 1));
+                    const inter = [...cw].filter(w => bw.has(w)).length;
+                    const union = new Set([...cw, ...bw]).size;
+                    const sc = union ? inter / union : 0;
+                    if (sc > bestScore) { bestScore = sc;
+                        best = k; }
+                }
+            }
+            return bestScore >= 0.4 ? best : null;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           PILL 2 — COLLEGE PREDICTION
+           ══════════════════════════════════════════════════════════ */
+        function pillCollegePredictionStart() {
+            const html = `Which dataset should I search?
+                <div class="chip-row">
+                  <div class="mini-chip" data-ds="eng"><i class="fa-solid fa-graduation-cap"></i> Engineering</div>
+                  <div class="mini-chip" data-ds="enghk"><i class="fa-solid fa-graduation-cap"></i> Engineering (HK)</div>
+                </div>`;
+            const row = protonSays(html, 'Which dataset should I search?');
+            row.querySelectorAll('[data-ds]').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    userSays(chip.textContent.trim());
+                    collegeFlowChooseDataset(chip.getAttribute('data-ds'));
+                });
+            });
+        }
+
+        function startCollegePredictionFlow(prefilledRank) {
+            flowState = { dataset: null, category: null, rank: prefilledRank || null };
+            pillCollegePredictionStart();
+        }
+
+        function collegeFlowChooseDataset(which) {
+            flowState = flowState || {};
+            flowState.dataset = which;
+            const cats = which === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
+            const cardId = 'catcard_' + Date.now();
+            const html = `
+                <div class="chat-card" id="${cardId}">
+                  <div class="chat-card-title">Select your category</div>
+                  <div class="dd-mini" id="catDD">
+                    <div class="dd-mini-trigger placeholder" id="catTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
+                    <div class="dd-mini-menu" id="catMenu">
+                      ${cats.map(c=>`<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('')}
+                    </div>
+                  </div>
+                  <div class="field-block" style="margin-top:12px;">
+                    <div class="field-mini-label">Your KCET Rank</div>
+                    <input type="number" class="xin" id="rankInputCollege" placeholder="Enter your rank" min="1" value="${flowState.rank||''}">
+                    <div style="margin-top:8px;"><span class="link-hint" id="predictRankInline">Don't know your rank? Predict it</span></div>
+                  </div>
+                  <div class="field-block">
+                    <div class="field-mini-label">Branch</div>
+                    <div style="position:relative;">
+                      <input type="text" class="xin" id="branchInputCollege" placeholder="Search branch (e.g. Computer Science)" autocomplete="off">
+                      <div class="dd-mini-menu" id="branchSuggestMenu" style="max-height:180px;"></div>
+                    </div>
+                  </div>
+                  <button class="btn-solid" data-action="predict-college-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Colleges</button>
+                </div>`;
+            const row = protonSays(html, 'Select category, rank and branch');
+            const card = row.querySelector('.chat-card');
+            wireCollegeCard(card);
+        }
+
+        function wireCollegeCard(card) {
+            const trigger = card.querySelector('#catTrigger');
+            const menu = card.querySelector('#catMenu');
+            trigger.addEventListener('click', () => menu.classList.toggle('show'));
+            menu.querySelectorAll('[data-cat]').forEach(item => {
+                item.addEventListener('click', () => {
+                    flowState.category = item.getAttribute('data-cat');
+                    trigger.innerHTML = flowState.category + '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
+                    trigger.classList.remove('placeholder');
+                    menu.classList.remove('show');
+                });
+            });
+
+            card.querySelector('#predictRankInline').addEventListener('click', () => {
+                openRankPredictionCard((rank) => {
+                    card.querySelector('#rankInputCollege').value = rank;
+                    flowState.rank = rank;
+                    protonSays(
+                        `<i class="fa-solid fa-check" style="color:var(--success);"></i> Rank ${rank.toLocaleString('en-IN')} filled in above. Continue selecting your branch.`
+                        );
+                });
+            });
+
+            const branchInput = card.querySelector('#branchInputCollege');
+            const suggestMenu = card.querySelector('#branchSuggestMenu');
+            let selectedBranchEntry = null;
+            branchInput.addEventListener('input', async () => {
+                const q = branchInput.value.trim().toLowerCase();
+                selectedBranchEntry = null;
+                if (!q) { suggestMenu.classList.remove('show'); return; }
+                try {
+                    const aliases = await loadBranchAliases();
+                    const matches = aliases.filter(entry =>
+                        entry.display_name.toLowerCase().includes(q) ||
+                        (entry.aliases || []).some(a => a.toLowerCase().includes(q))
+                    ).slice(0, 8);
+                    if (!matches.length) {
+                        suggestMenu.innerHTML =
+                        '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">No matches</div>';
+                        suggestMenu.classList.add('show');
+                        return;
+                    }
+                    suggestMenu.innerHTML = matches.map(m =>
+                        `<div class="dd-mini-item" data-bid="${m.branch_id}">${escapeHtml(m.display_name)}</div>`
+                        ).join('');
+                    suggestMenu.classList.add('show');
+                    suggestMenu.querySelectorAll('[data-bid]').forEach(el => {
+                        el.addEventListener('click', () => {
+                            const entry = matches.find(m => m.branch_id === el.getAttribute('data-bid'));
+                            selectedBranchEntry = entry;
+                            branchInput.value = entry.display_name;
+                            suggestMenu.classList.remove('show');
+                        });
+                    });
+                } catch (e) {
+                    suggestMenu.innerHTML =
+                        '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">branch-aliases.json not found</div>';
+                    suggestMenu.classList.add('show');
+                }
+            });
+
+            card.querySelector('[data-action="predict-college-final"]').addEventListener('click', async () => {
+                const rank = parseInt(card.querySelector('#rankInputCollege').value, 10);
+                flowState.rank = rank;
+                if (!flowState.category || isNaN(rank) || !selectedBranchEntry) {
+                    protonSays(
+                        `<i class="fa-solid fa-triangle-exclamation"></i> Please select a category, enter your rank, and pick a branch from the suggestions before predicting.`
+                        );
+                    return;
+                }
+                userSays(
+                    `Predict colleges — ${flowState.category} · rank ${rank} · ${selectedBranchEntry.display_name}`);
+                protonSays(loadingLine(
+                    `Searching ${flowState.dataset==='enghk'?'Engineering (HK)':'Engineering'} colleges…`));
+                try {
+                    const dataset = await loadDataset(flowState.dataset);
+                    const aliasPool = [selectedBranchEntry.display_name, ...(selectedBranchEntry.aliases || [])];
+                    renderCollegeMatches(dataset, flowState.category, rank, aliasPool, selectedBranchEntry
+                    .display_name);
+                } catch (e) {
+                    protonSays(
+                        `<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}). Make sure ${flowState.dataset==='enghk'?'firstroundenghk.js':'firstroundeng.js'} is in the same repo as this page.`
+                        );
+                }
+            });
+        }
+
+        function renderCollegeMatches(dataset, category, rank, aliasPool, branchLabel) {
+            const lowerBound = rank - 1500;
+            const results = [];
+            for (const college of dataset) {
+                if (!college.branches) continue;
+                const key = matchBranchKey(aliasPool, college.branches);
+                if (!key) continue;
+                const cutoff = college.branches[key][category];
+                if (cutoff === null || cutoff === undefined) continue;
+                if (cutoff >= lowerBound) {
+                    results.push({ id: college.id, name: college.name, location: college.location || 'Karnataka',
+                        branch: key, cutoff, dist: Math.abs(cutoff - rank) });
+                }
+            }
+            results.sort((a, b) => a.dist - b.dist);
+            if (!results.length) {
+                protonSays(
+                    `<i class="fa-regular fa-folder-open"></i> No colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}.`
+                    );
+                return;
+            }
+            const top5 = results.slice(0, 5);
+            let html =
+                `<b>${results.length}</b> colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}:<div style="margin-top:10px;">`;
+            html += top5.map(r => collegeCardHtml(r, category)).join('');
+            html += `</div>`;
+            if (results.length > 5) {
+                html +=
+                    `<div class="chip-row"><div class="mini-chip" data-action="see-more"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ${results.length} colleges</div></div>`;
+            }
+            const row = protonSays(html, `${results.length} colleges found`);
+            const seeMore = row.querySelector('[data-action="see-more"]');
+            if (seeMore) {
+                seeMore.addEventListener('click', () => openResultsPage(
+                `All matches · ${branchLabel} · ${category}`, results, category));
+            }
+        }
+
+        function collegeCardHtml(r, category) {
+            const code = r.id;
+            const name = escapeHtml(getShortName(r.name));
+            const cutoff = r.cutoff.toLocaleString('en-IN');
+            const branch = escapeHtml(r.branch);
+            const location = escapeHtml(r.location);
+            return `<div class="college-result-card" onclick="openXosLink('${code}')">
+                <div class="crc-top">
+                  <div class="crc-name">${name}</div>
+                  <div class="crc-cutoff">${cutoff}</div>
+                </div>
+                <div class="crc-meta">${branch} · ${location} · ${code}</div>
+              </div>`;
+        }
+
+        function getShortName(name) { if (!name) return ''; const i = name.indexOf(','); return i > 0 ? name.substring(0,
+            i).trim() : name.trim(); }
+
+        function openResultsPage(title, results, category) {
+            document.getElementById('rpTitle').textContent = title;
+            document.getElementById('rpBody').innerHTML = results.map(r => collegeCardHtml(r, category)).join('');
+            document.getElementById('resultsPage').classList.add('open');
+        }
+        document.getElementById('rpClose').addEventListener('click', () => document.getElementById('resultsPage').classList
+            .remove('open'));
+
+        /* ══════════════════════════════════════════════════════════
+           PILL 3 — PRIORITY LIST
+           ══════════════════════════════════════════════════════════ */
+        function pillPriorityListStart() {
+            const uploadId = 'pl_upload_' + Date.now();
+            const html =
+                `Upload your KEA priority list PDF (the official <b>Option Entry</b> export — filename usually contains "option", e.g. OptionEntry_1234567.pdf).
+                <div class="upload-dz" id="${uploadId}" style="margin-top:12px;">
+                  <input type="file" accept=".pdf,application/pdf" id="${uploadId}_input">
+                  <i class="fa-solid fa-file-arrow-up"></i>
+                  <span>Tap to select your priority list PDF</span>
+                </div>`;
+            const row = protonSays(html, 'Upload your priority list PDF');
+            const input = row.querySelector(`#${uploadId}_input`);
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                userSays(`Uploaded: ${file.name}`);
+                const normalizedName = file.name.toLowerCase().replace(/[^a-z]/g, '');
+                if (!normalizedName.includes('option')) {
+                    protonSays(
+                        `<i class="fa-solid fa-triangle-exclamation"></i> That doesn't look like the right file. Please upload the official KEA priority-list PDF — the filename should contain <b>"option"</b> (e.g. OptionEntry_1234567.pdf).`
+                        );
+                    return;
+                }
+                handlePriorityListPdf(file);
+            });
+        }
+
+        async function handlePriorityListPdf(file) {
+            protonSays(loadingLine('Reading your priority list…'));
+            try {
+                const ab = await file.arrayBuffer();
+                const options = await parsePriorityPdf(ab);
+                protonSays(
+                    `<i class="fa-solid fa-check" style="color:var(--success);"></i> Extracted <b>${options.length}</b> priority options. Now select your dataset, category and rank so I can match them.`
+                    );
+                const cardId = 'plcard_' + Date.now();
+                const html = `
+                    <div class="chat-card" id="${cardId}">
+                      <div class="chat-card-title">Match against your priority list</div>
+                      <div class="chip-row" style="margin-bottom:12px;">
+                        <div class="mini-chip" data-ds="eng">Engineering</div>
+                        <div class="mini-chip" data-ds="enghk">Engineering (HK)</div>
+                      </div>
+                      <div class="dd-mini" id="plCatDD">
+                        <div class="dd-mini-trigger placeholder" id="plCatTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
+                        <div class="dd-mini-menu" id="plCatMenu"></div>
+                      </div>
+                      <div class="field-block" style="margin-top:10px;">
+                        <input type="number" class="xin" id="plRankInput" placeholder="Enter your KCET rank" min="1">
+                      </div>
+                      <button class="btn-solid" data-action="predict-priority-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Eligibility</button>
+                    </div>`;
+                const row = protonSays(html, 'Match against priority list');
+                wirePriorityCard(row.querySelector('.chat-card'), options);
+            } catch (e) {
+                protonSays(
+                    `<i class="fa-solid fa-triangle-exclamation"></i> Couldn't read that PDF (${e.message}). Please make sure it's a valid KEA priority-list export.`
+                    );
+            }
+        }
+
+        function wirePriorityCard(card, options) {
+            let chosenDs = null;
+            card.querySelectorAll('[data-ds]').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    card.querySelectorAll('[data-ds]').forEach(c => c.style.opacity = '.5');
+                    chip.style.opacity = '1';
+                    chosenDs = chip.getAttribute('data-ds');
+                    const cats = chosenDs === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
+                    card.querySelector('#plCatMenu').innerHTML = cats.map(c =>
+                        `<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('');
+                    wirePlCatMenu(card);
+                });
+            });
+
+            function wirePlCatMenu(card) {
+                const trigger = card.querySelector('#plCatTrigger');
+                const menu = card.querySelector('#plCatMenu');
+                trigger.onclick = () => menu.classList.toggle('show');
+                menu.querySelectorAll('[data-cat]').forEach(item => {
+                    item.addEventListener('click', () => {
+                        card.dataset.category = item.getAttribute('data-cat');
+                        trigger.innerHTML = card.dataset.category +
+                            '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
+                        trigger.classList.remove('placeholder');
+                        menu.classList.remove('show');
+                    });
+                });
+            }
+
+            card.querySelector('[data-action="predict-priority-final"]').addEventListener('click', async () => {
+                const rank = parseInt(card.querySelector('#plRankInput').value, 10);
+                const category = card.dataset.category;
+                if (!chosenDs || !category || isNaN(rank)) {
+                    protonSays(
+                        `<i class="fa-solid fa-triangle-exclamation"></i> Please choose a dataset, category and rank first.`
+                        );
+                    return;
+                }
+                protonSays(loadingLine('Matching your priority list…'));
+                try {
+                    const dataset = await loadDataset(chosenDs);
+                    const results = matchPriorityOptions(dataset, options, category, rank);
+                    renderPriorityResults(results);
+                } catch (e) {
+                    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}).`);
+                }
+            });
+        }
+
+        async function parsePriorityPdf(arrayBuffer) {
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const tokens = [];
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const tc = await page.getTextContent();
+                tc.items.forEach(item => { const s = item.str.trim(); if (s.length) tokens.push(s); });
+            }
+            const results = [];
+            const priorityRe = /^\d+$/,
+                codeRe = /^[A-Z]\d{3}[A-Z]{2}$/i;
+            const anchors = [];
+            for (let i = 0; i < tokens.length - 1; i++) { if (priorityRe.test(tokens[i]) && codeRe.test(tokens[i + 1]))
+                anchors.push(i); }
+            for (let a = 0; a < anchors.length; a++) {
+                const idx = anchors[a],
+                    priority = parseInt(tokens[idx], 10),
+                    code = tokens[idx + 1].toUpperCase(),
+                    collegeId = code.substring(0, 4);
+                const end = a + 1 < anchors.length ? anchors[a + 1] : tokens.length;
+                const rawText = tokens.slice(idx + 2, end).join(' ');
+                const normalized = rawText.replace(/(\d)\s*,\s*(\d)/g, '$1,$2');
+                let branch;
+                const feeMatch = normalized.match(/\d{1,3}(?:,\d{2,3})+/);
+                if (feeMatch) {
+                    const feeInRaw = rawText.match(/\d{1,3}\s*(?:,\s*\d{2,3}\s*)+/);
+                    branch = feeInRaw ? rawText.substring(0, feeInRaw.index).trim() : rawText.substring(0, rawText
+                        .indexOf(feeMatch[0])).trim();
+                } else {
+                    const numMatch = rawText.match(/\d{5,}/);
+                    branch = numMatch ? rawText.substring(0, numMatch.index).trim() : rawText.trim();
+                }
+                branch = branch.replace(/[\s\-–—:]+$/, '').replace(/\s+/g, ' ').trim();
+                if (branch.length > 0) results.push({ priority, collegeId, branch });
+            }
+            return results;
+        }
+
+        function matchPriorityOptions(dataset, options, category, userRank) {
+            const map = {};
+            dataset.forEach(c => { map[c.id] = c; });
+            return options.map(opt => {
+                const college = map[opt.collegeId];
+                if (!college) return { ...opt, collegeName: null, status: 'no-data', statusLabel: 'College N/A',
+                    cutoff: null };
+                const mb = matchBranchKey([opt.branch], college.branches);
+                if (!mb) return { ...opt, collegeName: college.name, status: 'no-data',
+                    statusLabel: 'Branch N/A', cutoff: null };
+                const cutoff = college.branches[mb][category];
+                if (cutoff === null || cutoff === undefined) return { ...opt, collegeName: college.name,
+                    matchedBranch: mb, status: 'no-seat', statusLabel: 'No Seat', cutoff: null };
+                const eligible = cutoff >= userRank;
+                return { ...opt, collegeName: college.name, matchedBranch: mb, cutoff, status: eligible ?
+                        'eligible' : 'not-eligible', statusLabel: eligible ? 'Eligible' : 'Not Eligible' };
+            });
+        }
+
+        function renderPriorityResults(results) {
+            const eligible = results.filter(r => r.status === 'eligible');
+            if (!eligible.length) {
+                protonSays(
+                    `<i class="fa-regular fa-folder-open"></i> No eligible options found in your priority list for this rank &amp; category.`
+                    );
+                return;
+            }
+            const top5 = eligible.slice(0, 5);
+            let html = `<b>${eligible.length}</b> eligible options found in your priority list:<div style="margin-top:10px;">`;
+            html += top5.map(r =>
+                `<div class="college-result-card">
+                    <div class="crc-top"><div class="crc-name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
+                    <div class="crc-meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div>
+                  </div>`
+            ).join('');
+            html += `</div>`;
+            if (eligible.length > 5) html +=
+                `<div class="chip-row"><div class="mini-chip" data-action="see-more-pl"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ${eligible.length} eligible options</div></div>`;
+            const row = protonSays(html, `${eligible.length} eligible options`);
+            const seeMore = row.querySelector('[data-action="see-more-pl"]');
+            if (seeMore) {
+                seeMore.addEventListener('click', () => {
+                    document.getElementById('rpTitle').textContent = 'All eligible options';
+                    document.getElementById('rpBody').innerHTML = eligible.map(r =>
+                        `<div class="college-result-card">
+                            <div class="crc-top"><div class="crc-name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
+                            <div class="crc-meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div>
+                          </div>`
+                    ).join('');
+                    document.getElementById('resultsPage').classList.add('open');
+                });
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           SMART CHAT ENGINE
+           ══════════════════════════════════════════════════════════ */
+        let kcetTrainingSet = [];
+        let chatTrainingSet = [];
+        let smartDataReady = false;
+
+        async function loadTrainingData() {
+            try {
+                const r = await fetch('./trainingset.json');
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                kcetTrainingSet = await r.json();
+                console.info(`[x-bit] trainingset.json loaded: ${kcetTrainingSet.length} examples`);
+            } catch (e) {
+                console.error('[x-bit] trainingset.json failed to load:', e.message);
+                kcetTrainingSet = [];
+            }
+            try {
+                const r2 = await fetch('./trainingset1.json');
+                if (!r2.ok) throw new Error('HTTP ' + r2.status);
+                chatTrainingSet = await r2.json();
+                console.info(`[x-bit] trainingset1.json loaded: ${chatTrainingSet.length} examples`);
+            } catch (e) {
+                console.error('[x-bit] trainingset1.json failed to load:', e.message);
+                chatTrainingSet = [];
+            }
+            kcetTrainingSet.forEach(ex => ex._tokens = new Set(patternTokens(ex.input)));
+            chatTrainingSet.forEach(ex => ex._tokens = new Set(tokenize(ex.input)));
+            smartDataReady = true;
+        }
+
+        function normalizeText(s) { return s.toLowerCase().replace(/[^\w\s%.]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+        function tokenize(s) { return normalizeText(s).split(' ').filter(Boolean); }
+
+        function patternTokens(s) { return normalizeText(s).replace(/\d+\.?\d*/g, '#num#').split(' ').filter(Boolean); }
+
+        function jaccard(a, b) {
+            let inter = 0;
+            for (const t of a)
+                if (b.has(t)) inter++;
+            const union = a.size + b.size - inter;
+            return union ? inter / union : 0;
+        }
+
+        function classifyKcetIntent(text) {
+            if (!kcetTrainingSet.length) return null;
+            const q = new Set(patternTokens(text));
+            let best = null,
+                bestScore = 0;
+            for (const ex of kcetTrainingSet) {
+                const sc = jaccard(q, ex._tokens);
+                if (sc > bestScore) { bestScore = sc;
+                    best = ex; }
+            }
+            return best ? { intent: best.output.intent, score: bestScore } : null;
+        }
+
+        function classifyChat(text) {
+            if (!chatTrainingSet.length) return null;
+            const q = new Set(tokenize(text));
+            if (!q.size) return null;
+            let best = null,
+                bestScore = 0;
+            for (const ex of chatTrainingSet) {
+                const sc = jaccard(q, ex._tokens);
+                if (sc > bestScore) { bestScore = sc;
+                    best = ex; }
+            }
+            return best && bestScore > 0.3 ? best : null;
+        }
+
+        const KARNATAKA_CITIES = ['bangalore', 'bengaluru', 'mysore', 'mysuru', 'mangalore', 'mangaluru', 'hubli', 'hubballi',
+            'belgaum', 'belagavi', 'dharwad', 'shimoga', 'shivamogga', 'hassan', 'tumkur', 'tumakuru', 'davangere',
+            'bellary', 'ballari', 'gulbarga', 'kalaburagi', 'bidar', 'raichur', 'udupi', 'chikmagalur', 'kolar', 'mandya',
+            'chitradurga', 'bagalkot', 'hospet', 'bijapur', 'vijayapura'
+        ];
+        const BRANCH_SHORTHAND = {
+            cse: 'Computer Science and Engineering',
+            cs: 'Computer Science and Engineering',
+            ise: 'Information Science and Engineering',
+            it: 'Information Technology',
+            ai: 'Artificial Intelligence',
+            'ai/ml': 'Artificial Intelligence and Machine Learning',
+            aiml: 'Artificial Intelligence and Machine Learning',
+            ml: 'Machine Learning',
+            ece: 'Electronics and Communication Engineering',
+            eee: 'Electrical & Electronics Engineering',
+            mech: 'Mechanical Engineering',
+            mechanical: 'Mechanical Engineering',
+            civil: 'Civil Engineering',
+            chem: 'Chemical Engineering',
+            chemical: 'Chemical Engineering',
+            aero: 'Aerospace Engineering',
+            aeronautical: 'Aeronautical Engineering'
+        };
+        const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a, b) => b.length - a.length);
+
+        const SUBJ_RE = { physics: /phy(?:sics)?/, chemistry: /chem(?:istry)?/, maths: /math(?:s|ematics)?/ };
+
+        function extractSubjectMarks(segment) {
+            const marks = {};
+            for (const [subj, re] of Object.entries(SUBJ_RE)) {
+                const after = new RegExp(re.source + '\\D{0,4}(\\d{1,3}(?:\\.\\d+)?)', 'i');
+                const before = new RegExp('(\\d{1,3}(?:\\.\\d+)?)\\D{0,4}' + re.source, 'i');
+                const mm = segment.match(after) || segment.match(before);
+                if (mm) marks[subj] = parseFloat(mm[1]);
+            }
+            if (marks.physics != null && marks.chemistry != null && marks.maths != null) return marks;
+            return null;
+        }
+
+        function findScoreBlock(text, keywordSrc, maxTotal, subjectMax, ambiguousDefault) {
+            const subj = extractSubjectMarks(text);
+            if (subj && subj.physics <= subjectMax && subj.chemistry <= subjectMax && subj.maths <= subjectMax) {
+                const total = subj.physics + subj.chemistry + subj.maths;
+                return { total, pct: (total / maxTotal) * 100 };
+            }
+            let pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
+                text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*%\\s*(?:in\\s*)?' + keywordSrc, 'i'));
+            if (pctMatch) { const v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v / 100) *
+                        maxTotal }; }
+
+            let explicitMarks = text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*marks?\\s*(?:in\\s*)?' + keywordSrc, 'i')) ||
+                text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*marks', 'i'));
+            if (explicitMarks) { const v = parseFloat(explicitMarks[1]); if (v <= maxTotal) return { total: v,
+                        pct: (v / maxTotal) * 100 }; }
+
+            let totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)', 'i')) ||
+                text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*(?:marks?)?\\s*(?:in\\s*)?' + keywordSrc, 'i'));
+            if (totalMatch) {
+                const v = parseFloat(totalMatch[1]);
+                if (v <= maxTotal) {
+                    if (v > 100) { return { total: v, pct: (v / maxTotal) * 100 }; }
+                    if (ambiguousDefault === 'marks') return { total: v, pct: (v / maxTotal) * 100 };
+                    return { pct: v, total: (v / 100) * maxTotal };
+                }
+            }
+            return null;
+        }
+
+        function extractEntities(text) {
+            const t = ' ' + text.toLowerCase() + ' ';
+            const e = {};
+
+            const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100, 'percentage');
+            if (boardsResult) e.boardPercentage = boardsResult.pct;
+
+            const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60, 'marks');
+            if (kcetResult) e.kcetMarks = kcetResult.total;
+
+            let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?\b/);
+            if (rm) {
+                let v = parseFloat(rm[1]);
+                if (rm[2]) v *= 1000;
+                e.rank = Math.round(v);
+            } else {
+                const km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/);
+                if (km) e.rank = Math.round(parseFloat(km[1]) * 1000);
+            }
+
+            for (const code of ALL_CATEGORY_CODES) {
+                const re = new RegExp('\\b' + code.toLowerCase() + '\\b');
+                if (re.test(t)) { e.category = code; break; }
+            }
+
+            for (const short in BRANCH_SHORTHAND) {
+                const re = new RegExp('\\b' + short.replace(/[/]/g, '\\/') + '\\b');
+                if (re.test(t)) { e.branch = BRANCH_SHORTHAND[short]; break; }
+            }
+
+            for (const city of KARNATAKA_CITIES) {
+                if (t.includes(city)) { e.location = city.charAt(0).toUpperCase() + city.slice(1); break; }
+            }
+            if (!e.location) {
+                const lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/);
+                if (lm && !['This', 'That', 'My', 'The'].includes(lm[1])) e.location = lm[1];
+            }
+            return e;
+        }
+
+        function extractCategoryOnly(text) {
+            const t = ' ' + text.toLowerCase() + ' ';
+            for (const code of ALL_CATEGORY_CODES) {
+                if (new RegExp('\\b' + code.toLowerCase() + '\\b').test(t)) return code;
+            }
+            return null;
+        }
+
+        function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+        function showTempThinking() {
+            document.getElementById('emptyHero').style.display = 'none';
+            const body = document.getElementById('chatBody');
+            body.style.display = 'block';
+            const row = document.createElement('div');
+            row.className = 'msg-row assistant';
+            row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${loadingLine('Thinking…')}</div>`;
+            body.appendChild(row);
+            document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
+            return row;
+        }
+
+        let pendingSmartQuery = null;
+
+        async function searchCollegesSmart({ rank, category, branch, location }) {
+            const dataset = await loadDataset(HK_CATEGORIES.includes(category) ? 'enghk' : 'eng');
+            const lowerBound = rank - 1500;
+            const branchAliasPool = branch ? [branch] : null;
+            const results = [];
+            for (const college of dataset) {
+                if (location && !(college.location || '').toLowerCase().includes(location.toLowerCase())) continue;
+                if (!college.branches) continue;
+                if (branchAliasPool) {
+                    const key = matchBranchKey(branchAliasPool, college.branches);
+                    if (!key) continue;
+                    const cutoff = college.branches[key][category];
+                    if (cutoff == null || cutoff < lowerBound) continue;
+                    results.push({ id: college.id, name: college.name, location: college.location || 'Karnataka',
+                        branch: key, cutoff, dist: Math.abs(cutoff - rank) });
+                } else {
+                    let bestKey = null,
+                        bestCutoff = null,
+                        bestDist = Infinity;
+                    for (const [bkey, cd] of Object.entries(college.branches)) {
+                        const cutoff = cd[category];
+                        if (cutoff == null || cutoff < lowerBound) continue;
+                        const dist = Math.abs(cutoff - rank);
+                        if (dist < bestDist) { bestDist = dist;
+                            bestKey = bkey;
+                            bestCutoff = cutoff; }
+                    }
+                    if (bestKey) results.push({ id: college.id, name: college.name, location: college.location ||
+                            'Karnataka', branch: bestKey, cutoff: bestCutoff, dist: bestDist });
+                }
+            }
+            results.sort((a, b) => a.dist - b.dist);
+            return results;
+        }
+
+        function buildSmartCollegeAnswer(results, { rank, branch, location, category }) {
+            const branchLabel = branch ? escapeHtml(branch) : null;
+            if (!results.length) {
+                let html =
+                    `Doesn't look likely${branchLabel?` for <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''} at rank ${rank.toLocaleString('en-IN')} (${category}) — no eligible seats this round.`;
+                return html;
+            }
+            const shown = results.slice(0, 5);
+            const names = results.slice(0, 3).map(r => getShortName(r.name)).join(', ');
+            let html =
+                `Yes — you could get${branchLabel?` <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''}. <b>${results.length}</b> matching option${results.length>1?'s':''}, closest: ${escapeHtml(names)}${results.length>3?` +${results.length-3} more`:''}.`;
+            html += `<div style="margin-top:10px;">` + shown.map(r => collegeCardHtml(r, category)).join('') + `</div>`;
+            if (results.length > 5) {
+                html +=
+                    `<div class="chip-row"><div class="mini-chip" data-action="see-more-smart">See all ${results.length}${location?` in ${escapeHtml(location)}`:''}</div></div>`;
+            }
+            return html;
+        }
+
+        async function handleSmartMessage(rawText) {
+            const thinkingRow = showTempThinking();
+            await sleep(1600);
+            thinkingRow.remove();
+
+            let entities = extractEntities(rawText);
+
+            if (pendingSmartQuery) {
+                const merged = Object.assign({}, pendingSmartQuery.known, entities);
+                if (!merged.category) { const c = extractCategoryOnly(rawText); if (c) merged.category = c; }
+                entities = merged;
+            }
+
+            const kcetGuess = classifyKcetIntent(rawText);
+            const looksKcetRelated = entities.kcetMarks != null || entities.boardPercentage != null || entities.rank !=
+                null ||
+                entities.category || entities.branch || /\b(kcet|cet|rank|board|puc?)\b/i.test(rawText) || !!
+                pendingSmartQuery;
+
+            if (looksKcetRelated) {
+                await routeKcetQuery(kcetGuess ? kcetGuess.intent : 'rank_prediction', entities);
+                return;
+            }
+
+            const chatGuess = classifyChat(rawText);
+            if (chatGuess) { protonSays(escapeHtmlKeepEmoji(chatGuess.output)); return; }
+
+            protonSays(
+                `I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or just tell me your boards % and KCET score together.`
+                );
+        }
+
+        function escapeHtmlKeepEmoji(s) { return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        async function routeKcetQuery(intent, entities) {
+            if (entities.rank == null && entities.kcetMarks != null && entities.boardPercentage != null) {
+                const kcetPct = (Math.min(180, entities.kcetMarks) / 180) * 100;
+                const finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
+                entities.rank = kcetEngine.predictRank(finalPct);
+                protonSays(
+                    `Based on <b>${entities.boardPercentage}%</b> boards and <b>${entities.kcetMarks}</b> KCET marks, your estimated rank is <b>${entities.rank.toLocaleString('en-IN')}</b>.`
+                    );
+            }
+
+            const wantsCollege = intent !== 'rank_prediction' && intent !== 'rank_inquiry' || entities.category ||
+                entities.branch || entities.location;
+
+            if (entities.rank == null) {
+                pendingSmartQuery = { known: entities, needs: ['rank'] };
+                protonSays(`Got it — what's your KCET score (or boards % + KCET score) so I can estimate your rank?`);
+                return;
+            }
+            if (!wantsCollege) {
+                pendingSmartQuery = null;
+                return;
+            }
+            if (!entities.category) {
+                pendingSmartQuery = { known: entities, needs: ['category'] };
+                protonSays(
+                    `Rank ${entities.rank.toLocaleString('en-IN')} noted. Which category should I check against — GM, 1G, 2AG, SC, ST…?`
+                    );
+                return;
+            }
+
+            pendingSmartQuery = null;
+            const thinkingRow2 = showTempThinking();
+            try {
+                const results = await searchCollegesSmart(entities);
+                thinkingRow2.remove();
+                const row = protonSays(buildSmartCollegeAnswer(results, entities), `${results.length} matches`);
+                const seeMore = row.querySelector('[data-action="see-more-smart"]');
+                if (seeMore) {
+                    seeMore.addEventListener('click', () => openResultsPage(
+                        `All matches${entities.location?` · ${entities.location}`:''}`, results, entities
+                    .category));
+                }
+            } catch (e) {
+                thinkingRow2.remove();
+                protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           COMPOSER
+           ══════════════════════════════════════════════════════════ */
+        function initComposer() {
+            const input = document.getElementById('composerInput');
+            const sendBtn = document.getElementById('sendBtn');
+            input.addEventListener('input', () => { input.style.height = 'auto';
+                input.style.height = Math.min(100, input.scrollHeight) + 'px'; });
+
+            function send() {
+                const text = input.value.trim();
+                if (!text) return;
+                userSays(text);
+                input.value = '';
+                input.style.height = 'auto';
+                handleSmartMessage(text);
+            }
+            sendBtn.addEventListener('click', send);
+            input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
+                    send(); } });
+
+            document.getElementById('pillRank').addEventListener('click', () => {
+                userSays('Rank Prediction');
+                openRankPredictionCard();
+            });
+            document.getElementById('pillCollege').addEventListener('click', () => {
+                userSays('College Prediction');
+                startCollegePredictionFlow();
+            });
+            document.getElementById('pillPriority').addEventListener('click', () => {
+                userSays('Priority List');
+                pillPriorityListStart();
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           MOBILE VIEWPORT FIX
+           ══════════════════════════════════════════════════════════ */
+        function setVH() {
+            const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
+            document.documentElement.style.setProperty('--vh', vh + 'px');
+        }
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', () => setTimeout(setVH, 100));
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVH);
+            window.visualViewport.addEventListener('scroll', setVH);
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           INIT
+           ══════════════════════════════════════════════════════════ */
+        initOnboarding();
+        initSidebar();
+        initComposer();
+        loadTrainingData();
+        currentChatId = 'c_' + Date.now();
+
+        handleIncomingCollegeData();
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(() => console.log('[x-bit] SW registered'))
+                .catch(err => console.warn('[x-bit] SW registration failed:', err));
+        }
+
+        // re-apply pro status from storage on load
+        if (isPro && proCode) {
+            updateProfilePro();
+            updateModelSelector();
+        }
+    </script>
+</body>
+</html>
