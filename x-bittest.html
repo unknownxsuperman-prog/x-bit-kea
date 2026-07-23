@@ -299,7 +299,7 @@ body{
 <div class="topbar">
   <button class="icon-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
   <div class="topbar-title">
-    <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'">
+    <img src="./logo.png" alt="x-bit" onerror="this.style.display='none'">
     <span>x-bit proton</span>
     <span class="status-dot"></span>
   </div>
@@ -309,7 +309,7 @@ body{
 <!-- ═══ CHAT ═══ -->
 <div class="chat-wrap" id="chatWrap">
   <div class="empty-hero" id="emptyHero">
-    <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'">
+    <img src="./logo.png" alt="" onerror="this.style.display='none'">
     <div class="eh-title" id="heroGreeting">Hey there</div>
     <div class="eh-sub">Powered by x0s</div>
   </div>
@@ -402,16 +402,7 @@ function initSidebar(){
 
   const darkToggle = document.getElementById('darkToggle');
   let dark = LS.get('dark_mode', true);
-  function applyTheme(){
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    darkToggle.checked = dark;
-    // update logos based on theme
-    const logoFile = dark ? './logo.png' : './logo1.png';
-    const topbarLogo = document.getElementById('topbarLogo');
-    const heroLogo = document.getElementById('heroLogo');
-    if(topbarLogo){ topbarLogo.src = logoFile; topbarLogo.style.display = ''; }
-    if(heroLogo){ heroLogo.src = logoFile; heroLogo.style.display = ''; }
-  }
+  function applyTheme(){ document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light'); darkToggle.checked = dark; }
   applyTheme();
   darkToggle.addEventListener('change', ()=>{ dark = darkToggle.checked; LS.set('dark_mode', dark); applyTheme(); });
 }
@@ -515,11 +506,11 @@ function loadChat(id){
    ══════════════════════════════════════════════════════════ */
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-/* small non-interactive logo-animation loader, uses theme-appropriate file */
+/* small non-interactive logo-animation loader, used instead of a plain fa-spin icon.
+   loading.html is expected to sit in the same repo as this file. touch/pointer
+   events are fully blocked on it — it's decorative only, never tappable. */
 function loadingLine(text){
-  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-  const loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
-  return `<div class="loading-line"><div class="loading-badge"><iframe src="${loadingFile}" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
+  return `<div class="loading-line"><div class="loading-badge"><iframe src="./loading.html" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
 }
 
 function appendRawBubble(role, html){
