@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
+
+<!-- PWA Manifest & Meta -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="x-bit Proton">
+
 <title>x-bit · Proton</title>
 <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -146,9 +154,29 @@ body{
 .dd-mini-item:hover{ background:var(--surface-2); color:var(--text-0); }
 
 /* result cards (college matches) */
-.college-result-card{ border:1px solid var(--border); border-radius:var(--r-sm); padding:13px 14px; margin-bottom:8px; background:var(--surface-2); }
+.college-result-card{
+  border:1px solid var(--border);
+  border-radius:var(--r-sm);
+  padding:13px 14px;
+  margin-bottom:8px;
+  background:var(--surface-2);
+  cursor:pointer;
+  transition: all 0.2s ease;
+}
+.college-result-card:hover {
+  background:var(--surface-3);
+  border-color:var(--border-strong);
+}
 .crc-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; }
-.crc-name{ font-size:.78rem; font-weight:700; color:var(--text-0); line-height:1.35; }
+.crc-name{
+  font-size:.78rem;
+  font-weight:700;
+  color:var(--text-0);
+  line-height:1.35;
+  text-decoration:underline;
+  text-underline-offset:2px;
+  text-decoration-color:rgba(255,255,255,0.2);
+}
 .crc-cutoff{ font-family:var(--font-m); font-size:.72rem; font-weight:600; color:var(--text-1); flex-shrink:0; white-space:nowrap; }
 .crc-meta{ font-family:var(--font-m); font-size:.58rem; color:var(--text-3); }
 
@@ -256,10 +284,79 @@ body{
 .send-btn:hover{ opacity:.85; }
 .send-btn:disabled{ opacity:.25; cursor:not-allowed; }
 
+/* ═══ CONNECT OVERLAY (Proton ↔ x0s) ═══ */
+.connect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.connect-overlay.show { display: flex; }
+.connect-overlay .conn-wrap {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.connect-overlay .conn-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  animation: pulse-glow 1.2s infinite alternate ease-in-out;
+}
+.connect-overlay .conn-dots {
+  display: flex;
+  gap: 10px;
+}
+.connect-overlay .conn-dot {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  animation: dot-bounce 1.4s infinite ease-in-out both;
+}
+.connect-overlay .conn-dot:nth-child(1) { animation-delay: -0.32s; }
+.connect-overlay .conn-dot:nth-child(2) { animation-delay: -0.16s; }
+.connect-overlay .conn-label {
+  color: #fff;
+  font-family: var(--font-d);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 24px;
+  letter-spacing: 0.05em;
+}
+@keyframes pulse-glow {
+  0% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.2)); transform: scale(0.95); }
+  100% { filter: drop-shadow(0 0 24px rgba(255,255,255,0.6)); transform: scale(1.05); }
+}
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
 @media(max-width:420px){ .msg-bubble{ max-width:90%; } .chat-card{ max-width:100%; } }
 </style>
 </head>
 <body>
+
+<!-- ═══ CONNECT OVERLAY ═══ -->
+<div class="connect-overlay" id="connectOverlay">
+  <div class="conn-wrap">
+    <img src="./logo.svg" class="conn-icon" id="connLeft" alt="Proton">
+    <div class="conn-dots">
+      <span class="conn-dot"></span>
+      <span class="conn-dot"></span>
+      <span class="conn-dot"></span>
+    </div>
+    <img src="./xoslink.png" class="conn-icon" id="connRight" alt="x0s">
+  </div>
+  <div class="conn-label" id="connLabel">Connecting to x0s…</div>
+</div>
 
 <!-- ═══ ONBOARDING ═══ -->
 <div class="onboard-overlay" id="onboardModal">
@@ -299,7 +396,7 @@ body{
 <div class="topbar">
   <button class="icon-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
   <div class="topbar-title">
-    <img src="./logo.png" alt="x-bit" onerror="this.style.display='none'">
+    <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'">
     <span>x-bit proton</span>
     <span class="status-dot"></span>
   </div>
@@ -309,7 +406,7 @@ body{
 <!-- ═══ CHAT ═══ -->
 <div class="chat-wrap" id="chatWrap">
   <div class="empty-hero" id="emptyHero">
-    <img src="./logo.png" alt="" onerror="this.style.display='none'">
+    <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'">
     <div class="eh-title" id="heroGreeting">Hey there</div>
     <div class="eh-sub">Powered by x0s</div>
   </div>
@@ -402,7 +499,16 @@ function initSidebar(){
 
   const darkToggle = document.getElementById('darkToggle');
   let dark = LS.get('dark_mode', true);
-  function applyTheme(){ document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light'); darkToggle.checked = dark; }
+  function applyTheme(){
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    darkToggle.checked = dark;
+    // update logos based on theme
+    const logoFile = dark ? './logo.png' : './logo1.png';
+    const topbarLogo = document.getElementById('topbarLogo');
+    const heroLogo = document.getElementById('heroLogo');
+    if(topbarLogo){ topbarLogo.src = logoFile; topbarLogo.style.display = ''; }
+    if(heroLogo){ heroLogo.src = logoFile; heroLogo.style.display = ''; }
+  }
   applyTheme();
   darkToggle.addEventListener('change', ()=>{ dark = darkToggle.checked; LS.set('dark_mode', dark); applyTheme(); });
 }
@@ -506,11 +612,11 @@ function loadChat(id){
    ══════════════════════════════════════════════════════════ */
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-/* small non-interactive logo-animation loader, used instead of a plain fa-spin icon.
-   loading.html is expected to sit in the same repo as this file. touch/pointer
-   events are fully blocked on it — it's decorative only, never tappable. */
+/* small non-interactive logo-animation loader, uses theme-appropriate file */
 function loadingLine(text){
-  return `<div class="loading-line"><div class="loading-badge"><iframe src="./loading.html" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
+  return `<div class="loading-line"><div class="loading-badge"><iframe src="${loadingFile}" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
 }
 
 function appendRawBubble(role, html){
@@ -583,6 +689,66 @@ function computeFinalPercentage(boardsPct, kcetPct){ return (boardsPct/2) + (kce
    (rank prediction handoff -> college prediction autofill)
    ══════════════════════════════════════════════════════════ */
 let flowState = null; // { pendingRankForCollege, dataset, category, rank, branch }
+
+/* ══════════════════════════════════════════════════════════
+   CONNECT OVERLAY (Proton ↔ x0s)
+   ══════════════════════════════════════════════════════════ */
+function showConnectOverlay(direction, callback) {
+  const overlay = document.getElementById('connectOverlay');
+  const leftIcon = document.getElementById('connLeft');
+  const rightIcon = document.getElementById('connRight');
+  const label = document.getElementById('connLabel');
+
+  if (direction === 'toXos') {
+    leftIcon.src = './logo.svg';
+    rightIcon.src = './xoslink.png';
+    label.textContent = 'Connecting to x0s…';
+  } else {
+    leftIcon.src = './xoslink.png';
+    rightIcon.src = './logo.svg';
+    label.textContent = 'Returning to Proton…';
+  }
+
+  overlay.classList.add('show');
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    if (callback) callback();
+  }, 1800);
+}
+
+function openXosLink(code) {
+  showConnectOverlay('toXos', () => {
+    const url = `https://unknownxsuperman-prog.github.io/anushdecodes/int2t.html?code=${code}`;
+    window.open(url, '_blank');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════
+   HANDLE INCOMING LINK FROM x0s (KCET 2026 click)
+   ══════════════════════════════════════════════════════════ */
+function handleIncomingCollegeData() {
+  const params = new URLSearchParams(window.location.search);
+  const college = params.get('college');
+  const branch = params.get('branch');
+  const cutoff = params.get('cutoff');
+  const category = params.get('category');
+  const code = params.get('code');
+
+  if (college && branch && cutoff) {
+    // Show the reverse animation first
+    showConnectOverlay('fromXos', () => {
+      // Clear URL params
+      const url = window.location.href.split('?')[0];
+      window.history.replaceState({}, document.title, url);
+
+      // Send the response as Proton
+      setTimeout(() => {
+        const msg = `The KCET 2026 cutoff for <b>${escapeHtml(branch)}</b> at <b>${escapeHtml(college)}</b> (${category || 'GM'}) is <b>${parseInt(cutoff).toLocaleString('en-IN')}</b>.`;
+        protonSays(msg, `KCET 2026 cutoff for ${branch} at ${college} is ${cutoff}`);
+      }, 300);
+    });
+  }
+}
 
 /* ══════════════════════════════════════════════════════════
    PILL 1 — RANK PREDICTION CARD
@@ -984,12 +1150,22 @@ function renderCollegeMatches(dataset, category, rank, aliasPool, branchLabel){
     seeMore.addEventListener('click', ()=> openResultsPage(`All matches · ${branchLabel} · ${category}`, results, category));
   }
 }
+
 function collegeCardHtml(r, category){
-  return `<div class="college-result-card">
-    <div class="crc-top"><div class="crc-name">${escapeHtml(getShortName(r.name))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-    <div class="crc-meta">${escapeHtml(r.branch)} · ${escapeHtml(r.location)} · ${r.id}</div>
+  const code = r.id;
+  const name = escapeHtml(getShortName(r.name));
+  const cutoff = r.cutoff.toLocaleString('en-IN');
+  const branch = escapeHtml(r.branch);
+  const location = escapeHtml(r.location);
+  return `<div class="college-result-card" onclick="openXosLink('${code}')">
+    <div class="crc-top">
+      <div class="crc-name">${name}</div>
+      <div class="crc-cutoff">${cutoff}</div>
+    </div>
+    <div class="crc-meta">${branch} · ${location} · ${code}</div>
   </div>`;
 }
+
 function getShortName(name){ if(!name) return ''; const i=name.indexOf(','); return i>0?name.substring(0,i).trim():name.trim(); }
 
 function openResultsPage(title, results, category){
@@ -1555,6 +1731,18 @@ initSidebar();
 initComposer();
 loadTrainingData();
 currentChatId = 'c_' + Date.now();
+
+// Check for incoming data from x0s
+handleIncomingCollegeData();
+
+/* ══════════════════════════════════════════════════════════
+   SERVICE WORKER REGISTRATION (PWA)
+   ══════════════════════════════════════════════════════════ */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js')
+    .then(() => console.log('[x-bit] SW registered'))
+    .catch(err => console.warn('[x-bit] SW registration failed:', err));
+}
 </script>
 </body>
 </html>
