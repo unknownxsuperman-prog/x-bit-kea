@@ -285,58 +285,67 @@ body{
 .send-btn:disabled{ opacity:.25; cursor:not-allowed; }
 
 /* ═══ CONNECT OVERLAY (Proton ↔ x0s) ═══ */
-.connect-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+.connect-overlay{
+  position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  display:none; align-items:center; justify-content:center;
 }
-.connect-overlay.show { display: flex; }
-.connect-overlay .conn-wrap {
-  display: flex;
-  align-items: center;
-  gap: 30px;
+.connect-overlay.show{ display:flex; animation:connFadeIn .3s ease; }
+@keyframes connFadeIn{ from{ opacity:0; } to{ opacity:1; } }
+
+.conn-card{ display:flex; flex-direction:column; align-items:center; text-align:center; padding:20px; }
+
+.conn-track{ display:flex; align-items:center; justify-content:center; margin-bottom:30px; }
+
+.conn-node{
+  width:76px; height:76px; border-radius:50%; flex-shrink:0; position:relative; z-index:2;
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.16);
+  display:flex; align-items:center; justify-content:center;
+  animation:connNodePulse 1.6s ease-in-out infinite;
 }
-.connect-overlay .conn-icon {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  animation: pulse-glow 1.2s infinite alternate ease-in-out;
+.conn-node-right{ animation-delay:.35s; }
+@keyframes connNodePulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0.14); }
+  50%{ box-shadow:0 0 0 12px rgba(255,255,255,0); }
 }
-.connect-overlay .conn-dots {
-  display: flex;
-  gap: 10px;
+.conn-icon{ width:38px; height:38px; object-fit:contain; }
+
+.conn-beam{
+  width:130px; height:2px; background:rgba(255,255,255,0.14); position:relative; flex-shrink:0;
 }
-.connect-overlay .conn-dot {
-  width: 12px;
-  height: 12px;
-  background: #fff;
-  border-radius: 50%;
-  animation: dot-bounce 1.4s infinite ease-in-out both;
+.conn-beam-fill{
+  position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, #fff 50%, transparent);
+  background-size:55% 100%; background-repeat:no-repeat; background-position:-55% 0;
+  animation:connBeamSweep 1.6s linear infinite;
 }
-.connect-overlay .conn-dot:nth-child(1) { animation-delay: -0.32s; }
-.connect-overlay .conn-dot:nth-child(2) { animation-delay: -0.16s; }
-.connect-overlay .conn-label {
-  color: #fff;
-  font-family: var(--font-d);
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-top: 24px;
-  letter-spacing: 0.05em;
+@keyframes connBeamSweep{
+  0%{ background-position:-55% 0; }
+  100%{ background-position:155% 0; }
 }
-@keyframes pulse-glow {
-  0% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.2)); transform: scale(0.95); }
-  100% { filter: drop-shadow(0 0 24px rgba(255,255,255,0.6)); transform: scale(1.05); }
+.conn-particle{
+  position:absolute; top:50%; width:5px; height:5px; margin-top:-2.5px; border-radius:50%;
+  background:#fff; opacity:0; box-shadow:0 0 6px 1px rgba(255,255,255,0.6);
+  animation:connParticleTravel 1.6s ease-in-out infinite;
 }
-@keyframes dot-bounce {
-  0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
+.conn-particle.p2{ animation-delay:.35s; }
+.conn-particle.p3{ animation-delay:.7s; }
+@keyframes connParticleTravel{
+  0%{ left:0%; opacity:0; }
+  12%{ opacity:1; }
+  88%{ opacity:1; }
+  100%{ left:100%; opacity:0; }
+}
+.conn-track.reverse .conn-beam-fill,
+.conn-track.reverse .conn-particle{ animation-direction:reverse; }
+
+.conn-eyebrow{
+  font-family:var(--font-m); font-size:.55rem; color:rgba(255,255,255,0.4);
+  letter-spacing:.25em; text-transform:uppercase; margin-bottom:10px;
+}
+.conn-label{
+  color:#fff; font-family:var(--font-d); font-size:.95rem; font-weight:700; letter-spacing:-0.01em;
 }
 
 @media(max-width:420px){ .msg-bubble{ max-width:90%; } .chat-card{ max-width:100%; } }
@@ -346,16 +355,24 @@ body{
 
 <!-- ═══ CONNECT OVERLAY ═══ -->
 <div class="connect-overlay" id="connectOverlay">
-  <div class="conn-wrap">
-    <img src="./logo.svg" class="conn-icon" id="connLeft" alt="Proton">
-    <div class="conn-dots">
-      <span class="conn-dot"></span>
-      <span class="conn-dot"></span>
-      <span class="conn-dot"></span>
+  <div class="conn-card">
+    <div class="conn-track" id="connTrack">
+      <div class="conn-node conn-node-left">
+        <img src="./logo.svg" class="conn-icon" id="connLeft" alt="Proton">
+      </div>
+      <div class="conn-beam">
+        <div class="conn-beam-fill"></div>
+        <span class="conn-particle p1"></span>
+        <span class="conn-particle p2"></span>
+        <span class="conn-particle p3"></span>
+      </div>
+      <div class="conn-node conn-node-right">
+        <img src="./xoslink.png" class="conn-icon" id="connRight" alt="x0s">
+      </div>
     </div>
-    <img src="./xoslink.png" class="conn-icon" id="connRight" alt="x0s">
+    <div class="conn-eyebrow">x0s network</div>
+    <div class="conn-label" id="connLabel">Connecting to x0s…</div>
   </div>
-  <div class="conn-label" id="connLabel">Connecting to x0s…</div>
 </div>
 
 <!-- ═══ ONBOARDING ═══ -->
@@ -695,6 +712,7 @@ let flowState = null; // { pendingRankForCollege, dataset, category, rank, branc
    ══════════════════════════════════════════════════════════ */
 function showConnectOverlay(direction, callback) {
   const overlay = document.getElementById('connectOverlay');
+  const track = document.getElementById('connTrack');
   const leftIcon = document.getElementById('connLeft');
   const rightIcon = document.getElementById('connRight');
   const label = document.getElementById('connLabel');
@@ -703,10 +721,12 @@ function showConnectOverlay(direction, callback) {
     leftIcon.src = './logo.svg';
     rightIcon.src = './xoslink.png';
     label.textContent = 'Connecting to x0s…';
+    track.classList.remove('reverse');
   } else {
     leftIcon.src = './xoslink.png';
     rightIcon.src = './logo.svg';
     label.textContent = 'Returning to Proton…';
+    track.classList.add('reverse');
   }
 
   overlay.classList.add('show');
