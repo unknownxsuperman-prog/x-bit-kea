@@ -3,377 +3,1814 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KEA Stream Parser</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Load Pyodide WASM Engine -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+  <meta name="description" content="Parse Karnataka Examinations Authority (KEA) official notice PDFs into structured JSON. Rule-based, offline, no AI.">
+  <title>KEA Notice Parser</title>
+  <!-- PDF.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES — AMOLED BLACK THEME
+       ============================================ */
     :root {
-      --bg-color: #000000;
-      --accent-color: #007aff;
-      --card-bg: #0a0a0a;
-      --border-color: #1a1a1a;
-      --font-family: 'Space Grotesk', sans-serif;
+      --bg-primary: #000000;
+      --bg-secondary: #0a0a0a;
+      --bg-tertiary: #141414;
+      --bg-card: #0d0d0d;
+      --bg-input: #111111;
+      --bg-hover: #1a1a1a;
+      --text-primary: #f0f0f0;
+      --text-secondary: #8e8e93;
+      --text-tertiary: #5a5a5e;
+      --text-muted: #3a3a3e;
+      --accent: #0a84ff;
+      --accent-hover: #409cff;
+      --accent-dim: rgba(10, 132, 255, 0.10);
+      --accent-glow: rgba(10, 132, 255, 0.25);
+      --success: #30d158;
+      --success-dim: rgba(48, 209, 88, 0.10);
+      --warning: #ff9f0a;
+      --warning-dim: rgba(255, 159, 10, 0.10);
+      --error: #ff453a;
+      --error-dim: rgba(255, 69, 58, 0.10);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.10);
+      --border-accent: rgba(10, 132, 255, 0.25);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.6);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --gradient-1: #0a84ff;
+      --gradient-2: #5e5ce6;
     }
-
-    * {
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: var(--font-family);
     }
-
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
     body {
-      background-color: var(--bg-color);
-      color: #e1e1e1;
+      font-family: var(--font);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
+      overflow-x: hidden;
     }
-
-    .container {
-      width: 100%;
+    /* ============================================
+       AMBIENT BACKGROUND GLOW
+       ============================================ */
+    .ambient-glow {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .ambient-glow::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: var(--gradient-1);
+      top: -300px; right: -200px;
+      opacity: 0.04;
+      filter: blur(150px);
+      animation: ambientPulse 15s ease-in-out infinite alternate;
+    }
+    .ambient-glow::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: var(--gradient-2);
+      bottom: -250px; left: -150px;
+      opacity: 0.03;
+      filter: blur(150px);
+      animation: ambientPulse 15s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes ambientPulse {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.03; }
+      100% { transform: translate(30px, -20px) scale(1.15); opacity: 0.06; }
+    }
+    /* ============================================
+       SCROLLBAR
+       ============================================ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .app-container {
       max-width: 800px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 28px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
-      animation: slideUp 0.3s ease-out;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
     }
-
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .header {
+    /* ============================================
+       HEADER
+       ============================================ */
+    .app-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      justify-content: space-between;
+      padding: 20px 0 36px;
     }
-
-    .badge {
-      font-size: 8px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: rgba(0, 122, 255, 0.1);
-      color: var(--accent-color);
-      border: 1px solid var(--accent-color);
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
-
-    h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .input-box {
+    .app-logo {
       display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
+      align-items: center;
+      gap: 14px;
     }
-
-    input[type="url"] {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-color);
-      padding: 14px 18px;
-      border-radius: 8px;
+    .logo-icon {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
       color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      flex-shrink: 0;
     }
-
-    input[type="url"]:focus {
-      border-color: var(--accent-color);
+    .logo-text h1 {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #f0f0f0, #a0a0a5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-
-    button {
-      background: var(--accent-color);
-      color: #fff;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 8px;
+    .logo-text p {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
       font-weight: 500;
-      cursor: pointer;
-      transition: transform 0.1s ease;
+      letter-spacing: 0.3px;
     }
-
-    button:disabled {
-      background: #222;
-      color: #666;
-      cursor: not-allowed;
+    .header-badge {
+      padding: 5px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 980px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
-
-    button:active:not(:disabled) {
-      transform: scale(0.96);
+    /* ============================================
+       SECTION
+       ============================================ */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color var(--transition-normal);
     }
-
+    .section:hover {
+      border-color: var(--border-strong);
+    }
+    .section + .section {
+      margin-top: 14px;
+    }
+    .section-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-header h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: -0.1px;
+    }
+    .section-header .icon {
+      font-size: 16px;
+      opacity: 0.7;
+    }
+    .section-body {
+      padding: 20px 22px;
+    }
+    /* ============================================
+       URL INPUT
+       ============================================ */
+    .url-input-group {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+    .url-input {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-family: var(--font);
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--text-primary);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    .url-input::placeholder {
+      color: var(--text-muted);
+    }
+    .url-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    /* ============================================
+       DIVIDER
+       ============================================ */
     .divider {
-      text-align: center;
-      font-size: 0.75rem;
-      color: #555;
-      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 18px 0;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
       letter-spacing: 1px;
     }
-
-    .file-input-wrapper {
-      position: relative;
-      border: 1px dashed var(--border-color);
-      border-radius: 8px;
-      padding: 16px;
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    /* ============================================
+       DROP ZONE
+       ============================================ */
+    .drop-zone {
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 40px 24px;
       text-align: center;
-      background: rgba(255, 255, 255, 0.01);
       cursor: pointer;
-      transition: border-color 0.2s;
-      margin-bottom: 20px;
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-primary);
     }
-
-    .file-input-wrapper:hover {
-      border-color: var(--accent-color);
-    }
-
-    .file-input-wrapper input[type="file"] {
+    .drop-zone::before {
+      content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
       opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+    .drop-zone.drag-over {
+      border-color: var(--accent);
+      transform: scale(1.01);
+      box-shadow: 0 0 30px var(--accent-dim);
+    }
+    .drop-zone.drag-over::before {
+      opacity: 0.06;
+    }
+    .drop-zone.drag-over .drop-icon {
+      transform: translateY(-6px) scale(1.15);
+    }
+    .drop-zone > * {
+      position: relative;
+      z-index: 1;
+    }
+    .drop-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+      transition: transform var(--transition-normal);
+      display: block;
+      opacity: 0.8;
+    }
+    .drop-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+    .drop-subtitle {
+      font-size: 12.5px;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+    .browse-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font);
       cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 2px 12px var(--accent-glow);
     }
-
-    .file-label {
-      font-size: 0.85rem;
-      color: #888;
+    .browse-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px var(--accent-glow);
     }
-
-    .output-area {
-      background: #020202;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+    .browse-btn:active {
+      transform: translateY(0);
+    }
+    .file-input {
+      display: none;
+    }
+    /* ============================================
+       FILE INFO BAR
+       ============================================ */
+    .file-info {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-sm);
+      margin-top: 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .file-info.visible {
+      display: flex;
+    }
+    .file-info .file-name {
+      flex: 1;
+      text-align: left;
+      word-break: break-all;
+    }
+    .file-info .file-size {
+      white-space: nowrap;
+      color: var(--text-secondary);
+      font-size: 11.5px;
+    }
+    .file-info .file-remove {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px;
+      border-radius: 4px;
+      transition: all var(--transition-fast);
+      line-height: 1;
+    }
+    .file-info .file-remove:hover {
+      color: var(--error);
+      background: var(--error-dim);
+    }
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 22px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+    .btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 12px var(--accent-glow);
+    }
+    .btn-primary:hover:not(:disabled) {
+      color: #fff;
+      box-shadow: 0 4px 24px var(--accent-glow);
+      filter: brightness(1.1);
+    }
+    .btn-danger {
+      color: var(--error);
+      border-color: rgba(255, 69, 58, 0.2);
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: var(--error-dim);
+      border-color: var(--error);
+      color: var(--error);
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .btn-row-center {
+      justify-content: center;
+    }
+    .parse-btn-wrapper {
+      margin-top: 18px;
+      text-align: center;
+    }
+    .parse-btn-wrapper .btn-primary {
+      padding: 13px 36px;
+      font-size: 14.5px;
+      border-radius: var(--radius-sm);
+    }
+    /* ============================================
+       PROGRESS
+       ============================================ */
+    .progress-section {
+      display: none;
+    }
+    .progress-section.visible {
+      display: block;
+    }
+    .progress-wrapper {
+      background: var(--bg-tertiary);
+      border-radius: 980px;
+      height: 5px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+      border-radius: 980px;
+      transition: width 300ms ease;
+      position: relative;
+    }
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+      animation: progressShine 2s ease-in-out infinite;
+    }
+    @keyframes progressShine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+    }
+    /* ============================================
+       STATUS INDICATOR
+       ============================================ */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 980px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .status-pill.idle {
+      background: var(--bg-tertiary);
+      color: var(--text-muted);
+    }
+    .status-pill.processing {
+      background: var(--warning-dim);
+      color: var(--warning);
+    }
+    .status-pill.success {
+      background: var(--success-dim);
+      color: var(--success);
+    }
+    .status-pill.error {
+      background: var(--error-dim);
+      color: var(--error);
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .status-pill.processing .status-dot {
+      animation: statusPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+    /* ============================================
+       JSON PREVIEW
+       ============================================ */
+    .json-preview {
+      background: #050508;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       padding: 18px;
-      max-height: 420px;
+      max-height: 500px;
       overflow-y: auto;
-    }
-
-    pre {
-      font-family: monospace;
-      font-size: 0.85rem;
-      color: #34d399;
+      font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+      font-size: 12px;
+      line-height: 1.75;
       white-space: pre-wrap;
       word-break: break-word;
+      color: #cdd6f4;
+      tab-size: 2;
     }
-
-    .status-text {
-      font-size: 0.8rem;
-      color: #666;
-      margin-top: 10px;
+    .json-preview .json-key { color: #89b4fa; }
+    .json-preview .json-string { color: #a6e3a1; }
+    .json-preview .json-number { color: #fab387; }
+    .json-preview .json-boolean { color: #cba6f7; }
+    .json-preview .json-null { color: #6c7086; }
+    .json-preview .json-bracket { color: #f9e2af; }
+    .json-preview .json-punctuation { color: #6c7086; }
+    .json-placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 50px 20px;
+      font-family: var(--font);
+      font-size: 13px;
+    }
+    /* ============================================
+       TOAST NOTIFICATIONS
+       ============================================ */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      animation: toastIn 300ms cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+      pointer-events: auto;
+      max-width: 400px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .toast.removing {
+      animation: toastOut 250ms ease forwards;
+    }
+    .toast.success { border-left: 3px solid var(--success); }
+    .toast.error { border-left: 3px solid var(--error); }
+    .toast.info { border-left: 3px solid var(--accent); }
+    .toast.warning { border-left: 3px solid var(--warning); }
+    .toast-icon { font-size: 18px; flex-shrink: 0; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(40px) scale(0.95); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateX(0) scale(1); }
+      to { opacity: 0; transform: translateX(40px) scale(0.95); }
+    }
+    /* ============================================
+       ERROR BOX (CORS message)
+       ============================================ */
+    .error-box {
+      display: none;
+      padding: 14px 18px;
+      background: var(--error-dim);
+      border: 1px solid rgba(255, 69, 58, 0.2);
+      border-radius: var(--radius-sm);
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--error);
+      line-height: 1.6;
+    }
+    .error-box.visible {
+      display: block;
+    }
+    .error-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 600px) {
+      .app-container {
+        padding: 16px 14px 60px;
+      }
+      .app-header {
+        padding: 14px 0 24px;
+      }
+      .logo-text h1 {
+        font-size: 16px;
+      }
+      .url-input-group {
+        flex-direction: column;
+      }
+      .section-body {
+        padding: 16px;
+      }
+      .btn-row {
+        flex-direction: column;
+      }
+      .btn-row .btn {
+        width: 100%;
+      }
+      .drop-zone {
+        padding: 30px 16px;
+      }
+      .json-preview {
+        max-height: 350px;
+        font-size: 11px;
+      }
+    }
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    .fade-in {
+      animation: fadeIn 400ms ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .section {
+      animation: sectionIn 500ms ease forwards;
+      opacity: 0;
+    }
+    .section:nth-child(1) { animation-delay: 50ms; }
+    .section:nth-child(2) { animation-delay: 100ms; }
+    .section:nth-child(3) { animation-delay: 150ms; }
+    .section:nth-child(4) { animation-delay: 200ms; }
+    @keyframes sectionIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* ============================================
+       HIDDEN UTILITY
+       ============================================ */
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <div class="header">
-      <h1>KEA Stream Parser</h1>
-      <span class="badge">xos1-wasm-v3</span>
+  <div class="ambient-glow"></div>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="app-container">
+    <!-- ========== HEADER ========== -->
+    <header class="app-header">
+      <div class="app-logo">
+        <div class="logo-icon">📄</div>
+        <div class="logo-text">
+          <h1>KEA Notice Parser</h1>
+          <p>Karnataka Examinations Authority</p>
+        </div>
+      </div>
+      <div class="header-badge">Offline · Rule-Based</div>
+    </header>
+    <!-- ========== INPUT SECTION ========== -->
+    <div class="section" id="inputSection">
+      <div class="section-header">
+        <span class="icon">🔗</span>
+        <h2>Load PDF</h2>
+      </div>
+      <div class="section-body">
+        <!-- URL Input -->
+        <div class="url-input-group">
+          <input
+            type="url"
+            class="url-input"
+            id="pdfUrlInput"
+            placeholder="Paste KEA notice PDF URL here..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+        </div>
+        <!-- Error Box for CORS -->
+        <div class="error-box" id="corsError">
+          <strong>⚠ This server blocks browser access (CORS).</strong>
+          Please download the PDF manually and drag it here instead.
+        </div>
+        <div class="divider">or</div>
+        <!-- Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+          <span class="drop-icon">📥</span>
+          <div class="drop-title">Drag & Drop PDF Here</div>
+          <div class="drop-subtitle">or click to browse your files</div>
+          <button class="browse-btn" id="browseBtn" type="button">
+            📁 Browse Files
+          </button>
+          <input type="file" class="file-input" id="fileInput" accept=".pdf,application/pdf">
+        </div>
+        <!-- File Info -->
+        <div class="file-info" id="fileInfo">
+          <span>📄</span>
+          <span class="file-name" id="fileName">—</span>
+          <span class="file-size" id="fileSize">—</span>
+          <button class="file-remove" id="fileRemove" title="Remove file">✕</button>
+        </div>
+        <!-- Parse Button -->
+        <div class="parse-btn-wrapper">
+          <button class="btn btn-primary" id="parseBtn" disabled>
+            ⚡ Parse Notice
+          </button>
+        </div>
+      </div>
     </div>
-
-    <!-- URL Input -->
-    <div class="input-box">
-      <input type="url" id="pdfUrl" placeholder="Paste direct KEA PDF URL..." required>
-      <button id="execBtn" onclick="processPdfUrl()" disabled>Loading WASM...</button>
+    <!-- ========== PROGRESS SECTION ========== -->
+    <div class="section progress-section" id="progressSection">
+      <div class="section-header">
+        <span class="icon">⏳</span>
+        <h2>Processing</h2>
+        <div style="margin-left: auto;">
+          <span class="status-pill processing" id="statusPill">
+            <span class="status-dot"></span>
+            <span id="statusText">Parsing...</span>
+          </span>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="progress-wrapper">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-info">
+          <span id="progressLabel">Initializing...</span>
+          <span id="progressPercent">0%</span>
+        </div>
+      </div>
     </div>
-
-    <div class="divider">OR DROP / SELECT FILE DIRECTLY</div>
-
-    <!-- Local Browser File Input -->
-    <div class="file-input-wrapper">
-      <span class="file-label" id="fileLabel">Click or drag local KEA PDF here to process in RAM</span>
-      <input type="file" id="pdfFile" accept="application/pdf" onchange="processLocalFile(this)">
+    <!-- ========== JSON PREVIEW SECTION ========== -->
+    <div class="section hidden" id="resultSection">
+      <div class="section-header">
+        <span class="icon">📋</span>
+        <h2>Parsed JSON</h2>
+        <div style="margin-left: auto;">
+          <span class="status-pill success">
+            <span class="status-dot"></span>
+            Parsed
+          </span>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="json-preview" id="jsonPreview">
+          <div class="json-placeholder">Waiting for PDF...</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="downloadBtn" disabled>
+            💾 Download notice.json
+          </button>
+          <button class="btn" id="copyBtn" disabled>
+            📋 Copy JSON
+          </button>
+          <div style="flex:1"></div>
+          <button class="btn btn-danger" id="clearBtn">
+            🗑 Clear Session
+          </button>
+        </div>
+      </div>
     </div>
-
-    <!-- Output Box -->
-    <div class="output-area">
-      <pre id="jsonDisplay">// Initializing Python environment in browser memory...</pre>
-    </div>
-    <div id="status" class="status-text">Status: Loading engine</div>
   </div>
-
   <script>
-    let pyodide = null;
-
-    async function initPython() {
-      const status = document.getElementById('status');
-      const display = document.getElementById('jsonDisplay');
-      const execBtn = document.getElementById('execBtn');
-
-      try {
-        pyodide = await loadPyodide();
-        await pyodide.loadPackage("micropip");
-        const micropip = pyodide.pyimport("micropip");
-        await micropip.install('pypdf');
-
-        // Python Parsing Logic
-        pyodide.runPython(`
-import io
-import re
-import json
-import pypdf
-
-def parse_kea_bytes(pdf_bytes):
-    stream = io.BytesIO(pdf_bytes.to_py())
-    reader = pypdf.PdfReader(stream)
-    raw_text = ""
-    for page in reader.pages:
-        text = page.extract_text()
-        if text:
-            raw_text += text + "\\n"
-
-    # Metadata
-    doc_no = re.search(r'No\\.\\s*([A-Z0-9\\/-]+)', raw_text)
-    pub_date = re.search(r'Date:\\s*([\\d{2}\\-\\.\\/]+)', raw_text)
-    title = re.search(r'(UGCET-\\d{4}-[\\w\\s]+Results?)', raw_text)
-
-    # Milestones
-    events = []
-    if "09-07-2026" in raw_text:
-        events.append({
-            "event": "Option Entry / Modification for First Round",
-            "action": "Add, delete, or change priority order of options",
-            "deadline_date": "09-07-2026",
-            "deadline_time": "10:00 AM"
-        })
-
-    if "14-07-2026" in raw_text:
-        events.append({
-            "event": "Provisional Result - Round 1",
-            "action": "Announcement of provisional seat allotment",
-            "date": "14-07-2026",
-            "time": "After 11:00 AM"
-        })
-
-    if "15-07-2026" in raw_text:
-        events.append({
-            "event": "Final Result - Round 1",
-            "action": "Announcement of final seat allotment",
-            "date": "15-07-2026",
-            "time": "After 11:00 AM"
-        })
-
-    timestamp_pattern = r'(\\d{2}[-.\\/]\\d{2}[-.\\/]\\d{4})(?:\\s*(?:upto|after|till)?\\s*(\\d{1,2}[\\.:]\\d{2}\\s*(?:am|pm)?))?'
-    raw_matches = re.findall(timestamp_pattern, raw_text, flags=re.IGNORECASE)
-    
-    extracted_timestamps = [
-        {"date": date_str, "time": time_str if time_str else "N/A"}
-        for date_str, time_str in raw_matches if date_str
-    ]
-
-    result = {
-        "organization": "Karnataka Examinations Authority (KEA)",
-        "document_metadata": {
-            "circular_number": doc_no.group(1) if doc_no else None,
-            "published_date": pub_date.group(1) if pub_date else None,
-            "title": title.group(1) if title else "KEA UGCET Notification"
-        },
-        "key_schedule_events": events,
-        "all_extracted_timestamps": extracted_timestamps,
-        "helpline_info": {
-            "phone": ["080-23 564 583", "080-23 460 460"],
-            "email": "keauthority-ka@nic.in",
-            "website": "http://kea.kar.nic.in"
+    /* ============================================
+       PDF.js CONFIGURATION
+       ============================================ */
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    /* ============================================
+       APPLICATION STATE (RAM ONLY)
+       ============================================ */
+    const State = {
+      pdfDoc: null,         // PDF.js document reference
+      arrayBuffer: null,    // Raw PDF bytes
+      objectUrl: null,      // Blob URL if created
+      extractedText: '',    // Raw extracted text from PDF.js
+      parsedJSON: null,     // Final parsed JSON output
+      selectedFile: null,   // File reference from input/drop
+      /** Destroy all session data and reset UI */
+      clear() {
+        // Destroy PDF.js document
+        if (this.pdfDoc) {
+          this.pdfDoc.destroy();
+          this.pdfDoc = null;
         }
+        // Release ArrayBuffer
+        this.arrayBuffer = null;
+        // Revoke Object URL
+        if (this.objectUrl) {
+          URL.revokeObjectURL(this.objectUrl);
+          this.objectUrl = null;
+        }
+        // Clear text and JSON
+        this.extractedText = '';
+        this.parsedJSON = null;
+        this.selectedFile = null;
+      }
+    };
+    /* ============================================
+       DOM REFERENCES
+       ============================================ */
+    const $urlInput      = document.getElementById('pdfUrlInput');
+    const $corsError     = document.getElementById('corsError');
+    const $dropZone      = document.getElementById('dropZone');
+    const $browseBtn     = document.getElementById('browseBtn');
+    const $fileInput     = document.getElementById('fileInput');
+    const $fileInfo      = document.getElementById('fileInfo');
+    const $fileName      = document.getElementById('fileName');
+    const $fileSize      = document.getElementById('fileSize');
+    const $fileRemove    = document.getElementById('fileRemove');
+    const $parseBtn      = document.getElementById('parseBtn');
+    const $progressSec   = document.getElementById('progressSection');
+    const $progressBar   = document.getElementById('progressBar');
+    const $progressLabel = document.getElementById('progressLabel');
+    const $progressPct   = document.getElementById('progressPercent');
+    const $statusPill    = document.getElementById('statusPill');
+    const $statusText    = document.getElementById('statusText');
+    const $resultSection = document.getElementById('resultSection');
+    const $jsonPreview   = document.getElementById('jsonPreview');
+    const $downloadBtn   = document.getElementById('downloadBtn');
+    const $copyBtn       = document.getElementById('copyBtn');
+    const $clearBtn      = document.getElementById('clearBtn');
+    /* ============================================
+       TOAST NOTIFICATIONS
+       ============================================ */
+    function showToast(message, type = 'info') {
+      const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span class="toast-icon">${icons[type] || icons.info}</span>${message}`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('removing');
+        setTimeout(() => toast.remove(), 250);
+      }, 3500);
     }
-    return json.dumps(result, indent=2)
-`);
-
-        status.innerText = "Status: Engine Ready (Browser RAM execution)";
-        display.innerText = "// Engine initialized. Paste URL or drop PDF.";
-        execBtn.disabled = false;
-        execBtn.innerText = "Fetch & Parse";
-      } catch (err) {
-        status.innerText = "Status: WASM Load Error";
-        display.innerText = `Error: ${err.message}`;
+    /* ============================================
+       UTILITY: FORMAT FILE SIZE
+       ============================================ */
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+    /* ============================================
+       UTILITY: PROGRESS UPDATE
+       ============================================ */
+    function setProgress(percent, label) {
+      $progressBar.style.width = percent + '%';
+      $progressPct.textContent = Math.round(percent) + '%';
+      if (label) $progressLabel.textContent = label;
+    }
+    function showProgress() {
+      $progressSec.classList.add('visible');
+      $statusPill.className = 'status-pill processing';
+      $statusText.textContent = 'Parsing...';
+    }
+    function hideProgress() {
+      $progressSec.classList.remove('visible');
+    }
+    function setStatus(type, text) {
+      $statusPill.className = `status-pill ${type}`;
+      $statusText.textContent = text;
+    }
+    /* ============================================
+       FILE SELECTION HANDLING
+       ============================================ */
+    /** Show file info bar */
+    function showFileInfo(name, size) {
+      $fileName.textContent = name;
+      $fileSize.textContent = formatSize(size);
+      $fileInfo.classList.add('visible');
+      $parseBtn.disabled = false;
+      $corsError.classList.remove('visible');
+    }
+    /** Hide file info bar */
+    function hideFileInfo() {
+      $fileInfo.classList.remove('visible');
+      State.selectedFile = null;
+      State.arrayBuffer = null;
+      $fileInput.value = '';
+      // Only disable if URL is also empty
+      if (!$urlInput.value.trim()) {
+        $parseBtn.disabled = true;
       }
     }
-
-    initPython();
-
-    // Core Parsing Runner
-    function executeBytesParse(arrayBuffer) {
-      const display = document.getElementById('jsonDisplay');
-      const status = document.getElementById('status');
-      
-      try {
-        const uint8Array = new Uint8Array(arrayBuffer);
-        const parseFunc = pyodide.globals.get('parse_kea_bytes');
-        const jsonResult = parseFunc(uint8Array);
-
-        display.innerText = jsonResult;
-        status.innerText = "Status: Parsing complete (0 bytes stored to disk).";
-      } catch (err) {
-        display.innerText = `Parsing Error: ${err.message}`;
-        status.innerText = "Status: Failed to parse PDF structure.";
-      }
-    }
-
-    // Method 1: Native Browser URL Fetch (Mimics regular tab request)
-    async function processPdfUrl() {
-      const inputUrl = document.getElementById('pdfUrl').value.trim();
-      const display = document.getElementById('jsonDisplay');
-      const status = document.getElementById('status');
-
-      if (!inputUrl) {
-        alert('Please enter a PDF URL');
+    /** Handle file from input or drop */
+    function handleFile(file) {
+      if (!file) return;
+      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        showToast('Please select a valid PDF file.', 'error');
         return;
       }
-
-      status.innerText = "Status: Sending native browser fetch request...";
-      display.innerText = "// Downloading stream directly in browser context...";
-
+      State.selectedFile = file;
+      showFileInfo(file.name, file.size);
+      showToast(`Loaded: ${file.name}`, 'info');
+    }
+    // Browse button → trigger file input
+    $browseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      $fileInput.click();
+    });
+    // File input change
+    $fileInput.addEventListener('change', (e) => {
+      handleFile(e.target.files[0]);
+    });
+    // Drop zone click → trigger file input
+    $dropZone.addEventListener('click', () => {
+      $fileInput.click();
+    });
+    // Drag & Drop
+    $dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      $dropZone.classList.add('drag-over');
+    });
+    $dropZone.addEventListener('dragleave', () => {
+      $dropZone.classList.remove('drag-over');
+    });
+    $dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      $dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      handleFile(file);
+    });
+    // Remove file
+    $fileRemove.addEventListener('click', () => {
+      hideFileInfo();
+    });
+    // URL input → enable parse button
+    $urlInput.addEventListener('input', () => {
+      const hasUrl = $urlInput.value.trim().length > 0;
+      const hasFile = State.selectedFile !== null;
+      $parseBtn.disabled = !(hasUrl || hasFile);
+      if (hasUrl) {
+        $corsError.classList.remove('visible');
+      }
+    });
+    /* ============================================
+       PDF LOADING — URL OR LOCAL FILE
+       ============================================ */
+    /**
+     * Load PDF from URL.
+     * If CORS blocks the fetch, shows a friendly message.
+     * Returns ArrayBuffer or null.
+     */
+    async function loadPdfFromUrl(url) {
+      setProgress(10, 'Fetching PDF from URL...');
       try {
-        const response = await fetch(inputUrl, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/pdf,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-          },
-          mode: 'cors'
+        const response = await fetch(url, {
+          mode: 'cors',
+          headers: { 'Accept': 'application/pdf' }
         });
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const arrayBuffer = await response.arrayBuffer();
-        executeBytesParse(arrayBuffer);
-
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('pdf') && !url.toLowerCase().endsWith('.pdf')) {
+          throw new Error('Response does not appear to be a PDF.');
+        }
+        const buffer = await response.arrayBuffer();
+        if (buffer.byteLength < 100) {
+          throw new Error('Downloaded file is too small to be a valid PDF.');
+        }
+        setProgress(30, 'PDF downloaded successfully');
+        return buffer;
       } catch (err) {
-        display.innerText = `Browser URL Fetch Blocked by Server CORS:\n${err.message}\n\nSolution: Use the file picker below or download the PDF in another tab and drop it here.`;
-        status.innerText = "Status: URL blocked by KEA server CORS policy.";
+        // Detect CORS errors (browser gives opaque error for CORS)
+        const isCors = err.message.includes('Failed to fetch') ||
+                       err.message.includes('NetworkError') ||
+                       err.message.includes('CORS') ||
+                       err.message.includes('Network request failed') ||
+                       err.name === 'TypeError';
+        if (isCors) {
+          $corsError.classList.add('visible');
+          showToast('CORS blocked. Download the PDF and drag it here.', 'warning');
+        } else {
+          showToast(`Fetch error: ${err.message}`, 'error');
+        }
+        return null;
       }
     }
-
-    // Method 2: Direct Local File Stream (Bypasses server blocks completely)
-    function processLocalFile(input) {
-      if (!input.files || !input.files[0]) return;
-      const file = input.files[0];
-      
-      document.getElementById('fileLabel').innerText = `Loaded: ${file.name}`;
-      document.getElementById('status').innerText = "Status: Reading local stream into memory...";
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        executeBytesParse(e.target.result);
-      };
-      reader.readAsArrayBuffer(file);
+    /**
+     * Load PDF from local File object.
+     * Returns ArrayBuffer.
+     */
+    async function loadPdfFromFile(file) {
+      setProgress(10, 'Reading local PDF...');
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setProgress(30, 'PDF loaded from file');
+          resolve(reader.result);
+        };
+        reader.onerror = () => reject(new Error('Failed to read file.'));
+        reader.readAsArrayBuffer(file);
+      });
     }
+    /* ============================================
+       TEXT EXTRACTION — PDF.js
+       ============================================ */
+    /**
+     * Extract all text from PDF using PDF.js.
+     * Groups text items by Y-coordinate into logical lines.
+     * Returns an array of strings (one per logical line).
+     */
+    async function extractTextFromPdf(buffer) {
+      setProgress(35, 'Initializing PDF.js...');
+      const loadingTask = pdfjsLib.getDocument({ data: buffer });
+      const pdfDoc = await loadingTask.promise;
+      State.pdfDoc = pdfDoc;
+      const totalPages = pdfDoc.numPages;
+      const allLines = [];
+      for (let p = 1; p <= totalPages; p++) {
+        setProgress(35 + (p / totalPages) * 30, `Extracting page ${p} of ${totalPages}...`);
+        const page = await pdfDoc.getPage(p);
+        const textContent = await page.getTextContent();
+        // Group text items by Y-coordinate into logical lines
+        // PDF.js returns items with transform[5] as Y position
+        const lineMap = new Map(); // y -> array of {x, text}
+        for (const item of textContent.items) {
+          if (!item.str || item.str.trim() === '') continue;
+          const x = Math.round(item.transform[4]);
+          const y = Math.round(item.transform[5]);
+          // Find existing line within threshold (half the font height)
+          const threshold = Math.max(item.height * 0.5, 3);
+          let matchedY = null;
+          for (const existingY of lineMap.keys()) {
+            if (Math.abs(existingY - y) <= threshold) {
+              matchedY = existingY;
+              break;
+            }
+          }
+          const targetY = matchedY !== null ? matchedY : y;
+          if (!lineMap.has(targetY)) lineMap.set(targetY, []);
+          lineMap.get(targetY).push({ x, text: item.str });
+        }
+        // Sort lines top-to-bottom (highest Y first in PDF coordinate space)
+        const sortedYs = [...lineMap.keys()].sort((a, b) => b - a);
+        for (const y of sortedYs) {
+          // Sort items left-to-right within each line
+          const items = lineMap.get(y).sort((a, b) => a.x - b.x);
+          const lineText = items.map(i => i.text).join(' ').trim();
+          if (lineText) allLines.push(lineText);
+        }
+        // Yield to UI thread every 3 pages
+        if (p % 3 === 0) await new Promise(r => setTimeout(r, 0));
+      }
+      setProgress(70, `Extracted ${allLines.length} lines from ${totalPages} page(s)`);
+      if (allLines.length === 0) {
+        throw new Error('No text could be extracted. This PDF may be a scanned image. Download and use an OCR tool first.');
+      }
+      return allLines;
+    }
+    /* ============================================
+       KEA NOTICE PARSER — RULE-BASED
+       ============================================
+       This parser is designed ONLY for Karnataka Examinations
+       Authority (KEA) official notice/notification PDFs.
+       Typical KEA notice structure:
+       ─────────────────────────────────────
+       KARNATAKA EXAMINATIONS AUTHORITY
+       (Govt. logo / address line)
+       Notice No: KEA/xxx/xxx/2026    Date: DD-MM-YYYY
+       
+       TITLE OF THE NOTICE
+       (Regarding UGCET / CET / Counselling etc.)
+       
+       Body text with:
+       - Courses listed
+       - Schedule / Timeline table
+       - Bullet point instructions
+       - Important dates / deadlines
+       
+       Sd/-
+       Executive Director, KEA
+       ─────────────────────────────────────
+    */
+    /**
+     * Parse extracted text lines into structured KEA notice JSON.
+     * Uses rule-based pattern matching.
+     */
+    function parseKeaNotice(lines) {
+      setProgress(75, 'Parsing KEA notice structure...');
+      const result = {
+        authority: '',
+        notice_number: '',
+        notice_date: '',
+        title: '',
+        courses: [],
+        timeline: [],
+        notes: []
+      };
+      // ──────────────────────────────────────
+      // STEP 1: Extract Authority
+      // KEA notices typically start with the authority name
+      // ──────────────────────────────────────
+      result.authority = extractAuthority(lines);
+      // ──────────────────────────────────────
+      // STEP 2: Extract Notice Number
+      // Pattern: "No: KEA/xxx/xxx/xxxx" or "No.: ..." or "Notice No" etc.
+      // ──────────────────────────────────────
+      result.notice_number = extractNoticeNumber(lines);
+      // ──────────────────────────────────────
+      // STEP 3: Extract Notice Date
+      // Pattern: "Date: DD-MM-YYYY" or "Dated: DD.MM.YYYY" etc.
+      // ──────────────────────────────────────
+      result.notice_date = extractNoticeDate(lines);
+      // ──────────────────────────────────────
+      // STEP 4: Extract Title
+      // Usually appears after the header/authority block,
+      // often in caps or after "Sub:" / "Subject:" prefix
+      // ──────────────────────────────────────
+      result.title = extractTitle(lines);
+      // ──────────────────────────────────────
+      // STEP 5: Extract Courses
+      // KEA notices list course names like UGCET, PGCET,
+      // B.E., B.Tech, MBBS, BDS, BAMS, BHMCT, B.Arch etc.
+      // ──────────────────────────────────────
+      result.courses = extractCourses(lines);
+      // ──────────────────────────────────────
+      // STEP 6: Extract Timeline / Schedule
+      // Looks for date-event pairs in table-like structures
+      // ──────────────────────────────────────
+      result.timeline = extractTimeline(lines);
+      // ──────────────────────────────────────
+      // STEP 7: Extract Notes / Instructions
+      // Bullet points, numbered items, instructions
+      // ──────────────────────────────────────
+      result.notes = extractNotes(lines);
+      setProgress(95, 'Structuring JSON output...');
+      return result;
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Authority
+       ──────────────────────────────────────
+       KEA notices always start with the authority name.
+       Common patterns:
+         "KARNATAKA EXAMINATIONS AUTHORITY"
+         "Karnataka Examinations Authority"
+         "Office of the Karnataka Examinations Authority"
+    */
+    function extractAuthority(lines) {
+      for (const line of lines.slice(0, 15)) {
+        if (/karnataka\s+examinations?\s+authority/i.test(line)) {
+          return line.trim();
+        }
+      }
+      // Fallback: Look for "KEA" in first 10 lines
+      for (const line of lines.slice(0, 10)) {
+        if (/\bKEA\b/.test(line) && line.length > 5) {
+          return line.trim();
+        }
+      }
+      return 'Karnataka Examinations Authority';
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Notice Number
+       ──────────────────────────────────────
+       Patterns found in KEA notices:
+         "No: KEA/AC-1/CR-04/2026-27"
+         "No.: KEA/xxx"
+         "Notification No.:"
+         "Notice No.:"
+         "Ref No:"
+    */
+    function extractNoticeNumber(lines) {
+      for (const line of lines) {
+        // Match "No: xxx" or "No.: xxx" patterns
+        const match = line.match(/(?:notice|notification|ref\.?|no\.?)\s*[:.]?\s*[:.]?\s*(KEA[\s\S]*?)(?:\s{2,}|$)/i);
+        if (match) {
+          return match[1].trim().replace(/\s+/g, ' ');
+        }
+        // Match standalone "No: " or "No.:" followed by content
+        const match2 = line.match(/\bNo\.?\s*[:]\s*(.+?)(?:\s{2,}Date|$)/i);
+        if (match2 && match2[1].trim().length > 3) {
+          return match2[1].trim();
+        }
+      }
+      // Try another pattern: "KEA/xxx/xxx" anywhere
+      for (const line of lines.slice(0, 30)) {
+        const keaRef = line.match(/(KEA\/[\w\-\/]+)/);
+        if (keaRef) return keaRef[1];
+      }
+      return '';
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Notice Date
+       ──────────────────────────────────────
+       Detects various date formats used in KEA notices:
+         DD-MM-YYYY, DD/MM/YYYY, DD.MM.YYYY
+         "Date: 15-07-2026"
+         "Dated: 15.07.2026"
+       Converts to YYYY-MM-DD (ISO format).
+    */
+    function extractNoticeDate(lines) {
+      for (const line of lines.slice(0, 30)) {
+        // Look for "Date" or "Dated" prefix
+        const dateMatch = line.match(/date[d]?\s*[:.]?\s*(\d{1,2})\s*[-/.]\s*(\d{1,2})\s*[-/.]\s*(\d{4})/i);
+        if (dateMatch) {
+          return convertDate(dateMatch[1], dateMatch[2], dateMatch[3]);
+        }
+      }
+      // Fallback: Find any DD-MM-YYYY pattern in first 25 lines
+      for (const line of lines.slice(0, 25)) {
+        const dateMatch = line.match(/(\d{1,2})\s*[-/.]\s*(\d{1,2})\s*[-/.]\s*(\d{4})/);
+        if (dateMatch) {
+          const day = parseInt(dateMatch[1]);
+          const month = parseInt(dateMatch[2]);
+          // Validate it's a plausible date
+          if (day >= 1 && day <= 31 && month >= 1 && month <= 12) {
+            return convertDate(dateMatch[1], dateMatch[2], dateMatch[3]);
+          }
+        }
+      }
+      return '';
+    }
+    /**
+     * Convert DD-MM-YYYY components to YYYY-MM-DD.
+     */
+    function convertDate(day, month, year) {
+      const d = String(day).padStart(2, '0');
+      const m = String(month).padStart(2, '0');
+      return `${year}-${m}-${d}`;
+    }
+    /**
+     * Convert all date occurrences in a string from DD-MM-YYYY to YYYY-MM-DD.
+     */
+    function normalizeDates(text) {
+      return text.replace(
+        /(\d{1,2})\s*[-/.]\s*(\d{1,2})\s*[-/.]\s*(\d{4})/g,
+        (_, d, m, y) => convertDate(d, m, y)
+      );
+    }
+    /**
+     * Convert time formats like "10.00 am" or "10.00 AM" or "2:30 pm" to "10:00 AM".
+     */
+    function normalizeTime(text) {
+      return text.replace(
+        /(\d{1,2})[.:]\s*(\d{2})\s*(am|pm|a\.m|p\.m|a\.m\.|p\.m\.)/gi,
+        (_, h, m, period) => {
+          const p = period.replace(/\./g, '').toUpperCase();
+          return `${h}:${m} ${p}`;
+        }
+      );
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Title
+       ──────────────────────────────────────
+       KEA notice titles appear after the header block.
+       Common patterns:
+         "Subject: ..."
+         "Sub: ..."
+         "NOTIFICATION" (standalone or followed by description)
+         "NOTICE" 
+         All-caps lines that describe the notice purpose
+         Lines containing "regarding" / "about" / "Choice Entry"
+    */
+    function extractTitle(lines) {
+      // Strategy 1: Look for "Subject:" or "Sub:" prefix
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const subMatch = line.match(/^(?:sub(?:ject)?)\s*[:.]?\s*(.+)/i);
+        if (subMatch) {
+          let title = subMatch[1].trim();
+          // Title might continue on next lines until we hit another pattern
+          for (let j = i + 1; j < Math.min(i + 4, lines.length); j++) {
+            const next = lines[j].trim();
+            if (!next || /^(date|no\.|ref|sd|note|schedule|sl|from|to|\d+[.)]\s)/i.test(next)) break;
+            if (/^[A-Z\s,.\-()\/&]+$/.test(next) && next.length > 10) {
+              title += ' ' + next;
+            } else break;
+          }
+          return title.replace(/\s+/g, ' ').replace(/[.\-]+$/, '').trim();
+        }
+      }
+      // Strategy 2: Find prominent title lines
+      // Look for lines that are mostly uppercase and describe the notice
+      const titleKeywords = [
+        /choice\s*entry/i, /counsell?ing/i, /admission/i,
+        /notification/i, /round/i, /allotment/i,
+        /ugcet/i, /pgcet/i, /dcet/i, /kcet/i,
+        /option\s*entry/i, /seat\s*matrix/i, /regarding/i
+      ];
+      for (let i = 0; i < Math.min(lines.length, 30); i++) {
+        const line = lines[i].trim();
+        // Skip header/authority lines
+        if (/karnataka\s+examinations?\s+authority/i.test(line)) continue;
+        if (/^No\.?\s*:/i.test(line) || /^Date/i.test(line)) continue;
+        if (line.length < 15) continue;
+        // Check if this line contains title keywords
+        const hasKeyword = titleKeywords.some(re => re.test(line));
+        if (hasKeyword) {
+          let title = line;
+          // Collect continuation lines
+          for (let j = i + 1; j < Math.min(i + 4, lines.length); j++) {
+            const next = lines[j].trim();
+            if (!next || next.length < 5) break;
+            if (/^(date|no\.|ref|sd|note|schedule|sl|from|to|\d+[.)]\s)/i.test(next)) break;
+            if (titleKeywords.some(re => re.test(next)) || /^[A-Z\s,.\-()\/&:]+$/.test(next)) {
+              title += ' ' + next;
+            } else break;
+          }
+          return title.replace(/\s+/g, ' ').replace(/[.\-]+$/, '').trim();
+        }
+      }
+      // Strategy 3: Look for all-caps lines after the header
+      let passedHeader = false;
+      for (let i = 0; i < Math.min(lines.length, 20); i++) {
+        if (/karnataka\s+examinations?\s+authority/i.test(lines[i])) {
+          passedHeader = true;
+          continue;
+        }
+        if (!passedHeader) continue;
+        const line = lines[i].trim();
+        // Skip short lines, date/number lines
+        if (line.length < 15) continue;
+        if (/^(No\.?\s*:|Date|Ref)/i.test(line)) continue;
+        // All-caps line of reasonable length → likely title
+        if (/^[A-Z\s,.\-()\/&:0-9]+$/.test(line) && line.length > 15) {
+          return line.replace(/\s+/g, ' ').trim();
+        }
+      }
+      return '';
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Courses
+       ──────────────────────────────────────
+       KEA notices reference specific courses.
+       This rule extracts recognized course names from the full text.
+       Known KEA course names:
+         Engineering: B.E., B.Tech, M.Tech
+         Medical: MBBS, BDS, BAMS, BHMS, BUMS, B.Pharm, Pharm.D
+         Architecture: B.Arch
+         Others: MBA, MCA, BHMCT, B.Sc(Nursing), B.Plan, Farm.Sc.
+         CET types: UGCET, PGCET, DCET, KCET
+    */
+    function extractCourses(lines) {
+      const fullText = lines.join(' ');
+      const courses = new Set();
+      // Comprehensive list of KEA course patterns
+      const coursePatterns = [
+        { pattern: /\bUGCET\b/gi, name: 'UGCET' },
+        { pattern: /\bPGCET\b/gi, name: 'PGCET' },
+        { pattern: /\bDCET\b/gi, name: 'DCET' },
+        { pattern: /\bKCET\b/gi, name: 'KCET' },
+        { pattern: /\bB\.?\s*E\.?\b/gi, name: 'B.E.' },
+        { pattern: /\bB\.?\s*Tech\.?\b/gi, name: 'B.Tech' },
+        { pattern: /\bM\.?\s*Tech\.?\b/gi, name: 'M.Tech' },
+        { pattern: /\bMBBS\b/gi, name: 'MBBS' },
+        { pattern: /\bBDS\b/gi, name: 'BDS' },
+        { pattern: /\bBAMS\b/gi, name: 'BAMS' },
+        { pattern: /\bBHMS\b/gi, name: 'BHMS' },
+        { pattern: /\bBUMS\b/gi, name: 'BUMS' },
+        { pattern: /\bB\.?\s*Pharm\.?\b/gi, name: 'B.Pharm' },
+        { pattern: /\bPharm\.?\s*D\.?\b/gi, name: 'Pharm.D' },
+        { pattern: /\bB\.?\s*Arch\.?\b/gi, name: 'B.Arch' },
+        { pattern: /\bMBA\b/gi, name: 'MBA' },
+        { pattern: /\bMCA\b/gi, name: 'MCA' },
+        { pattern: /\bBHMCT\b/gi, name: 'BHMCT' },
+        { pattern: /\bB\.?\s*Sc\.?\s*\(?\s*Nursing\s*\)?\b/gi, name: 'B.Sc (Nursing)' },
+        { pattern: /\bB\.?\s*Plan\.?\b/gi, name: 'B.Plan' },
+        { pattern: /\bFarm\.?\s*Sc\.?\b/gi, name: 'Farm.Sc' },
+        { pattern: /\bB\.?\s*Sc\.?\s*\(?\s*Ag(?:riculture)?\s*\)?\b/gi, name: 'B.Sc (Agriculture)' },
+        { pattern: /\bB\.?\s*V\.?\s*Sc\.?\b/gi, name: 'B.V.Sc' },
+        { pattern: /\bB\.?\s*F\.?\s*Sc\.?\b/gi, name: 'B.F.Sc' },
+        { pattern: /\bM\.?\s*E\.?\b/gi, name: 'M.E.' },
+        { pattern: /\bB\.?\s*Sc\.?\b/gi, name: null }, // Generic B.Sc — only if not already specific
+        { pattern: /\bEngineering\b/gi, name: null }, // Skip generic
+      ];
+      for (const { pattern, name } of coursePatterns) {
+        if (name && pattern.test(fullText)) {
+          courses.add(name);
+        }
+      }
+      // Also look for course lists in the text
+      // KEA notices sometimes list: "B.E. / B.Tech / B.Arch / MBBS / BDS / ..."
+      const listPattern = /(?:courses?|programmes?|programs?)\s*[:]\s*(.+)/i;
+      for (const line of lines) {
+        const listMatch = line.match(listPattern);
+        if (listMatch) {
+          const items = listMatch[1].split(/[,\/;&]+/);
+          for (const item of items) {
+            const clean = item.trim();
+            if (clean.length >= 2 && clean.length <= 30) {
+              courses.add(clean);
+            }
+          }
+        }
+      }
+      return [...courses];
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Timeline / Schedule
+       ──────────────────────────────────────
+       KEA notices contain schedule tables with:
+         Sl. No. | Activity | Date | Time
+       
+       Or date-event pairs in text:
+         "Choice entry starts from: 16-07-2026 at 10.00 am"
+         "Last date for choice entry: 20-07-2026 up to 11.59 pm"
+       
+       We also look for structured patterns like:
+         "From DD-MM-YYYY to DD-MM-YYYY"
+         "On DD-MM-YYYY"
+    */
+    function extractTimeline(lines) {
+      const timeline = [];
+      const datePattern = /(\d{1,2})\s*[-/.]\s*(\d{1,2})\s*[-/.]\s*(\d{4})/g;
+      const timePattern = /(\d{1,2})[.:]\s*(\d{2})\s*(am|pm|a\.m\.?|p\.m\.?|AM|PM)/i;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        // Skip empty or very short lines
+        if (line.length < 10) continue;
+        // Check if line contains a date
+        const dates = [...line.matchAll(/(\d{1,2})\s*[-/.]\s*(\d{1,2})\s*[-/.]\s*(\d{4})/g)];
+        if (dates.length === 0) continue;
+        // Skip lines that are just the notice header date (already extracted)
+        if (/^date[d]?\s*:/i.test(line) && i < 10) continue;
+        // Extract the event description
+        let event = line;
+        let type = 'event';
+        // Determine event type based on keywords
+        if (/start|commence|begin|open/i.test(line)) type = 'start';
+        else if (/end|close|last|deadline|expire/i.test(line)) type = 'end';
+        else if (/publish|release|declar|announce|display/i.test(line)) type = 'publication';
+        else if (/download|upload|submit/i.test(line)) type = 'action';
+        else if (/round|allot/i.test(line)) type = 'allotment';
+        else if (/report|join/i.test(line)) type = 'reporting';
+        else if (/payment|fee|pay/i.test(line)) type = 'payment';
+        else if (/document\s*verif|verif/i.test(line)) type = 'verification';
+        // Clean event text: remove dates and times from description
+        event = event
+          .replace(/(\d{1,2})\s*[-/.]\s*(\d{1,2})\s*[-/.]\s*(\d{4})/g, '')
+          .replace(/(\d{1,2})[.:]\s*(\d{2})\s*(am|pm|a\.m\.?|p\.m\.?)/gi, '')
+          .replace(/\b(?:from|to|on|at|upto|up\s+to|by|before|after|w\.e\.f\.?)\b\s*/gi, ' ')
+          .replace(/\s*[-:,;]+\s*$/g, '')
+          .replace(/^\s*[-:,;.\d]+\s*/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        // Skip if no meaningful event description remains
+        if (event.length < 3) continue;
+        // For each date found, create a timeline entry
+        for (const dateMatch of dates) {
+          const dateStr = convertDate(dateMatch[1], dateMatch[2], dateMatch[3]);
+          // Extract time if present
+          const timeMatch = line.match(timePattern);
+          let timeStr = '';
+          if (timeMatch) {
+            const p = timeMatch[3].replace(/\./g, '').toUpperCase();
+            timeStr = `${timeMatch[1]}:${timeMatch[2]} ${p}`;
+          }
+          timeline.push({
+            type: type,
+            event: event,
+            date: dateStr,
+            time: timeStr
+          });
+        }
+      }
+      // Deduplicate timeline entries (same event + date)
+      const seen = new Set();
+      const unique = [];
+      for (const entry of timeline) {
+        const key = `${entry.event}|${entry.date}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          unique.push(entry);
+        }
+      }
+      return unique;
+    }
+    /* ──────────────────────────────────────
+       PARSER RULE: Notes / Instructions
+       ──────────────────────────────────────
+       KEA notices contain bullet points and numbered instructions.
+       Patterns:
+         "1. ..."  "2. ..."  (numbered)
+         "1) ..."  "2) ..."
+         "(a) ..." "(b) ..."
+         "• ..."  "- ..."  "* ..."  (bullet)
+         "Note:" / "N.B:" / "Important:" sections
+         Lines starting with keywords like "Candidates", "The candidates"
+    */
+    function extractNotes(lines) {
+      const notes = [];
+      let inNotesSection = false;
+      let currentNote = '';
+      // Keywords indicating the start of a notes/instructions section
+      const sectionStarters = /^(note|n\.b|important|instruction|general\s+instruction|candidate|remark|warning|caution|please\s+note)/i;
+      // Bullet/number patterns
+      const bulletPattern = /^(?:[\u2022\u2023\u25E6\u2043\u2219•·\-*]\s+|\d+[.)]\s+|\([a-z]\)\s+|[a-z][.)]\s+|[ivxlcdm]+[.)]\s+)/i;
+      // Table-like patterns to skip
+      const skipPatterns = /^(?:sl\.?\s*no|sr\.?\s*no|page\s+\d|signature|downloaded\s+date|executive\s+director|sd[\/\-])/i;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) {
+          // Blank line: flush current note if any
+          if (currentNote) {
+            notes.push(normalizeNoteText(currentNote));
+            currentNote = '';
+          }
+          continue;
+        }
+        // Skip table headers and footers
+        if (skipPatterns.test(line)) continue;
+        // Detect notes section start
+        if (sectionStarters.test(line)) {
+          inNotesSection = true;
+          // If the line has content after the keyword prefix, capture it
+          const contentMatch = line.match(/^(?:note|n\.b|important|instruction|remark|warning|caution|please\s+note)\s*[:.\-]\s*(.+)/i);
+          if (contentMatch && contentMatch[1].trim().length > 5) {
+            if (currentNote) notes.push(normalizeNoteText(currentNote));
+            currentNote = contentMatch[1].trim();
+          }
+          continue;
+        }
+        // Check for bullet/numbered items anywhere in the document
+        if (bulletPattern.test(line)) {
+          // Flush previous note
+          if (currentNote) {
+            notes.push(normalizeNoteText(currentNote));
+          }
+          // Start new note (remove the bullet prefix)
+          currentNote = line.replace(bulletPattern, '').trim();
+          continue;
+        }
+        // If we're in a notes section, capture continuation lines
+        if (inNotesSection && currentNote) {
+          // If line is indented or doesn't start a new pattern, treat as continuation
+          if (line.length > 5 && !sectionStarters.test(line) && !skipPatterns.test(line)) {
+            currentNote += ' ' + line;
+          }
+        }
+        // Also capture standalone instruction-like lines
+        if (!inNotesSection) {
+          const instructionPatterns = [
+            /^candidates?\s+(are|should|must|shall|may|need|have)/i,
+            /^the\s+candidates?\s+(are|should|must|shall|may|need|have)/i,
+            /^it\s+is\s+(mandatory|compulsory|necessary|required)/i,
+            /^all\s+(?:the\s+)?candidates?\s/i,
+            /^for\s+(?:any|further)\s+/i,
+          ];
+          if (instructionPatterns.some(p => p.test(line))) {
+            if (currentNote) notes.push(normalizeNoteText(currentNote));
+            currentNote = line;
+          }
+        }
+      }
+      // Flush remaining note
+      if (currentNote) {
+        notes.push(normalizeNoteText(currentNote));
+      }
+      // Filter out very short or meaningless notes
+      return notes.filter(n => n.length > 10);
+    }
+    /**
+     * Normalize note text: fix whitespace, normalize dates/times.
+     */
+    function normalizeNoteText(text) {
+      let normalized = text.replace(/\s+/g, ' ').trim();
+      normalized = normalizeDates(normalized);
+      normalized = normalizeTime(normalized);
+      // Remove trailing periods/commas if duplicated
+      normalized = normalized.replace(/([.,;:])\1+$/g, '$1');
+      return normalized;
+    }
+    /* ============================================
+       MAIN PARSE WORKFLOW
+       ============================================ */
+    async function parseDocument() {
+      try {
+        // Reset state
+        State.clear();
+        $corsError.classList.remove('visible');
+        $resultSection.classList.add('hidden');
+        $downloadBtn.disabled = true;
+        $copyBtn.disabled = true;
+        showProgress();
+        let buffer = null;
+        // Determine source: local file takes priority over URL
+        if (State.selectedFile) {
+          buffer = await loadPdfFromFile(State.selectedFile);
+        } else {
+          const url = $urlInput.value.trim();
+          if (!url) {
+            throw new Error('No PDF source provided. Enter a URL or select a file.');
+          }
+          // Validate URL
+          try {
+            new URL(url);
+          } catch {
+            throw new Error('Invalid URL format. Please enter a valid PDF URL.');
+          }
+          buffer = await loadPdfFromUrl(url);
+          if (!buffer) {
+            // CORS or network error — already handled
+            hideProgress();
+            return;
+          }
+        }
+        State.arrayBuffer = buffer;
+        // Validate PDF header
+        const header = new Uint8Array(buffer.slice(0, 5));
+        const headerStr = String.fromCharCode(...header);
+        if (headerStr !== '%PDF-') {
+          throw new Error('This file does not appear to be a valid PDF (missing %PDF- header).');
+        }
+        setProgress(30, 'PDF loaded. Extracting text...');
+        // Extract text using PDF.js
+        const lines = await extractTextFromPdf(buffer);
+        State.extractedText = lines.join('\n');
+        // Parse KEA notice structure
+        const result = parseKeaNotice(lines);
+        State.parsedJSON = result;
+        setProgress(100, 'Parsing complete!');
+        setStatus('success', 'Complete');
+        // Show result
+        setTimeout(() => {
+          hideProgress();
+          displayResult(result);
+          showToast('Notice parsed successfully!', 'success');
+        }, 400);
+      } catch (err) {
+        console.error('Parse error:', err);
+        setStatus('error', 'Failed');
+        setProgress(100, `Error: ${err.message}`);
+        showToast(err.message, 'error');
+        setTimeout(() => {
+          hideProgress();
+        }, 2000);
+      }
+    }
+    /* ============================================
+       DISPLAY RESULT
+       ============================================ */
+    function displayResult(json) {
+      $resultSection.classList.remove('hidden');
+      $downloadBtn.disabled = false;
+      $copyBtn.disabled = false;
+      // Syntax-highlighted JSON
+      const formatted = JSON.stringify(json, null, 2);
+      $jsonPreview.innerHTML = syntaxHighlightJSON(formatted);
+      // Scroll to result
+      $resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    /**
+     * Syntax highlight JSON string for the preview.
+     * Returns HTML with color-coded spans.
+     */
+    function syntaxHighlightJSON(json) {
+      // Escape HTML
+      const escaped = json
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return escaped.replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?|[{}\[\],])/g,
+        (match) => {
+          let cls = 'json-number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'json-key';
+              // Remove the colon from the match for styling, add it back as punctuation
+              return `<span class="${cls}">${match.slice(0, -1)}</span><span class="json-punctuation">:</span>`;
+            } else {
+              cls = 'json-string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'json-boolean';
+          } else if (/null/.test(match)) {
+            cls = 'json-null';
+          } else if (/[{}\[\]]/.test(match)) {
+            cls = 'json-bracket';
+          } else if (/[,]/.test(match)) {
+            cls = 'json-punctuation';
+          }
+          return `<span class="${cls}">${match}</span>`;
+        }
+      );
+    }
+    /* ============================================
+       DOWNLOAD JSON
+       ============================================ */
+    function downloadJSON() {
+      if (!State.parsedJSON) return;
+      const jsonStr = JSON.stringify(State.parsedJSON, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      State.objectUrl = url;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'notice.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // Revoke after download
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+        if (State.objectUrl === url) State.objectUrl = null;
+      }, 1000);
+      showToast('notice.json downloaded!', 'success');
+    }
+    /* ============================================
+       COPY JSON
+       ============================================ */
+    async function copyJSON() {
+      if (!State.parsedJSON) return;
+      try {
+        const jsonStr = JSON.stringify(State.parsedJSON, null, 2);
+        await navigator.clipboard.writeText(jsonStr);
+        showToast('JSON copied to clipboard!', 'success');
+      } catch {
+        showToast('Failed to copy. Try downloading instead.', 'error');
+      }
+    }
+    /* ============================================
+       CLEAR SESSION
+       ============================================ */
+    function clearSession() {
+      // Destroy all state
+      State.clear();
+      // Reset UI
+      $urlInput.value = '';
+      $fileInput.value = '';
+      hideFileInfo();
+      hideProgress();
+      $corsError.classList.remove('visible');
+      $resultSection.classList.add('hidden');
+      $jsonPreview.innerHTML = '<div class="json-placeholder">Waiting for PDF...</div>';
+      $downloadBtn.disabled = true;
+      $copyBtn.disabled = true;
+      $parseBtn.disabled = true;
+      showToast('Session cleared. All data destroyed.', 'info');
+    }
+    /* ============================================
+       EVENT LISTENERS
+       ============================================ */
+    $parseBtn.addEventListener('click', parseDocument);
+    $downloadBtn.addEventListener('click', downloadJSON);
+    $copyBtn.addEventListener('click', copyJSON);
+    $clearBtn.addEventListener('click', clearSession);
+    // Allow Enter key in URL input to trigger parse
+    $urlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !$parseBtn.disabled) {
+        parseDocument();
+      }
+    });
+    // Prevent default drag behavior on the document
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    document.addEventListener('drop', (e) => e.preventDefault());
   </script>
 </body>
 </html>
