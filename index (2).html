@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KEA PDF Stream Parser</title>
+  <title>KEA Stream Parser</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Load Pyodide in-browser Python Engine -->
+  <!-- Load Pyodide WASM Engine -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
   <style>
     :root {
@@ -77,7 +77,7 @@
     .input-box {
       display: flex;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     input[type="url"] {
@@ -108,12 +108,52 @@
     }
 
     button:disabled {
-      background: #333;
+      background: #222;
+      color: #666;
       cursor: not-allowed;
     }
 
     button:active:not(:disabled) {
       transform: scale(0.96);
+    }
+
+    .divider {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #555;
+      margin: 12px 0;
+      letter-spacing: 1px;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.01);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      margin-bottom: 20px;
+    }
+
+    .file-input-wrapper:hover {
+      border-color: var(--accent-color);
+    }
+
+    .file-input-wrapper input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-label {
+      font-size: 0.85rem;
+      color: #888;
     }
 
     .output-area {
@@ -145,24 +185,33 @@
   <div class="container">
     <div class="header">
       <h1>KEA Stream Parser</h1>
-      <span class="badge">xos1-wasm-v1</span>
+      <span class="badge">xos1-wasm-v3</span>
     </div>
 
+    <!-- URL Input -->
     <div class="input-box">
       <input type="url" id="pdfUrl" placeholder="Paste direct KEA PDF URL..." required>
-      <button id="execBtn" onclick="processPdf()" disabled>Initializing WASM...</button>
+      <button id="execBtn" onclick="processPdfUrl()" disabled>Loading WASM...</button>
     </div>
 
-    <div class="output-area">
-      <pre id="jsonDisplay">// Loading Pyodide & pypdf into browser RAM...</pre>
+    <div class="divider">OR DROP / SELECT FILE DIRECTLY</div>
+
+    <!-- Local Browser File Input -->
+    <div class="file-input-wrapper">
+      <span class="file-label" id="fileLabel">Click or drag local KEA PDF here to process in RAM</span>
+      <input type="file" id="pdfFile" accept="application/pdf" onchange="processLocalFile(this)">
     </div>
-    <div id="status" class="status-text">Status: Preparing environment</div>
+
+    <!-- Output Box -->
+    <div class="output-area">
+      <pre id="jsonDisplay">// Initializing Python environment in browser memory...</pre>
+    </div>
+    <div id="status" class="status-text">Status: Loading engine</div>
   </div>
 
   <script>
     let pyodide = null;
 
-    // Load Python runtime inside browser RAM
     async function initPython() {
       const status = document.getElementById('status');
       const display = document.getElementById('jsonDisplay');
@@ -174,63 +223,28 @@
         const micropip = pyodide.pyimport("micropip");
         await micropip.install('pypdf');
 
-        status.innerText = "Status: Engine Ready (Browser RAM stream)";
-        display.innerText = "// Ready. Enter KEA PDF URL and click Execute.";
-        execBtn.disabled = false;
-        execBtn.innerText = "Execute";
-      } catch (err) {
-        status.innerText = "Status: Failed to load WebAssembly engine";
-        display.innerText = `Error: ${err.message}`;
-      }
-    }
-
-    initPython();
-
-    async function processPdf() {
-      const url = document.getElementById('pdfUrl').value;
-      const display = document.getElementById('jsonDisplay');
-      const status = document.getElementById('status');
-
-      if (!url) {
-        alert('Please insert a PDF URL');
-        return;
-      }
-
-      status.innerText = "Status: Downloading PDF into memory stream...";
-      display.innerText = "// Processing in browser memory...";
-
-      // Embed Python parsing execution script
-      const pythonScript = `
+        // Python Parsing Logic
+        pyodide.runPython(`
 import io
 import re
 import json
-import urllib.request
 import pypdf
 
-def parse_url(pdf_url):
-    # Fetch PDF directly into BytesIO RAM buffer via CORS proxy if needed
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    
-    # Using public CORS proxy to allow client-side fetching from external domains
-    proxy_url = "https://corsproxy.io/?" + urllib.parse.quote(pdf_url)
-    req = urllib.request.Request(proxy_url, headers=headers)
-    
-    with urllib.request.urlopen(req) as response:
-        pdf_bytes = io.BytesIO(response.read())
-
-    reader = pypdf.PdfReader(pdf_bytes)
+def parse_kea_bytes(pdf_bytes):
+    stream = io.BytesIO(pdf_bytes.to_py())
+    reader = pypdf.PdfReader(stream)
     raw_text = ""
     for page in reader.pages:
         text = page.extract_text()
         if text:
             raw_text += text + "\\n"
 
-    # Metadata extraction
+    # Metadata
     doc_no = re.search(r'No\\.\\s*([A-Z0-9\\/-]+)', raw_text)
     pub_date = re.search(r'Date:\\s*([\\d{2}\\-\\.\\/]+)', raw_text)
     title = re.search(r'(UGCET-\\d{4}-[\\w\\s]+Results?)', raw_text)
 
-    # Event extraction
+    # Milestones
     events = []
     if "09-07-2026" in raw_text:
         events.append({
@@ -280,18 +294,85 @@ def parse_url(pdf_url):
         }
     }
     return json.dumps(result, indent=2)
+`);
 
-parse_url("${url}")
-`;
+        status.innerText = "Status: Engine Ready (Browser RAM execution)";
+        display.innerText = "// Engine initialized. Paste URL or drop PDF.";
+        execBtn.disabled = false;
+        execBtn.innerText = "Fetch & Parse";
+      } catch (err) {
+        status.innerText = "Status: WASM Load Error";
+        display.innerText = `Error: ${err.message}`;
+      }
+    }
+
+    initPython();
+
+    // Core Parsing Runner
+    function executeBytesParse(arrayBuffer) {
+      const display = document.getElementById('jsonDisplay');
+      const status = document.getElementById('status');
+      
+      try {
+        const uint8Array = new Uint8Array(arrayBuffer);
+        const parseFunc = pyodide.globals.get('parse_kea_bytes');
+        const jsonResult = parseFunc(uint8Array);
+
+        display.innerText = jsonResult;
+        status.innerText = "Status: Parsing complete (0 bytes stored to disk).";
+      } catch (err) {
+        display.innerText = `Parsing Error: ${err.message}`;
+        status.innerText = "Status: Failed to parse PDF structure.";
+      }
+    }
+
+    // Method 1: Native Browser URL Fetch (Mimics regular tab request)
+    async function processPdfUrl() {
+      const inputUrl = document.getElementById('pdfUrl').value.trim();
+      const display = document.getElementById('jsonDisplay');
+      const status = document.getElementById('status');
+
+      if (!inputUrl) {
+        alert('Please enter a PDF URL');
+        return;
+      }
+
+      status.innerText = "Status: Sending native browser fetch request...";
+      display.innerText = "// Downloading stream directly in browser context...";
 
       try {
-        const jsonResult = await pyodide.runPythonAsync(pythonScript);
-        display.innerText = jsonResult;
-        status.innerText = "Status: Parse complete (Processed entirely in RAM).";
+        const response = await fetch(inputUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/pdf,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+          },
+          mode: 'cors'
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const arrayBuffer = await response.arrayBuffer();
+        executeBytesParse(arrayBuffer);
+
       } catch (err) {
-        display.innerText = `Error processing PDF: ${err.message}`;
-        status.innerText = "Status: Execution error.";
+        display.innerText = `Browser URL Fetch Blocked by Server CORS:\n${err.message}\n\nSolution: Use the file picker below or download the PDF in another tab and drop it here.`;
+        status.innerText = "Status: URL blocked by KEA server CORS policy.";
       }
+    }
+
+    // Method 2: Direct Local File Stream (Bypasses server blocks completely)
+    function processLocalFile(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      
+      document.getElementById('fileLabel').innerText = `Loaded: ${file.name}`;
+      document.getElementById('status').innerText = "Status: Reading local stream into memory...";
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        executeBytesParse(e.target.result);
+      };
+      reader.readAsArrayBuffer(file);
     }
   </script>
 </body>
