@@ -285,67 +285,58 @@ body{
 .send-btn:disabled{ opacity:.25; cursor:not-allowed; }
 
 /* ═══ CONNECT OVERLAY (Proton ↔ x0s) ═══ */
-.connect-overlay{
-  position:fixed; inset:0; z-index:9999;
-  background:rgba(0,0,0,0.92);
-  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  display:none; align-items:center; justify-content:center;
+.connect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-.connect-overlay.show{ display:flex; animation:connFadeIn .3s ease; }
-@keyframes connFadeIn{ from{ opacity:0; } to{ opacity:1; } }
-
-.conn-card{ display:flex; flex-direction:column; align-items:center; text-align:center; padding:20px; }
-
-.conn-track{ display:flex; align-items:center; justify-content:center; margin-bottom:30px; }
-
-.conn-node{
-  width:76px; height:76px; border-radius:50%; flex-shrink:0; position:relative; z-index:2;
-  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.16);
-  display:flex; align-items:center; justify-content:center;
-  animation:connNodePulse 1.6s ease-in-out infinite;
+.connect-overlay.show { display: flex; }
+.connect-overlay .conn-wrap {
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
-.conn-node-right{ animation-delay:.35s; }
-@keyframes connNodePulse{
-  0%,100%{ box-shadow:0 0 0 0 rgba(255,255,255,0.14); }
-  50%{ box-shadow:0 0 0 12px rgba(255,255,255,0); }
+.connect-overlay .conn-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  animation: pulse-glow 1.2s infinite alternate ease-in-out;
 }
-.conn-icon{ width:38px; height:38px; object-fit:contain; }
-
-.conn-beam{
-  width:130px; height:2px; background:rgba(255,255,255,0.14); position:relative; flex-shrink:0;
+.connect-overlay .conn-dots {
+  display: flex;
+  gap: 10px;
 }
-.conn-beam-fill{
-  position:absolute; inset:0;
-  background:linear-gradient(90deg, transparent, #fff 50%, transparent);
-  background-size:55% 100%; background-repeat:no-repeat; background-position:-55% 0;
-  animation:connBeamSweep 1.6s linear infinite;
+.connect-overlay .conn-dot {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  animation: dot-bounce 1.4s infinite ease-in-out both;
 }
-@keyframes connBeamSweep{
-  0%{ background-position:-55% 0; }
-  100%{ background-position:155% 0; }
+.connect-overlay .conn-dot:nth-child(1) { animation-delay: -0.32s; }
+.connect-overlay .conn-dot:nth-child(2) { animation-delay: -0.16s; }
+.connect-overlay .conn-label {
+  color: #fff;
+  font-family: var(--font-d);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 24px;
+  letter-spacing: 0.05em;
 }
-.conn-particle{
-  position:absolute; top:50%; width:5px; height:5px; margin-top:-2.5px; border-radius:50%;
-  background:#fff; opacity:0; box-shadow:0 0 6px 1px rgba(255,255,255,0.6);
-  animation:connParticleTravel 1.6s ease-in-out infinite;
+@keyframes pulse-glow {
+  0% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.2)); transform: scale(0.95); }
+  100% { filter: drop-shadow(0 0 24px rgba(255,255,255,0.6)); transform: scale(1.05); }
 }
-.conn-particle.p2{ animation-delay:.35s; }
-.conn-particle.p3{ animation-delay:.7s; }
-@keyframes connParticleTravel{
-  0%{ left:0%; opacity:0; }
-  12%{ opacity:1; }
-  88%{ opacity:1; }
-  100%{ left:100%; opacity:0; }
-}
-.conn-track.reverse .conn-beam-fill,
-.conn-track.reverse .conn-particle{ animation-direction:reverse; }
-
-.conn-eyebrow{
-  font-family:var(--font-m); font-size:.55rem; color:rgba(255,255,255,0.4);
-  letter-spacing:.25em; text-transform:uppercase; margin-bottom:10px;
-}
-.conn-label{
-  color:#fff; font-family:var(--font-d); font-size:.95rem; font-weight:700; letter-spacing:-0.01em;
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
 @media(max-width:420px){ .msg-bubble{ max-width:90%; } .chat-card{ max-width:100%; } }
@@ -355,24 +346,16 @@ body{
 
 <!-- ═══ CONNECT OVERLAY ═══ -->
 <div class="connect-overlay" id="connectOverlay">
-  <div class="conn-card">
-    <div class="conn-track" id="connTrack">
-      <div class="conn-node conn-node-left">
-        <img src="./logo.svg" class="conn-icon" id="connLeft" alt="Proton">
-      </div>
-      <div class="conn-beam">
-        <div class="conn-beam-fill"></div>
-        <span class="conn-particle p1"></span>
-        <span class="conn-particle p2"></span>
-        <span class="conn-particle p3"></span>
-      </div>
-      <div class="conn-node conn-node-right">
-        <img src="./xoslink.png" class="conn-icon" id="connRight" alt="x0s">
-      </div>
+  <div class="conn-wrap">
+    <img src="./logo.svg" class="conn-icon" id="connLeft" alt="Proton">
+    <div class="conn-dots">
+      <span class="conn-dot"></span>
+      <span class="conn-dot"></span>
+      <span class="conn-dot"></span>
     </div>
-    <div class="conn-eyebrow">x0s network</div>
-    <div class="conn-label" id="connLabel">Connecting to x0s…</div>
+    <img src="./xoslink.png" class="conn-icon" id="connRight" alt="x0s">
   </div>
+  <div class="conn-label" id="connLabel">Connecting to x0s…</div>
 </div>
 
 <!-- ═══ ONBOARDING ═══ -->
@@ -712,7 +695,6 @@ let flowState = null; // { pendingRankForCollege, dataset, category, rank, branc
    ══════════════════════════════════════════════════════════ */
 function showConnectOverlay(direction, callback) {
   const overlay = document.getElementById('connectOverlay');
-  const track = document.getElementById('connTrack');
   const leftIcon = document.getElementById('connLeft');
   const rightIcon = document.getElementById('connRight');
   const label = document.getElementById('connLabel');
@@ -721,12 +703,10 @@ function showConnectOverlay(direction, callback) {
     leftIcon.src = './logo.svg';
     rightIcon.src = './xoslink.png';
     label.textContent = 'Connecting to x0s…';
-    track.classList.remove('reverse');
   } else {
     leftIcon.src = './xoslink.png';
     rightIcon.src = './logo.svg';
     label.textContent = 'Returning to Proton…';
-    track.classList.add('reverse');
   }
 
   overlay.classList.add('show');
@@ -745,29 +725,251 @@ function openXosLink(code) {
 
 /* ══════════════════════════════════════════════════════════
    HANDLE INCOMING LINK FROM x0s (KCET 2026 click)
+   — now shows a form instead of auto‑replying
    ══════════════════════════════════════════════════════════ */
+let incomingCollegeCode = null;
+let incomingCollegeName = null;
+let incomingDataset = null; // 'eng' or 'enghk'
+let lastSearchCategory = null; // for "Search for different branch" pre‑fill
+
 function handleIncomingCollegeData() {
   const params = new URLSearchParams(window.location.search);
-  const college = params.get('college');
-  const branch = params.get('branch');
-  const cutoff = params.get('cutoff');
-  const category = params.get('category');
   const code = params.get('code');
 
-  if (college && branch && cutoff) {
-    // Show the reverse animation first
-    showConnectOverlay('fromXos', () => {
-      // Clear URL params
-      const url = window.location.href.split('?')[0];
-      window.history.replaceState({}, document.title, url);
+  if (!code) return;
 
-      // Send the response as Proton
-      setTimeout(() => {
-        const msg = `The KCET 2026 cutoff for <b>${escapeHtml(branch)}</b> at <b>${escapeHtml(college)}</b> (${category || 'GM'}) is <b>${parseInt(cutoff).toLocaleString('en-IN')}</b>.`;
-        protonSays(msg, `KCET 2026 cutoff for ${branch} at ${college} is ${cutoff}`);
-      }, 300);
+  // Clear URL param
+  const url = window.location.href.split('?')[0];
+  window.history.replaceState({}, document.title, url);
+
+  // Show reverse animation first
+  showConnectOverlay('fromXos', () => {
+    // We need to load the dataset to find the college name and determine which dataset
+    // We'll load both and find the college
+    incomingCollegeCode = code;
+    loadDataset('eng').then(engData => {
+      let found = false;
+      for (const c of engData) {
+        if (c.id === code) {
+          incomingCollegeName = c.name;
+          incomingDataset = 'eng';
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return loadDataset('enghk').then(hkData => {
+          for (const c of hkData) {
+            if (c.id === code) {
+              incomingCollegeName = c.name;
+              incomingDataset = 'enghk';
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            // fallback: use code as name
+            incomingCollegeName = 'College ' + code;
+            incomingDataset = 'eng';
+          }
+          showCutoffForm();
+        });
+      } else {
+        showCutoffForm();
+      }
+    }).catch(() => {
+      incomingCollegeName = 'College ' + code;
+      incomingDataset = 'eng';
+      showCutoffForm();
     });
+  });
+}
+
+function showCutoffForm(prefillCategory) {
+  const collegeDisplay = incomingCollegeName ? escapeHtml(incomingCollegeName.split(',')[0].trim()) : 'this college';
+  const html = `
+    <div style="margin-bottom:6px;font-size:.82rem;font-weight:500;color:var(--text-0);">
+      <i class="fa-regular fa-building" style="margin-right:6px;"></i> ${collegeDisplay}
+    </div>
+    <div class="chat-card" id="cutoffFormCard">
+      <div class="chat-card-title">Check KCET 2026 cutoff</div>
+
+      <div class="field-mini-label">Dataset</div>
+      <div class="chip-row" style="margin-bottom:12px;">
+        <div class="mini-chip" data-ds="eng" style="background:var(--text-0);color:var(--bg);">Engineering</div>
+        <div class="mini-chip" data-ds="enghk">Engineering (HK)</div>
+      </div>
+
+      <div class="field-mini-label">Category</div>
+      <div class="dd-mini" id="cutoffCatDD">
+        <div class="dd-mini-trigger placeholder" id="cutoffCatTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
+        <div class="dd-mini-menu" id="cutoffCatMenu"></div>
+      </div>
+
+      <div class="field-mini-label" style="margin-top:12px;">Branch</div>
+      <div style="position:relative;">
+        <input type="text" class="xin" id="cutoffBranchInput" placeholder="Search branch (e.g. Computer Science)" autocomplete="off">
+        <div class="dd-mini-menu" id="cutoffBranchSuggest" style="max-height:180px;"></div>
+      </div>
+
+      <button class="btn-solid" id="cutoffShowBtn"><i class="fa-solid fa-magnifying-glass"></i> Show Cutoff</button>
+    </div>
+  `;
+  const row = protonSays(html, `Check cutoff for ${incomingCollegeName}`);
+  const card = row.querySelector('#cutoffFormCard');
+
+  // Wire dataset selection
+  let selectedDataset = incomingDataset || 'eng';
+  card.querySelectorAll('[data-ds]').forEach(chip => {
+    chip.addEventListener('click', function() {
+      card.querySelectorAll('[data-ds]').forEach(c => {
+        c.style.background = '';
+        c.style.color = '';
+      });
+      this.style.background = 'var(--text-0)';
+      this.style.color = 'var(--bg)';
+      selectedDataset = this.getAttribute('data-ds');
+      // Update category list
+      const cats = selectedDataset === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
+      const menu = card.querySelector('#cutoffCatMenu');
+      menu.innerHTML = cats.map(c => `<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('');
+      wireCutoffCatMenu(card);
+    });
+  });
+  // Set initial active dataset
+  const initialChip = card.querySelector(`[data-ds="${selectedDataset}"]`);
+  if (initialChip) {
+    initialChip.style.background = 'var(--text-0)';
+    initialChip.style.color = 'var(--bg)';
   }
+
+  // Category dropdown
+  function wireCutoffCatMenu(card) {
+    const trigger = card.querySelector('#cutoffCatTrigger');
+    const menu = card.querySelector('#cutoffCatMenu');
+    trigger.onclick = ()=> menu.classList.toggle('show');
+    menu.querySelectorAll('[data-cat]').forEach(item => {
+      item.addEventListener('click', function() {
+        const cat = this.getAttribute('data-cat');
+        trigger.innerHTML = cat + ' <i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
+        trigger.classList.remove('placeholder');
+        trigger.dataset.cat = cat;
+        menu.classList.remove('show');
+      });
+    });
+    // Pre‑fill category if provided
+    if (prefillCategory) {
+      const items = menu.querySelectorAll('[data-cat]');
+      for (const el of items) {
+        if (el.getAttribute('data-cat') === prefillCategory) {
+          el.click();
+          break;
+        }
+      }
+    }
+  }
+  wireCutoffCatMenu(card);
+
+  // Branch autocomplete
+  const branchInput = card.querySelector('#cutoffBranchInput');
+  const suggestMenu = card.querySelector('#cutoffBranchSuggest');
+  let selectedBranchEntry = null;
+
+  branchInput.addEventListener('input', async function() {
+    const q = this.value.trim().toLowerCase();
+    selectedBranchEntry = null;
+    if (!q) { suggestMenu.classList.remove('show'); return; }
+    try {
+      const aliases = await loadBranchAliases();
+      const matches = aliases.filter(entry =>
+        entry.display_name.toLowerCase().includes(q) ||
+        (entry.aliases||[]).some(a => a.toLowerCase().includes(q))
+      ).slice(0,8);
+      if (!matches.length) {
+        suggestMenu.innerHTML = '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">No matches</div>';
+        suggestMenu.classList.add('show');
+        return;
+      }
+      suggestMenu.innerHTML = matches.map(m => `<div class="dd-mini-item" data-bid="${m.branch_id}">${escapeHtml(m.display_name)}</div>`).join('');
+      suggestMenu.classList.add('show');
+      suggestMenu.querySelectorAll('[data-bid]').forEach(el => {
+        el.addEventListener('click', function() {
+          const entry = matches.find(m => m.branch_id === this.getAttribute('data-bid'));
+          selectedBranchEntry = entry;
+          branchInput.value = entry.display_name;
+          suggestMenu.classList.remove('show');
+        });
+      });
+    } catch(e) {
+      suggestMenu.innerHTML = '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">branch-aliases.json not found</div>';
+      suggestMenu.classList.add('show');
+    }
+  });
+
+  // Show Cutoff button
+  card.querySelector('#cutoffShowBtn').addEventListener('click', async function() {
+    const category = card.querySelector('#cutoffCatTrigger').dataset.cat;
+    if (!category) {
+      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Please select a category.`);
+      return;
+    }
+    if (!selectedBranchEntry) {
+      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Please select a branch from the suggestions.`);
+      return;
+    }
+
+    // Show thinking
+    const thinkingRow = showTempThinking();
+    await sleep(1600);
+    thinkingRow.remove();
+
+    try {
+      const dataset = await loadDataset(selectedDataset);
+      const college = dataset.find(c => c.id === incomingCollegeCode);
+      if (!college) {
+        protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> College not found in the selected dataset.`);
+        return;
+      }
+      const aliasPool = [selectedBranchEntry.display_name, ...(selectedBranchEntry.aliases||[])];
+      const matchedKey = matchBranchKey(aliasPool, college.branches);
+      if (!matchedKey) {
+        protonSays(`<i class="fa-regular fa-folder-open"></i> Branch "${escapeHtml(selectedBranchEntry.display_name)}" not available for this college.`);
+        return;
+      }
+      const cutoff = college.branches[matchedKey][category];
+      if (cutoff === null || cutoff === undefined) {
+        protonSays(`<i class="fa-regular fa-folder-open"></i> No cutoff data for "${escapeHtml(selectedBranchEntry.display_name)}" under ${category}.`);
+        return;
+      }
+
+      // Store last search for "Search for different branch"
+      lastSearchCategory = category;
+
+      const collegeDisplay = incomingCollegeName.split(',')[0].trim();
+      const cutoffFormatted = parseInt(cutoff).toLocaleString('en-IN');
+      const reply = `
+        <div style="padding:4px 0;">
+          <div style="font-size:.88rem;font-weight:700;color:var(--text-0);">KCET 2026 cutoff</div>
+          <div style="margin-top:8px;padding:12px;background:var(--surface-3);border-radius:12px;">
+            <div style="font-size:.78rem;color:var(--text-2);">${escapeHtml(collegeDisplay)}</div>
+            <div style="font-size:.9rem;font-weight:600;color:var(--text-0);margin-top:2px;">${escapeHtml(selectedBranchEntry.display_name)}</div>
+            <div style="font-size:1.4rem;font-weight:800;color:var(--text-0);margin-top:6px;">${cutoffFormatted}</div>
+            <div style="font-size:.62rem;color:var(--text-3);margin-top:4px;">Category ${category}</div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;">
+            <div class="mini-chip" id="searchDifferentBranchBtn"><i class="fa-solid fa-arrow-right"></i> Search for different branch</div>
+          </div>
+        </div>
+      `;
+      const row2 = protonSays(reply, `KCET cutoff for ${selectedBranchEntry.display_name} at ${collegeDisplay} is ${cutoff}`);
+      row2.querySelector('#searchDifferentBranchBtn').addEventListener('click', () => {
+        // Show the form again with category pre-filled
+        showCutoffForm(lastSearchCategory);
+      });
+    } catch(e) {
+      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Error: ${e.message}`);
+    }
+  });
 }
 
 /* ══════════════════════════════════════════════════════════
