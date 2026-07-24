@@ -1,81 +1,206 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KEA PDF Parser</title>
-<style>
-body{margin:0;background:#000;color:#fff;font-family:Arial;padding:30px}
-.card{max-width:900px;margin:auto;border:1px solid #333;padding:20px;border-radius:12px}
-input,button{width:100%;padding:12px;margin:8px 0;background:#111;color:#fff;border:1px solid #444}
-pre{background:#111;padding:15px;overflow:auto;max-height:400px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEA PDF Parser Tool</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --card-bg: #0a0a0a;
+      --border: #1a1a1a;
+      --accent: #007aff;
+      --text: #ffffff;
+      --text-muted: #888888;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .header {
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0 0 8px 0;
+      font-weight: 600;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .input-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    input[type="url"] {
+      flex: 1;
+      background: #000000;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    input[type="url"]:focus {
+      border-color: var(--accent);
+    }
+
+    button {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+
+    pre {
+      background: #000000;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85rem;
+      color: #00ff66;
+    }
+  </style>
 </head>
 <body>
-<div class="card">
-<h2>KEA Notice PDF → JSON</h2>
-<input id="url" placeholder="Paste PDF URL">
-<input type="file" id="file" accept="application/pdf">
-<button onclick="loadPdf()">Parse PDF</button>
-<pre id="out">{}</pre>
-<button onclick="downloadJson()">Download JSON</button>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.js"></script>
-<script>
-let parsed={};
+  <div class="container">
+    <div class="header">
+      <div class="badge">PARSER ENGINE</div>
+      <h1>KEA PDF Cutoff Converter</h1>
+      <p>Enter direct URL of KEA Cutoff PDF to convert directly to structured JSON.</p>
+    </div>
 
-async function bytesFromSource(){
- const f=document.getElementById('file').files[0];
- if(f) return new Uint8Array(await f.arrayBuffer());
- const url=document.getElementById('url').value.trim();
- if(!url) throw "Select file or URL";
- const r=await fetch(url);
- return new Uint8Array(await r.arrayBuffer());
-}
+    <div class="card">
+      <div class="input-group">
+        <input type="url" id="pdfUrl" placeholder="https://kea.kar.nic.in/pdf_example.pdf" required />
+        <button id="convertBtn" onclick="processPdf()">Convert JSON</button>
+      </div>
 
-async function loadPdf(){
- try{
- const data=await bytesFromSource();
- const pdf=await pdfjsLib.getDocument({data}).promise;
- let text="";
- for(let p=1;p<=pdf.numPages;p++){
-   const page=await pdf.getPage(p);
-   const c=await page.getTextContent();
-   text+=c.items.map(i=>i.str).join(" ")+"\n";
- }
- parsed=parseText(text);
- document.getElementById("out").textContent=JSON.stringify(parsed,null,2);
- }catch(e){alert(e);}
-}
+      <div id="status" class="status"></div>
 
-function normDate(d){
- let m=d.match(/(\d{2})-(\d{2})-(\d{4})/);
- if(!m) return d;
- return `${m[3]}-${m[2]}-${m[1]}`;
-}
+      <div id="resultContainer" style="display: none; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">JSON Output</span>
+          <button style="padding: 4px 12px; font-size: 0.75rem;" onclick="copyJson()">Copy JSON</button>
+        </div>
+        <pre id="jsonViewer"></pre>
+      </div>
+    </div>
+  </div>
 
-function parseText(t){
- const dates=[...t.matchAll(/\b\d{2}-\d{2}-\d{4}\b/g)].map(x=>normDate(x[0]));
- const times=[...t.matchAll(/\b\d{1,2}[.:]\d{2}\s*(AM|PM|am|pm)\b/g)].map(x=>x[0].replace(".",":").toUpperCase());
- return {
-   authority:(t.match(/Karnataka Examinations Authority/i)||[""])[0],
-   notice_date:dates[0]||"",
-   title:(t.match(/UGCET[^\n]*/i)||[""])[0],
-   dates,
-   times,
-   raw_text:t
- };
-}
+  <script>
+    async function processPdf() {
+      const urlInput = document.getElementById('pdfUrl').value.trim();
+      const statusEl = document.getElementById('status');
+      const btn = document.getElementById('convertBtn');
+      const resultContainer = document.getElementById('resultContainer');
+      const jsonViewer = document.getElementById('jsonViewer');
 
-function downloadJson(){
- const b=new Blob([JSON.stringify(parsed,null,2)],{type:"application/json"});
- const a=document.createElement("a");
- a.href=URL.createObjectURL(b);
- a.download="notice.json";
- a.click();
-}
-</script>
+      if (!urlInput) {
+        statusEl.textContent = 'Please enter a valid PDF URL.';
+        return;
+      }
+
+      statusEl.textContent = 'Downloading PDF in-memory and parsing...';
+      btn.disabled = true;
+      resultContainer.style.display = 'none';
+
+      try {
+        const response = await fetch('http://localhost:3000/api/parse-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: urlInput })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          statusEl.textContent = `Success! Parsed ${data.totalRecords} records. Zero disk footprint preserved.`;
+          jsonViewer.textContent = JSON.stringify(data.data, null, 2);
+          resultContainer.style.display = 'block';
+        } else {
+          statusEl.textContent = `Error: ${data.message || 'Failed to parse file.'}`;
+        }
+      } catch (err) {
+        statusEl.textContent = 'Error connecting to the parser backend server.';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function copyJson() {
+      const jsonText = document.getElementById('jsonViewer').textContent;
+      navigator.clipboard.writeText(jsonText);
+      alert('JSON copied to clipboard!');
+    }
+  </script>
 </body>
 </html>
