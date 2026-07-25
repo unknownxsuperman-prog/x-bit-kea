@@ -1,0 +1,39 @@
+name: KEA Watch
+
+on:
+  schedule:
+    # Every 6 hours. Tighten this during active counselling windows,
+    # loosen it (or pause the workflow) outside the counselling season.
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}   # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write   # needed so the workflow can commit data/ back to the repo
+
+jobs:
+  probe-and-fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Probe for the schedule notice (Stage 1)
+        run: npm run fetch-notice
+
+      - name: Fetch + parse mock cutoff list (Stage 2, if the date is known)
+        run: node scripts/fetch-kea-cutoffs.js mock
+        continue-on-error: true   # don't fail the whole run if the date isn't known yet
+
+      - name: Commit updated data
+        run: |
+          git config user.name "kea-watch-bot"
+          git config user.email "actions@github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "kea-watch: update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push

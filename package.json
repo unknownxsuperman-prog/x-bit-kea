@@ -1,0 +1,17 @@
+{
+  "name": "kea-watch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Server-side (GitHub Actions) pipeline that probes predicted KEA notice URLs, extracts mock/provisional/round-1 dates, and (eventually) fetches + parses the resulting cutoff-list PDFs into JSON that x-bit Proton can consume same-origin.",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "fetch-notice": "node scripts/fetch-kea-notice.js",
+    "fetch-cutoffs": "node scripts/fetch-kea-cutoffs.js"
+  },
+  "dependencies": {
+    "pdf-parse": "^1.1.1"
+  }
+}
