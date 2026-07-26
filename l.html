@@ -1663,11 +1663,17 @@ async function handleSmartMessage(rawText){
   await sleep(1600);
   thinkingRow.remove();
 
-  // x-bit 2.0: "mock cutoff" queries route to the live KEA pipeline instead
+  // x-bit 2.0: round-cutoff queries route to the live KEA pipeline instead
   // of the static bundled datasets used everywhere else.
-  if(xbitVersion === '2.0' && /\bmock\b/i.test(rawText) && /\bcut\s*-?off\b/i.test(rawText)){
-    await startMockCutoffFlow();
-    return;
+  if(xbitVersion === '2.0' && /\bcut\s*-?off\b/i.test(rawText)){
+    let detectedRound = null;
+    if(/\bmock\b/i.test(rawText)) detectedRound = 'mock';
+    else if(/\bprovisional\b/i.test(rawText)) detectedRound = 'provisional';
+    else if(/\b(first\s*round|round\s*-?\s*1|round\s*one|final\s*(result|round))\b/i.test(rawText)) detectedRound = 'round1';
+    if(detectedRound){
+      await startRoundCutoffFlow(detectedRound);
+      return;
+    }
   }
 
   let entities = extractEntities(rawText);
