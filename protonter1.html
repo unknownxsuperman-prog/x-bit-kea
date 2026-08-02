@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="x-bit Proton">
+    <title>x-bit · Proton</title>
+    <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
+    </script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            color-scheme: dark;
+            --bg: #000;
+            --surface: #0a0a0a;
+            --surface-2: #111;
+            --surface-3: #161616;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --text-0: #fff;
+            --text-1: #e8e8e8;
+            --text-2: #8a8a8a;
+            --text-3: #454545;
+            --accent: #fff;
+            --danger: #ff453a;
+            --success: #30d158;
+            --warning: #ff9f0a;
+            --font-d: 'Space Grotesk', sans-serif;
+            --font-m: 'DM Mono', monospace;
+            --r: 16px;
+            --r-sm: 12px;
+            --r-xs: 8px;
+        }
+        [data-theme="light"] {
+            color-scheme: light;
+            --bg: #f4f4f6;
+            --surface: #fff;
+            --surface-2: #f0f0f2;
+            --surface-3: #e9e9ec;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-strong: rgba(0, 0, 0, 0.16);
+            --text-0: #0a0a0a;
+            --text-1: #1c1c1e;
+            --text-2: #6b6b6f;
+            --text-3: #a2a2a6;
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text-1);
+            font-family: var(--font-d);
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            transition: background .3s, color .3s;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        /* ═══ TERMINAL — MAIN UI ═══ */
+        #termOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: #000;
+            color: #d6d6d6;
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            padding: calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));
+            transition: none;
+            /* always visible */;
+        }
+        #termOverlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0px, rgba(255, 255, 255, 0.018) 1px, transparent 1px, transparent 3px);
+            mix-blend-mode: overlay;
+        }
+        .term-topline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 14px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+        .term-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: .55;
+        }
+        .term-dot.r {
+            background: #ff5f56;
+        }
+        .term-dot.y {
+            background: #ffbd2e;
+        }
+        .term-dot.g {
+            background: #27c93f;
+        }
+        .term-topline span {
+            margin-left: 8px;
+            font-size: .63rem;
+            letter-spacing: .1em;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .term-body {
+            flex: 1;
+            overflow-y: auto;
+            font-size: .78rem;
+            line-height: 1.65;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 6px;
+        }
+        .term-body::-webkit-scrollbar {
+            width: 3px;
+        }
+        .term-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .term-line {
+            white-space: pre-wrap;
+            word-break: break-word;
+            animation: termLineIn .12s ease both;
+        }
+        @keyframes termLineIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .term-line.ok {
+            color: #30d158;
+        }
+        .term-line.warn {
+            color: #ff9f0a;
+        }
+        .term-line.err {
+            color: #ff453a;
+        }
+        .term-line.dim {
+            color: #5a5a5a;
+        }
+        .term-line.hl {
+            color: #fff;
+            font-weight: 700;
+        }
+        .term-line .hl {
+            color: #fff;
+            font-weight: 700;
+        }
+        .term-line .accent {
+            color: #5a9fff;
+        }
+        .term-line .green {
+            color: #30d158;
+        }
+        .term-line .gold {
+            color: #ff9f0a;
+        }
+        .term-line .red {
+            color: #ff453a;
+        }
+        .term-prompt-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+        .term-prompt-tag {
+            color: #30d158;
+            flex-shrink: 0;
+        }
+        .term-prompt-path {
+            color: #5a9fff;
+            flex-shrink: 0;
+        }
+        .term-prompt-sep {
+            color: #5a5a5a;
+            flex-shrink: 0;
+            margin-right: 6px;
+        }
+        .term-typed {
+            color: #fff;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .term-cursor {
+            display: inline-block;
+            width: 7px;
+            height: 15px;
+            background: #e8e8e8;
+            margin-left: 1px;
+            vertical-align: middle;
+            animation: termBlink 1s step-end infinite;
+        }
+        @keyframes termBlink {
+            0%,
+            49% {
+                opacity: 1;
+            }
+            50%,
+            100% {
+                opacity: 0;
+            }
+        }
+        .term-input-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .term-hidden-input {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+            pointer-events: none;
+        }
+        .term-footer-hint {
+            flex-shrink: 0;
+            padding-top: 12px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: .6rem;
+            color: #454545;
+            letter-spacing: .04em;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .term-footer-hint .hint-cmd {
+            color: #8a8a8a;
+            cursor: pointer;
+            transition: color .2s;
+        }
+        .term-footer-hint .hint-cmd:hover {
+            color: #fff;
+        }
+        .term-progress-track {
+            display: inline-block;
+            width: 140px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            vertical-align: middle;
+            margin: 0 8px;
+        }
+        .term-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5a9fff, #30d158);
+            width: 0%;
+            transition: width .25s ease;
+        }
+        .term-banner {
+            color: #fff;
+            font-weight: 700;
+            white-space: pre;
+            font-size: .62rem;
+            line-height: 1.3;
+        }
+        @media(max-width:420px) {
+            .term-banner {
+                font-size: .42rem;
+            }
+            .term-body {
+                font-size: .7rem;
+            }
+        }
+
+        /* ═══ TERMINAL CHAT MESSAGE STYLES ═══ */
+        .msg-user {
+            color: #5a9fff;
+        }
+        .msg-user .prefix {
+            color: #5a9fff;
+        }
+        .msg-assistant {
+            color: #d6d6d6;
+        }
+        .msg-assistant .prefix {
+            color: #30d158;
+        }
+        .msg-assistant .block {
+            display: block;
+            margin: 4px 0;
+        }
+        .msg-assistant .indent {
+            padding-left: 16px;
+        }
+        .msg-assistant .divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin: 8px 0;
+        }
+        .msg-assistant .chip-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0;
+        }
+        .msg-assistant .chip-line .chip {
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 4px 12px;
+            font-size: .6rem;
+            font-family: var(--font-m);
+            color: #8a8a8a;
+            cursor: pointer;
+            transition: .2s;
+        }
+        .msg-assistant .chip-line .chip:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+        .msg-assistant .rank-big {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+        .msg-assistant .rank-label {
+            font-size: .55rem;
+            color: #5a5a5a;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            font-family: var(--font-m);
+        }
+        .msg-assistant .result-card {
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .msg-assistant .result-card .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .msg-assistant .result-card .name {
+            font-weight: 600;
+            color: #fff;
+            font-size: .78rem;
+        }
+        .msg-assistant .result-card .cutoff {
+            font-family: var(--font-m);
+            font-size: .7rem;
+            color: #d6d6d6;
+            flex-shrink: 0;
+        }
+        .msg-assistant .result-card .meta {
+            font-family: var(--font-m);
+            font-size: .52rem;
+            color: #5a5a5a;
+            margin-top: 2px;
+        }
+
+        .msg-assistant .upload-zone {
+            border: 1.5px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            padding: 18px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+            margin: 6px 0;
+            position: relative;
+        }
+        .msg-assistant .upload-zone:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .msg-assistant .upload-zone input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .msg-assistant .upload-zone i {
+            font-size: 1.1rem;
+            color: #5a5a5a;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .msg-assistant .upload-zone span {
+            font-size: .65rem;
+            color: #5a5a5a;
+        }
+
+        .msg-assistant .inline-input {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 4px 10px;
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            font-size: .78rem;
+            outline: none;
+            width: 120px;
+            transition: border .2s;
+        }
+        .msg-assistant .inline-input:focus {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .msg-assistant .inline-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+            padding: 4px 14px;
+            color: #d6d6d6;
+            font-family: 'Space Mono', monospace;
+            font-size: .65rem;
+            cursor: pointer;
+            transition: .2s;
+            margin-left: 4px;
+        }
+        .msg-assistant .inline-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* loading shimmer in terminal */
+        .shine-text {
+            background: linear-gradient(90deg, #5a5a5a 0%, #fff 50%, #5a5a5a 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shineSweep 1.3s linear infinite;
+        }
+        @keyframes shineSweep {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* dark mode toggle in terminal footer */
+        .term-footer-hint .theme-toggle {
+            cursor: pointer;
+            color: #5a5a5a;
+            transition: color .2s;
+            user-select: none;
+        }
+        .term-footer-hint .theme-toggle:hover {
+            color: #d6d6d6;
+        }
+
+        /* ═══ HIDE OLD UI ═══ */
+        .topbar,
+        .chat-wrap,
+        .composer-wrap,
+        .sidebar,
+        .sb-backdrop,
+        .onboard-overlay,
+        .results-page {
+            display: none !important;
+        }
+
+        /* ═══ MOBILE VIEWPORT FIX ═══ */
+        @supports (padding: max(0px)) {
+            .term-topline {
+                padding-top: max(14px, env(safe-area-inset-top));
+            }
+            #termOverlay {
+                padding-bottom: max(18px, env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ TERMINAL — MAIN UI ═══ -->
+    <div id="termOverlay">
+        <div class="term-topline">
+            <div class="term-dot r"></div>
+            <div class="term-dot y"></div>
+            <div class="term-dot g"></div>
+            <span>x-bit proton · terminal</span>
+            <span style="margin-left:auto;font-size:.5rem;color:#3a3a3a;" id="termThemeToggle">🌙</span>
+        </div>
+        <div class="term-body" id="termBody"></div>
+        <div class="term-footer-hint" id="termHint">
+            <span>type <span class="hint-cmd" data-cmd="help">help</span> · <span class="hint-cmd" data-cmd="rank">rank</span> · <span class="hint-cmd" data-cmd="college">college</span> · <span class="hint-cmd" data-cmd="priority">priority</span></span>
+            <span class="theme-toggle" id="termThemeToggleFooter">🌙 dark</span>
+        </div>
+        <input type="text" class="term-hidden-input" id="termHiddenInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+    </div>
+
+    <script>
+        /* ══════════════════════════════════════════════════════════
+           CONFIG / CONSTANTS
+           ══════════════════════════════════════════════════════════ */
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const GENERAL_CATEGORIES = ['1G', '1K', '1R', '2AG', '2AK', '2AR', '2BG', '2BK', '2BR', '3AG', '3AK', '3AR', '3BG',
+            '3BK', '3BR', 'GM', 'GMK', 'GMP', 'GMR', 'NRI', 'OPN', 'OTH', 'S1G', 'S1K', 'S1R', 'S2G', 'S2K', 'S2R', 'S3G',
+            'S3K', 'S3R', 'S4G', 'S4K', 'S4R', 'STG', 'STK', 'STR'
+        ];
+        const HK_CATEGORIES = ['1H', '1KH', '1RH', '2AH', '2AKH', '2ARH', '2BH', '2BKH', '2BRH', '3AH', '3AKH', '3ARH', '3BH',
+            '3BKH', '3BRH', 'GMH', 'GMKH', 'GMPH', 'GMRH', 'S1H', 'S1KH', 'S1RH', 'S2H', 'S2KH', 'S2RH', 'S3H', 'S3KH',
+            'S3RH', 'S4H', 'S4KH', 'S4RH', 'STH', 'STKH', 'STRH'
+        ];
+
+        /* ══════════════════════════════════════════════════════════
+           LOCAL STORAGE HELPERS
+           ══════════════════════════════════════════════════════════ */
+        const LS = {
+            get(k, def) { try { const v = localStorage.getItem('xbit_' + k); return v !== null ? JSON.parse(v) : def; } catch {
+                    return def; } },
+            set(k, v) { try { localStorage.setItem('xbit_' + k, JSON.stringify(v)); } catch {} }
+        };
+
+        /* ══════════════════════════════════════════════════════════
+           TERMINAL RENDER ENGINE
+           ══════════════════════════════════════════════════════════ */
+        let userName = LS.get('username', '');
+        let terminalBooted = false;
+        let terminalLocked = false; // blocks input during async ops
+        let termInputBuffer = '';
+
+        const termBody = document.getElementById('termBody');
+        const hiddenInput = document.getElementById('termHiddenInput');
+        const termHint = document.getElementById('termHint');
+
+        function scrollTerm() { termBody.scrollTop = termBody.scrollHeight; }
+
+        function printLine(text, cls) {
+            const div = document.createElement('div');
+            div.className = 'term-line' + (cls ? (' ' + cls) : '');
+            div.innerHTML = text;
+            termBody.appendChild(div);
+            scrollTerm();
+            return div;
+        }
+
+        function printUserMessage(text) {
+            const safe = String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const row = document.createElement('div');
+            row.className = 'term-line msg-user';
+            row.innerHTML = `<span class="prefix">❯</span> ${safe}`;
+            termBody.appendChild(row);
+            scrollTerm();
+            return row;
+        }
+
+        function printAssistantMessage(html) {
+            const row = document.createElement('div');
+            row.className = 'term-line msg-assistant';
+            row.innerHTML = `<span class="prefix">◆</span> ${html}`;
+            termBody.appendChild(row);
+            scrollTerm();
+            return row;
+        }
+
+        function printAssistantPlain(text) {
+            const safe = String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return printAssistantMessage(safe);
+        }
+
+        function printDivider() {
+            printLine('', 'dim');
+        }
+
+        function printLoading(text) {
+            const row = document.createElement('div');
+            row.className = 'term-line msg-assistant';
+            row.innerHTML =
+                `<span class="prefix">◆</span> <span class="shine-text">${String(text).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`;
+            termBody.appendChild(row);
+            scrollTerm();
+            return row;
+        }
+
+        function removeLoadingRow(row) { if (row && row.parentNode) row.remove(); }
+
+        function focusTerm() {
+            if (terminalLocked) return;
+            hiddenInput.focus({ preventScroll: true });
+        }
+
+        /* ── prompt rendering ── */
+        function renderPrompt() {
+            const row = document.createElement('div');
+            row.className = 'term-line term-prompt-row';
+            row.id = 'termCurrentPrompt';
+            row.innerHTML =
+                `<span class="term-prompt-tag">${userName || 'guest'}@x-bit</span><span class="term-prompt-sep">:</span><span class="term-prompt-path">~/proton</span><span class="term-prompt-sep">$&nbsp;</span><span class="term-typed" id="termTypedSpan"></span><span class="term-cursor" id="termCursorEl"></span>`;
+            termBody.appendChild(row);
+            scrollTerm();
+            refreshTyped();
+        }
+
+        function refreshTyped() {
+            const span = document.getElementById('termTypedSpan');
+            if (span) span.textContent = termInputBuffer;
+            scrollTerm();
+        }
+
+        function lockPromptAsHistory() {
+            const cur = document.getElementById('termCurrentPrompt');
+            if (cur) cur.removeAttribute('id');
+            const cursorEl = document.getElementById('termCursorEl');
+            if (cursorEl) cursorEl.remove();
+        }
+
+        function setPromptText(text) {
+            termInputBuffer = text;
+            refreshTyped();
+        }
+
+        /* ── input handling ── */
+        hiddenInput.addEventListener('input', () => {
+            if (terminalLocked) { hiddenInput.value = ''; return; }
+            termInputBuffer = hiddenInput.value;
+            refreshTyped();
+        });
+
+        hiddenInput.addEventListener('keydown', (e) => {
+            if (terminalLocked) { e.preventDefault(); return; }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const cmd = termInputBuffer.trim();
+                hiddenInput.value = '';
+                termInputBuffer = '';
+                lockPromptAsHistory();
+                if (cmd) handleTerminalCommand(cmd);
+                else renderPrompt();
+            }
+        });
+
+        // click to focus
+        document.getElementById('termOverlay').addEventListener('click', focusTerm);
+        document.getElementById('termThemeToggleFooter').addEventListener('click', (e) => { e.stopPropagation();
+            toggleTheme(); });
+
+        // hint clicks
+        document.querySelectorAll('.hint-cmd').forEach(el => {
+            el.addEventListener('click', () => {
+                const cmd = el.getAttribute('data-cmd');
+                if (cmd) {
+                    hiddenInput.value = cmd;
+                    termInputBuffer = cmd;
+                    refreshTyped();
+                    focusTerm();
+                    // auto-submit after a tiny delay
+                    setTimeout(() => {
+                        if (termInputBuffer.trim()) {
+                            const c = termInputBuffer.trim();
+                            hiddenInput.value = '';
+                            termInputBuffer = '';
+                            lockPromptAsHistory();
+                            handleTerminalCommand(c);
+                        }
+                    }, 80);
+                }
+            });
+        });
+
+        /* ══════════════════════════════════════════════════════════
+           THEME TOGGLE
+           ══════════════════════════════════════════════════════════ */
+        let darkMode = LS.get('dark_mode', true);
+
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+            const bg = darkMode ? '#000' : '#f4f4f6';
+            document.getElementById('termOverlay').style.background = bg;
+            document.getElementById('termThemeToggle').textContent = darkMode ? '🌙' : '☀️';
+            document.getElementById('termThemeToggleFooter').textContent = darkMode ? '🌙 dark' : '☀️ light';
+        }
+
+        function toggleTheme() {
+            darkMode = !darkMode;
+            LS.set('dark_mode', darkMode);
+            applyTheme();
+        }
+        applyTheme();
+
+        /* ══════════════════════════════════════════════════════════
+           RANK PREDICTOR ENGINE
+           ══════════════════════════════════════════════════════════ */
+        class KCETRankPredictor {
+            constructor() {
+                this.totalCandidates = 315000;
+                this.anchors = [
+                    { p: 100.0, r: 1 }, { p: 98.50, r: 10 }, { p: 96.00, r: 100 }, { p: 92.50, r: 1000 },
+                    { p: 88.50, r: 3000 }, { p: 85.00, r: 5500 }, { p: 81.50, r: 9000 }, { p: 77.00, r: 15000 },
+                    { p: 72.00, r: 25000 }, { p: 65.00, r: 50000 }, { p: 58.00, r: 75000 }, { p: 0.00, r: 315000 }
+                ];
+                this.formulas = [];
+                this._compile();
+            }
+            _compile() {
+                for (let i = 0; i < this.anchors.length - 1; i++) {
+                    const up = this.anchors[i],
+                        lo = this.anchors[i + 1];
+                    const M = (Math.log(lo.r) - Math.log(up.r)) / (lo.p - up.p);
+                    const C = Math.log(up.r) - M * up.p;
+                    this.formulas.push({ maxP: up.p, minP: lo.p, M, C });
+                }
+            }
+            predictRank(pct) {
+                if (pct >= 100) return 1;
+                if (pct <= 0) return this.totalCandidates;
+                for (const f of this.formulas) {
+                    if (pct <= f.maxP && pct > f.minP) {
+                        let rank = Math.exp(f.M * pct + f.C);
+                        const upR = this.anchors.find(a => a.p === f.maxP).r,
+                            loR = this.anchors.find(a => a.p === f.minP).r;
+                        return Math.round(Math.max(Math.min(upR, loR), Math.min(Math.max(upR, loR), rank)));
+                    }
+                }
+                return this.totalCandidates;
+            }
+        }
+        const kcetEngine = new KCETRankPredictor();
+
+        function computeFinalPercentage(boardsPct, kcetPct) { return (boardsPct / 2) + (kcetPct / 2); }
+
+        /* ══════════════════════════════════════════════════════════
+           DATA LOADING
+           ══════════════════════════════════════════════════════════ */
+        const datasetCache = {};
+        let branchAliasesCache = null;
+
+        function loadDataset(which) {
+            return new Promise((resolve, reject) => {
+                if (datasetCache[which]) return resolve(datasetCache[which]);
+                const src = which === 'enghk' ? './firstroundenghk.js' : './firstroundeng.js';
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    const data = window.XOS_CUTOFF || [];
+                    datasetCache[which] = data;
+                    window.XOS_CUTOFF = undefined;
+                    resolve(data);
+                };
+                script.onerror = () => reject(new Error(`Could not load ${src}`));
+                document.body.appendChild(script);
+            });
+        }
+
+        function loadBranchAliases() {
+            if (branchAliasesCache) return Promise.resolve(branchAliasesCache);
+            return fetch('./branch-aliases.json').then(r => r.json()).then(data => { branchAliasesCache = data; return data; });
+        }
+
+        function normBranch(s) { return s.toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+        function matchBranchKey(aliasList, branchKeysOfCollege) {
+            const keys = Object.keys(branchKeysOfCollege);
+            const candidates = aliasList.map(normBranch);
+            for (const k of keys) { const nk = normBranch(k); if (candidates.includes(nk)) return k; }
+            for (const k of keys) { const nk = normBranch(k); if (candidates.some(c => nk.includes(c) || c.includes(nk)))
+                return k; }
+            let best = null,
+                bestScore = 0;
+            for (const k of keys) {
+                const bw = new Set(normBranch(k).split(' ').filter(w => w.length > 1));
+                for (const c of candidates) {
+                    const cw = new Set(c.split(' ').filter(w => w.length > 1));
+                    const inter = [...cw].filter(w => bw.has(w)).length;
+                    const union = new Set([...cw, ...bw]).size;
+                    const sc = union ? inter / union : 0;
+                    if (sc > bestScore) { bestScore = sc;
+                        best = k; }
+                }
+            }
+            return bestScore >= 0.4 ? best : null;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           TRAINING DATA (smart chat)
+           ══════════════════════════════════════════════════════════ */
+        let kcetTrainingSet = [];
+        let chatTrainingSet = [];
+        let smartDataReady = false;
+
+        async function loadTrainingData() {
+            try {
+                const r = await fetch('./trainingset.json');
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                kcetTrainingSet = await r.json();
+                kcetTrainingSet.forEach(ex => ex._tokens = new Set(patternTokens(ex.input)));
+            } catch (e) { kcetTrainingSet = []; }
+            try {
+                const r2 = await fetch('./trainingset1.json');
+                if (!r2.ok) throw new Error('HTTP ' + r2.status);
+                chatTrainingSet = await r2.json();
+                chatTrainingSet.forEach(ex => ex._tokens = new Set(tokenize(ex.input)));
+            } catch (e) { chatTrainingSet = []; }
+            smartDataReady = true;
+        }
+
+        function normalizeText(s) { return s.toLowerCase().replace(/[^\w\s%.]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+        function tokenize(s) { return normalizeText(s).split(' ').filter(Boolean); }
+
+        function patternTokens(s) { return normalizeText(s).replace(/\d+\.?\d*/g, '#num#').split(' ').filter(Boolean); }
+
+        function jaccard(a, b) {
+            let inter = 0;
+            for (const t of a)
+                if (b.has(t)) inter++;
+            const union = a.size + b.size - inter;
+            return union ? inter / union : 0;
+        }
+
+        function classifyKcetIntent(text) {
+            if (!kcetTrainingSet.length) return null;
+            const q = new Set(patternTokens(text));
+            let best = null,
+                bestScore = 0;
+            for (const ex of kcetTrainingSet) {
+                const sc = jaccard(q, ex._tokens);
+                if (sc > bestScore) { bestScore = sc;
+                    best = ex; }
+            }
+            return best && bestScore > 0.25 ? { intent: best.output.intent, score: bestScore } : null;
+        }
+
+        function classifyChat(text) {
+            if (!chatTrainingSet.length) return null;
+            const q = new Set(tokenize(text));
+            if (!q.size) return null;
+            let best = null,
+                bestScore = 0;
+            for (const ex of chatTrainingSet) {
+                const sc = jaccard(q, ex._tokens);
+                if (sc > bestScore) { bestScore = sc;
+                    best = ex; }
+            }
+            return best && bestScore > 0.3 ? best : null;
+        }
+
+        /* ── entity extraction ── */
+        const KARNATAKA_CITIES = ['bangalore', 'bengaluru', 'mysore', 'mysuru', 'mangalore', 'mangaluru', 'hubli', 'hubballi',
+            'belgaum', 'belagavi', 'dharwad', 'shimoga', 'shivamogga', 'hassan', 'tumkur', 'tumakuru', 'davangere', 'bellary',
+            'ballari', 'gulbarga', 'kalaburagi', 'bidar', 'raichur', 'udupi', 'chikmagalur', 'kolar', 'mandya',
+            'chitradurga', 'bagalkot', 'hospet', 'bijapur', 'vijayapura'
+        ];
+        const BRANCH_SHORTHAND = {
+            cse: 'Computer Science and Engineering',
+            cs: 'Computer Science and Engineering',
+            ise: 'Information Science and Engineering',
+            it: 'Information Technology',
+            ai: 'Artificial Intelligence',
+            'ai/ml': 'Artificial Intelligence and Machine Learning',
+            aiml: 'Artificial Intelligence and Machine Learning',
+            ml: 'Machine Learning',
+            ece: 'Electronics and Communication Engineering',
+            eee: 'Electrical & Electronics Engineering',
+            mech: 'Mechanical Engineering',
+            mechanical: 'Mechanical Engineering',
+            civil: 'Civil Engineering',
+            chem: 'Chemical Engineering',
+            chemical: 'Chemical Engineering',
+            aero: 'Aerospace Engineering',
+            aeronautical: 'Aeronautical Engineering'
+        };
+        const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a, b) => b.length - a.length);
+        const SUBJ_RE = { physics: /phy(?:sics)?/, chemistry: /chem(?:istry)?/, maths: /math(?:s|ematics)?/ };
+
+        function extractSubjectMarks(segment) {
+            const marks = {};
+            for (const [subj, re] of Object.entries(SUBJ_RE)) {
+                const after = new RegExp(re.source + '\\D{0,4}(\\d{1,3}(?:\\.\\d+)?)', 'i');
+                const before = new RegExp('(\\d{1,3}(?:\\.\\d+)?)\\D{0,4}' + re.source, 'i');
+                const mm = segment.match(after) || segment.match(before);
+                if (mm) marks[subj] = parseFloat(mm[1]);
+            }
+            if (marks.physics != null && marks.chemistry != null && marks.maths != null) return marks;
+            return null;
+        }
+
+        function findScoreBlock(text, keywordSrc, maxTotal, subjectMax, ambiguousDefault) {
+            const subj = extractSubjectMarks(text);
+            if (subj && subj.physics <= subjectMax && subj.chemistry <= subjectMax && subj.maths <= subjectMax) {
+                const total = subj.physics + subj.chemistry + subj.maths;
+                return { total, pct: (total / maxTotal) * 100 };
+            }
+            let pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
+                text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*%\\s*(?:in\\s*)?' + keywordSrc, 'i'));
+            if (pctMatch) { const v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v / 100) * maxTotal }; }
+            let explicitMarks = text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*marks?\\s*(?:in\\s*)?' + keywordSrc, 'i')) ||
+                text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*marks', 'i'));
+            if (explicitMarks) { const v = parseFloat(explicitMarks[1]); if (v <= maxTotal) return { total: v, pct: (v /
+                        maxTotal) * 100 }; }
+            let totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)', 'i')) ||
+                text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*(?:marks?)?\\s*(?:in\\s*)?' + keywordSrc, 'i'));
+            if (totalMatch) {
+                const v = parseFloat(totalMatch[1]);
+                if (v <= maxTotal) {
+                    if (v > 100) return { total: v, pct: (v / maxTotal) * 100 };
+                    if (ambiguousDefault === 'marks') return { total: v, pct: (v / maxTotal) * 100 };
+                    return { pct: v, total: (v / 100) * maxTotal };
+                }
+            }
+            return null;
+        }
+
+        function extractEntities(text) {
+            const t = ' ' + text.toLowerCase() + ' ';
+            const e = {};
+            const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100, 'percentage');
+            if (boardsResult) e.boardPercentage = boardsResult.pct;
+            const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60, 'marks');
+            if (kcetResult) e.kcetMarks = kcetResult.total;
+            let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?\b/);
+            if (rm) { let v = parseFloat(rm[1]); if (rm[2]) v *= 1000;
+                e.rank = Math.round(v); } else { const km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/); if (km) e.rank = Math.round(
+                    parseFloat(km[1]) * 1000); }
+            for (const code of ALL_CATEGORY_CODES) {
+                if (new RegExp('\\b' + code.toLowerCase() + '\\b').test(t)) { e.category = code; break; }
+            }
+            for (const short in BRANCH_SHORTHAND) {
+                if (new RegExp('\\b' + short.replace(/[/]/g, '\\/') + '\\b').test(t)) { e.branch = BRANCH_SHORTHAND[short];
+                    break; }
+            }
+            for (const city of KARNATAKA_CITIES) { if (t.includes(city)) { e.location = city.charAt(0).toUpperCase() + city
+                        .slice(1); break; } }
+            if (!e.location) { const lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/); if (lm && !['This', 'That', 'My', 'The']
+                    .includes(lm[1])) e.location = lm[1]; }
+            return e;
+        }
+
+        function extractCategoryOnly(text) {
+            const t = ' ' + text.toLowerCase() + ' ';
+            for (const code of ALL_CATEGORY_CODES) {
+                if (new RegExp('\\b' + code.toLowerCase() + '\\b').test(t)) return code;
+            }
+            return null;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           COLLEGE SEARCH
+           ══════════════════════════════════════════════════════════ */
+        async function searchCollegesSmart({ rank, category, branch, location }) {
+            const dataset = await loadDataset(HK_CATEGORIES.includes(category) ? 'enghk' : 'eng');
+            const lowerBound = rank - 1500;
+            const branchAliasPool = branch ? [branch] : null;
+            const results = [];
+            for (const college of dataset) {
+                if (location && !(college.location || '').toLowerCase().includes(location.toLowerCase())) continue;
+                if (!college.branches) continue;
+                if (branchAliasPool) {
+                    const key = matchBranchKey(branchAliasPool, college.branches);
+                    if (!key) continue;
+                    const cutoff = college.branches[key][category];
+                    if (cutoff == null || cutoff < lowerBound) continue;
+                    results.push({ id: college.id, name: college.name, location: college.location || 'Karnataka',
+                        branch: key, cutoff, dist: Math.abs(cutoff - rank) });
+                } else {
+                    let bestKey = null,
+                        bestCutoff = null,
+                        bestDist = Infinity;
+                    for (const [bkey, cd] of Object.entries(college.branches)) {
+                        const cutoff = cd[category];
+                        if (cutoff == null || cutoff < lowerBound) continue;
+                        const dist = Math.abs(cutoff - rank);
+                        if (dist < bestDist) { bestDist = dist;
+                            bestKey = bkey;
+                            bestCutoff = cutoff; }
+                    }
+                    if (bestKey) results.push({ id: college.id, name: college.name, location: college.location ||
+                            'Karnataka', branch: bestKey, cutoff: bestCutoff, dist: bestDist });
+                }
+            }
+            results.sort((a, b) => a.dist - b.dist);
+            return results;
+        }
+
+        function getShortName(name) { if (!name) return ''; const i = name.indexOf(','); return i > 0 ? name.substring(0, i)
+                .trim() : name.trim(); }
+
+        function collegeResultHtml(r) {
+            return `<div class="result-card"><div class="top"><span class="name">${escapeHtml(getShortName(r.name))}</span><span class="cutoff">${r.cutoff.toLocaleString('en-IN')}</span></div><div class="meta">${escapeHtml(r.branch)} · ${escapeHtml(r.location)} · ${r.id}</div></div>`;
+        }
+
+        function escapeHtml(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;',
+                '>': '&gt;', '"': '&quot;', "'": '&#39;' } [m])); }
+
+        /* ══════════════════════════════════════════════════════════
+           TERMINAL COMMAND HANDLER
+           ══════════════════════════════════════════════════════════ */
+        let pendingSmartQuery = null; // { known, needs }
+
+        async function handleTerminalCommand(cmd) {
+            terminalLocked = true;
+            const raw = cmd.trim();
+            printUserMessage(raw);
+
+            // ── built-in commands ──
+            if (raw === 'help') {
+                printAssistantMessage(
+                    `<span class="hl">x-bit Proton — terminal help</span><br>
+            <span class="dim">─────────────────────────</span><br>
+            <span class="green">rank</span>        — predict your KCET rank from boards + KCET marks<br>
+            <span class="green">college</span>     — find colleges matching your rank + category + branch<br>
+            <span class="green">priority</span>    — upload KEA priority list PDF & check eligibility<br>
+            <span class="green">clear</span>       — clear the terminal screen<br>
+            <span class="green">dark</span> / <span class="green">light</span> — toggle theme<br>
+            <span class="dim">─────────────────────────</span><br>
+            Just tell me your boards % and KCET marks in plain English,<br>
+            e.g. <span class="dim">"boards 95% kcet 130"</span> or <span class="dim">"I got 95 in boards and 85 in KCET"</span>`
+                );
+                renderPrompt();
+                terminalLocked = false;
+                focusTerm();
+                return;
+            }
+
+            if (raw === 'clear') {
+                termBody.innerHTML = '';
+                renderPrompt();
+                terminalLocked = false;
+                focusTerm();
+                return;
+            }
+
+            if (raw === 'dark' || raw === 'light') {
+                const wantDark = raw === 'dark';
+                if (darkMode !== wantDark) toggleTheme();
+                printAssistantMessage(`Theme set to <span class="hl">${raw}</span>`);
+                renderPrompt();
+                terminalLocked = false;
+                focusTerm();
+                return;
+            }
+
+            // ── command shortcuts ──
+            if (raw === 'rank') {
+                terminalLocked = false;
+                startRankFlow();
+                return;
+            }
+            if (raw === 'college') {
+                terminalLocked = false;
+                startCollegeFlow();
+                return;
+            }
+            if (raw === 'priority') {
+                terminalLocked = false;
+                startPriorityFlow();
+                return;
+            }
+
+            // ── smart chat ──
+            const entities = extractEntities(raw);
+            const kcetGuess = classifyKcetIntent(raw);
+            const looksKcetRelated = entities.kcetMarks != null || entities.boardPercentage != null ||
+                entities.rank != null || entities.category || entities.branch ||
+                /\b(kcet|cet|rank|board|puc?)\b/i.test(raw) || !!pendingSmartQuery;
+
+            if (looksKcetRelated) {
+                await routeKcetQueryTerminal(kcetGuess ? kcetGuess.intent : 'rank_prediction', entities, raw);
+            } else {
+                const chatGuess = classifyChat(raw);
+                if (chatGuess) {
+                    printAssistantMessage(escapeHtml(chatGuess.output));
+                } else {
+                    printAssistantMessage(
+                        `I didn't quite catch that. Try <span class="accent">rank</span>, <span class="accent">college</span>, or <span class="accent">priority</span> — or just tell me your boards % and KCET marks.`
+                        );
+                }
+            }
+
+            renderPrompt();
+            terminalLocked = false;
+            focusTerm();
+        }
+
+        /* ── RANK FLOW (multi-turn terminal) ── */
+        let rankFlowState = null; // { step, boardsPct, kcetPct }
+
+        function startRankFlow() {
+            rankFlowState = { step: 'boards' };
+            printAssistantMessage(
+                `Let's predict your KCET rank. First, tell me your <span class="hl">2nd PU boards</span> score.<br>
+            <span class="dim">You can give me a percentage (e.g. <span class="dim">95%</span>) or total marks out of 300 (e.g. <span class="dim">285</span>).</span>`
+                );
+            renderPrompt();
+            focusTerm();
+        }
+
+        function handleRankFlowInput(text) {
+            const t = text.trim();
+            if (rankFlowState.step === 'boards') {
+                const parsed = parseScore(t, 300);
+                if (!parsed) {
+                    printAssistantMessage(
+                        `Couldn't understand that. Please give me your boards score as a percentage (e.g. <span class="dim">95%</span>) or marks out of 300 (e.g. <span class="dim">285</span>).`
+                        );
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                rankFlowState.boardsPct = parsed;
+                rankFlowState.step = 'kcet';
+                printAssistantMessage(
+                    `Got it: <span class="hl">${parsed.toFixed(1)}%</span> in boards. Now tell me your <span class="hl">KCET</span> score.<br>
+                <span class="dim">Percentage (e.g. <span class="dim">85%</span>) or marks out of 180 (e.g. <span class="dim">130</span>).</span>`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            if (rankFlowState.step === 'kcet') {
+                const parsed = parseScore(t, 180);
+                if (!parsed) {
+                    printAssistantMessage(
+                        `Couldn't understand that. Please give me your KCET score as a percentage (e.g. <span class="dim">85%</span>) or marks out of 180 (e.g. <span class="dim">130</span>).`
+                        );
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                rankFlowState.kcetPct = parsed;
+                const finalPct = computeFinalPercentage(rankFlowState.boardsPct, rankFlowState.kcetPct);
+                const rank = kcetEngine.predictRank(finalPct);
+                printAssistantMessage(
+                    `<span class="rank-label">Estimated KCET Rank</span><br>
+                <span class="rank-big">${rank.toLocaleString('en-IN')}</span><br>
+                <span class="dim">Boards ${rankFlowState.boardsPct.toFixed(1)}% · KCET ${rankFlowState.kcetPct.toFixed(1)}% · Combined ${finalPct.toFixed(1)}%</span><br>
+                <div class="chip-line">
+                  <span class="chip" data-action="college-for-rank">→ Predict colleges for this rank</span>
+                  <span class="chip" data-action="websearch-rank">🔍 Search colleges</span>
+                </div>`
+                    );
+                // wire chips
+                const lastEl = termBody.lastElementChild;
+                if (lastEl) {
+                    const chips = lastEl.querySelectorAll('.chip');
+                    chips.forEach(ch => {
+                        ch.addEventListener('click', () => {
+                            if (ch.getAttribute('data-action') === 'college-for-rank') {
+                                startCollegeFlowWithRank(rank);
+                            } else if (ch.getAttribute('data-action') === 'websearch-rank') {
+                                window.open(
+                                    `https://www.google.com/search?q=KCET+rank+${rank}+eligible+engineering+colleges+Karnataka`,
+                                    '_blank');
+                            }
+                        });
+                    });
+                }
+                rankFlowState = null;
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+        }
+
+        function parseScore(text, maxTotal) {
+            const t = text.trim().toLowerCase();
+            // percentage
+            const pct = t.match(/(\d+(?:\.\d+)?)\s*%/);
+            if (pct) { const v = parseFloat(pct[1]); return Math.min(100, Math.max(0, v)); }
+            // raw marks
+            const num = t.match(/(\d+(?:\.\d+)?)/);
+            if (num) { const v = parseFloat(num[1]); return Math.min(100, (Math.min(maxTotal, v) / maxTotal) * 100); }
+            return null;
+        }
+
+        /* ── COLLEGE FLOW ── */
+        let collegeFlowState = null; // { step, rank, category, branch, dataset }
+
+        function startCollegeFlow() {
+            collegeFlowState = { step: 'rank' };
+            printAssistantMessage(
+                `Let's find colleges matching your profile. First, tell me your <span class="hl">KCET rank</span>.<br>
+            <span class="dim">e.g. <span class="dim">2450</span> or <span class="dim">2.5k</span></span>`
+                );
+            renderPrompt();
+            focusTerm();
+        }
+
+        function startCollegeFlowWithRank(rank) {
+            collegeFlowState = { step: 'category', rank: rank };
+            printAssistantMessage(
+                `Rank <span class="hl">${rank.toLocaleString('en-IN')}</span> noted. Now tell me your <span class="hl">category</span>.<br>
+            <span class="dim">e.g. GM, 1G, 2AG, 3BK, STG, etc.</span>`
+                );
+            renderPrompt();
+            focusTerm();
+        }
+
+        function handleCollegeFlowInput(text) {
+            const t = text.trim();
+            if (!collegeFlowState) return;
+            if (collegeFlowState.step === 'rank') {
+                const parsed = parseRankInput(t);
+                if (!parsed) {
+                    printAssistantMessage(`Couldn't parse that rank. Please enter a number like <span class="dim">2450</span>.`);
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                collegeFlowState.rank = parsed;
+                collegeFlowState.step = 'category';
+                printAssistantMessage(
+                    `Rank <span class="hl">${parsed.toLocaleString('en-IN')}</span> noted. Now tell me your <span class="hl">category</span>.<br>
+                <span class="dim">e.g. GM, 1G, 2AG, 3BK, STG, etc.</span>`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            if (collegeFlowState.step === 'category') {
+                const cat = t.toUpperCase().trim();
+                const valid = ALL_CATEGORY_CODES.includes(cat);
+                if (!valid) {
+                    printAssistantMessage(
+                        `"${escapeHtml(cat)}" doesn't look like a valid KCET category. Try GM, 1G, 2AG, 3BK, STG, etc.`
+                        );
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                collegeFlowState.category = cat;
+                collegeFlowState.step = 'branch';
+                printAssistantMessage(
+                    `Category <span class="hl">${cat}</span> set. Now tell me your preferred <span class="hl">branch</span>.<br>
+                <span class="dim">e.g. Computer Science, ECE, Mechanical, etc.</span>`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            if (collegeFlowState.step === 'branch') {
+                const branch = t.trim();
+                if (!branch || branch.length < 2) {
+                    printAssistantMessage(`Please enter a valid branch name.`);
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                collegeFlowState.branch = branch;
+                // resolve dataset based on category
+                const datasetKey = HK_CATEGORIES.includes(collegeFlowState.category) ? 'enghk' : 'eng';
+                collegeFlowState.dataset = datasetKey;
+                // run search
+                printLoading('Searching colleges…');
+                (async () => {
+                    try {
+                        const results = await searchCollegesSmart({
+                            rank: collegeFlowState.rank,
+                            category: collegeFlowState.category,
+                            branch: collegeFlowState.branch,
+                            location: null
+                        });
+                        // remove loading
+                        const last = termBody.lastElementChild;
+                        if (last && last.textContent.includes('Searching colleges…')) last.remove();
+                        renderCollegeResults(results, collegeFlowState);
+                    } catch (e) {
+                        const last = termBody.lastElementChild;
+                        if (last && last.textContent.includes('Searching colleges…')) last.remove();
+                        printAssistantMessage(`<span class="red">✗</span> Error: ${escapeHtml(e.message)}`);
+                        renderPrompt();
+                        focusTerm();
+                    }
+                })();
+                collegeFlowState = null;
+                return;
+            }
+        }
+
+        function parseRankInput(text) {
+            const t = text.trim().toLowerCase().replace(/,/g, '');
+            const m = t.match(/(\d+(?:\.\d+)?)\s*k/i);
+            if (m) return Math.round(parseFloat(m[1]) * 1000);
+            const n = t.match(/(\d+)/);
+            if (n) return parseInt(n[1], 10);
+            return null;
+        }
+
+        function renderCollegeResults(results, state) {
+            if (!results.length) {
+                printAssistantMessage(
+                    `No colleges found for <span class="hl">${escapeHtml(state.branch)}</span> · ${state.category} near rank ${state.rank.toLocaleString('en-IN')}.`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            const top5 = results.slice(0, 5);
+            let html =
+                `<span class="green">${results.length}</span> colleges found for <span class="hl">${escapeHtml(state.branch)}</span> · ${state.category} near rank ${state.rank.toLocaleString('en-IN')}:<br>`;
+            html += top5.map(r => collegeResultHtml(r)).join('');
+            if (results.length > 5) {
+                html +=
+                    `<div class="chip-line"><span class="chip" data-action="see-all-colleges">→ See all ${results.length} colleges</span></div>`;
+            }
+            printAssistantMessage(html);
+            const lastEl = termBody.lastElementChild;
+            if (lastEl) {
+                const chip = lastEl.querySelector('[data-action="see-all-colleges"]');
+                if (chip) {
+                    chip.addEventListener('click', () => {
+                        let allHtml =
+                            `<span class="hl">All ${results.length} matches</span> · ${escapeHtml(state.branch)} · ${state.category}<br><br>`;
+                        allHtml += results.map(r => collegeResultHtml(r)).join('');
+                        printAssistantMessage(allHtml);
+                        renderPrompt();
+                        focusTerm();
+                    });
+                }
+            }
+            renderPrompt();
+            focusTerm();
+        }
+
+        /* ── PRIORITY FLOW ── */
+        let priorityFlowState = null; // { step, file, options, dataset, category, rank }
+
+        function startPriorityFlow() {
+            priorityFlowState = { step: 'upload' };
+            printAssistantMessage(
+                `Upload your KEA priority list PDF (the official <span class="hl">Option Entry</span> export).<br>
+            <span class="dim">Filename usually contains "option", e.g. OptionEntry_1234567.pdf</span>
+            <div class="upload-zone" id="plUploadZone">
+              <input type="file" accept=".pdf,application/pdf" id="plFileInput">
+              <i class="fa-solid fa-file-arrow-up"></i>
+              <span>Tap to select your priority list PDF</span>
+            </div>`
+                );
+            // wire upload
+            const zone = document.getElementById('plUploadZone');
+            if (zone) {
+                const input = document.getElementById('plFileInput');
+                input.addEventListener('change', async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const normalizedName = file.name.toLowerCase().replace(/[^a-z]/g, '');
+                    if (!normalizedName.includes('option')) {
+                        printAssistantMessage(
+                            `<span class="red">✗</span> That doesn't look like the right file. Please upload the official KEA priority-list PDF — filename should contain <span class="hl">"option"</span>.`
+                            );
+                        renderPrompt();
+                        focusTerm();
+                        return;
+                    }
+                    printUserMessage(`Uploaded: ${file.name}`);
+                    priorityFlowState.file = file;
+                    priorityFlowState.step = 'parsing';
+                    printLoading('Reading your priority list…');
+                    try {
+                        const ab = await file.arrayBuffer();
+                        const options = await parsePriorityPdf(ab);
+                        priorityFlowState.options = options;
+                        const last = termBody.lastElementChild;
+                        if (last && last.textContent.includes('Reading your priority list…')) last.remove();
+                        printAssistantMessage(
+                            `<span class="green">✓</span> Extracted <span class="hl">${options.length}</span> priority options. Now tell me your <span class="hl">category</span>.<br>
+                        <span class="dim">e.g. GM, 1G, 2AG, 3BK, STG, etc.</span>`
+                            );
+                        priorityFlowState.step = 'category';
+                        renderPrompt();
+                        focusTerm();
+                    } catch (err) {
+                        const last = termBody.lastElementChild;
+                        if (last && last.textContent.includes('Reading your priority list…')) last.remove();
+                        printAssistantMessage(
+                            `<span class="red">✗</span> Couldn't read that PDF: ${escapeHtml(err.message)}`);
+                        priorityFlowState = null;
+                        renderPrompt();
+                        focusTerm();
+                    }
+                });
+            }
+            renderPrompt();
+            focusTerm();
+        }
+
+        function handlePriorityFlowInput(text) {
+            const t = text.trim();
+            if (!priorityFlowState) return;
+            if (priorityFlowState.step === 'category') {
+                const cat = t.toUpperCase().trim();
+                const valid = ALL_CATEGORY_CODES.includes(cat);
+                if (!valid) {
+                    printAssistantMessage(
+                        `"${escapeHtml(cat)}" doesn't look like a valid KCET category. Try GM, 1G, 2AG, 3BK, STG, etc.`
+                        );
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                priorityFlowState.category = cat;
+                priorityFlowState.step = 'rank';
+                printAssistantMessage(
+                    `Category <span class="hl">${cat}</span> set. Now tell me your <span class="hl">KCET rank</span>.<br>
+                <span class="dim">e.g. <span class="dim">2450</span> or <span class="dim">2.5k</span></span>`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            if (priorityFlowState.step === 'rank') {
+                const parsed = parseRankInput(t);
+                if (!parsed) {
+                    printAssistantMessage(`Couldn't parse that rank. Please enter a number like <span class="dim">2450</span>.`);
+                    renderPrompt();
+                    focusTerm();
+                    return;
+                }
+                priorityFlowState.rank = parsed;
+                const datasetKey = HK_CATEGORIES.includes(priorityFlowState.category) ? 'enghk' : 'eng';
+                priorityFlowState.dataset = datasetKey;
+                printLoading('Matching your priority list…');
+                (async () => {
+                    try {
+                        const dataset = await loadDataset(datasetKey);
+                        const results = matchPriorityOptions(dataset, priorityFlowState.options, priorityFlowState
+                            .category, priorityFlowState.rank);
+                        const last = termBody.lastElementChild;
+                        if (last && last.textContent.includes('Matching your priority list…')) last.remove();
+                        renderPriorityResults(results);
+                    } catch (e) {
+                        const last = termBody.lastElementChild;
+                        if (last && last.textContent.includes('Matching your priority list…')) last.remove();
+                        printAssistantMessage(`<span class="red">✗</span> Error: ${escapeHtml(e.message)}`);
+                        renderPrompt();
+                        focusTerm();
+                    }
+                })();
+                priorityFlowState = null;
+                return;
+            }
+        }
+
+        async function parsePriorityPdf(arrayBuffer) {
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const tokens = [];
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const tc = await page.getTextContent();
+                tc.items.forEach(item => { const s = item.str.trim(); if (s.length) tokens.push(s); });
+            }
+            const results = [];
+            const priorityRe = /^\d+$/,
+                codeRe = /^[A-Z]\d{3}[A-Z]{2}$/i;
+            const anchors = [];
+            for (let i = 0; i < tokens.length - 1; i++) { if (priorityRe.test(tokens[i]) && codeRe.test(tokens[i + 1]))
+                anchors.push(i); }
+            for (let a = 0; a < anchors.length; a++) {
+                const idx = anchors[a],
+                    priority = parseInt(tokens[idx], 10),
+                    code = tokens[idx + 1].toUpperCase(),
+                    collegeId = code.substring(0, 4);
+                const end = a + 1 < anchors.length ? anchors[a + 1] : tokens.length;
+                const rawText = tokens.slice(idx + 2, end).join(' ');
+                const normalized = rawText.replace(/(\d)\s*,\s*(\d)/g, '$1,$2');
+                let branch;
+                const feeMatch = normalized.match(/\d{1,3}(?:,\d{2,3})+/);
+                if (feeMatch) {
+                    const feeInRaw = rawText.match(/\d{1,3}\s*(?:,\s*\d{2,3}\s*)+/);
+                    branch = feeInRaw ? rawText.substring(0, feeInRaw.index).trim() : rawText.substring(0, rawText.indexOf(
+                        feeMatch[0])).trim();
+                } else {
+                    const numMatch = rawText.match(/\d{5,}/);
+                    branch = numMatch ? rawText.substring(0, numMatch.index).trim() : rawText.trim();
+                }
+                branch = branch.replace(/[\s\-–—:]+$/, '').replace(/\s+/g, ' ').trim();
+                if (branch.length > 0) results.push({ priority, collegeId, branch });
+            }
+            return results;
+        }
+
+        function matchPriorityOptions(dataset, options, category, userRank) {
+            const map = {};
+            dataset.forEach(c => { map[c.id] = c; });
+            return options.map(opt => {
+                const college = map[opt.collegeId];
+                if (!college) return { ...opt, collegeName: null, status: 'no-data', statusLabel: 'College N/A',
+                    cutoff: null };
+                const mb = matchBranchKey([opt.branch], college.branches);
+                if (!mb) return { ...opt, collegeName: college.name, status: 'no-data', statusLabel: 'Branch N/A',
+                    cutoff: null };
+                const cutoff = college.branches[mb][category];
+                if (cutoff === null || cutoff === undefined) return { ...opt, collegeName: college.name,
+                    matchedBranch: mb, status: 'no-seat', statusLabel: 'No Seat', cutoff: null };
+                const eligible = cutoff >= userRank;
+                return { ...opt, collegeName: college.name, matchedBranch: mb, cutoff, status: eligible ?
+                        'eligible' : 'not-eligible', statusLabel: eligible ? 'Eligible' : 'Not Eligible' };
+            });
+        }
+
+        function renderPriorityResults(results) {
+            const eligible = results.filter(r => r.status === 'eligible');
+            if (!eligible.length) {
+                printAssistantMessage(`No eligible options found in your priority list for this rank & category.`);
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            const top5 = eligible.slice(0, 5);
+            let html =
+                `<span class="green">${eligible.length}</span> eligible options found in your priority list:<br>`;
+            html += top5.map(r =>
+                    `<div class="result-card"><div class="top"><span class="name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</span><span class="cutoff">${r.cutoff.toLocaleString('en-IN')}</span></div><div class="meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div></div>`
+                    )
+                .join('');
+            if (eligible.length > 5) {
+                html +=
+                    `<div class="chip-line"><span class="chip" data-action="see-all-priority">→ See all ${eligible.length} eligible options</span></div>`;
+            }
+            printAssistantMessage(html);
+            const lastEl = termBody.lastElementChild;
+            if (lastEl) {
+                const chip = lastEl.querySelector('[data-action="see-all-priority"]');
+                if (chip) {
+                    chip.addEventListener('click', () => {
+                        let allHtml = `<span class="hl">All ${eligible.length} eligible options</span><br><br>`;
+                        allHtml += eligible.map(r =>
+                                `<div class="result-card"><div class="top"><span class="name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</span><span class="cutoff">${r.cutoff.toLocaleString('en-IN')}</span></div><div class="meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div></div>`
+                                )
+                            .join('');
+                        printAssistantMessage(allHtml);
+                        renderPrompt();
+                        focusTerm();
+                    });
+                }
+            }
+            renderPrompt();
+            focusTerm();
+        }
+
+        /* ── SMART KCET ROUTER (from plain chat) ── */
+        async function routeKcetQueryTerminal(intent, entities, rawText) {
+            // derive rank if possible
+            if (entities.rank == null && entities.kcetMarks != null && entities.boardPercentage != null) {
+                const kcetPct = (Math.min(180, entities.kcetMarks) / 180) * 100;
+                const finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
+                entities.rank = kcetEngine.predictRank(finalPct);
+                printAssistantMessage(
+                    `Based on <span class="hl">${entities.boardPercentage.toFixed(1)}%</span> boards and <span class="hl">${entities.kcetMarks}</span> KCET marks, your estimated rank is <span class="hl">${entities.rank.toLocaleString('en-IN')}</span>.`
+                    );
+            }
+
+            const wantsCollege = intent !== 'rank_prediction' && intent !== 'rank_inquiry' ||
+                entities.category || entities.branch || entities.location;
+
+            if (entities.rank == null) {
+                pendingSmartQuery = { known: entities, needs: ['rank'] };
+                printAssistantMessage(
+                    `Got it — what's your KCET score (or boards % + KCET score) so I can estimate your rank?`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            if (!wantsCollege) {
+                pendingSmartQuery = null;
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+            if (!entities.category) {
+                pendingSmartQuery = { known: entities, needs: ['category'] };
+                printAssistantMessage(
+                    `Rank ${entities.rank.toLocaleString('en-IN')} noted. Which category should I check against — GM, 1G, 2AG, SC, ST…?`
+                    );
+                renderPrompt();
+                focusTerm();
+                return;
+            }
+
+            pendingSmartQuery = null;
+            printLoading('Searching colleges…');
+            try {
+                const results = await searchCollegesSmart(entities);
+                const last = termBody.lastElementChild;
+                if (last && last.textContent.includes('Searching colleges…')) last.remove();
+                if (!results.length) {
+                    printAssistantMessage(
+                        `No colleges found for ${entities.category} near rank ${entities.rank.toLocaleString('en-IN')}${entities.branch?` with ${escapeHtml(entities.branch)}`:''}.`
+                        );
+                } else {
+                    const branchLabel = entities.branch ? escapeHtml(entities.branch) : null;
+                    const top3 = results.slice(0, 3);
+                    const names = top3.map(r => getShortName(r.name)).join(', ');
+                    let html =
+                        `<span class="green">${results.length}</span> matching option${results.length>1?'s':''}${branchLabel?` for <span class="hl">${branchLabel}</span>`:''}. Closest: ${escapeHtml(names)}${results.length>3?` +${results.length-3} more`:''}.<br>`;
+                    html += results.slice(0, 5).map(r => collegeResultHtml(r)).join('');
+                    if (results.length > 5) {
+                        html +=
+                            `<div class="chip-line"><span class="chip" data-action="see-all-smart">→ See all ${results.length} colleges</span></div>`;
+                    }
+                    printAssistantMessage(html);
+                    const lastEl = termBody.lastElementChild;
+                    if (lastEl) {
+                        const chip = lastEl.querySelector('[data-action="see-all-smart"]');
+                        if (chip) {
+                            chip.addEventListener('click', () => {
+                                let allHtml =
+                                    `<span class="hl">All ${results.length} matches</span><br><br>`;
+                                allHtml += results.map(r => collegeResultHtml(r)).join('');
+                                printAssistantMessage(allHtml);
+                                renderPrompt();
+                                focusTerm();
+                            });
+                        }
+                    }
+                }
+            } catch (e) {
+                const last = termBody.lastElementChild;
+                if (last && last.textContent.includes('Searching colleges…')) last.remove();
+                printAssistantMessage(`<span class="red">✗</span> Error: ${escapeHtml(e.message)}`);
+            }
+            renderPrompt();
+            focusTerm();
+        }
+
+        /* ── OVERRIDE: intercept all terminal input for multi-turn flows ── */
+        const origHandleCommand = handleTerminalCommand;
+
+        handleTerminalCommand = async function(cmd) {
+            const raw = cmd.trim();
+
+            // check if we're in a multi-turn flow
+            if (rankFlowState) {
+                printUserMessage(raw);
+                handleRankFlowInput(raw);
+                return;
+            }
+            if (collegeFlowState) {
+                printUserMessage(raw);
+                handleCollegeFlowInput(raw);
+                return;
+            }
+            if (priorityFlowState && priorityFlowState.step !== 'upload') {
+                printUserMessage(raw);
+                handlePriorityFlowInput(raw);
+                return;
+            }
+            // otherwise use the normal handler
+            await origHandleCommand(cmd);
+        };
+
+        /* ══════════════════════════════════════════════════════════
+           BOOT SEQUENCE
+           ══════════════════════════════════════════════════════════ */
+        async function bootTerminal() {
+            printLine(`<span class="dim">x-bit proton v1.0 · terminal interface</span>`, 'dim');
+            printLine(`<span class="dim">─────────────────────────────────</span>`, 'dim');
+            await sleep(200);
+
+            // load training data
+            printLine(`loading <span class="accent">trainingset.json</span> …`, 'dim');
+            await loadTrainingData();
+            printLine(`<span class="green">✓</span> trainingset loaded (${kcetTrainingSet.length} patterns)`, 'ok');
+
+            await sleep(120);
+            printLine(`loading <span class="accent">trainingset1.json</span> …`, 'dim');
+            // already loaded via loadTrainingData
+            printLine(`<span class="green">✓</span> chat patterns loaded (${chatTrainingSet.length} examples)`, 'ok');
+
+            await sleep(120);
+            printLine(`loading <span class="accent">branch-aliases.json</span> …`, 'dim');
+            try {
+                await loadBranchAliases();
+                printLine(`<span class="green">✓</span> branch aliases loaded`, 'ok');
+            } catch (e) {
+                printLine(`<span class="warn">⚠</span> branch-aliases not found, using fallback`, 'warn');
+            }
+
+            await sleep(120);
+            printLine(`preloading <span class="accent">firstroundeng.js</span> …`, 'dim');
+            try {
+                await loadDataset('eng');
+                printLine(`<span class="green">✓</span> engineering dataset loaded`, 'ok');
+            } catch (e) {
+                printLine(`<span class="warn">⚠</span> engineering dataset not found`, 'warn');
+            }
+
+            await sleep(120);
+            printLine(`preloading <span class="accent">firstroundenghk.js</span> …`, 'dim');
+            try {
+                await loadDataset('enghk');
+                printLine(`<span class="green">✓</span> engineering (HK) dataset loaded`, 'ok');
+            } catch (e) {
+                printLine(`<span class="warn">⚠</span> engineering (HK) dataset not found`, 'warn');
+            }
+
+            await sleep(200);
+            printLine(``, 'dim');
+            printLine(
+                `<pre class="term-banner">██╗  ██╗      ██████╗ ██╗████████╗\n╚██╗██╔╝      ██╔══██╗██║╚══██╔══╝\n ╚███╔╝ █████╗ ██████╔╝██║   ██║\n ██╔██╗ ╚════╝ ██╔══██╗██║   ██║\n██╔╝ ██╗       ██████╔╝██║   ██║\n╚═╝  ╚═╝       ╚═════╝ ╚═╝   ╚═╝  PROTON</pre>`,
+                'hl');
+            printLine(`<span class="green">✓</span> x-bit-proton-kea ready`, 'ok');
+            printLine(
+                `─────────────────────────────────`, 'dim');
+            printLine(
+                `Type <span class="accent">help</span> for commands or just ask me anything about KCET rank prediction, colleges, and priority lists.`,
+                'dim');
+
+            terminalBooted = true;
+            renderPrompt();
+            focusTerm();
+        }
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        /* ══════════════════════════════════════════════════════════
+           INIT
+           ══════════════════════════════════════════════════════════ */
+        // set username from LS or prompt via terminal
+        if (!userName) {
+            userName = 'guest';
+            LS.set('username', 'guest');
+        }
+
+        // start boot
+        bootTerminal();
+
+        // handle file uploads that might be dynamically added
+        document.addEventListener('change', (e) => {
+            if (e.target && e.target.id === 'plFileInput') {
+                // already handled in the priority flow
+            }
+        });
+
+        // click on chips that are dynamically added
+        document.addEventListener('click', (e) => {
+            const chip = e.target.closest('.chip');
+            if (chip && chip.getAttribute('data-action')) {
+                // actions are wired directly in the rendering code
+            }
+        });
+
+        // fix vh
+        function setVH() {
+            const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
+            document.documentElement.style.setProperty('--vh', vh + 'px');
+        }
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', () => setTimeout(setVH, 100));
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setVH);
+            window.visualViewport.addEventListener('scroll', setVH);
+        }
+
+        console.log('[x-bit] Proton terminal ready');
+    </script>
+</body>
+</html>
