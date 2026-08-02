@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-<meta name="color-scheme" content="dark light">
+<meta name="color-scheme" content="dark">
 
-<!-- PWA Manifest & Meta -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,608 +12,113 @@
 <meta name="apple-mobile-web-app-title" content="x-bit Proton">
 
 <title>x-bit · Proton</title>
-<meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<meta name="description" content="x-bit Proton — a real terminal: import the app, then talk to it entirely on the command line.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  color-scheme: dark;
-  --bg:#000; --surface:#0a0a0a; --surface-2:#111; --surface-3:#161616;
-  --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.16); --border-focus:rgba(255,255,255,0.5);
-  --text-0:#fff; --text-1:#e8e8e8; --text-2:#8a8a8a; --text-3:#454545;
-  --accent:#fff; --danger:#ff453a; --success:#30d158; --warning:#ff9f0a;
-  --font-d:'Space Grotesk',sans-serif; --font-m:'DM Mono',monospace;
-  --r:16px; --r-sm:12px; --r-xs:8px;
+  --bg:#000; --fg:#d6d6d6; --fg-bright:#ffffff; --fg-dim:#5a5a5a; --fg-mid:#8a8a8a;
+  --accent:#5a9fff; --ok:#30d158; --warn:#ff9f0a; --err:#ff453a;
+  --font:'Space Mono',monospace;
 }
-[data-theme="light"]{
-  color-scheme: light;
-  --bg:#f4f4f6; --surface:#fff; --surface-2:#f0f0f2; --surface-3:#e9e9ec;
-  --border:rgba(0,0,0,0.08); --border-strong:rgba(0,0,0,0.16); --border-focus:rgba(0,0,0,0.5);
-  --text-0:#0a0a0a; --text-1:#1c1c1e; --text-2:#6b6b6f; --text-3:#a2a2a6;
+:root[data-skin="matrix"]{
+  --fg:#8ef58e; --fg-bright:#c9ffc9; --fg-dim:#2f5c2f; --fg-mid:#4f9a4f;
+  --accent:#8ef58e; --ok:#8ef58e; --warn:#e8e86a; --err:#ff6666;
 }
-html{ height:100%; }
+html,body{ height:100%; }
 body{
-  background:var(--bg); color:var(--text-1); font-family:var(--font-d);
-  height:100vh; height:calc(var(--vh, 1vh) * 100); overflow:hidden; -webkit-font-smoothing:antialiased;
-  display:flex; flex-direction:column; transition:background .3s,color .3s;
-  width:100%; max-width:100vw; overflow-x:hidden;
+  background:var(--bg); color:var(--fg); font-family:var(--font); font-size:.82rem;
+  -webkit-font-smoothing:antialiased; overflow:hidden; width:100%; max-width:100vw;
 }
-/* ═══ TOP BAR ═══ */
-.topbar{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:calc(14px + env(safe-area-inset-top)) 18px 10px; flex-shrink:0;
+#shell{
+  height:100vh; height:calc(var(--vh,1vh) * 100); display:flex; flex-direction:column;
+  padding:calc(14px + env(safe-area-inset-top)) 14px calc(12px + env(safe-area-inset-bottom));
+  position:relative;
 }
-.icon-btn{
-  width:38px; height:38px; border-radius:50%; background:var(--surface-2);
-  border:1px solid var(--border); color:var(--text-1); display:flex; align-items:center;
-  justify-content:center; cursor:pointer; font-size:.85rem; transition:.2s;
-}
-.icon-btn:hover{ border-color:var(--border-strong); }
-.topbar-title{ display:flex; align-items:center; gap:8px; }
-.topbar-title img{ height:22px; width:auto; display:block; }
-.topbar-title .status-dot{ width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.6; }
-.topbar-title span{ font-weight:700; font-size:.92rem; letter-spacing:-0.02em; }
-
-/* ═══ CHAT AREA ═══ */
-.chat-wrap{ flex:1; overflow-y:auto; padding:8px 16px 12px; scroll-behavior:smooth; }
-.chat-wrap::-webkit-scrollbar{ width:4px; }
-.chat-wrap::-webkit-scrollbar-thumb{ background:var(--border-strong); border-radius:4px; }
-
-.empty-hero{
-  height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; gap:14px; padding-bottom:10vh;
-}
-.empty-hero img{ width:72px; height:72px; opacity:.92; }
-.empty-hero .eh-title{ font-size:1.15rem; font-weight:700; letter-spacing:-0.02em; color:var(--text-0); }
-.empty-hero .eh-sub{ font-family:var(--font-m); font-size:.7rem; color:var(--text-3); letter-spacing:.05em; }
-
-.msg-row{ display:flex; margin-bottom:14px; animation:msgIn .25s cubic-bezier(.16,1,.3,1) both; }
-@keyframes msgIn{ from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
-.msg-row.user{ justify-content:flex-end; }
-.msg-bubble{
-  max-width:82%; padding:12px 16px; border-radius:var(--r-sm); font-size:.86rem; line-height:1.55;
-}
-.msg-row.user .msg-bubble{ background:var(--text-0); color:var(--bg); border-bottom-right-radius:4px; }
-.msg-row.assistant .msg-bubble{ background:var(--surface-2); border:1px solid var(--border); border-bottom-left-radius:4px; max-width:92%; }
-.msg-row.assistant{ flex-direction:column; align-items:flex-start; }
-.msg-tag{ font-family:var(--font-m); font-size:.5rem; color:var(--text-3); letter-spacing:.15em; text-transform:uppercase; margin:0 2px 5px; }
-
-/* inline CTA chip inside assistant messages */
-.chip-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-.mini-chip{
-  display:inline-flex; align-items:center; gap:6px; background:transparent; border:1px solid var(--border-strong);
-  border-radius:20px; padding:7px 13px; font-family:var(--font-m); font-size:.62rem; color:var(--text-1);
-  cursor:pointer; transition:.2s; letter-spacing:.03em;
-}
-.mini-chip:hover{ background:var(--text-0); color:var(--bg); border-color:var(--text-0); }
-.mini-chip i{ font-size:.6rem; }
-
-/* ═══ CARD (forms rendered inline in chat) ═══ */
-.chat-card{
-  background:var(--surface); border:1px solid var(--border); border-radius:var(--r);
-  padding:18px; margin-top:4px; width:100%; max-width:420px;
-}
-.chat-card-title{ font-size:.82rem; font-weight:700; color:var(--text-0); margin-bottom:14px; letter-spacing:-0.01em; }
-.mode-tabs{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:20px; padding:3px; margin-bottom:14px; }
-.mode-tab{ flex:1; text-align:center; padding:7px 4px; border-radius:16px; font-family:var(--font-m); font-size:.6rem; letter-spacing:.05em; color:var(--text-2); cursor:pointer; transition:.2s; }
-.mode-tab.active{ background:var(--text-0); color:var(--bg); font-weight:600; }
-.field-mini-label{ font-family:var(--font-m); font-size:.55rem; color:var(--text-3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
-.subj-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px; }
-.subj-input{ text-align:center; font-weight:700; font-size:1rem; padding:10px 6px; }
-.xin{
-  width:100%; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-xs);
-  padding:11px 13px; color:var(--text-0); font-family:var(--font-d); font-size:16px; font-weight:500;
-  outline:none; transition:.2s;
-}
-.xin:focus{ border-color:var(--border-focus); }
-.xin::placeholder{ color:var(--text-3); }
-.field-block{ margin-bottom:12px; }
-.section-divider{ height:1px; background:var(--border); margin:14px 0; }
-.btn-solid{
-  width:100%; background:var(--text-0); color:var(--bg); border:none; border-radius:var(--r-xs);
-  padding:13px; font-family:var(--font-d); font-size:.72rem; font-weight:800; letter-spacing:.1em;
-  text-transform:uppercase; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-  transition:.2s; margin-top:6px;
-}
-.btn-solid:hover{ opacity:.88; }
-.btn-solid:disabled{ opacity:.3; cursor:not-allowed; }
-.btn-ghost{
-  width:100%; background:transparent; color:var(--text-1); border:1px solid var(--border-strong); border-radius:var(--r-xs);
-  padding:11px; font-family:var(--font-m); font-size:.65rem; letter-spacing:.06em; cursor:pointer; transition:.2s;
-  display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px;
-}
-.btn-ghost:hover{ border-color:var(--text-0); }
-.link-hint{ font-family:var(--font-m); font-size:.62rem; color:var(--text-2); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
-.link-hint:hover{ color:var(--text-0); }
-
-/* result summary */
-.rank-result{ text-align:center; padding:8px 0 4px; }
-.rank-result .rr-label{ font-family:var(--font-m); font-size:.55rem; color:var(--text-3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:6px; }
-.rank-result .rr-value{ font-size:2.4rem; font-weight:800; letter-spacing:-0.03em; color:var(--text-0); line-height:1; margin-bottom:10px; }
-.rr-meta{ font-family:var(--font-m); font-size:.62rem; color:var(--text-2); margin-bottom:14px; }
-
-/* pill/dropdown selects for college flow */
-.dd-mini{ position:relative; }
-.dd-mini-trigger{
-  width:100%; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-xs);
-  padding:11px 13px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;
-  font-size:.83rem; font-weight:500; color:var(--text-0); transition:.2s;
-}
-.dd-mini-trigger.placeholder{ color:var(--text-3); }
-.dd-mini-menu{
-  position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface-3);
-  border:1px solid var(--border-strong); border-radius:var(--r-xs); z-index:50; display:none;
-  max-height:220px; overflow-y:auto;
-}
-.dd-mini-menu.show{ display:block; }
-.dd-mini-item{ padding:10px 13px; font-size:.76rem; color:var(--text-2); cursor:pointer; border-bottom:1px solid var(--border); }
-.dd-mini-item:last-child{ border-bottom:none; }
-.dd-mini-item:hover{ background:var(--surface-2); color:var(--text-0); }
-
-/* result cards (college matches) */
-.college-result-card{ border:1px solid var(--border); border-radius:var(--r-sm); padding:13px 14px; margin-bottom:8px; background:var(--surface-2); }
-.crc-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; }
-.crc-name{ font-size:.78rem; font-weight:700; color:var(--text-0); line-height:1.35; }
-.crc-cutoff{ font-family:var(--font-m); font-size:.72rem; font-weight:600; color:var(--text-1); flex-shrink:0; white-space:nowrap; }
-.crc-meta{ font-family:var(--font-m); font-size:.58rem; color:var(--text-3); }
-
-/* file upload dropzone in-chat */
-.upload-dz{
-  border:1.5px dashed var(--border-strong); border-radius:var(--r-sm); padding:22px 14px; text-align:center;
-  cursor:pointer; transition:.2s; position:relative;
-}
-.upload-dz:hover{ border-color:var(--text-0); background:var(--surface-2); }
-.upload-dz input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
-.upload-dz i{ font-size:1.1rem; color:var(--text-2); margin-bottom:8px; display:block; }
-.upload-dz span{ font-size:.72rem; color:var(--text-2); }
-
-/* small non-interactive logo loading badge — replaces fa-spin loaders */
-.loading-badge{
-  width:28px; height:28px; flex-shrink:0; border-radius:8px; overflow:hidden;
-  display:flex; align-items:center; justify-content:center; pointer-events:none; touch-action:none;
-}
-.loading-badge iframe{ width:100%; height:100%; border:none; pointer-events:none; touch-action:none; background:transparent; }
-.loading-line{ display:flex; align-items:center; gap:10px; }
-.shine-text{
-  background: linear-gradient(90deg, var(--text-3) 0%, var(--text-0) 50%, var(--text-3) 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: shineSweep 1.3s linear infinite;
-}
-@keyframes shineSweep{ 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
-
-/* ═══ SIDEBAR ═══ */
-.sb-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:400; opacity:0; pointer-events:none; transition:.25s; }
-.sb-backdrop.open{ opacity:1; pointer-events:all; }
-.sidebar{
-  position:fixed; top:0; left:-300px; width:280px; height:100vh; height:calc(var(--vh, 1vh) * 100); background:var(--surface);
-  border-right:1px solid var(--border); z-index:401; transition:left .35s cubic-bezier(.16,1,.3,1);
-  display:flex; flex-direction:column; overflow:hidden;
-}
-.sidebar.open{ left:0; }
-.sb-top{ padding:calc(20px + env(safe-area-inset-top)) 18px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; flex-shrink:0; }
-.sb-blob{ width:42px; height:42px; border-radius:50%; background:var(--text-0); color:var(--bg); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.05rem; flex-shrink:0; }
-.sb-name{ font-size:.88rem; font-weight:700; color:var(--text-0); }
-.sb-tag{ font-family:var(--font-m); font-size:.55rem; color:var(--text-3); margin-top:3px; letter-spacing:.08em; }
-.sb-newchat{
-  margin:14px 18px 6px; padding:11px; border:1px solid var(--border-strong); border-radius:var(--r-xs);
-  display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; font-family:var(--font-m);
-  font-size:.65rem; letter-spacing:.06em; color:var(--text-1); transition:.2s; flex-shrink:0;
-}
-.sb-newchat:hover{ background:var(--text-0); color:var(--bg); border-color:var(--text-0); }
-.sb-section-label{ font-family:var(--font-m); font-size:.52rem; color:var(--text-3); letter-spacing:.15em; text-transform:uppercase; padding:14px 18px 6px; flex-shrink:0; }
-.sb-recent{ flex:1; overflow-y:auto; padding:0 10px; min-height:0; }
-.sb-recent-item{ padding:10px 10px; border-radius:var(--r-xs); cursor:pointer; transition:.15s; margin-bottom:2px; }
-.sb-recent-item:hover{ background:var(--surface-2); }
-.sb-recent-item .rt-title{ font-size:.75rem; font-weight:600; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.sb-recent-item .rt-sub{ font-family:var(--font-m); font-size:.55rem; color:var(--text-3); margin-top:2px; }
-.sb-empty{ padding:20px 18px; font-family:var(--font-m); font-size:.6rem; color:var(--text-3); text-align:center; }
-.sb-footer{ border-top:1px solid var(--border); padding:14px 18px calc(18px + env(safe-area-inset-bottom)); flex-shrink:0; background:var(--surface); }
-.sb-dark-row{ display:flex; align-items:center; justify-content:space-between; }
-.sb-dark-label{ font-size:.75rem; font-weight:700; color:var(--text-0); display:flex; align-items:center; gap:8px; }
-.toggle-pill{ position:relative; width:44px; height:25px; flex-shrink:0; }
-.toggle-pill input{ display:none; }
-.toggle-track{ position:absolute; inset:0; background:var(--surface-3); border:1px solid var(--border-strong); border-radius:20px; cursor:pointer; transition:.25s; }
-.toggle-track::before{ content:''; position:absolute; width:19px; height:19px; left:2px; top:2px; background:var(--text-0); border-radius:50%; transition:.25s cubic-bezier(.16,1,.3,1); }
-.toggle-pill input:checked + .toggle-track::before{ transform:translateX(19px); background:var(--bg); }
-.toggle-pill input:checked + .toggle-track{ background:var(--text-0); }
-
-/* ═══ ONBOARDING ═══ */
-.onboard-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.97); z-index:900; display:flex; align-items:center; justify-content:center; }
-.onboard-overlay.hidden{ display:none; }
-.onboard-card{ width:88%; max-width:340px; border:1px solid var(--border-strong); border-radius:var(--r); background:var(--surface); padding:38px 28px; animation:msgIn .35s cubic-bezier(.16,1,.3,1) both; }
-.onboard-eyebrow{ font-family:var(--font-m); font-size:.58rem; color:var(--text-3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:18px; }
-.onboard-card h2{ font-size:1.4rem; font-weight:800; color:var(--text-0); letter-spacing:-0.03em; margin-bottom:26px; line-height:1.2; }
-.onboard-card h2 span{ color:var(--text-3); }
-.onboard-input{ width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; color:var(--text-0); font-family:var(--font-d); font-size:16px; font-weight:500; outline:none; margin-bottom:26px; }
-.onboard-input:focus{ border-color:var(--text-0); }
-.onboard-btn{ width:100%; background:var(--text-0); color:var(--bg); border:none; border-radius:var(--r-xs); padding:13px; font-family:var(--font-d); font-size:.68rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; }
-.onboard-btn:disabled{ opacity:.25; }
-
-/* ═══ FULL RESULTS PAGE (for "see more colleges") ═══ */
-.results-page{ position:fixed; inset:0; background:var(--bg); z-index:800; display:flex; flex-direction:column; transform:translateY(100%); transition:transform .35s cubic-bezier(.16,1,.3,1); }
-.results-page.open{ transform:translateY(0); }
-.rp-header{ display:flex; align-items:center; gap:12px; padding:16px 18px; border-bottom:1px solid var(--border); flex-shrink:0; }
-.rp-header h3{ font-size:.95rem; font-weight:700; flex:1; }
-.rp-body{ flex:1; overflow-y:auto; padding:16px 18px 40px; }
-
-/* ═══ COMPOSER ═══ */
-.composer-wrap{ flex-shrink:0; padding:8px 14px calc(14px + env(safe-area-inset-bottom)); }
-.pill-row{ display:flex; gap:6px; margin-bottom:8px; overflow-x:auto; padding-bottom:2px; }
-.pill-row::-webkit-scrollbar{ display:none; }
-.cmd-pill{
-  flex-shrink:0; display:flex; align-items:center; gap:6px; background:var(--surface-2); border:1px solid var(--border-strong);
-  border-radius:20px; padding:8px 14px; font-family:var(--font-m); font-size:.63rem; color:var(--text-1);
-  cursor:pointer; transition:.2s; white-space:nowrap;
-}
-.cmd-pill:hover{ background:var(--text-0); color:var(--bg); border-color:var(--text-0); }
-.cmd-pill i{ font-size:.62rem; }
-.composer-box{ background:var(--surface-2); border:1px solid var(--border); border-radius:24px; padding:10px 8px 10px 18px; display:flex; align-items:flex-end; gap:8px; }
-.composer-input{
-  flex:1; background:none; border:none; outline:none; resize:none; color:var(--text-0); font-family:var(--font-d);
-  font-size:16px; max-height:100px; padding:8px 0; line-height:1.4;
-}
-.composer-input::placeholder{ color:var(--text-3); }
-.composer-actions{ display:flex; align-items:center; gap:4px; flex-shrink:0; }
-.comp-icon-btn{ width:34px; height:34px; border-radius:50%; border:none; background:transparent; color:var(--text-2); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:.85rem; transition:.2s; }
-.comp-icon-btn:hover{ color:var(--text-0); }
-.send-btn{ width:36px; height:36px; border-radius:50%; background:var(--text-0); color:var(--bg); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:.85rem; transition:.2s; }
-.send-btn:hover{ opacity:.85; }
-.send-btn:disabled{ opacity:.25; cursor:not-allowed; }
-
-@media(max-width:420px){ .msg-bubble{ max-width:90%; } .chat-card{ max-width:100%; } }
-
-/* ══════════════════════════════════════════════════════════
-   TERMINAL BOOT SCREEN
-   ══════════════════════════════════════════════════════════ */
-#termOverlay{
-  position:fixed; inset:0; z-index:2000; background:#000; color:#d6d6d6;
-  font-family:'Space Mono',monospace; display:flex; flex-direction:column;
-  padding:calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));
-  transition:opacity .5s ease, transform .6s cubic-bezier(.7,0,.3,1), filter .5s ease;
-}
-#termOverlay::before{
-  /* subtle scanline texture */
-  content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
-  background:repeating-linear-gradient(180deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 3px);
+#shell::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
   mix-blend-mode:overlay;
 }
-#termOverlay.term-closing{ opacity:0; transform:scaleY(0.002) scaleX(0.4); filter:brightness(6); }
-#termOverlay.term-hidden{ display:none; }
-.term-topline{ display:flex; align-items:center; gap:8px; padding-bottom:14px; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); flex-shrink:0; }
-.term-dot{ width:10px; height:10px; border-radius:50%; opacity:.55; }
+.term-topline{ display:flex; align-items:center; gap:7px; padding-bottom:11px; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); flex-shrink:0; }
+.term-dot{ width:9px; height:9px; border-radius:50%; opacity:.5; }
 .term-dot.r{ background:#ff5f56; } .term-dot.y{ background:#ffbd2e; } .term-dot.g{ background:#27c93f; }
-.term-topline span{ margin-left:8px; font-size:.63rem; letter-spacing:.1em; color:#666; text-transform:uppercase; }
-.term-body{ flex:1; overflow-y:auto; font-size:.78rem; line-height:1.65; -webkit-overflow-scrolling:touch; }
-.term-body::-webkit-scrollbar{ width:3px; }
-.term-body::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.15); }
-.term-line{ white-space:pre-wrap; word-break:break-word; animation:termLineIn .12s ease both; }
-@keyframes termLineIn{ from{opacity:0;} to{opacity:1;} }
-.term-line.ok{ color:#30d158; }
-.term-line.warn{ color:#ff9f0a; }
-.term-line.err{ color:#ff453a; }
-.term-line.dim{ color:#5a5a5a; }
-.term-line.hl{ color:#fff; font-weight:700; }
-.term-prompt-row{ display:flex; align-items:flex-start; gap:0; flex-wrap:wrap; }
-.term-prompt-tag{ color:#30d158; flex-shrink:0; }
-.term-prompt-path{ color:#5a9fff; flex-shrink:0; }
-.term-prompt-sep{ color:#5a5a5a; flex-shrink:0; margin-right:6px; }
-.term-typed{ color:#fff; white-space:pre-wrap; word-break:break-all; }
-.term-cursor{ display:inline-block; width:7px; height:15px; background:#e8e8e8; margin-left:1px; vertical-align:middle; animation:termBlink 1s step-end infinite; }
-@keyframes termBlink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
-.term-input-line{ display:flex; align-items:center; flex-wrap:wrap; margin-top:6px; }
-.term-hidden-input{ position:absolute; opacity:0; height:0; width:0; pointer-events:none; }
-.term-footer-hint{ flex-shrink:0; padding-top:12px; margin-top:10px; border-top:1px solid rgba(255,255,255,0.08); font-size:.6rem; color:#454545; letter-spacing:.04em; }
-.term-progress-track{ display:inline-block; width:140px; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; vertical-align:middle; margin:0 8px; }
-.term-progress-fill{ height:100%; background:linear-gradient(90deg,#5a9fff,#30d158); width:0%; transition:width .25s ease; }
-.term-banner{ color:#fff; font-weight:700; white-space:pre; font-size:.62rem; line-height:1.3; }
-@media(max-width:420px){ .term-banner{ font-size:.42rem; } }
+.term-topline span{ margin-left:6px; font-size:.6rem; letter-spacing:.09em; color:var(--fg-dim); text-transform:uppercase; }
+.term-topline .term-clock{ margin-left:auto; color:var(--fg-dim); }
+
+#termBody{ flex:1; overflow-y:auto; line-height:1.6; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
+#termBody::-webkit-scrollbar{ width:3px; }
+#termBody::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.15); }
+
+.term-line{ white-space:pre-wrap; word-break:break-word; animation:tIn .1s ease both; }
+@keyframes tIn{ from{opacity:0;} to{opacity:1;} }
+.term-line.dim{ color:var(--fg-dim); }
+.term-line.ok{ color:var(--ok); }
+.term-line.warn{ color:var(--warn); }
+.term-line.err{ color:var(--err); }
+.term-line.hl{ color:var(--fg-bright); font-weight:700; }
+.term-tag-proton{ color:var(--accent); font-weight:700; }
+.term-tag-you{ color:var(--fg-mid); }
+
+.term-prompt-row{ display:flex; align-items:flex-start; flex-wrap:wrap; }
+.term-prompt-tag{ color:var(--ok); flex-shrink:0; }
+.term-prompt-path{ color:var(--accent); flex-shrink:0; }
+.term-prompt-sep{ color:var(--fg-dim); flex-shrink:0; }
+.term-ask-marker{ color:var(--accent); flex-shrink:0; }
+.term-typed{ color:var(--fg-bright); white-space:pre-wrap; word-break:break-all; }
+.term-cursor{ display:inline-block; width:6px; height:14px; background:var(--fg-bright); margin-left:1px; vertical-align:middle; animation:blink 1s step-end infinite; }
+@keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+.term-hidden-input{ position:fixed; opacity:0; height:0; width:0; pointer-events:none; top:0; left:0; font-size:16px; }
+
+pre.term-table{ margin:2px 0; font-family:inherit; font-size:.76rem; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:2px; }
+pre.term-table::-webkit-scrollbar{ height:3px; }
+pre.term-table::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.15); }
+
+.term-filedrop{ position:relative; display:inline-block; border:1px dashed rgba(255,255,255,.28); padding:8px 12px; border-radius:2px; cursor:pointer; color:var(--fg-mid); margin:2px 0; }
+.term-filedrop:active{ border-color:var(--accent); color:var(--fg-bright); }
+.term-filedrop input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+
+.term-banner{ color:var(--fg-bright); font-weight:700; white-space:pre; font-size:.6rem; line-height:1.25; font-family:inherit; }
+@media(max-width:420px){ .term-banner{ font-size:.4rem; } body{ font-size:.78rem; } pre.term-table{ font-size:.68rem; } }
 </style>
 </head>
 <body>
 
-<!-- ═══ TERMINAL BOOT OVERLAY ═══ -->
-<div id="termOverlay">
+<div id="shell">
   <div class="term-topline">
     <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
     <span>x-bit shell — proton@kea</span>
+    <span class="term-clock" id="termClock"></span>
   </div>
-  <div class="term-body" id="termBody"></div>
-  <div class="term-footer-hint" id="termHint">type <b style="color:#8a8a8a;">import x-bit-proton-kea</b> and press enter · type <b style="color:#8a8a8a;">help</b> for other commands</div>
+  <div id="termBody"></div>
   <input type="text" class="term-hidden-input" id="termHiddenInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-</div>
-
-<!-- ═══ ONBOARDING ═══ -->
-<div class="onboard-overlay hidden" id="onboardModal">
-  <div class="onboard-card">
-    <div class="onboard-eyebrow">x-bit · Proton</div>
-    <h2>What's<br><span>your name?</span></h2>
-    <input type="text" class="onboard-input" id="onboardNameInput" placeholder="Enter your name" autocomplete="off" spellcheck="false" maxlength="30">
-    <button class="onboard-btn" id="onboardSubmitBtn" disabled>Continue</button>
-  </div>
-</div>
-
-<!-- ═══ SIDEBAR ═══ -->
-<div class="sb-backdrop" id="sbBackdrop"></div>
-<div class="sidebar" id="sidebar">
-  <div class="sb-top">
-    <div class="sb-blob" id="sbBlob">?</div>
-    <div>
-      <div class="sb-name" id="sbName">User</div>
-      <div class="sb-tag">x-bit · Proton</div>
-    </div>
-  </div>
-  <div class="sb-newchat" id="sbNewChat"><i class="fa-solid fa-plus"></i> New chat</div>
-  <div class="sb-section-label">Recent chats</div>
-  <div class="sb-recent" id="sbRecent"></div>
-  <div class="sb-footer">
-    <div class="sb-dark-row">
-      <div class="sb-dark-label"><i class="fa-solid fa-moon"></i> Dark mode</div>
-      <label class="toggle-pill">
-        <input type="checkbox" id="darkToggle" checked>
-        <span class="toggle-track"></span>
-      </label>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ TOP BAR ═══ -->
-<div class="topbar">
-  <button class="icon-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
-  <div class="topbar-title">
-    <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'">
-    <span>x-bit proton</span>
-    <span class="status-dot"></span>
-  </div>
-  <button class="icon-btn" id="newChatTopBtn"><i class="fa-regular fa-pen-to-square"></i></button>
-</div>
-
-<!-- ═══ CHAT ═══ -->
-<div class="chat-wrap" id="chatWrap">
-  <div class="empty-hero" id="emptyHero">
-    <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'">
-    <div class="eh-title" id="heroGreeting">Hey there</div>
-    <div class="eh-sub">Powered by x0s</div>
-  </div>
-  <div id="chatBody" style="display:none;"></div>
-</div>
-
-<!-- ═══ RESULTS PAGE (full college list) ═══ -->
-<div class="results-page" id="resultsPage">
-  <div class="rp-header">
-    <button class="icon-btn" id="rpClose"><i class="fa-solid fa-arrow-left"></i></button>
-    <h3 id="rpTitle">All matches</h3>
-  </div>
-  <div class="rp-body" id="rpBody"></div>
-</div>
-
-<!-- ═══ COMPOSER ═══ -->
-<div class="composer-wrap">
-  <div class="pill-row">
-    <div class="cmd-pill" id="pillRank"><i class="fa-solid fa-chart-line"></i> Rank Prediction</div>
-    <div class="cmd-pill" id="pillCollege"><i class="fa-solid fa-building-columns"></i> College Prediction</div>
-    <div class="cmd-pill" id="pillPriority"><i class="fa-solid fa-list-ol"></i> Priority List</div>
-  </div>
-  <div class="composer-box">
-    <textarea class="composer-input" id="composerInput" placeholder="Message Proton…" rows="1"></textarea>
-    <div class="composer-actions">
-      <button class="comp-icon-btn"><i class="fa-solid fa-microphone"></i></button>
-      <button class="send-btn" id="sendBtn"><i class="fa-solid fa-arrow-up"></i></button>
-    </div>
-  </div>
 </div>
 
 <script>
 /* ══════════════════════════════════════════════════════════
-   CONFIG / CONSTANTS
+   CONSTANTS
    ══════════════════════════════════════════════════════════ */
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 const GENERAL_CATEGORIES = ['1G','1K','1R','2AG','2AK','2AR','2BG','2BK','2BR','3AG','3AK','3AR','3BG','3BK','3BR','GM','GMK','GMP','GMR','NRI','OPN','OTH','S1G','S1K','S1R','S2G','S2K','S2R','S3G','S3K','S3R','S4G','S4K','S4R','STG','STK','STR'];
 const HK_CATEGORIES = ['1H','1KH','1RH','2AH','2AKH','2ARH','2BH','2BKH','2BRH','3AH','3AKH','3ARH','3BH','3BKH','3BRH','GMH','GMKH','GMPH','GMRH','S1H','S1KH','S1RH','S2H','S2KH','S2RH','S3H','S3KH','S3RH','S4H','S4KH','S4RH','STH','STKH','STRH'];
+const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a,b)=>b.length-a.length);
 
-/* ══════════════════════════════════════════════════════════
-   LOCAL STORAGE HELPERS
-   ══════════════════════════════════════════════════════════ */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('xbit_'+k); return v!==null ? JSON.parse(v) : def; }catch{ return def; } },
   set(k, v){ try{ localStorage.setItem('xbit_'+k, JSON.stringify(v)); }catch{} }
 };
 
-/* ══════════════════════════════════════════════════════════
-   ONBOARDING
-   ══════════════════════════════════════════════════════════ */
-let userName = LS.get('username', '');
-function initOnboarding(){
-  const modal = document.getElementById('onboardModal');
-  modal.classList.remove('hidden');
-  if(userName){ modal.classList.add('hidden'); applyIdentity(); return; }
-  const input = document.getElementById('onboardNameInput');
-  const btn = document.getElementById('onboardSubmitBtn');
-  input.addEventListener('input', ()=>{ btn.disabled = input.value.trim().length===0; });
-  input.addEventListener('keydown', e=>{ if(e.key==='Enter' && input.value.trim()) submit(); });
-  btn.addEventListener('click', submit);
-  function submit(){
-    const name = input.value.trim();
-    if(!name) return;
-    userName = name;
-    LS.set('username', name);
-    modal.classList.add('hidden');
-    applyIdentity();
-  }
-  setTimeout(()=>input.focus(), 350);
-}
-function applyIdentity(){
-  const letter = userName.charAt(0).toUpperCase();
-  document.getElementById('sbBlob').textContent = letter;
-  document.getElementById('sbName').textContent = userName;
-  const hr = new Date().getHours();
-  const greet = hr < 12 ? 'good morning' : hr < 17 ? 'good afternoon' : 'good evening';
-  document.getElementById('heroGreeting').textContent = `Hey ${userName}, ${greet}`;
-}
+function escapeHtml(str){ if(str==null) return ''; return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function pad(n,w){ return String(n).padEnd(w); }
+function padS(n,w){ return String(n).padStart(w); }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function getShortName(name){ if(!name) return ''; const i=name.indexOf(','); return (i>0?name.substring(0,i):name).trim(); }
 
 /* ══════════════════════════════════════════════════════════
-   SIDEBAR + DARK MODE
-   ══════════════════════════════════════════════════════════ */
-function initSidebar(){
-  const sidebar = document.getElementById('sidebar');
-  const backdrop = document.getElementById('sbBackdrop');
-  document.getElementById('menuBtn').addEventListener('click', ()=>{ sidebar.classList.add('open'); backdrop.classList.add('open'); renderRecentChats(); });
-  backdrop.addEventListener('click', ()=>{ sidebar.classList.remove('open'); backdrop.classList.remove('open'); });
-  document.getElementById('sbNewChat').addEventListener('click', startNewChat);
-  document.getElementById('newChatTopBtn').addEventListener('click', startNewChat);
-
-  const darkToggle = document.getElementById('darkToggle');
-  let dark = LS.get('dark_mode', true);
-  function applyTheme(){
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    darkToggle.checked = dark;
-    // update logos based on theme
-    const logoFile = dark ? './logo.png' : './logo1.png';
-    const topbarLogo = document.getElementById('topbarLogo');
-    const heroLogo = document.getElementById('heroLogo');
-    if(topbarLogo){ topbarLogo.src = logoFile; topbarLogo.style.display = ''; }
-    if(heroLogo){ heroLogo.src = logoFile; heroLogo.style.display = ''; }
-  }
-  applyTheme();
-  darkToggle.addEventListener('change', ()=>{ dark = darkToggle.checked; LS.set('dark_mode', dark); applyTheme(); });
-}
-
-/* ══════════════════════════════════════════════════════════
-   CHAT STATE / RECENT CHATS PERSISTENCE
-   ══════════════════════════════════════════════════════════ */
-let currentChatId = null;
-let currentChatMessages = []; // {role, html, plain, ts}
-
-function startNewChat(){
-  saveCurrentChat();
-  currentChatId = 'c_' + Date.now();
-  currentChatMessages = [];
-  document.getElementById('chatBody').innerHTML = '';
-  document.getElementById('chatBody').style.display = 'none';
-  document.getElementById('emptyHero').style.display = 'flex';
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sbBackdrop').classList.remove('open');
-  flowState = null;
-}
-function saveCurrentChat(){
-  if(!currentChatId || currentChatMessages.length===0) return;
-  const all = LS.get('chats', {});
-  const firstUserMsg = currentChatMessages.find(m=>m.role==='user');
-  all[currentChatId] = {
-    id: currentChatId,
-    title: firstUserMsg ? firstUserMsg.plain.slice(0,42) : 'New chat',
-    updatedAt: Date.now(),
-    messages: currentChatMessages
-  };
-  LS.set('chats', all);
-}
-let recentChatsExpanded = false;
-const RECENT_CHATS_CAP = 5;
-
-function renderRecentChats(){
-  const container = document.getElementById('sbRecent');
-  const all = LS.get('chats', {});
-  const list = Object.values(all).sort((a,b)=>b.updatedAt-a.updatedAt);
-  if(!list.length){ container.innerHTML = '<div class="sb-empty">No chats yet</div>'; return; }
-
-  const shown = recentChatsExpanded ? list : list.slice(0, RECENT_CHATS_CAP);
-  container.innerHTML = shown.map(c => {
-    const date = new Date(c.updatedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
-    return `<div class="sb-recent-item" data-id="${c.id}"><div class="rt-title">${escapeHtml(c.title||'New chat')}</div><div class="rt-sub">${date}</div></div>`;
-  }).join('');
-
-  if(list.length > RECENT_CHATS_CAP){
-    container.innerHTML += `<div class="sb-recent-item" id="sbShowMoreBtn" style="text-align:center;"><span class="link-hint">${recentChatsExpanded ? 'Show less' : `Show more (+${list.length - RECENT_CHATS_CAP})`}</span></div>`;
-    document.getElementById('sbShowMoreBtn').addEventListener('click', ()=>{ recentChatsExpanded = !recentChatsExpanded; renderRecentChats(); });
-  }
-
-  // long-press (touch + mouse) to delete; short tap still opens the chat
-  container.querySelectorAll('.sb-recent-item[data-id]').forEach(el=>{
-    let pressTimer = null, longPressed = false;
-    const start = ()=>{
-      longPressed = false;
-      pressTimer = setTimeout(()=>{
-        longPressed = true;
-        if(navigator.vibrate) navigator.vibrate(15);
-        if(confirm('Delete this chat? This can\'t be undone.')) deleteChat(el.getAttribute('data-id'));
-      }, 550);
-    };
-    const cancel = ()=>{ if(pressTimer) clearTimeout(pressTimer); };
-    el.addEventListener('touchstart', start, {passive:true});
-    el.addEventListener('touchend', cancel);
-    el.addEventListener('touchmove', cancel);
-    el.addEventListener('mousedown', start);
-    el.addEventListener('mouseup', cancel);
-    el.addEventListener('mouseleave', cancel);
-    el.addEventListener('click', ()=>{ if(!longPressed) loadChat(el.getAttribute('data-id')); });
-  });
-}
-function deleteChat(id){
-  const all = LS.get('chats', {});
-  delete all[id];
-  LS.set('chats', all);
-  if(id === currentChatId){ startNewChat(); }
-  renderRecentChats();
-}
-function loadChat(id){
-  const all = LS.get('chats', {});
-  const chat = all[id];
-  if(!chat) return;
-  saveCurrentChat();
-  currentChatId = chat.id;
-  currentChatMessages = chat.messages;
-  const body = document.getElementById('chatBody');
-  body.innerHTML = '';
-  chat.messages.forEach(m => appendRawBubble(m.role, m.html));
-  body.style.display = 'block';
-  document.getElementById('emptyHero').style.display = 'none';
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sbBackdrop').classList.remove('open');
-  document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
-}
-
-/* ══════════════════════════════════════════════════════════
-   MESSAGE RENDERING
-   ══════════════════════════════════════════════════════════ */
-function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-/* small non-interactive logo-animation loader, uses theme-appropriate file */
-function loadingLine(text){
-  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-  const loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
-  return `<div class="loading-line"><div class="loading-badge"><iframe src="${loadingFile}" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
-}
-
-function appendRawBubble(role, html){
-  document.getElementById('emptyHero').style.display = 'none';
-  const body = document.getElementById('chatBody');
-  body.style.display = 'block';
-  const row = document.createElement('div');
-  row.className = 'msg-row ' + role;
-  if(role === 'assistant'){
-    row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${html}</div>`;
-  } else {
-    row.innerHTML = `<div class="msg-bubble">${html}</div>`;
-  }
-  body.appendChild(row);
-  document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
-  return row;
-}
-function pushMessage(role, html, plain){
-  if(!currentChatId) currentChatId = 'c_' + Date.now();
-  currentChatMessages.push({ role, html, plain: plain || html.replace(/<[^>]+>/g,'').trim(), ts: Date.now() });
-  const row = appendRawBubble(role, html);
-  saveCurrentChat();
-  return row;
-}
-function userSays(text){ pushMessage('user', escapeHtml(text), text); }
-function protonSays(html, plain){ return pushMessage('assistant', html, plain); }
-
-/* ══════════════════════════════════════════════════════════
-   RANK PREDICTOR ENGINE  (2PU boards + KCET → estimated rank)
+   RANK PREDICTOR ENGINE
    ══════════════════════════════════════════════════════════ */
 class KCETRankPredictor{
   constructor(){
@@ -649,213 +153,30 @@ class KCETRankPredictor{
   }
 }
 const kcetEngine = new KCETRankPredictor();
-
 function computeFinalPercentage(boardsPct, kcetPct){ return (boardsPct/2) + (kcetPct/2); }
 
-/* ══════════════════════════════════════════════════════════
-   FLOW STATE MACHINE
-   flowState carries context across a multi-step in-chat flow
-   (rank prediction handoff -> college prediction autofill)
-   ══════════════════════════════════════════════════════════ */
-let flowState = null; // { pendingRankForCollege, dataset, category, rank, branch }
-
-/* ══════════════════════════════════════════════════════════
-   PILL 1 — RANK PREDICTION CARD
-   ══════════════════════════════════════════════════════════ */
-function openRankPredictionCard(onComplete){
-  const cardId = 'rankcard_' + Date.now();
-  const html = `
-    <div class="chat-card" id="${cardId}">
-      <div class="chat-card-title">Enter details to predict your rank</div>
-
-      <div class="field-mini-label">2nd PU Boards</div>
-      <div class="mode-tabs" data-group="boards">
-        <div class="mode-tab active" data-mode="subjects">Subjects</div>
-        <div class="mode-tab" data-mode="total">Total marks</div>
-        <div class="mode-tab" data-mode="percent">Percentage</div>
-      </div>
-      <div class="mode-panel" data-panel="boards-subjects">
-        <div class="subj-grid">
-          <input type="number" class="xin subj-input b-phy" placeholder="PHY" min="0" max="100">
-          <input type="number" class="xin subj-input b-chem" placeholder="CHEM" min="0" max="100">
-          <input type="number" class="xin subj-input b-math" placeholder="MATH" min="0" max="100">
-        </div>
-      </div>
-      <div class="mode-panel" data-panel="boards-total" style="display:none;">
-        <input type="number" class="xin b-total" placeholder="Total marks (out of 300)" min="0" max="300">
-      </div>
-      <div class="mode-panel" data-panel="boards-percent" style="display:none;">
-        <input type="number" class="xin b-pct" placeholder="Total percentage" min="0" max="100">
-      </div>
-
-      <div class="section-divider"></div>
-
-      <div class="field-mini-label">KCET Score</div>
-      <div class="mode-tabs" data-group="kcet">
-        <div class="mode-tab active" data-mode="subjects">Subjects</div>
-        <div class="mode-tab" data-mode="total">Total marks</div>
-        <div class="mode-tab" data-mode="percent">Percentage</div>
-      </div>
-      <div class="mode-panel" data-panel="kcet-subjects">
-        <div class="subj-grid">
-          <input type="number" class="xin subj-input k-phy" placeholder="PHY" min="0" max="60">
-          <input type="number" class="xin subj-input k-chem" placeholder="CHEM" min="0" max="60">
-          <input type="number" class="xin subj-input k-math" placeholder="MATH" min="0" max="60">
-        </div>
-      </div>
-      <div class="mode-panel" data-panel="kcet-total" style="display:none;">
-        <input type="number" class="xin k-total" placeholder="Total marks (out of 180)" min="0" max="180">
-      </div>
-      <div class="mode-panel" data-panel="kcet-percent" style="display:none;">
-        <input type="number" class="xin k-pct" placeholder="Total percentage" min="0" max="100">
-      </div>
-
-      <button class="btn-solid" data-action="predict-rank"><i class="fa-solid fa-wand-magic-sparkles"></i> Predict Rank</button>
-    </div>`;
-  const row = protonSays(html, 'Enter details to predict your rank');
-  const card = row.querySelector('.chat-card');
-  wireRankCard(card, onComplete);
-}
-
-function wireRankCard(card, onComplete){
-  // mode tab switching
-  card.querySelectorAll('.mode-tabs').forEach(tabGroup=>{
-    const group = tabGroup.getAttribute('data-group');
-    tabGroup.querySelectorAll('.mode-tab').forEach(tab=>{
-      tab.addEventListener('click', ()=>{
-        tabGroup.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
-        tab.classList.add('active');
-        const mode = tab.getAttribute('data-mode');
-        card.querySelectorAll(`.mode-panel[data-panel^="${group}"]`).forEach(p=>p.style.display='none');
-        card.querySelector(`.mode-panel[data-panel="${group}-${mode}"]`).style.display='block';
-      });
-    });
-  });
-  // clamp helper
-  function clamp(el, max){
-    el.addEventListener('input', ()=>{
-      let v = parseFloat(el.value);
-      if(isNaN(v)) return;
-      if(v>max) el.value = max;
-      if(v<0) el.value = 0;
-    });
-  }
-  ['b-phy','b-chem','b-math'].forEach(c=>clamp(card.querySelector('.'+c),100));
-  clamp(card.querySelector('.b-total'),300);
-  clamp(card.querySelector('.b-pct'),100);
-  ['k-phy','k-chem','k-math'].forEach(c=>clamp(card.querySelector('.'+c),60));
-  clamp(card.querySelector('.k-total'),180);
-  clamp(card.querySelector('.k-pct'),100);
-
-  card.querySelector('[data-action="predict-rank"]').addEventListener('click', ()=>{
-    const boardsPct = readBoardsPercent(card);
-    const kcetPct = readKcetPercent(card);
-    if(boardsPct===null || kcetPct===null){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Fill in at least one boards field and one KCET field to predict your rank.`);
-      return;
+function parseScoreInput(raw, maxTotal, subjectMax, ambiguousDefault){
+  const t = (raw||'').trim();
+  if(!t) return null;
+  if(t.includes(',')){
+    const parts = t.split(',').map(s=>parseFloat(s.trim()));
+    if(parts.length>=3 && parts.slice(0,3).every(p=>!isNaN(p) && p<=subjectMax && p>=0)){
+      const sum = parts[0]+parts[1]+parts[2];
+      return (sum/maxTotal)*100;
     }
-    const finalPct = computeFinalPercentage(boardsPct, kcetPct);
-    const rank = kcetEngine.predictRank(finalPct);
-    renderRankResult(rank, boardsPct, kcetPct, finalPct, onComplete);
-  });
-}
-
-function readBoardsPercent(card){
-  const phy=parseFloat(card.querySelector('.b-phy').value), chem=parseFloat(card.querySelector('.b-chem').value), math=parseFloat(card.querySelector('.b-math').value);
-  if(!isNaN(phy) && !isNaN(chem) && !isNaN(math)) return ((phy+chem+math)/300)*100;
-  const total = parseFloat(card.querySelector('.b-total').value);
-  if(!isNaN(total)) return (Math.min(300,total)/300)*100;
-  const pct = parseFloat(card.querySelector('.b-pct').value);
-  if(!isNaN(pct)) return Math.min(100,pct);
-  return null;
-}
-function readKcetPercent(card){
-  const phy=parseFloat(card.querySelector('.k-phy').value), chem=parseFloat(card.querySelector('.k-chem').value), math=parseFloat(card.querySelector('.k-math').value);
-  if(!isNaN(phy) && !isNaN(chem) && !isNaN(math)) return ((phy+chem+math)/180)*100;
-  const total = parseFloat(card.querySelector('.k-total').value);
-  if(!isNaN(total)) return (Math.min(180,total)/180)*100;
-  const pct = parseFloat(card.querySelector('.k-pct').value);
-  if(!isNaN(pct)) return Math.min(100,pct);
-  return null;
-}
-
-function renderRankResult(rank, boardsPct, kcetPct, finalPct, onComplete){
-  const resId = 'rankres_' + Date.now();
-  const html = `
-    <div class="rank-result" id="${resId}">
-      <div class="rr-label">Estimated KCET Rank</div>
-      <div class="rr-value">${rank.toLocaleString('en-IN')}</div>
-      <div class="rr-meta">Boards ${boardsPct.toFixed(1)}% · KCET ${kcetPct.toFixed(1)}% · Combined ${finalPct.toFixed(1)}%</div>
-      <div class="chip-row" style="justify-content:center;">
-        <div class="mini-chip" data-action="websearch"><i class="fa-solid fa-magnifying-glass"></i> Search colleges for this rank</div>
-        <div class="mini-chip" data-action="predict-college"><i class="fa-solid fa-arrow-right"></i> Predict College</div>
-      </div>
-    </div>`;
-  const row = protonSays(html, `Estimated rank: ${rank}`);
-  const block = row.querySelector('.rank-result');
-  block.querySelector('[data-action="websearch"]').addEventListener('click', ()=>{
-    window.open(`https://www.google.com/search?q=KCET+rank+${rank}+eligible+engineering+colleges+Karnataka`, '_blank');
-  });
-  block.querySelector('[data-action="predict-college"]').addEventListener('click', ()=>{
-    if(onComplete) onComplete(rank);
-    else startCollegePredictionFlow(rank);
-  });
+    return null;
+  }
+  const v = parseFloat(t.replace('%','').trim());
+  if(isNaN(v)) return null;
+  if(t.includes('%')) return Math.min(100, v);
+  if(v>100) return (Math.min(maxTotal, v)/maxTotal)*100;
+  return ambiguousDefault==='marks' ? (Math.min(maxTotal, v)/maxTotal)*100 : Math.min(100, v);
 }
 
 /* ══════════════════════════════════════════════════════════
-   NLP QUICK-PARSE — direct chat rank requests
-   e.g. "i got 97 in boards and 130 in kcet predict my rank"
+   DATA LOADING — real fetch/import of the app's real modules
    ══════════════════════════════════════════════════════════ */
-function tryParseRankRequest(text){
-  const t = text.toLowerCase();
-  if(!/rank/.test(t)) return null;
-  if(!/(board|pu|kcet|cet)/.test(t)) return null;
-
-  // capture "<num> in/for boards|pu" and "<num> in/for kcet|cet"
-  const boardsMatch = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:boards|pu|2nd\s*pu|puc)/) ||
-                       t.match(/(?:boards|pu|2nd\s*pu|puc)[^\d]{0,10}(\d+(?:\.\d+)?)/);
-  const kcetMatch = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:kcet|cet)/) ||
-                     t.match(/(?:kcet|cet)[^\d]{0,10}(\d+(?:\.\d+)?)/);
-  if(!boardsMatch || !kcetMatch) return null;
-
-  const boardsNum = parseFloat(boardsMatch[1]);
-  const kcetNum = parseFloat(kcetMatch[1]);
-  const wantsPercent = /%|percent/.test(t);
-
-  let boardsPct, kcetPct;
-  if(wantsPercent || boardsNum<=100){ boardsPct = boardsNum; } else { boardsPct = (Math.min(300,boardsNum)/300)*100; }
-  if(kcetNum<=100 && (wantsPercent || kcetNum<=100)){ kcetPct = kcetNum; } else { kcetPct = (Math.min(180,kcetNum)/180)*100; }
-  // heuristic override: if kcetNum > 100 it must be marks out of 180
-  if(kcetNum>100) kcetPct = (Math.min(180,kcetNum)/180)*100;
-
-  return { boardsPct, kcetPct };
-}
-
-function handleDirectRankChat(text){
-  const parsed = tryParseRankRequest(text);
-  if(!parsed) return false;
-  const finalPct = computeFinalPercentage(parsed.boardsPct, parsed.kcetPct);
-  const rank = kcetEngine.predictRank(finalPct);
-  const html = `Based on <b>${parsed.boardsPct.toFixed(1)}%</b> in boards and <b>${parsed.kcetPct.toFixed(1)}%</b> in KCET, your estimated combined score is <b>${finalPct.toFixed(1)}%</b>.
-    <div class="rank-result" style="text-align:left;padding-top:10px;">
-      <div class="rr-label">Estimated Rank</div>
-      <div class="rr-value" style="font-size:1.8rem;">${rank.toLocaleString('en-IN')}</div>
-    </div>
-    <div class="chip-row"><div class="mini-chip" data-action="predict-college-direct"><i class="fa-solid fa-arrow-right"></i> Predict College for this rank</div></div>`;
-  const row = protonSays(html, `Estimated rank: ${rank}`);
-  row.querySelector('[data-action="predict-college-direct"]').addEventListener('click', ()=>{
-    startCollegePredictionFlow(rank);
-  });
-  return true;
-}
-
-/* ══════════════════════════════════════════════════════════
-   DATA LOADING — lazy-load engineering datasets + branch aliases
-   NOTE: firstroundeng.js / firstroundenghk.js both set `window.XOS_CUTOFF`
-   on load. We capture it into a keyed cache right after injection so the
-   two datasets don't clobber each other.
-   ══════════════════════════════════════════════════════════ */
-const datasetCache = {}; // { eng: [...], enghk: [...] }
+const datasetCache = {};
 let branchAliasesCache = null;
 
 function loadDataset(which){
@@ -870,17 +191,15 @@ function loadDataset(which){
       window.XOS_CUTOFF = undefined;
       resolve(data);
     };
-    script.onerror = ()=> reject(new Error(`Could not load ${src}`));
+    script.onerror = ()=> reject(new Error(`could not load ${src}`));
     document.body.appendChild(script);
   });
 }
 function loadBranchAliases(){
   if(branchAliasesCache) return Promise.resolve(branchAliasesCache);
-  return fetch('./branch-aliases.json').then(r=>r.json()).then(data=>{ branchAliasesCache = data; return data; });
+  return fetch('./branch-aliases.json').then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }).then(data=>{ branchAliasesCache = data; return data; });
 }
 
-/* fuzzy branch matcher — normalize + substring + jaccard, same approach
-   used across the x0s / KEA predictor tools */
 function normBranch(s){ return s.toUpperCase().replace(/[^A-Z0-9\s&]/g,' ').replace(/\s+/g,' ').trim(); }
 function matchBranchKey(aliasList, branchKeysOfCollege){
   const keys = Object.keys(branchKeysOfCollege);
@@ -902,278 +221,8 @@ function matchBranchKey(aliasList, branchKeysOfCollege){
 }
 
 /* ══════════════════════════════════════════════════════════
-   PILL 2 — COLLEGE PREDICTION FLOW
+   PDF PARSING — KEA priority-list Option Entry export
    ══════════════════════════════════════════════════════════ */
-function pillCollegePredictionStart(){
-  const html = `Which dataset should I search?
-    <div class="chip-row">
-      <div class="mini-chip" data-ds="eng"><i class="fa-solid fa-graduation-cap"></i> Engineering</div>
-      <div class="mini-chip" data-ds="enghk"><i class="fa-solid fa-graduation-cap"></i> Engineering (HK)</div>
-    </div>`;
-  const row = protonSays(html, 'Which dataset should I search?');
-  row.querySelectorAll('[data-ds]').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      userSays(chip.textContent.trim());
-      collegeFlowChooseDataset(chip.getAttribute('data-ds'));
-    });
-  });
-}
-
-function startCollegePredictionFlow(prefilledRank){
-  flowState = { dataset:null, category:null, rank: prefilledRank||null };
-  pillCollegePredictionStart();
-}
-
-function collegeFlowChooseDataset(which){
-  flowState = flowState || {};
-  flowState.dataset = which;
-  const cats = which==='enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
-  const cardId = 'catcard_'+Date.now();
-  const html = `
-    <div class="chat-card" id="${cardId}">
-      <div class="chat-card-title">Select your category</div>
-      <div class="dd-mini" id="catDD">
-        <div class="dd-mini-trigger placeholder" id="catTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
-        <div class="dd-mini-menu" id="catMenu">
-          ${cats.map(c=>`<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('')}
-        </div>
-      </div>
-      <div class="field-block" style="margin-top:12px;">
-        <div class="field-mini-label">Your KCET Rank</div>
-        <input type="number" class="xin" id="rankInputCollege" placeholder="Enter your rank" min="1" value="${flowState.rank||''}">
-        <div style="margin-top:8px;"><span class="link-hint" id="predictRankInline">Don't know your rank? Predict it</span></div>
-      </div>
-      <div class="field-block">
-        <div class="field-mini-label">Branch</div>
-        <div style="position:relative;">
-          <input type="text" class="xin" id="branchInputCollege" placeholder="Search branch (e.g. Computer Science)" autocomplete="off">
-          <div class="dd-mini-menu" id="branchSuggestMenu" style="max-height:180px;"></div>
-        </div>
-      </div>
-      <button class="btn-solid" data-action="predict-college-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Colleges</button>
-    </div>`;
-  const row = protonSays(html, 'Select category, rank and branch');
-  const card = row.querySelector('.chat-card');
-  wireCollegeCard(card);
-}
-
-function wireCollegeCard(card){
-  // category dropdown
-  const trigger = card.querySelector('#catTrigger');
-  const menu = card.querySelector('#catMenu');
-  trigger.addEventListener('click', ()=> menu.classList.toggle('show'));
-  menu.querySelectorAll('[data-cat]').forEach(item=>{
-    item.addEventListener('click', ()=>{
-      flowState.category = item.getAttribute('data-cat');
-      trigger.innerHTML = flowState.category + '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
-      trigger.classList.remove('placeholder');
-      menu.classList.remove('show');
-    });
-  });
-  // predict rank inline handoff
-  card.querySelector('#predictRankInline').addEventListener('click', ()=>{
-    openRankPredictionCard((rank)=>{
-      card.querySelector('#rankInputCollege').value = rank;
-      flowState.rank = rank;
-      protonSays(`<i class="fa-solid fa-check" style="color:var(--success);"></i> Rank ${rank.toLocaleString('en-IN')} filled in above. Continue selecting your branch.`);
-    });
-  });
-  // branch autocomplete via branch-aliases.json
-  const branchInput = card.querySelector('#branchInputCollege');
-  const suggestMenu = card.querySelector('#branchSuggestMenu');
-  let selectedBranchEntry = null;
-  branchInput.addEventListener('input', async ()=>{
-    const q = branchInput.value.trim().toLowerCase();
-    selectedBranchEntry = null;
-    if(!q){ suggestMenu.classList.remove('show'); return; }
-    try{
-      const aliases = await loadBranchAliases();
-      const matches = aliases.filter(entry =>
-        entry.display_name.toLowerCase().includes(q) ||
-        (entry.aliases||[]).some(a=>a.toLowerCase().includes(q))
-      ).slice(0,8);
-      if(!matches.length){ suggestMenu.innerHTML = '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">No matches</div>'; suggestMenu.classList.add('show'); return; }
-      suggestMenu.innerHTML = matches.map(m=>`<div class="dd-mini-item" data-bid="${m.branch_id}">${escapeHtml(m.display_name)}</div>`).join('');
-      suggestMenu.classList.add('show');
-      suggestMenu.querySelectorAll('[data-bid]').forEach(el=>{
-        el.addEventListener('click', ()=>{
-          const entry = matches.find(m=>m.branch_id===el.getAttribute('data-bid'));
-          selectedBranchEntry = entry;
-          branchInput.value = entry.display_name;
-          suggestMenu.classList.remove('show');
-        });
-      });
-    }catch(e){
-      suggestMenu.innerHTML = '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">branch-aliases.json not found</div>';
-      suggestMenu.classList.add('show');
-    }
-  });
-
-  card.querySelector('[data-action="predict-college-final"]').addEventListener('click', async ()=>{
-    const rank = parseInt(card.querySelector('#rankInputCollege').value, 10);
-    flowState.rank = rank;
-    if(!flowState.category || isNaN(rank) || !selectedBranchEntry){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Please select a category, enter your rank, and pick a branch from the suggestions before predicting.`);
-      return;
-    }
-    userSays(`Predict colleges — ${flowState.category} · rank ${rank} · ${selectedBranchEntry.display_name}`);
-    protonSays(loadingLine(`Searching ${flowState.dataset==='enghk'?'Engineering (HK)':'Engineering'} colleges…`));
-    try{
-      const dataset = await loadDataset(flowState.dataset);
-      const aliasPool = [selectedBranchEntry.display_name, ...(selectedBranchEntry.aliases||[])];
-      renderCollegeMatches(dataset, flowState.category, rank, aliasPool, selectedBranchEntry.display_name);
-    }catch(e){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}). Make sure ${flowState.dataset==='enghk'?'firstroundenghk.js':'firstroundeng.js'} is in the same repo as this page.`);
-    }
-  });
-}
-
-function renderCollegeMatches(dataset, category, rank, aliasPool, branchLabel){
-  const lowerBound = rank - 1500;
-  const results = [];
-  for(const college of dataset){
-    if(!college.branches) continue;
-    const key = matchBranchKey(aliasPool, college.branches);
-    if(!key) continue;
-    const cutoff = college.branches[key][category];
-    if(cutoff===null || cutoff===undefined) continue;
-    if(cutoff >= lowerBound){
-      results.push({ id:college.id, name:college.name, location:college.location||'Karnataka', branch:key, cutoff, dist: Math.abs(cutoff-rank) });
-    }
-  }
-  results.sort((a,b)=>a.dist-b.dist);
-  if(!results.length){
-    protonSays(`<i class="fa-regular fa-folder-open"></i> No colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}.`);
-    return;
-  }
-  const top5 = results.slice(0,5);
-  let html = `<b>${results.length}</b> colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}:<div style="margin-top:10px;">`;
-  html += top5.map(r=>collegeCardHtml(r, category)).join('');
-  html += `</div>`;
-  if(results.length>5){
-    html += `<div class="chip-row"><div class="mini-chip" data-action="see-more"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ${results.length} colleges</div></div>`;
-  }
-  const row = protonSays(html, `${results.length} colleges found`);
-  const seeMore = row.querySelector('[data-action="see-more"]');
-  if(seeMore){
-    seeMore.addEventListener('click', ()=> openResultsPage(`All matches · ${branchLabel} · ${category}`, results, category));
-  }
-}
-function collegeCardHtml(r, category){
-  return `<div class="college-result-card">
-    <div class="crc-top"><div class="crc-name">${escapeHtml(getShortName(r.name))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-    <div class="crc-meta">${escapeHtml(r.branch)} · ${escapeHtml(r.location)} · ${r.id}</div>
-  </div>`;
-}
-function getShortName(name){ if(!name) return ''; const i=name.indexOf(','); return i>0?name.substring(0,i).trim():name.trim(); }
-
-function openResultsPage(title, results, category){
-  document.getElementById('rpTitle').textContent = title;
-  document.getElementById('rpBody').innerHTML = results.map(r=>collegeCardHtml(r,category)).join('');
-  document.getElementById('resultsPage').classList.add('open');
-}
-document.getElementById('rpClose').addEventListener('click', ()=> document.getElementById('resultsPage').classList.remove('open'));
-
-/* ══════════════════════════════════════════════════════════
-   PILL 3 — PRIORITY LIST PREDICTION (PDF upload)
-   ══════════════════════════════════════════════════════════ */
-function pillPriorityListStart(){
-  const uploadId = 'pl_upload_' + Date.now();
-  const html = `Upload your KEA priority list PDF (the official <b>Option Entry</b> export — filename usually contains "option", e.g. OptionEntry_1234567.pdf).
-    <div class="upload-dz" id="${uploadId}" style="margin-top:12px;">
-      <input type="file" accept=".pdf,application/pdf" id="${uploadId}_input">
-      <i class="fa-solid fa-file-arrow-up"></i>
-      <span>Tap to select your priority list PDF</span>
-    </div>`;
-  const row = protonSays(html, 'Upload your priority list PDF');
-  const input = row.querySelector(`#${uploadId}_input`);
-  input.addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    userSays(`Uploaded: ${file.name}`);
-    const normalizedName = file.name.toLowerCase().replace(/[^a-z]/g, '');
-    if(!normalizedName.includes('option')){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> That doesn't look like the right file. Please upload the official KEA priority-list PDF — the filename should contain <b>"option"</b> (e.g. OptionEntry_1234567.pdf).`);
-      return;
-    }
-    handlePriorityListPdf(file);
-  });
-}
-
-async function handlePriorityListPdf(file){
-  protonSays(loadingLine('Reading your priority list…'));
-  try{
-    const ab = await file.arrayBuffer();
-    const options = await parsePriorityPdf(ab);
-    protonSays(`<i class="fa-solid fa-check" style="color:var(--success);"></i> Extracted <b>${options.length}</b> priority options. Now select your dataset, category and rank so I can match them.`);
-    const cardId = 'plcard_'+Date.now();
-    const html = `
-      <div class="chat-card" id="${cardId}">
-        <div class="chat-card-title">Match against your priority list</div>
-        <div class="chip-row" style="margin-bottom:12px;">
-          <div class="mini-chip" data-ds="eng">Engineering</div>
-          <div class="mini-chip" data-ds="enghk">Engineering (HK)</div>
-        </div>
-        <div class="dd-mini" id="plCatDD">
-          <div class="dd-mini-trigger placeholder" id="plCatTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
-          <div class="dd-mini-menu" id="plCatMenu"></div>
-        </div>
-        <div class="field-block" style="margin-top:10px;">
-          <input type="number" class="xin" id="plRankInput" placeholder="Enter your KCET rank" min="1">
-        </div>
-        <button class="btn-solid" data-action="predict-priority-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Eligibility</button>
-      </div>`;
-    const row = protonSays(html, 'Match against priority list');
-    wirePriorityCard(row.querySelector('.chat-card'), options);
-  }catch(e){
-    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't read that PDF (${e.message}). Please make sure it's a valid KEA priority-list export.`);
-  }
-}
-
-function wirePriorityCard(card, options){
-  let chosenDs = null;
-  card.querySelectorAll('[data-ds]').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      card.querySelectorAll('[data-ds]').forEach(c=>c.style.opacity='.5');
-      chip.style.opacity='1';
-      chosenDs = chip.getAttribute('data-ds');
-      const cats = chosenDs==='enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
-      card.querySelector('#plCatMenu').innerHTML = cats.map(c=>`<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('');
-      wirePlCatMenu(card);
-    });
-  });
-  function wirePlCatMenu(card){
-    const trigger = card.querySelector('#plCatTrigger');
-    const menu = card.querySelector('#plCatMenu');
-    trigger.onclick = ()=> menu.classList.toggle('show');
-    menu.querySelectorAll('[data-cat]').forEach(item=>{
-      item.addEventListener('click', ()=>{
-        card.dataset.category = item.getAttribute('data-cat');
-        trigger.innerHTML = card.dataset.category + '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
-        trigger.classList.remove('placeholder');
-        menu.classList.remove('show');
-      });
-    });
-  }
-  card.querySelector('[data-action="predict-priority-final"]').addEventListener('click', async ()=>{
-    const rank = parseInt(card.querySelector('#plRankInput').value, 10);
-    const category = card.dataset.category;
-    if(!chosenDs || !category || isNaN(rank)){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Please choose a dataset, category and rank first.`);
-      return;
-    }
-    protonSays(loadingLine('Matching your priority list…'));
-    try{
-      const dataset = await loadDataset(chosenDs);
-      const results = matchPriorityOptions(dataset, options, category, rank);
-      renderPriorityResults(results);
-    }catch(e){
-      protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}).`);
-    }
-  });
-}
-
-/* PDF parsing — mirrors the KEA predictor's anchor-based extraction */
 async function parsePriorityPdf(arrayBuffer){
   const pdf = await pdfjsLib.getDocument({data:arrayBuffer}).promise;
   const tokens = [];
@@ -1210,113 +259,50 @@ function matchPriorityOptions(dataset, options, category, userRank){
   dataset.forEach(c=>{ map[c.id]=c; });
   return options.map(opt=>{
     const college = map[opt.collegeId];
-    if(!college) return {...opt, collegeName:null, status:'no-data', statusLabel:'College N/A', cutoff:null};
+    if(!college) return {...opt, collegeName:null, status:'no-data', cutoff:null};
     const mb = matchBranchKey([opt.branch], college.branches);
-    if(!mb) return {...opt, collegeName:college.name, status:'no-data', statusLabel:'Branch N/A', cutoff:null};
+    if(!mb) return {...opt, collegeName:college.name, status:'no-data', cutoff:null};
     const cutoff = college.branches[mb][category];
-    if(cutoff===null||cutoff===undefined) return {...opt, collegeName:college.name, matchedBranch:mb, status:'no-seat', statusLabel:'No Seat', cutoff:null};
+    if(cutoff==null) return {...opt, collegeName:college.name, matchedBranch:mb, status:'no-seat', cutoff:null};
     const eligible = cutoff >= userRank;
-    return {...opt, collegeName:college.name, matchedBranch:mb, cutoff, status: eligible?'eligible':'not-eligible', statusLabel: eligible?'Eligible':'Not Eligible'};
+    return {...opt, collegeName:college.name, matchedBranch:mb, cutoff, status: eligible?'eligible':'not-eligible'};
   });
-}
-function renderPriorityResults(results){
-  const eligible = results.filter(r=>r.status==='eligible');
-  if(!eligible.length){
-    protonSays(`<i class="fa-regular fa-folder-open"></i> No eligible options found in your priority list for this rank &amp; category.`);
-    return;
-  }
-  const top5 = eligible.slice(0,5);
-  let html = `<b>${eligible.length}</b> eligible options found in your priority list:<div style="margin-top:10px;">`;
-  html += top5.map(r=>`<div class="college-result-card">
-    <div class="crc-top"><div class="crc-name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-    <div class="crc-meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div>
-  </div>`).join('');
-  html += `</div>`;
-  if(eligible.length>5) html += `<div class="chip-row"><div class="mini-chip" data-action="see-more-pl"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ${eligible.length} eligible options</div></div>`;
-  const row = protonSays(html, `${eligible.length} eligible options`);
-  const seeMore = row.querySelector('[data-action="see-more-pl"]');
-  if(seeMore){
-    seeMore.addEventListener('click', ()=>{
-      document.getElementById('rpTitle').textContent = 'All eligible options';
-      document.getElementById('rpBody').innerHTML = eligible.map(r=>`<div class="college-result-card">
-        <div class="crc-top"><div class="crc-name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-        <div class="crc-meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div>
-      </div>`).join('');
-      document.getElementById('resultsPage').classList.add('open');
-    });
-  }
 }
 
 /* ══════════════════════════════════════════════════════════
-   SMART CHAT ENGINE — lightweight tokenizer + similarity classifier
-   Trained against ./trainingset.json (KCET intents+entities) and
-   ./trainingset1.json (normal chat pairs). No training loop — pure
-   bag-of-words / Jaccard nearest-neighbor, so it loads instantly.
+   SMART CHAT ENGINE — bag-of-words / Jaccard classifier over
+   trainingset.json (KCET intents) and trainingset1.json (chat)
    ══════════════════════════════════════════════════════════ */
 let kcetTrainingSet = [];
 let chatTrainingSet = [];
-let smartDataReady = false;
 
 async function loadTrainingData(){
   try{
     const r = await fetch('./trainingset.json');
     if(!r.ok) throw new Error('HTTP ' + r.status);
     kcetTrainingSet = await r.json();
-    console.info(`[x-bit] trainingset.json loaded: ${kcetTrainingSet.length} examples`);
-  }catch(e){
-    console.error('[x-bit] trainingset.json failed to load:', e.message, '— check the exact filename/case in your repo (it is case-sensitive on GitHub Pages).');
-    kcetTrainingSet = [];
-  }
+  }catch(e){ kcetTrainingSet = []; throw e; }
   try{
     const r2 = await fetch('./trainingset1.json');
     if(!r2.ok) throw new Error('HTTP ' + r2.status);
     chatTrainingSet = await r2.json();
-    console.info(`[x-bit] trainingset1.json loaded: ${chatTrainingSet.length} examples`);
-  }catch(e){
-    console.error('[x-bit] trainingset1.json failed to load:', e.message, '— check the exact filename/case in your repo (it is case-sensitive on GitHub Pages).');
-    chatTrainingSet = [];
-  }
+  }catch(e){ chatTrainingSet = []; }
   kcetTrainingSet.forEach(ex => ex._tokens = new Set(patternTokens(ex.input)));
   chatTrainingSet.forEach(ex => ex._tokens = new Set(tokenize(ex.input)));
-  smartDataReady = true;
 }
-
-function normalizeText(s){
-  return s.toLowerCase().replace(/[^\w\s%.]/g,' ').replace(/\s+/g,' ').trim();
-}
+function normalizeText(s){ return s.toLowerCase().replace(/[^\w\s%.]/g,' ').replace(/\s+/g,' ').trim(); }
 function tokenize(s){ return normalizeText(s).split(' ').filter(Boolean); }
-// pattern-token version collapses numbers so "124 kcet" and "89 kcet" match the same pattern
 function patternTokens(s){ return normalizeText(s).replace(/\d+\.?\d*/g,'#num#').split(' ').filter(Boolean); }
-
-function jaccard(a, b){
-  let inter = 0;
-  for(const t of a) if(b.has(t)) inter++;
-  const union = a.size + b.size - inter;
-  return union ? inter/union : 0;
-}
-function classifyKcetIntent(text){
-  if(!kcetTrainingSet.length) return null;
-  const q = new Set(patternTokens(text));
-  let best=null, bestScore=0;
-  for(const ex of kcetTrainingSet){
-    const sc = jaccard(q, ex._tokens);
-    if(sc > bestScore){ bestScore = sc; best = ex; }
-  }
-  return best ? { intent: best.output.intent, score: bestScore } : null;
-}
+function jaccard(a, b){ let inter=0; for(const t of a) if(b.has(t)) inter++; const union=a.size+b.size-inter; return union? inter/union : 0; }
 function classifyChat(text){
   if(!chatTrainingSet.length) return null;
   const q = new Set(tokenize(text));
   if(!q.size) return null;
   let best=null, bestScore=0;
-  for(const ex of chatTrainingSet){
-    const sc = jaccard(q, ex._tokens);
-    if(sc > bestScore){ bestScore = sc; best = ex; }
-  }
-  return best && bestScore > 0.3 ? best : null;
+  for(const ex of chatTrainingSet){ const sc=jaccard(q, ex._tokens); if(sc>bestScore){ bestScore=sc; best=ex; } }
+  return best && bestScore>0.3 ? best : null;
 }
 
-/* ── ENTITY EXTRACTION (rule-based, keyword-anchored) ── */
 const KARNATAKA_CITIES = ['bangalore','bengaluru','mysore','mysuru','mangalore','mangaluru','hubli','hubballi','belgaum','belagavi','dharwad','shimoga','shivamogga','hassan','tumkur','tumakuru','davangere','bellary','ballari','gulbarga','kalaburagi','bidar','raichur','udupi','chikmagalur','kolar','mandya','chitradurga','bagalkot','hospet','bijapur','vijayapura'];
 const BRANCH_SHORTHAND = {
   cse:'Computer Science and Engineering', cs:'Computer Science and Engineering',
@@ -1327,9 +313,6 @@ const BRANCH_SHORTHAND = {
   civil:'Civil Engineering', chem:'Chemical Engineering', chemical:'Chemical Engineering',
   aero:'Aerospace Engineering', aeronautical:'Aeronautical Engineering'
 };
-const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a,b)=>b.length-a.length);
-
-/* subject-wise marks: "physics 88 chem 92 maths 95" (in either order, either side of the number) */
 const SUBJ_RE = { physics:/phy(?:sics)?/, chemistry:/chem(?:istry)?/, maths:/math(?:s|ematics)?/ };
 function extractSubjectMarks(segment){
   const marks = {};
@@ -1342,114 +325,367 @@ function extractSubjectMarks(segment){
   if(marks.physics!=null && marks.chemistry!=null && marks.maths!=null) return marks;
   return null;
 }
-/* boards OR kcet, handling subjects -> total marks -> percentage, in that priority.
-   Searches the FULL text directly with a tight, keyword-anchored gap (rather than
-   pre-slicing into segments) so it works regardless of which keyword/number comes first. */
 function findScoreBlock(text, keywordSrc, maxTotal, subjectMax, ambiguousDefault){
   const subj = extractSubjectMarks(text);
   if(subj && subj.physics<=subjectMax && subj.chemistry<=subjectMax && subj.maths<=subjectMax){
     const total = subj.physics + subj.chemistry + subj.maths;
     return { total, pct: (total/maxTotal)*100 };
   }
-  // keyword-before-number is checked first (tighter, less prone to reaching across
-  // into a neighboring clause than the number-before-keyword pattern below).
-  // gap is deliberately tight (\D{0,3}) so "boards and 130" (connector word "and")
-  // can't be mistaken for "boards 130" / "boards: 130".
   let pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
                  text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*%\\s*(?:in\\s*)?' + keywordSrc, 'i'));
   if(pctMatch){ const v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v/100)*maxTotal }; }
-
-  // explicit "marks" keyword always wins, regardless of the ambiguous default below
   let explicitMarks = text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*marks?\\s*(?:in\\s*)?' + keywordSrc, 'i')) ||
                        text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*marks', 'i'));
   if(explicitMarks){ const v = parseFloat(explicitMarks[1]); if(v<=maxTotal) return { total: v, pct: (v/maxTotal)*100 }; }
-
   let totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)', 'i')) ||
                     text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*(?:marks?)?\\s*(?:in\\s*)?' + keywordSrc, 'i'));
   if(totalMatch){
     const v = parseFloat(totalMatch[1]);
     if(v <= maxTotal){
-      if(v > 100){
-        // unambiguous: a percentage can't exceed 100, so this must be raw marks
-        return { total: v, pct: (v/maxTotal)*100 };
-      }
-      // ambiguous zone (0-100 fits both scales) — resolve per subject:
-      // boards defaults to PERCENTAGE (97/300 marks would mean a failing student — illogical
-      // for someone asking about college prediction). KCET defaults to MARKS (that's how
-      // students naturally report KCET scores, e.g. "I got 89 KCET" means 89 marks, not 89%).
+      if(v > 100) return { total: v, pct: (v/maxTotal)*100 };
       if(ambiguousDefault === 'marks') return { total: v, pct: (v/maxTotal)*100 };
       return { pct: v, total: (v/100)*maxTotal };
     }
   }
   return null;
 }
-
 function extractEntities(text){
   const t = ' ' + text.toLowerCase() + ' ';
   const e = {};
-
   const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100, 'percentage');
   if(boardsResult) e.boardPercentage = boardsResult.pct;
-
   const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60, 'marks');
   if(kcetResult) e.kcetMarks = kcetResult.total;
-
-  // rank: explicit "rank <n>" (optionally "k" shorthand) OR bare "<n>k" shorthand
   let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?\b/);
-  if(rm){
-    let v = parseFloat(rm[1]);
-    if(rm[2]) v *= 1000;
-    e.rank = Math.round(v);
-  } else {
-    const km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/);
-    if(km) e.rank = Math.round(parseFloat(km[1]) * 1000);
-  }
-
-  for(const code of ALL_CATEGORY_CODES){
-    const re = new RegExp('\\b' + code.toLowerCase() + '\\b');
-    if(re.test(t)){ e.category = code; break; }
-  }
-
-  for(const short in BRANCH_SHORTHAND){
-    const re = new RegExp('\\b' + short.replace(/[/]/g,'\\/') + '\\b');
-    if(re.test(t)){ e.branch = BRANCH_SHORTHAND[short]; break; }
-  }
-
-  for(const city of KARNATAKA_CITIES){
-    if(t.includes(city)) { e.location = city.charAt(0).toUpperCase()+city.slice(1); break; }
-  }
-  if(!e.location){
-    const lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/);
-    if(lm && !['This','That','My','The'].includes(lm[1])) e.location = lm[1];
-  }
+  if(rm){ let v = parseFloat(rm[1]); if(rm[2]) v*=1000; e.rank = Math.round(v); }
+  else { const km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/); if(km) e.rank = Math.round(parseFloat(km[1])*1000); }
+  for(const code of ALL_CATEGORY_CODES){ if(new RegExp('\\b'+code.toLowerCase()+'\\b').test(t)){ e.category=code; break; } }
+  for(const short in BRANCH_SHORTHAND){ if(new RegExp('\\b'+short.replace(/[/]/g,'\\/')+'\\b').test(t)){ e.branch=BRANCH_SHORTHAND[short]; break; } }
+  for(const city of KARNATAKA_CITIES){ if(t.includes(city)){ e.location=city.charAt(0).toUpperCase()+city.slice(1); break; } }
+  if(!e.location){ const lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/); if(lm && !['This','That','My','The'].includes(lm[1])) e.location = lm[1]; }
   return e;
 }
 function extractCategoryOnly(text){
   const t = ' ' + text.toLowerCase() + ' ';
-  for(const code of ALL_CATEGORY_CODES){
-    if(new RegExp('\\b'+code.toLowerCase()+'\\b').test(t)) return code;
-  }
+  for(const code of ALL_CATEGORY_CODES){ if(new RegExp('\\b'+code.toLowerCase()+'\\b').test(t)) return code; }
   return null;
 }
 
-/* ── TEMP "THINKING" BADGE (not persisted, ~1s) ── */
-function sleep(ms){ return new Promise(res=>setTimeout(res, ms)); }
-function showTempThinking(){
-  document.getElementById('emptyHero').style.display='none';
-  const body = document.getElementById('chatBody'); body.style.display='block';
+/* ══════════════════════════════════════════════════════════
+   TERMINAL ENGINE — every question and answer lives right here.
+   No separate chat UI: printing + a real Enter-driven prompt.
+   ══════════════════════════════════════════════════════════ */
+const termBody = document.getElementById('termBody');
+const hiddenInput = document.getElementById('termHiddenInput');
+class FlowCancel extends Error{}
+
+let typed = '';
+let awaitingResolve = null;
+let userName = LS.get('username', '');
+let lastResults = null;
+let currentTranscript = [];
+let sessionId = 's_' + Date.now();
+
+function scrollBottom(){ termBody.scrollTop = termBody.scrollHeight; }
+function record(tag, text){ currentTranscript.push({tag, text, ts: Date.now()}); }
+
+function printRaw(html, cls){
+  const div = document.createElement('div');
+  div.className = 'term-line' + (cls?(' '+cls):'');
+  div.innerHTML = html;
+  termBody.appendChild(div);
+  scrollBottom();
+  return div;
+}
+function say(text){ printRaw(`<span class="term-tag-proton">proton ›</span> ${text}`); record('proton', text.replace(/<[^>]+>/g,'')); }
+function sayDim(text){ printRaw(text, 'dim'); record('sys', text.replace(/<[^>]+>/g,'')); }
+function sayOk(text){ printRaw(text, 'ok'); record('sys', text.replace(/<[^>]+>/g,'')); }
+function sayWarn(text){ printRaw(text, 'warn'); record('sys', text.replace(/<[^>]+>/g,'')); }
+function sayErr(text){ printRaw(text, 'err'); record('sys', text.replace(/<[^>]+>/g,'')); }
+function sayHl(text){ printRaw(text, 'hl'); record('sys', text.replace(/<[^>]+>/g,'')); }
+function sayTable(rawText){ printRaw(`<pre class="term-table">${escapeHtml(rawText)}</pre>`, 'ok'); record('sys', rawText); }
+function echoYou(text){ printRaw(`<span class="term-tag-you">you ›</span> ${escapeHtml(text)}`); record('you', text); }
+
+function printPrompt(marker){
   const row = document.createElement('div');
-  row.className = 'msg-row assistant';
-  row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${loadingLine('Thinking…')}</div>`;
-  body.appendChild(row);
-  document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
-  return row;
+  row.className = 'term-line term-prompt-row';
+  row.id = 'termCurrentPrompt';
+  const tag = marker || `<span class="term-prompt-tag">guest@x-bit</span><span class="term-prompt-sep">:</span><span class="term-prompt-path">~/proton</span><span class="term-prompt-sep">$&nbsp;</span>`;
+  row.innerHTML = `${tag}<span class="term-typed" id="termTypedSpan"></span><span class="term-cursor" id="termCursorEl"></span>`;
+  termBody.appendChild(row);
+  scrollBottom();
+}
+function refreshTyped(){ const s=document.getElementById('termTypedSpan'); if(s) s.textContent = typed; scrollBottom(); }
+function lockPromptAsHistory(){
+  const cur = document.getElementById('termCurrentPrompt');
+  if(cur) cur.removeAttribute('id');
+  const c = document.getElementById('termCursorEl');
+  if(c) c.remove();
+}
+function setBusy(b){ hiddenInput.disabled = b; }
+
+function focusHidden(){ if(!hiddenInput.disabled) hiddenInput.focus({preventScroll:true}); }
+document.getElementById('shell').addEventListener('click', focusHidden);
+window.addEventListener('pageshow', focusHidden);
+
+hiddenInput.addEventListener('input', ()=>{ typed = hiddenInput.value; refreshTyped(); });
+hiddenInput.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){ e.preventDefault(); submitLine(); }
+});
+
+function submitLine(){
+  const val = typed;
+  hiddenInput.value=''; typed='';
+  lockPromptAsHistory();
+  if(awaitingResolve){
+    const resolve = awaitingResolve;
+    awaitingResolve = null;
+    resolve(val);
+    return;
+  }
+  const cmd = val.trim();
+  if(cmd) echoYou(cmd);
+  dispatchTopLevel(cmd);
 }
 
-/* ── SLOT-FILLING MEMORY (one level: remembers a partially-complete
-   KCET query across turns, e.g. rank+branch known, category missing) ── */
-let pendingSmartQuery = null; // { rank, category, branch, location, needs }
+async function askText(question, marker){
+  const val = await new Promise(resolve=>{
+    if(question) say(question);
+    printPrompt(marker || `<span class="term-ask-marker">?</span>&nbsp;&nbsp;`);
+    awaitingResolve = (v)=>{ record('you', v); resolve(v); };
+  });
+  if(val.trim().toLowerCase()==='cancel') throw new FlowCancel();
+  return val;
+}
+async function askYesNo(question){
+  while(true){
+    const a = (await askText(question + '  (y/n)')).trim().toLowerCase();
+    if(['y','yes'].includes(a)) return true;
+    if(['n','no'].includes(a)) return false;
+    sayErr("please type 'y' or 'n' (or 'cancel').");
+  }
+}
+function askFile(accept){
+  return new Promise(resolve=>{
+    const wrap = document.createElement('div');
+    wrap.className = 'term-line';
+    wrap.innerHTML = `<div class="term-filedrop">[ tap to select file ]<input type="file" accept="${accept}"></div>`;
+    termBody.appendChild(wrap);
+    scrollBottom();
+    const inp = wrap.querySelector('input');
+    inp.addEventListener('change', ()=>{
+      const f = inp.files[0] || null;
+      wrap.innerHTML = `<span class="dim">[file] ${f?escapeHtml(f.name):'(cancelled)'}</span>`;
+      resolve(f);
+    });
+  });
+}
+function spinner(label){
+  const div = printRaw(`<span class="dim">${escapeHtml(label)} <span id="spinFrame">⠋</span></span>`, '');
+  const frames=['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+  let i=0;
+  const iv = setInterval(()=>{ const el=div.querySelector('#spinFrame'); if(el){ i=(i+1)%frames.length; el.textContent=frames[i]; } }, 90);
+  return { stop(finalHtml, cls){ clearInterval(iv); div.className='term-line'+(cls?(' '+cls):''); div.innerHTML=finalHtml; scrollBottom(); } };
+}
 
-/* ── COLLEGE SEARCH (rank±category±branch±location, NOT capped unless UI trims) ── */
+/* ══════════════════════════════════════════════════════════
+   SESSION HISTORY (localStorage, replayable via `history`/`open`)
+   ══════════════════════════════════════════════════════════ */
+function saveSession(){
+  const all = LS.get('sessions', {});
+  const firstYou = currentTranscript.find(t=>t.tag==='you');
+  all[sessionId] = { id: sessionId, title: firstYou ? firstYou.text.slice(0,44) : 'session', updatedAt: Date.now(), transcript: currentTranscript };
+  const trimmed = Object.values(all).sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,40);
+  const trimmedMap = {}; trimmed.forEach(s=>trimmedMap[s.id]=s);
+  LS.set('sessions', trimmedMap);
+}
+function listSessions(){
+  const all = LS.get('sessions', {});
+  return Object.values(all).sort((a,b)=>b.updatedAt-a.updatedAt);
+}
+
+/* ══════════════════════════════════════════════════════════
+   FLOW: RANK PREDICTION
+   ══════════════════════════════════════════════════════════ */
+async function runRankFlow(){
+  say("let's estimate your KCET rank.");
+  const boardsRaw = await askText("2nd PU boards — type a percentage (91), total marks (274), or subject marks like 88,92,95:");
+  const boardsPct = parseScoreInput(boardsRaw, 300, 100, 'percentage');
+  if(boardsPct==null){ sayErr("couldn't read that score."); return runRankFlow(); }
+  const kcetRaw = await askText("KCET score — percentage, marks out of 180, or subject marks like 55,58,52:");
+  const kcetPct = parseScoreInput(kcetRaw, 180, 60, 'marks');
+  if(kcetPct==null){ sayErr("couldn't read that score."); return runRankFlow(); }
+  const finalPct = computeFinalPercentage(boardsPct, kcetPct);
+  const rank = kcetEngine.predictRank(finalPct);
+  sayTable(
+`boards       ${boardsPct.toFixed(1)}%
+kcet         ${kcetPct.toFixed(1)}%
+combined     ${finalPct.toFixed(1)}%
+-----------------------------------
+estimated rank   ${rank.toLocaleString('en-IN')}`
+  );
+  const wantsCollege = await askYesNo("look up eligible colleges for this rank now?");
+  if(wantsCollege) await runCollegeFlow({ rank });
+}
+
+/* ══════════════════════════════════════════════════════════
+   FLOW: COLLEGE PREDICTION
+   ══════════════════════════════════════════════════════════ */
+async function runCollegeFlow(prefill){
+  prefill = prefill || {};
+  const dsRaw = await askText("dataset — [1] Engineering  [2] Engineering (HK):");
+  const dataset = dsRaw.trim()==='2' || /hk/i.test(dsRaw) ? 'enghk' : 'eng';
+  const cats = dataset==='enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
+
+  let category;
+  while(true){
+    const catRaw = (await askText(`category code (e.g. GM, 1G, 2AG…) — type 'list' to see all ${cats.length}:`)).trim().toUpperCase();
+    if(catRaw==='LIST'){ sayDim(cats.join('  ')); continue; }
+    if(cats.includes(catRaw)){ category = catRaw; break; }
+    sayErr(`'${escapeHtml(catRaw)}' isn't valid for this dataset. try again, or 'list'.`);
+  }
+
+  let rank = prefill.rank;
+  if(rank){ say(`using rank ${rank.toLocaleString('en-IN')} from earlier.`); }
+  else{
+    while(true){
+      const r = await askText("your KCET rank:");
+      rank = parseInt(r.replace(/,/g,''),10);
+      if(!isNaN(rank) && rank>0) break;
+      sayErr("enter a valid whole number.");
+    }
+  }
+
+  const sp1 = spinner('loading branch list…');
+  let aliases = [];
+  try{ aliases = await loadBranchAliases(); sp1.stop('<span class="dim">branch list ready.</span>'); }
+  catch(e){ sp1.stop(`<span class="err">couldn't load branch-aliases.json (${escapeHtml(e.message)}).</span>`,'err'); }
+
+  let selected = null;
+  while(!selected){
+    const branchRaw = (await askText("branch — e.g. 'computer science', 'mechanical', 'ece':")).trim().toLowerCase();
+    if(!branchRaw){ sayErr("type a branch keyword."); continue; }
+    const matches = aliases.filter(en => en.display_name.toLowerCase().includes(branchRaw) || (en.aliases||[]).some(a=>a.toLowerCase().includes(branchRaw))).slice(0,8);
+    if(!matches.length){ sayErr("no matching branch — try a different keyword."); continue; }
+    if(matches.length===1){ selected = matches[0]; say(`matched: ${escapeHtml(selected.display_name)}`); break; }
+    sayDim(matches.map((m,i)=>`  [${i+1}] ${m.display_name}`).join('\n'));
+    const pick = await askText("pick a number:");
+    const idx = parseInt(pick,10)-1;
+    if(matches[idx]) selected = matches[idx]; else sayErr("invalid choice.");
+  }
+
+  const sp2 = spinner(`searching ${dataset==='enghk'?'Engineering (HK)':'Engineering'} colleges…`);
+  try{
+    const data = await loadDataset(dataset);
+    sp2.stop('<span class="dim">dataset ready.</span>');
+    const aliasPool = [selected.display_name, ...(selected.aliases||[])];
+    printCollegeResults(data, category, rank, aliasPool, selected.display_name);
+  }catch(e){
+    sp2.stop(`<span class="err">couldn't load dataset (${escapeHtml(e.message)}).</span>`,'err');
+  }
+}
+
+function printCollegeResults(dataset, category, rank, aliasPool, branchLabel){
+  const lowerBound = rank - 1500;
+  const results = [];
+  for(const college of dataset){
+    if(!college.branches) continue;
+    const key = matchBranchKey(aliasPool, college.branches);
+    if(!key) continue;
+    const cutoff = college.branches[key][category];
+    if(cutoff==null) continue;
+    if(cutoff >= lowerBound) results.push({ id:college.id, name:getShortName(college.name), location:college.location||'Karnataka', branch:key, cutoff, dist:Math.abs(cutoff-rank) });
+  }
+  results.sort((a,b)=>a.dist-b.dist);
+  if(!results.length){ sayWarn(`no eligible colleges found for ${escapeHtml(branchLabel)} · ${category} near rank ${rank.toLocaleString('en-IN')}.`); lastResults=null; return; }
+  lastResults = { kind:'college', results, category, meta:`${branchLabel} · ${category} · rank ${rank.toLocaleString('en-IN')}` };
+  renderCollegeTable(results.slice(0,12), results.length, `${results.length} matches · ${branchLabel} · ${category} · rank ${rank.toLocaleString('en-IN')}`);
+}
+function renderCollegeTable(rows, totalCount, headerLine){
+  const idW=6, nameW=40, cutW=8;
+  let out = headerLine + '\n\n';
+  out += pad('ID',idW)+' '+pad('COLLEGE',nameW)+' '+padS('CUTOFF',cutW)+'  LOCATION\n';
+  out += '-'.repeat(idW)+' '+'-'.repeat(nameW)+' '+'-'.repeat(cutW)+'  '+'-'.repeat(10)+'\n';
+  rows.forEach(r=>{
+    out += pad(r.id,idW)+' '+pad(r.name.slice(0,nameW),nameW)+' '+padS(r.cutoff.toLocaleString('en-IN'),cutW)+'  '+r.location+'\n';
+  });
+  if(totalCount>rows.length) out += `\n… +${totalCount-rows.length} more — type 'more' to see all`;
+  sayTable(out.trimEnd());
+}
+function showMoreResults(){
+  if(!lastResults){ sayWarn("nothing to expand — run 'rank', 'college' or 'priority' first."); return; }
+  if(lastResults.kind==='college'){ renderCollegeTable(lastResults.results, lastResults.results.length, `all ${lastResults.results.length} matches · ${lastResults.meta}`); }
+  else if(lastResults.kind==='priority'){ renderPriorityTable(lastResults.results, lastResults.results.length, `all ${lastResults.results.length} eligible options`); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   FLOW: PRIORITY LIST MATCHING (PDF upload)
+   ══════════════════════════════════════════════════════════ */
+async function runPriorityFlow(){
+  say("upload your KEA priority list PDF (Option Entry export — filename usually contains 'option').");
+  const file = await askFile('.pdf,application/pdf');
+  if(!file){ sayErr("no file selected."); return; }
+  const normalized = file.name.toLowerCase().replace(/[^a-z]/g,'');
+  if(!normalized.includes('option')){ sayErr(`'${escapeHtml(file.name)}' doesn't look right — the filename should contain "option".`); return; }
+
+  const sp = spinner('reading priority list…');
+  let options;
+  try{
+    const ab = await file.arrayBuffer();
+    options = await parsePriorityPdf(ab);
+    sp.stop(`<span class="ok">extracted ${options.length} priority options.</span>`,'ok');
+  }catch(e){
+    sp.stop(`<span class="err">couldn't read that PDF (${escapeHtml(e.message)}).</span>`,'err');
+    return;
+  }
+
+  const dsRaw = await askText("dataset — [1] Engineering  [2] Engineering (HK):");
+  const dataset = dsRaw.trim()==='2' ? 'enghk' : 'eng';
+  const cats = dataset==='enghk'?HK_CATEGORIES:GENERAL_CATEGORIES;
+  let category;
+  while(true){
+    const c=(await askText("category code — type 'list' for all:")).trim().toUpperCase();
+    if(c==='LIST'){ sayDim(cats.join('  ')); continue; }
+    if(cats.includes(c)){ category=c; break; }
+    sayErr('invalid code — try again, or "list".');
+  }
+  let rank;
+  while(true){
+    const r = await askText("your KCET rank:");
+    rank = parseInt(r.replace(/,/g,''),10);
+    if(!isNaN(rank) && rank>0) break;
+    sayErr('enter a valid whole number.');
+  }
+
+  const sp2 = spinner('matching against dataset…');
+  try{
+    const data = await loadDataset(dataset);
+    const results = matchPriorityOptions(data, options, category, rank).filter(r=>r.status==='eligible');
+    sp2.stop('<span class="dim">match complete.</span>');
+    if(!results.length){ sayWarn('no eligible options found in your priority list for this rank & category.'); lastResults=null; return; }
+    lastResults = { kind:'priority', results };
+    renderPriorityTable(results.slice(0,12), results.length, `${results.length} eligible options in your priority list`);
+  }catch(e){
+    sp2.stop(`<span class="err">couldn't load dataset (${escapeHtml(e.message)}).</span>`,'err');
+  }
+}
+function renderPriorityTable(rows, totalCount, headerLine){
+  const prW=4, nameW=36, cutW=8;
+  let out = headerLine + '\n\n';
+  out += padS('#',prW)+' '+pad('COLLEGE',nameW)+' '+padS('CUTOFF',cutW)+'  BRANCH\n';
+  out += '-'.repeat(prW)+' '+'-'.repeat(nameW)+' '+'-'.repeat(cutW)+'  '+'-'.repeat(14)+'\n';
+  rows.forEach(r=>{
+    out += padS(r.priority,prW)+' '+pad(getShortName(r.collegeName||r.collegeId).slice(0,nameW),nameW)+' '+padS(r.cutoff.toLocaleString('en-IN'),cutW)+'  '+(r.matchedBranch||r.branch)+'\n';
+  });
+  if(totalCount>rows.length) out += `\n… +${totalCount-rows.length} more — type 'more' to see all`;
+  sayTable(out.trimEnd());
+}
+
+/* ══════════════════════════════════════════════════════════
+   SMART FREEFORM CHAT
+   ══════════════════════════════════════════════════════════ */
+let pendingSmartQuery = null;
+
 async function searchCollegesSmart({ rank, category, branch, location }){
   const dataset = await loadDataset(HK_CATEGORIES.includes(category) ? 'enghk' : 'eng');
   const lowerBound = rank - 1500;
@@ -1463,7 +699,7 @@ async function searchCollegesSmart({ rank, category, branch, location }){
       if(!key) continue;
       const cutoff = college.branches[key][category];
       if(cutoff==null || cutoff < lowerBound) continue;
-      results.push({ id:college.id, name:college.name, location:college.location||'Karnataka', branch:key, cutoff, dist:Math.abs(cutoff-rank) });
+      results.push({ id:college.id, name:getShortName(college.name), location:college.location||'Karnataka', branch:key, cutoff, dist:Math.abs(cutoff-rank) });
     } else {
       let bestKey=null, bestCutoff=null, bestDist=Infinity;
       for(const [bkey, cd] of Object.entries(college.branches)){
@@ -1472,143 +708,261 @@ async function searchCollegesSmart({ rank, category, branch, location }){
         const dist = Math.abs(cutoff-rank);
         if(dist < bestDist){ bestDist=dist; bestKey=bkey; bestCutoff=cutoff; }
       }
-      if(bestKey) results.push({ id:college.id, name:college.name, location:college.location||'Karnataka', branch:bestKey, cutoff:bestCutoff, dist:bestDist });
+      if(bestKey) results.push({ id:college.id, name:getShortName(college.name), location:college.location||'Karnataka', branch:bestKey, cutoff:bestCutoff, dist:bestDist });
     }
   }
   results.sort((a,b)=>a.dist-b.dist);
   return results;
 }
 
-function buildSmartCollegeAnswer(results, { rank, branch, location, category }){
-  const branchLabel = branch ? escapeHtml(branch) : null;
-  if(!results.length){
-    let html = `Doesn't look likely${branchLabel?` for <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''} at rank ${rank.toLocaleString('en-IN')} (${category}) — no eligible seats this round.`;
-    return html;
-  }
-  const shown = results.slice(0,5);
-  const names = results.slice(0,3).map(r=>getShortName(r.name)).join(', ');
-  let html = `Yes — you could get${branchLabel?` <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''}. <b>${results.length}</b> matching option${results.length>1?'s':''}, closest: ${escapeHtml(names)}${results.length>3?` +${results.length-3} more`:''}.`;
-  html += `<div style="margin-top:10px;">` + shown.map(r=>collegeCardHtml(r, category)).join('') + `</div>`;
-  if(results.length>5){
-    html += `<div class="chip-row"><div class="mini-chip" data-action="see-more-smart">See all ${results.length}${location?` in ${escapeHtml(location)}`:''}</div></div>`;
-  }
-  return html;
-}
-
-/* ── MAIN ROUTER ── */
 async function handleSmartMessage(rawText){
-  const thinkingRow = showTempThinking();
-  await sleep(1600);
-  thinkingRow.remove();
+  const sp = spinner('thinking…');
+  await sleep(700);
 
   let entities = extractEntities(rawText);
-
-  // merge with any pending slot-fill context from a previous turn
   if(pendingSmartQuery){
     const merged = Object.assign({}, pendingSmartQuery.known, entities);
     if(!merged.category){ const c = extractCategoryOnly(rawText); if(c) merged.category = c; }
     entities = merged;
   }
 
-  const kcetGuess = classifyKcetIntent(rawText);
   const looksKcetRelated = entities.kcetMarks!=null || entities.boardPercentage!=null || entities.rank!=null ||
     entities.category || entities.branch || /\b(kcet|cet|rank|board|puc?)\b/i.test(rawText) || !!pendingSmartQuery;
 
-  if(looksKcetRelated){
-    await routeKcetQuery(kcetGuess ? kcetGuess.intent : 'rank_prediction', entities);
-    return;
-  }
+  if(looksKcetRelated){ sp.stop(''); await routeKcetQuery(entities); return; }
 
   const chatGuess = classifyChat(rawText);
-  if(chatGuess){ protonSays(escapeHtmlKeepEmoji(chatGuess.output)); return; }
+  if(chatGuess){ sp.stop(''); say(escapeHtml(chatGuess.output)); return; }
 
-  protonSays(`I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or just tell me your boards % and KCET score together.`);
+  sp.stop('');
+  say(`I can help with rank prediction, college prediction, or matching your priority list — try <b>rank</b>, <b>college</b>, <b>priority</b>, or just tell me your boards % and KCET score together.`);
 }
-// chat training answers already contain emoji/punctuation only — safe to render directly, still escape angle brackets defensively
-function escapeHtmlKeepEmoji(s){ return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-async function routeKcetQuery(intent, entities){
-  // 1) derive rank if we have both marks components but no rank yet
+async function routeKcetQuery(entities){
   if(entities.rank==null && entities.kcetMarks!=null && entities.boardPercentage!=null){
     const kcetPct = (Math.min(180, entities.kcetMarks)/180)*100;
     const finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
     entities.rank = kcetEngine.predictRank(finalPct);
-    protonSays(`Based on <b>${entities.boardPercentage}%</b> boards and <b>${entities.kcetMarks}</b> KCET marks, your estimated rank is <b>${entities.rank.toLocaleString('en-IN')}</b>.`);
+    say(`based on ${entities.boardPercentage.toFixed(1)}% boards and ${entities.kcetMarks} KCET marks, estimated rank is <b>${entities.rank.toLocaleString('en-IN')}</b>.`);
   }
-
-  // 2) pure rank-prediction intent with no college ask — stop here if nothing else was requested
-  const wantsCollege = intent!=='rank_prediction' && intent!=='rank_inquiry' || entities.category || entities.branch || entities.location;
-
+  const wantsCollege = entities.category || entities.branch || entities.location;
   if(entities.rank==null){
-    pendingSmartQuery = { known: entities, needs:['rank'] };
-    protonSays(`Got it — what's your KCET score (or boards % + KCET score) so I can estimate your rank?`);
+    pendingSmartQuery = { known: entities };
+    say("what's your KCET score (or boards % + KCET score) so I can estimate your rank?");
     return;
   }
-  if(!wantsCollege){
-    pendingSmartQuery = null;
-    return;
-  }
+  if(!wantsCollege){ pendingSmartQuery = null; return; }
   if(!entities.category){
-    pendingSmartQuery = { known: entities, needs:['category'] };
-    protonSays(`Rank ${entities.rank.toLocaleString('en-IN')} noted. Which category should I check against — GM, 1G, 2AG, SC, ST…?`);
+    pendingSmartQuery = { known: entities };
+    say(`rank ${entities.rank.toLocaleString('en-IN')} noted — which category should I check against (GM, 1G, 2AG, SC, ST…)?`);
     return;
   }
-
   pendingSmartQuery = null;
-  const thinkingRow2 = showTempThinking();
+  const sp = spinner('searching colleges…');
   try{
     const results = await searchCollegesSmart(entities);
-    thinkingRow2.remove();
-    const row = protonSays(buildSmartCollegeAnswer(results, entities), `${results.length} matches`);
-    const seeMore = row.querySelector('[data-action="see-more-smart"]');
-    if(seeMore){
-      seeMore.addEventListener('click', ()=> openResultsPage(
-        `All matches${entities.location?` · ${entities.location}`:''}`, results, entities.category
-      ));
+    if(!results.length){
+      sp.stop(`<span class="warn">doesn't look likely${entities.branch?` for ${escapeHtml(entities.branch)}`:''}${entities.location?` in ${escapeHtml(entities.location)}`:''} at rank ${entities.rank.toLocaleString('en-IN')} (${entities.category}) — no eligible seats.</span>`,'warn');
+      lastResults=null;
+      return;
     }
+    sp.stop('<span class="dim">done.</span>');
+    lastResults = { kind:'college', results, category:entities.category, meta:`${entities.branch?entities.branch+' · ':''}${entities.category} · rank ${entities.rank.toLocaleString('en-IN')}` };
+    renderCollegeTable(results.slice(0,10), results.length, `${results.length} matches · ${lastResults.meta}`);
   }catch(e){
-    thinkingRow2.remove();
-    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
+    sp.stop(`<span class="err">couldn't load the college dataset (${escapeHtml(e.message)}).</span>`,'err');
   }
 }
 
 /* ══════════════════════════════════════════════════════════
-   COMPOSER
+   TOP-LEVEL SHELL — command dispatch + boot sequence
    ══════════════════════════════════════════════════════════ */
-function initComposer(){
-  const input = document.getElementById('composerInput');
-  const sendBtn = document.getElementById('sendBtn');
-  input.addEventListener('input', ()=>{ input.style.height='auto'; input.style.height=Math.min(100,input.scrollHeight)+'px'; });
-  function send(){
-    const text = input.value.trim();
-    if(!text) return;
-    userSays(text);
-    input.value=''; input.style.height='auto';
-    handleSmartMessage(text);
-  }
-  sendBtn.addEventListener('click', send);
-  input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
-
-  document.getElementById('pillRank').addEventListener('click', ()=>{
-    userSays('Rank Prediction');
-    openRankPredictionCard();
-  });
-  document.getElementById('pillCollege').addEventListener('click', ()=>{
-    userSays('College Prediction');
-    startCollegePredictionFlow();
-  });
-  document.getElementById('pillPriority').addEventListener('click', ()=>{
-    userSays('Priority List');
-    pillPriorityListStart();
-  });
+async function runFlow(fn){
+  try{ await fn(); }
+  catch(e){ if(e instanceof FlowCancel) say('cancelled.'); else { sayErr('unexpected error: '+escapeHtml(e.message||String(e))); } }
 }
 
+async function processTopLevel(cmdRaw){
+  const cmd = cmdRaw.toLowerCase().replace(/\s+/g,' ').trim();
+  if(!cmd){ printPrompt(); return; }
+
+  if(cmd==='help'){
+    sayDim('available commands:');
+    sayDim('  rank        — predict your KCET rank');
+    sayDim('  college     — predict eligible colleges');
+    sayDim('  priority    — match your KEA priority-list PDF');
+    sayDim('  more        — expand the last results table');
+    sayDim('  history     — list past terminal sessions');
+    sayDim('  open &lt;n&gt;    — replay a past session from history');
+    sayDim('  new         — start a fresh session');
+    sayDim('  theme default | theme matrix — switch color skin');
+    sayDim('  whoami / ls / clear');
+    sayDim('  or just type naturally, e.g. "91% boards 140 kcet predict my rank"');
+    printPrompt(); return;
+  }
+  if(cmd==='rank'){ await runFlow(runRankFlow); printPrompt(); return; }
+  if(cmd==='college'){ await runFlow(runCollegeFlow); printPrompt(); return; }
+  if(cmd==='priority'){ await runFlow(runPriorityFlow); printPrompt(); return; }
+  if(cmd==='more'){ showMoreResults(); printPrompt(); return; }
+  if(cmd==='ls'){
+    ['trainingset.json','trainingset1.json','branch-aliases.json','firstroundeng.js','firstroundenghk.js','manifest.json','logo.png'].forEach(f=>sayDim('  '+f));
+    printPrompt(); return;
+  }
+  if(cmd==='whoami'){ sayDim(userName ? userName.toLowerCase().replace(/\s+/g,'_') : 'guest'); printPrompt(); return; }
+  if(cmd==='clear'){ termBody.innerHTML=''; printPrompt(); return; }
+  if(cmd==='history'){
+    const sessions = listSessions();
+    if(!sessions.length){ sayDim('no past sessions yet.'); printPrompt(); return; }
+    sessions.slice(0,15).forEach((s,i)=>{
+      const d = new Date(s.updatedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+      sayDim(`  [${i+1}] ${s.title}  (${d})`);
+    });
+    sayDim("type 'open &lt;n&gt;' to replay one.");
+    printPrompt(); return;
+  }
+  if(cmd.startsWith('open ')){
+    const n = parseInt(cmd.slice(5).trim(),10);
+    const sessions = listSessions();
+    const s = sessions[n-1];
+    if(!s){ sayErr('no such session.'); printPrompt(); return; }
+    sayDim(`── replaying: ${escapeHtml(s.title)} ──`);
+    s.transcript.forEach(t=>{
+      if(t.tag==='you') printRaw(`<span class="term-tag-you">you ›</span> ${escapeHtml(t.text)}`);
+      else if(t.tag==='proton') printRaw(`<span class="term-tag-proton">proton ›</span> ${escapeHtml(t.text)}`);
+      else printRaw(escapeHtml(t.text), 'dim');
+    });
+    sayDim('── end of replay ──');
+    printPrompt(); return;
+  }
+  if(cmd==='new'){
+    saveSession();
+    termBody.innerHTML='';
+    currentTranscript = [];
+    sessionId = 's_' + Date.now();
+    lastResults = null; pendingSmartQuery = null;
+    say(`new session started${userName?`, ${escapeHtml(userName)}`:''}.`);
+    printPrompt(); return;
+  }
+  if(cmd.startsWith('theme')){
+    const skin = cmd.split(' ')[1];
+    if(skin==='matrix' || skin==='default'){
+      document.documentElement.setAttribute('data-skin', skin==='matrix'?'matrix':'');
+      LS.set('skin', skin);
+      sayOk(`theme set to ${skin}.`);
+    } else {
+      sayDim("usage: theme default | theme matrix");
+    }
+    printPrompt(); return;
+  }
+
+  await handleSmartMessage(cmdRaw);
+  saveSession();
+  printPrompt();
+}
+
+/* ── BOOT SEQUENCE — real imports, timed for real ── */
+async function importStep(index, total, label, loaderFn){
+  const line = printRaw(`[${String(index).padStart(2,'0')}/${String(total).padStart(2,'0')}] importing <b style="color:var(--fg-bright);">${label}</b>`, 'dim');
+  const t0 = performance.now();
+  try{
+    await loaderFn();
+    const ms = Math.round(performance.now()-t0);
+    line.className='term-line ok';
+    line.innerHTML = `[${String(index).padStart(2,'0')}/${String(total).padStart(2,'0')}] ${label} → OK <span class="dim">(${ms}ms)</span>`;
+  }catch(e){
+    const ms = Math.round(performance.now()-t0);
+    line.className = 'term-line warn';
+    line.innerHTML = `[${String(index).padStart(2,'0')}/${String(total).padStart(2,'0')}] ${label} → WARN <span class="dim">(${ms}ms — ${escapeHtml(e.message||'not found')})</span>`;
+  }
+  scrollBottom();
+  await sleep(70 + Math.random()*70);
+}
+
+async function runImportSequence(){
+  setBusy(true);
+  printRaw('');
+  say(`resolving package <b style="color:var(--fg-bright);">x-bit-proton-kea</b>…`);
+  await sleep(240);
+  sayDim('fetching module manifest from origin…');
+  await sleep(260);
+
+  const modules = [
+    { label:'core/rank-engine.kcet',    fn: ()=>Promise.resolve() },
+    { label:'data/trainingset.json',    fn: ()=>loadTrainingData() },
+    { label:'data/branch-aliases.json', fn: ()=>loadBranchAliases() },
+    { label:'data/firstroundeng.js',    fn: ()=>loadDataset('eng') },
+    { label:'data/firstroundenghk.js',  fn: ()=>loadDataset('enghk') },
+    { label:'assets/manifest.json',     fn: ()=>fetch('./manifest.json').then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); }) },
+  ];
+  for(let i=0;i<modules.length;i++) await importStep(i+1, modules.length, modules[i].label, modules[i].fn);
+
+  await sleep(180);
+  printRaw('');
+  sayDim('linking modules… <span style="color:var(--ok);">done</span>');
+  await sleep(160);
+  sayDim('compiling shell… <span style="color:var(--ok);">done</span>');
+  await sleep(220);
+  printRaw('');
+  printRaw(`<pre class="term-banner">██╗  ██╗      ██████╗ ██╗████████╗
+╚██╗██╔╝      ██╔══██╗██║╚══██╔══╝
+ ╚███╔╝ █████╗ ██████╔╝██║   ██║
+ ██╔██╗ ╚════╝ ██╔══██╗██║   ██║
+██╔╝ ██╗       ██████╔╝██║   ██║
+╚═╝  ╚═╝       ╚═════╝ ╚═╝   ╚═╝  PROTON</pre>`);
+  await sleep(150);
+  sayHl(`x-bit-proton-kea imported successfully. <span style="color:var(--ok);">✓</span>`);
+  await sleep(300);
+  setBusy(false);
+  await startRepl();
+}
+
+async function startRepl(){
+  if(!userName){
+    const n = (await askText("what's your name?")).trim();
+    userName = n || 'guest';
+    LS.set('username', userName);
+  }
+  const hr = new Date().getHours();
+  const greet = hr<12?'good morning':hr<17?'good afternoon':'good evening';
+  say(`hey ${escapeHtml(userName)}, ${greet}. type <b>help</b> to see what I can do, or just tell me your scores.`);
+  printPrompt();
+}
+
+/* ── shell entry: require the import command before anything else runs ── */
+let protonBooted = false;
+async function dispatchTopLevel(cmdRaw){
+  const cmd = cmdRaw.toLowerCase().replace(/\s+/g,' ').trim();
+  if(!protonBooted){
+    if(cmd === 'import x-bit-proton-kea' || cmd === 'import x-bit-proton-kea;'){
+      protonBooted = true;
+      await runImportSequence();
+      return;
+    }
+    if(cmd === 'help'){
+      sayDim('type:');
+      sayDim('  import x-bit-proton-kea');
+      sayDim('to boot the app. other commands unlock after import.');
+      printPrompt(); return;
+    }
+    if(cmd === 'clear'){ termBody.innerHTML=''; printPrompt(); return; }
+    if(!cmd){ printPrompt(); return; }
+    sayErr(`bash: ${escapeHtml(cmdRaw)}: command not found`);
+    sayDim(`try <b style="color:var(--fg-mid);">import x-bit-proton-kea</b> or <b style="color:var(--fg-mid);">help</b>`);
+    printPrompt();
+    return;
+  }
+  return processTopLevel(cmdRaw);
+}
+function bootPrompt(){
+  const skin = LS.get('skin', 'default');
+  if(skin==='matrix') document.documentElement.setAttribute('data-skin','matrix');
+  printPrompt();
+}
+hiddenInput.disabled = false;
+bootPrompt();
 
 /* ══════════════════════════════════════════════════════════
-   MOBILE VIEWPORT FIX — 100vh is unreliable on mobile browsers
-   because it doesn't account for the address bar / keyboard.
-   We track real innerHeight (and visualViewport, for keyboard)
-   and expose it as --vh for the CSS above.
+   MOBILE VIEWPORT FIX + CLOCK
    ══════════════════════════════════════════════════════════ */
 function setVH(){
   const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
@@ -1617,222 +971,21 @@ function setVH(){
 setVH();
 window.addEventListener('resize', setVH);
 window.addEventListener('orientationchange', ()=>setTimeout(setVH,100));
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', setVH);
-  window.visualViewport.addEventListener('scroll', setVH);
+if(window.visualViewport){ window.visualViewport.addEventListener('resize', setVH); window.visualViewport.addEventListener('scroll', setVH); }
+
+function tickClock(){
+  const el = document.getElementById('termClock');
+  if(el) el.textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
 }
+tickClock(); setInterval(tickClock, 15000);
+
+window.addEventListener('beforeunload', saveSession);
 
 /* ══════════════════════════════════════════════════════════
-   TERMINAL BOOT SEQUENCE
-   Real terminal-feel gate in front of the app: the user types
-   `import x-bit-proton-kea`, we genuinely fetch/import the app's
-   real modules (trainingset.json, branch-aliases.json, both cutoff
-   datasets, manifest, logo) with real timings, then hand off into
-   the actual Proton UI. Nothing here is a fake progress bar —
-   every "OK"/"WARN"/"ERR" line reflects a real network result.
-   ══════════════════════════════════════════════════════════ */
-(function initTerminal(){
-  const overlay = document.getElementById('termOverlay');
-  const body = document.getElementById('termBody');
-  const hint = document.getElementById('termHint');
-  const hiddenInput = document.getElementById('termHiddenInput');
-
-  let typed = '';
-  let locked = false;       // true while a command is executing (import running)
-  let booted = false;       // true once the shell has handed off to the app
-
-  function scrollBottom(){ body.scrollTop = body.scrollHeight; }
-
-  function printLine(text, cls){
-    const div = document.createElement('div');
-    div.className = 'term-line' + (cls ? (' '+cls) : '');
-    div.innerHTML = text;
-    body.appendChild(div);
-    scrollBottom();
-    return div;
-  }
-  function printPrompt(){
-    const row = document.createElement('div');
-    row.className = 'term-line term-prompt-row';
-    row.id = 'termCurrentPrompt';
-    row.innerHTML = `<span class="term-prompt-tag">guest@x-bit</span><span class="term-prompt-sep">:</span><span class="term-prompt-path">~/proton</span><span class="term-prompt-sep">$&nbsp;</span><span class="term-typed" id="termTypedSpan"></span><span class="term-cursor" id="termCursorEl"></span>`;
-    body.appendChild(row);
-    scrollBottom();
-  }
-  function refreshTyped(){
-    const span = document.getElementById('termTypedSpan');
-    if(span) span.textContent = typed;
-    scrollBottom();
-  }
-  function lockPromptAsHistory(){
-    const cur = document.getElementById('termCurrentPrompt');
-    if(cur) cur.removeAttribute('id');
-    const cursorEl = document.getElementById('termCursorEl');
-    if(cursorEl) cursorEl.remove();
-  }
-
-  async function sleepT(ms){ return new Promise(r=>setTimeout(r, ms)); }
-
-  function focusHidden(){
-    if(locked || booted) return;
-    hiddenInput.focus({preventScroll:true});
-  }
-
-  overlay.addEventListener('click', focusHidden);
-  focusHidden();
-  window.addEventListener('pageshow', focusHidden);
-
-  hiddenInput.addEventListener('input', ()=>{
-    if(locked || booted) { hiddenInput.value=''; return; }
-    typed = hiddenInput.value;
-    refreshTyped();
-  });
-  hiddenInput.addEventListener('keydown', (e)=>{
-    if(locked || booted) return;
-    if(e.key === 'Enter'){
-      e.preventDefault();
-      submitCommand();
-    }
-  });
-
-  function submitCommand(){
-    const cmd = typed.trim();
-    hiddenInput.value = '';
-    typed = '';
-    lockPromptAsHistory();
-    if(!cmd){ printPrompt(); return; }
-    runCommand(cmd);
-  }
-
-  async function runCommand(cmdRaw){
-    const cmd = cmdRaw.toLowerCase().replace(/\s+/g,' ').trim();
-
-    if(cmd === 'import x-bit-proton-kea' || cmd === 'import x-bit-proton-kea;'){
-      locked = true;
-      await runImportSequence();
-      return;
-    }
-    if(cmd === 'help'){
-      printLine('available commands:', 'dim');
-      printLine('  import x-bit-proton-kea   — boot the Proton app', '');
-      printLine('  ls                        — list app modules', '');
-      printLine('  whoami                    — who is running this shell', '');
-      printLine('  clear                     — clear the screen', '');
-      printPrompt();
-      return;
-    }
-    if(cmd === 'ls'){
-      ['trainingset.json','trainingset1.json','branch-aliases.json','firstroundeng.js','firstroundenghk.js','manifest.json','logo.png'].forEach(f=>printLine('  '+f, 'dim'));
-      printPrompt();
-      return;
-    }
-    if(cmd === 'whoami'){
-      printLine(userName ? userName.toLowerCase().replace(/\s+/g,'_') : 'guest', 'dim');
-      printPrompt();
-      return;
-    }
-    if(cmd === 'clear'){
-      body.innerHTML = '';
-      printPrompt();
-      return;
-    }
-    printLine(`bash: ${escapeHtml(cmdRaw)}: command not found`, 'err');
-    printLine(`try <b style="color:#8a8a8a;">import x-bit-proton-kea</b> or <b style="color:#8a8a8a;">help</b>`, 'dim');
-    printPrompt();
-  }
-
-  /* one real import step: runs `loaderFn`, times it, prints a live-updating
-     result line once the promise settles (resolved or rejected) */
-  async function importStep(index, total, label, loaderFn, optional){
-    const pct = Math.round(((index-1)/total)*100);
-    const line = printLine(
-      `[${String(index).padStart(2,'0')}/${String(total).padStart(2,'0')}] importing <b style="color:#fff;">${label}</b>`+
-      `<span class="term-progress-track"><span class="term-progress-fill" style="width:${pct}%"></span></span>`
-    , 'dim');
-    const t0 = performance.now();
-    try{
-      await loaderFn();
-      const ms = Math.round(performance.now()-t0);
-      line.className = 'term-line ok';
-      line.innerHTML = `[${String(index).padStart(2,'0')}/${String(total).padStart(2,'0')}] ${label} `+
-        `<span style="color:#5a5a5a;">→</span> OK <span style="color:#5a5a5a;">(${ms}ms)</span>`;
-    }catch(e){
-      const ms = Math.round(performance.now()-t0);
-      line.className = 'term-line ' + (optional ? 'warn' : 'err');
-      line.innerHTML = `[${String(index).padStart(2,'0')}/${String(total).padStart(2,'0')}] ${label} `+
-        `<span style="color:#5a5a5a;">→</span> ${optional?'WARN':'ERR'} <span style="color:#5a5a5a;">(${ms}ms) — ${escapeHtml(e.message||'not found')}</span>`;
-    }
-    scrollBottom();
-    await sleepT(90 + Math.random()*90);
-  }
-
-  async function runImportSequence(){
-    hint.style.opacity = '0.3';
-    printLine('');
-    printLine('Resolving package <b style="color:#fff;">x-bit-proton-kea</b>…', '');
-    await sleepT(260);
-    printLine('Fetching module manifest from origin…', 'dim');
-    await sleepT(300);
-
-    const modules = [
-      { label:'core/onboarding-identity',   fn: ()=>Promise.resolve() },
-      { label:'core/rank-engine.kcet',      fn: ()=>Promise.resolve() },
-      { label:'data/trainingset.json',      fn: ()=>loadTrainingData(), optional:true },
-      { label:'data/branch-aliases.json',   fn: ()=>loadBranchAliases(), optional:true },
-      { label:'data/firstroundeng.js',      fn: ()=>loadDataset('eng'), optional:true },
-      { label:'data/firstroundenghk.js',    fn: ()=>loadDataset('enghk'), optional:true },
-      { label:'assets/manifest.json',       fn: ()=>fetch('./manifest.json').then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); }), optional:true },
-      { label:'assets/logo.png',            fn: ()=>new Promise((res,rej)=>{ const im=new Image(); im.onload=res; im.onerror=()=>rej(new Error('404')); im.src='./logo.png'; }), optional:true },
-    ];
-
-    for(let i=0;i<modules.length;i++){
-      const m = modules[i];
-      await importStep(i+1, modules.length, m.label, m.fn, m.optional !== false);
-    }
-
-    await sleepT(200);
-    printLine('');
-    printLine('Linking modules… <span style="color:#30d158;">done</span>', 'dim');
-    await sleepT(200);
-    printLine('Compiling UI bundle… <span style="color:#30d158;">done</span>', 'dim');
-    await sleepT(260);
-    printLine('');
-    printLine(`<pre class="term-banner">██╗  ██╗      ██████╗ ██╗████████╗
-╚██╗██╔╝      ██╔══██╗██║╚══██╔══╝
- ╚███╔╝ █████╗ ██████╔╝██║   ██║
- ██╔██╗ ╚════╝ ██╔══██╗██║   ██║
-██╔╝ ██╗       ██████╔╝██║   ██║
-╚═╝  ╚═╝       ╚═════╝ ╚═╝   ╚═╝  PROTON</pre>`, '');
-    await sleepT(180);
-    printLine('x-bit-proton-kea imported successfully. <span style="color:#30d158;">✓</span>', 'hl');
-    printLine('Launching Proton…', 'dim');
-    await sleepT(550);
-
-    booted = true;
-    overlay.classList.add('term-closing');
-    setTimeout(()=>{
-      overlay.classList.add('term-hidden');
-      handoffToApp();
-    }, 560);
-  }
-
-  function handoffToApp(){
-    initOnboarding();
-    initSidebar();
-    initComposer();
-    currentChatId = 'c_' + Date.now();
-  }
-
-  printPrompt();
-})();
-
-/* ══════════════════════════════════════════════════════════
-   SERVICE WORKER REGISTRATION (PWA)
+   SERVICE WORKER (PWA)
    ══════════════════════════════════════════════════════════ */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
-    .then(() => console.log('[x-bit] SW registered'))
-    .catch(err => console.warn('[x-bit] SW registration failed:', err));
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 </script>
 </body>
