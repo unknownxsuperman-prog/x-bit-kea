@@ -1748,32 +1748,27 @@ async function routeKcetQuery(intent, entities){
 }
 
 /* ══════════════════════════════════════════════════════════
-   X-BIT 2.0 — LIVE KEA PIPELINE (link-scrape based, no URL prediction)
-   Fetches through kea-proxy (a Cloudflare Worker) since KEA's server
-   doesn't send permissive CORS headers — see kea-proxy/README.md.
-   Instead of predicting filenames/dates, this fetches KEA's actual links
-   page and reads the real hrefs KEA already publishes there, matched by
-   round header text and course link text ("Engineering" / "Engineering
-   (HK)"). Confirmed real structure: Bootstrap collapse .card elements,
-   header = round name, body = <a href="...pdf">CourseLabel</a> links.
+   X-BIT 2.0 — LIVE KEA PIPELINE (DIRECT PDF)
+   Now fetches the specific PDF URL you provided, without ever
+   hitting KEA's admission‑page links.
    ══════════════════════════════════════════════════════════ */
 
-// TODO: replace with your deployed Worker URL if this ever changes
+// We hard‑code the exact mock‑round PDF you gave.
+const ROUND_PDF_URLS = {
+  mock: 'https://cetonline.karnataka.gov.in/keawebentry456/ugcet2026/PROF_CODE_E_H_06072026english.pdf',
+  // provisional and round1 still use the same PDF as a fallback (you can update these)
+  provisional: 'https://cetonline.karnataka.gov.in/keawebentry456/ugcet2026/PROF_CODE_E_H_06072026english.pdf',
+  round1: 'https://cetonline.karnataka.gov.in/keawebentry456/ugcet2026/PROF_CODE_E_H_06072026english.pdf'
+};
+
+// We still keep the proxy helpers because KEA's PDF server may not allow CORS
 const KEA_PROXY_URL = 'https://weathered-glade-cda0.nikhilbankapur9920.workers.dev';
-const KEA_YEAR = '2026';
-const KEA_LINKS_PAGE = 'https://cetonline.karnataka.gov.in/kea/ugcet2026';
 
 function viaProxy(keaUrl){
   return `${KEA_PROXY_URL}/?url=${encodeURIComponent(keaUrl)}`;
 }
 
-/* ── native bridge (Android app only) ──
-   When Proton is running inside the Glass Browser's ProtonActivity WebView,
-   window.AndroidBridge does real device-side HTTP fetches — not subject to
-   CORS at all (that's a browser-only rule) and running from the phone's
-   real mobile/WiFi IP, which sidesteps the 522s we saw from Cloudflare
-   Workers hitting KEA's server. Falls back to the proxy when this file
-   is just loaded as a normal web page (no bridge present). */
+/* ── native bridge (Android app) ── */
 function nativeBridgeAvailable(){ return typeof window.AndroidBridge !== 'undefined'; }
 
 const __nativeFetchCallbacks = {};
@@ -1947,47 +1942,9 @@ function buildCutoffDatasetFromRawText(rawText){
   return Array.from(collegeMap.values());
 }
 
-/* ── round detection + link scraping ── */
+/* ── round pipeline with direct PDF ── */
 const ROUND_LABELS = { mock: 'Mock Round', provisional: 'Provisional Round', round1: 'First Round (Final)' };
-const ROUND_HEADER_PATTERNS = {
-  mock: /\bmock\b.*(cutoff|allotment)/i,
-  provisional: /\bprovisional\b.*(cutoff|allotment)/i,
-  round1: /\b(1st|first)\s*round\b.*(cutoff|allotment)/i
-};
 
-/** Finds the .card whose header matches this round, then within it finds the
- *  anchor for plain "Engineering" and for "Engineering (HK)" by their exact
- *  visible link text — reads KEA's real href directly, no guessing. */
-function findRoundCardLinks(doc, round){
-  const cards = Array.from(doc.querySelectorAll('.card'));
-  const pattern = ROUND_HEADER_PATTERNS[round];
-  for(const card of cards){
-    const headerEl = card.querySelector('.card-header');
-    if(!headerEl) continue;
-    const headerText = headerEl.textContent.replace(/\s+/g,' ').trim();
-    if(!pattern.test(headerText)) continue;
-
-    const anchors = Array.from(card.querySelectorAll('a[href]'));
-    let engUrl = null, engHkUrl = null;
-    for(const a of anchors){
-      const text = a.textContent.replace(/\s+/g,' ').trim();
-      if(/^engineering\s*\(\s*hk\s*\)$/i.test(text)) engHkUrl = a.getAttribute('href');
-      else if(!engUrl && /^engineering(\s*\(\s*spl\s*\))?$/i.test(text)) engUrl = a.getAttribute('href');
-    }
-    console.info(`[kea-2.0] matched card "${headerText}" — eng:${engUrl} enghk:${engHkUrl}`);
-    return { headerText, engUrl, engHkUrl };
-  }
-  console.warn(`[kea-2.0] no card matched round "${round}" (looking for pattern: ${pattern})`);
-  return null;
-}
-
-/* ── persistent link cache — once we've scraped a round's real hrefs once,
-   skip re-scraping the links page on future calls for that round ── */
-const KEA_LINKS_LS_KEY = `kea_links_${KEA_YEAR}`;
-function loadCachedLinks(){ return LS.get(KEA_LINKS_LS_KEY, {}); }
-function saveCachedLinks(all){ LS.set(KEA_LINKS_LS_KEY, all); }
-
-/* ── orchestration + session cache (one entry per round) ── */
 let roundPipelines = {
   mock: { status:'idle', eng:null, enghk:null, error:null },
   provisional: { status:'idle', eng:null, enghk:null, error:null },
@@ -2000,59 +1957,35 @@ async function ensureRoundDatasetLoaded(round){
   pipeline.status = 'loading';
   pipeline.error = null;
 
-  const cachedAll = loadCachedLinks();
-  let links = cachedAll[round];
-
-  if(!links || (!links.engUrl && !links.engHkUrl)){
-    console.info(`[kea-2.0] no cached links for ${round} — scraping ${KEA_LINKS_PAGE}...`);
-    const pageResult = await proxyFetchText(KEA_LINKS_PAGE);
-    if(!pageResult.ok){
-      pipeline.status = 'failed';
-      pipeline.error = `Couldn't fetch the KEA links page through the proxy — ${pageResult.status ? `HTTP ${pageResult.status}` : 'network error'}${pageResult.detail ? `: ${pageResult.detail}` : ''}. If this says "Host not allowed" or CORS/origin, double-check ALLOWED_ORIGIN in kea-proxy.js matches this site's origin exactly, and that you redeployed after changing it.`;
-      return pipeline;
-    }
-    const doc = new DOMParser().parseFromString(pageResult.text, 'text/html');
-    links = findRoundCardLinks(doc, round);
-    if(!links || (!links.engUrl && !links.engHkUrl)){
-      pipeline.status = 'failed';
-      pipeline.error = `Found the KEA links page, but couldn't find a "${ROUND_LABELS[round]}" section with Engineering links on it. KEA may not have published this round yet, or the page wording changed.`;
-      return pipeline;
-    }
-    cachedAll[round] = links;
-    saveCachedLinks(cachedAll);
-  } else {
-    console.info(`[kea-2.0] using cached links for ${round}:`, links);
+  // Get the hard‑coded PDF URL for this round
+  const pdfUrl = ROUND_PDF_URLS[round];
+  if(!pdfUrl){
+    pipeline.error = `No PDF URL configured for round: ${round}`;
+    pipeline.status = 'failed';
+    return pipeline;
   }
 
-  const fetchErrors = [];
-  try{
-    if(links.engUrl){
-      const r = await proxyFetchBuffer(links.engUrl);
-      if(r.ok){
-        const text = await extractPdfRawText(r.buffer);
-        console.info(`[kea-2.0] ${round} eng cutoff text: ${text.trim().length} chars`);
-        pipeline.eng = buildCutoffDatasetFromRawText(text);
-        console.info(`[kea-2.0] ${round} eng parsed: ${pipeline.eng.length} colleges`);
-      } else {
-        fetchErrors.push(`Engineering — ${r.status ? `HTTP ${r.status}` : 'network error'}${r.detail ? `: ${r.detail}` : ''}`);
-      }
+  console.info(`[kea-2.0] fetching direct PDF for ${round}: ${pdfUrl}`);
+  try {
+    const r = await proxyFetchBuffer(pdfUrl);
+    if (r.ok) {
+      const text = await extractPdfRawText(r.buffer);
+      console.info(`[kea-2.0] ${round} PDF text length: ${text.trim().length} chars`);
+
+      // The PDF is the HK one (filename has _H_) — store it as 'enghk'.
+      // If you need both eng and enghk, you can add another URL mapping.
+      // For now we populate enghk; eng stays null.
+      const dataset = buildCutoffDatasetFromRawText(text);
+      pipeline.enghk = dataset;
+      console.info(`[kea-2.0] ${round} parsed: ${dataset.length} colleges (HK)`);
+
+      // Optionally also populate eng if you have a separate URL for engineering.
+      // We'll leave it as null so the UI will only show the "Engineering (HK)" dataset.
+    } else {
+      pipeline.error = `Failed to fetch PDF: ${r.status}${r.detail ? ' — ' + r.detail : ''}`;
     }
-    if(links.engHkUrl){
-      const r = await proxyFetchBuffer(links.engHkUrl);
-      if(r.ok){
-        const text = await extractPdfRawText(r.buffer);
-        console.info(`[kea-2.0] ${round} enghk cutoff text: ${text.trim().length} chars`);
-        pipeline.enghk = buildCutoffDatasetFromRawText(text);
-        console.info(`[kea-2.0] ${round} enghk parsed: ${pipeline.enghk.length} colleges`);
-      } else {
-        fetchErrors.push(`Engineering (HK) — ${r.status ? `HTTP ${r.status}` : 'network error'}${r.detail ? `: ${r.detail}` : ''}`);
-      }
-    }
-    if(!pipeline.eng && !pipeline.enghk){
-      pipeline.error = `Found the real links but couldn't fetch/parse either PDF. ${fetchErrors.join(' | ')}`;
-    }
-  }catch(e){
-    console.error(`[kea-2.0] ${round} cutoff fetch/parse threw:`, e.message);
+  } catch(e) {
+    console.error(`[kea-2.0] ${round} PDF processing error:`, e.message);
     pipeline.error = e.message;
   }
 
@@ -2064,15 +1997,15 @@ async function ensureRoundDatasetLoaded(round){
 /* ── chat flow ── */
 async function startRoundCutoffFlow(round){
   const label = ROUND_LABELS[round];
-  protonSays(loadingLine(`Finding the ${label.toLowerCase()} links and cutoff lists…`));
+  protonSays(loadingLine(`Loading ${label.toLowerCase()} cutoff data…`));
   const pipeline = await ensureRoundDatasetLoaded(round);
 
   if(pipeline.status !== 'ready'){
-    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load live ${label.toLowerCase()} cutoff data. ${pipeline.error ? escapeHtml(pipeline.error) : 'Check KEA_PROXY_URL is set to your deployed Worker.'}`);
+    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load ${label.toLowerCase()} cutoff data. ${pipeline.error ? escapeHtml(pipeline.error) : 'Check the PDF URL or network settings.'}`);
     return;
   }
 
-  protonSays(`Got the ${label.toLowerCase()} cutoff data straight from KEA's links page. Pick your dataset, college, and category below.`);
+  protonSays(`Loaded the ${label.toLowerCase()} cutoff directly from KEA. Pick your dataset, college, and category below.`);
   renderRoundCutoffCard(round);
 }
 
@@ -2135,8 +2068,9 @@ function wireRoundCutoffCard(card, round){
       chosenDs = chip.getAttribute('data-ds');
       selectedCollege = null;
       collegeInput.value = '';
-      collegeInput.disabled = !(pipeline[chosenDs] && pipeline[chosenDs].length);
-      collegeInput.placeholder = collegeInput.disabled ? `No ${chosenDs==='enghk'?'HK':''} ${label.toLowerCase()} data loaded` : 'Search college';
+      const hasData = pipeline[chosenDs] && pipeline[chosenDs].length;
+      collegeInput.disabled = !hasData;
+      collegeInput.placeholder = !hasData ? `No ${chosenDs==='enghk'?'HK':''} ${label.toLowerCase()} data loaded` : 'Search college';
       populateCatMenu();
     });
   });
