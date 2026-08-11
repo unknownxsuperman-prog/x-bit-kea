@@ -288,6 +288,13 @@ body{
 .send-btn:hover{ opacity:.85; }
 .send-btn:disabled{ opacity:.25; cursor:not-allowed; }
 
+/* ═══ SHARE ═══ */
+.share-link-box{ display:flex; align-items:center; gap:8px; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-xs); padding:10px 12px; margin-top:10px; }
+.share-link-box input{ flex:1; background:none; border:none; outline:none; color:var(--text-1); font-family:var(--font-m); font-size:.63rem; }
+.share-copy-btn{ background:var(--text-0); color:var(--bg); border:none; border-radius:8px; padding:7px 12px; font-family:var(--font-m); font-size:.6rem; font-weight:700; cursor:pointer; flex-shrink:0; white-space:nowrap; }
+.shared-intro-card{ display:flex; align-items:flex-start; gap:12px; }
+.shared-intro-avatar{ width:38px; height:38px; border-radius:50%; background:var(--text-0); color:var(--bg); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.9rem; flex-shrink:0; }
+
 /* ═══ CONNECT OVERLAY (Proton ↔ x0s) ═══ */
 .connect-overlay{
   position:fixed; inset:0; z-index:9999;
@@ -429,7 +436,10 @@ body{
     <span class="xv-badge" id="topbarVersionBadge">1.0</span>
     <span class="status-dot"></span>
   </div>
-  <button class="icon-btn" id="newChatTopBtn"><i class="fa-regular fa-pen-to-square"></i></button>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="icon-btn" id="shareChatBtn"><i class="fa-solid fa-share-nodes"></i></button>
+    <button class="icon-btn" id="newChatTopBtn"><i class="fa-regular fa-pen-to-square"></i></button>
+  </div>
 </div>
 
 <!-- ═══ CHAT ═══ -->
@@ -490,7 +500,7 @@ const LS = {
 let userName = LS.get('username', '');
 function initOnboarding(){
   const modal = document.getElementById('onboardModal');
-  if(userName){ modal.classList.add('hidden'); applyIdentity(); return; }
+  if(userName){ modal.classList.add('hidden'); applyIdentity(); afterOnboardingReady(); return; }
   const input = document.getElementById('onboardNameInput');
   const btn = document.getElementById('onboardSubmitBtn');
   input.addEventListener('input', ()=>{ btn.disabled = input.value.trim().length===0; });
@@ -503,6 +513,7 @@ function initOnboarding(){
     LS.set('username', name);
     modal.classList.add('hidden');
     applyIdentity();
+    afterOnboardingReady();
   }
   setTimeout(()=>input.focus(), 350);
 }
@@ -576,11 +587,13 @@ function initModelSelector(){
    ══════════════════════════════════════════════════════════ */
 let currentChatId = null;
 let currentChatMessages = []; // {role, html, plain, ts}
+let chatShareLog = []; // {branchId, rank, category} — one entry per college search performed in this chat
 
 function startNewChat(){
   saveCurrentChat();
   currentChatId = 'c_' + Date.now();
   currentChatMessages = [];
+  chatShareLog = [];
   document.getElementById('chatBody').innerHTML = '';
   document.getElementById('chatBody').style.display = 'none';
   document.getElementById('emptyHero').style.display = 'flex';
@@ -596,7 +609,8 @@ function saveCurrentChat(){
     id: currentChatId,
     title: firstUserMsg ? firstUserMsg.plain.slice(0,42) : 'New chat',
     updatedAt: Date.now(),
-    messages: currentChatMessages
+    messages: currentChatMessages,
+    shareLog: chatShareLog
   };
   LS.set('chats', all);
 }
@@ -655,6 +669,7 @@ function loadChat(id){
   saveCurrentChat();
   currentChatId = chat.id;
   currentChatMessages = chat.messages;
+  chatShareLog = chat.shareLog || [];
   const body = document.getElementById('chatBody');
   body.innerHTML = '';
   chat.messages.forEach(m => appendRawBubble(m.role, m.html));
@@ -747,6 +762,166 @@ function computeFinalPercentage(boardsPct, kcetPct){ return (boardsPct/2) + (kce
    (rank prediction handoff -> college prediction autofill)
    ══════════════════════════════════════════════════════════ */
 let flowState = null; // { pendingRankForCollege, dataset, category, rank, branch }
+
+/* ══════════════════════════════════════════════════════════
+   SHARE CHAT SYSTEM
+   Encodes performed college-prediction searches into a compact
+   URL token so a shared link can be re-decoded and replayed by
+   the recipient. Token shape (per search): <BRANCHID><RANK><CATEGORY>
+   e.g. "AERO17400GMH" -> branch AERO, rank 17400, category GMH.
+   Multiple searches in one chat are joined with commas. Decoding
+   walks ALL_CATEGORY_CODES longest-first to strip the category
+   suffix (categories are a closed, known set), then splits the
+   remainder into its alpha branch id and numeric rank.
+   ══════════════════════════════════════════════════════════ */
+const SHARE_BASE_URL = 'https://unknownxsuperman-prog.github.io/x-bit-kea/eminem.html';
+
+function encodeCpToken(branchId, rank, category){
+  return `${branchId}${Math.round(rank)}${category}`.toUpperCase();
+}
+function decodeCpToken(token){
+  const t = (token||'').trim().toUpperCase();
+  if(!t) return null;
+  const sortedCats = [...ALL_CATEGORY_CODES].sort((a,b)=> b.length-a.length);
+  for(const cat of sortedCats){
+    if(t.endsWith(cat)){
+      const rest = t.slice(0, t.length - cat.length);
+      const m = rest.match(/^([A-Z]+)(\d+)$/);
+      if(m) return { branchId: m[1], rank: parseInt(m[2],10), category: cat };
+    }
+  }
+  return null;
+}
+function logSharedSearch(branchId, rank, category){
+  if(!branchId || !rank || !category) return;
+  chatShareLog.push({ branchId: branchId.toUpperCase(), rank, category });
+  saveCurrentChat();
+}
+async function branchIdForDisplayName(name){
+  if(!name) return null;
+  try{
+    const aliases = await loadBranchAliases();
+    const q = name.trim().toLowerCase();
+    const hit = aliases.find(a => a.display_name.toLowerCase()===q || (a.aliases||[]).some(al=>al.toLowerCase()===q));
+    return hit ? hit.branch_id : null;
+  }catch(e){ return null; }
+}
+async function branchEntryById(branchId){
+  try{
+    const aliases = await loadBranchAliases();
+    return aliases.find(a=>a.branch_id === branchId) || null;
+  }catch(e){ return null; }
+}
+
+function getSharedParamsFromUrl(){
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get('from');
+  const cp = params.get('cp');
+  if(!from && !cp) return null;
+  return { from, cp };
+}
+let pendingSharedChat = getSharedParamsFromUrl();
+
+function afterOnboardingReady(){
+  if(pendingSharedChat){
+    const shared = pendingSharedChat;
+    pendingSharedChat = null;
+    // clear the params from the address bar so a refresh doesn't replay again
+    window.history.replaceState({}, document.title, window.location.pathname);
+    processSharedChat(shared);
+  }
+}
+
+async function processSharedChat(shared){
+  startNewChat();
+  const sharerName = shared.from ? escapeHtml(shared.from) : 'Someone';
+  const initial = shared.from ? shared.from.trim().charAt(0).toUpperCase() : '?';
+  const introHtml = `
+    <div class="shared-intro-card">
+      <div class="shared-intro-avatar">${escapeHtml(initial)}</div>
+      <div>
+        <div style="font-weight:700;color:var(--text-0);font-size:.85rem;margin-bottom:3px;">${sharerName} shared a chat with you</div>
+        <div style="font-family:var(--font-m);font-size:.62rem;color:var(--text-3);">Reconstructing their college prediction below…</div>
+      </div>
+    </div>`;
+  protonSays(introHtml, `${shared.from||'Someone'} shared a chat with you`);
+
+  if(shared.cp){
+    const tokens = shared.cp.split(',').map(t=>t.trim()).filter(Boolean);
+    for(const tok of tokens){
+      const decoded = decodeCpToken(tok);
+      if(decoded) await replaySharedCollegeSearch(decoded);
+    }
+  }
+}
+
+async function replaySharedCollegeSearch(decoded){
+  const { branchId, rank, category } = decoded;
+  const isHk = HK_CATEGORIES.includes(category);
+  const which = isHk ? 'enghk' : 'eng';
+  const entry = await branchEntryById(branchId);
+  const branchLabel = entry ? entry.display_name : branchId;
+  const aliasPool = entry ? [entry.display_name, ...(entry.aliases||[])] : [branchLabel];
+
+  userSays(`Predict colleges — ${category} · rank ${rank} · ${branchLabel}`);
+  protonSays(loadingLine(`Searching ${isHk?'Engineering (HK)':'Engineering'} colleges…`));
+  try{
+    const dataset = await loadDataset(which);
+    renderCollegeMatches(dataset, category, rank, aliasPool, branchLabel);
+    logSharedSearch(branchId, rank, category);
+  }catch(e){
+    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't reload that shared prediction (${e.message}).`);
+  }
+}
+
+function buildShareUrl(){
+  if(!chatShareLog.length) return SHARE_BASE_URL;
+  const params = new URLSearchParams();
+  params.set('from', userName || 'A friend');
+  const cp = chatShareLog.map(e => encodeCpToken(e.branchId, e.rank, e.category)).join(',');
+  params.set('cp', cp);
+  return `${SHARE_BASE_URL}?${params.toString()}`;
+}
+
+function showShareLinkCard(url){
+  const html = `
+    <div class="chat-card" style="max-width:380px;">
+      <div class="chat-card-title"><i class="fa-solid fa-share-nodes"></i> Share this chat</div>
+      <div class="share-link-box">
+        <input type="text" readonly value="${escapeHtml(url)}" id="shareUrlInput_${Date.now()}">
+        <button class="share-copy-btn" data-action="copy-share-url">Copy</button>
+      </div>
+    </div>`;
+  const row = protonSays(html, `Share link: ${url}`);
+  const box = row.querySelector('.share-link-box');
+  const input = box.querySelector('input');
+  box.querySelector('[data-action="copy-share-url"]').addEventListener('click', ()=>{
+    input.select();
+    navigator.clipboard && navigator.clipboard.writeText(url).catch(()=>{ document.execCommand('copy'); });
+    const btn = box.querySelector('[data-action="copy-share-url"]');
+    const original = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(()=>{ btn.textContent = original; }, 1400);
+  });
+}
+
+async function handleShareClick(){
+  if(!chatShareLog.length){
+    // nothing predicted yet in this chat — just share the plain app link
+    if(navigator.share){
+      navigator.share({ title:'x-bit Proton', url: SHARE_BASE_URL }).catch(()=>{});
+    } else {
+      showShareLinkCard(SHARE_BASE_URL);
+    }
+    return;
+  }
+  const url = buildShareUrl();
+  if(navigator.share){
+    navigator.share({ title:'x-bit Proton — my college prediction', url }).catch(()=>{});
+  } else {
+    showShareLinkCard(url);
+  }
+}
 
 /* ══════════════════════════════════════════════════════════
    CONNECT OVERLAY (Proton ↔ x0s)
@@ -1174,6 +1349,7 @@ function wireCollegeCard(card){
       const dataset = await loadDataset(flowState.dataset);
       const aliasPool = [selectedBranchEntry.display_name, ...(selectedBranchEntry.aliases||[])];
       renderCollegeMatches(dataset, flowState.category, rank, aliasPool, selectedBranchEntry.display_name);
+      logSharedSearch(selectedBranchEntry.branch_id, rank, flowState.category);
     }catch(e){
       protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}). Make sure ${flowState.dataset==='enghk'?'firstroundenghk.js':'firstroundeng.js'} is in the same repo as this page.`);
     }
@@ -1741,6 +1917,10 @@ async function routeKcetQuery(intent, entities){
         `All matches${entities.location?` · ${entities.location}`:''}`, results, entities.category
       ));
     }
+    if(entities.branch){
+      const bid = await branchIdForDisplayName(entities.branch);
+      if(bid) logSharedSearch(bid, entities.rank, entities.category);
+    }
   }catch(e){
     thinkingRow2.remove();
     protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
@@ -2149,6 +2329,8 @@ function initComposer(){
     userSays('Priority List');
     pillPriorityListStart();
   });
+
+  document.getElementById('shareChatBtn').addEventListener('click', handleShareClick);
 }
 
 
