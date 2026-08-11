@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-    <meta name="color-scheme" content="dark light">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
 
     <!-- PWA Manifest & Meta -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="x-bit Proton">
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="x-bit Proton" />
 
     <title>x-bit · Proton</title>
-    <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching.">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="x-bit Proton — Disha AI chat: rank prediction, college prediction, priority list matching." />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
     </script>
+
     <style>
+        /* ── reset & variables ── */
         *,
         *::before,
         *::after {
@@ -81,7 +83,8 @@
             max-width: 100vw;
             overflow-x: hidden;
         }
-        /* ═══ TOP BAR ═══ */
+
+        /* ── top bar ── */
         .topbar {
             display: flex;
             align-items: center;
@@ -129,7 +132,7 @@
             letter-spacing: -0.02em;
         }
 
-        /* ═══ CHAT AREA ═══ */
+        /* ── chat area ── */
         .chat-wrap {
             flex: 1;
             overflow-y: auto;
@@ -221,7 +224,6 @@
             margin: 0 2px 5px;
         }
 
-        /* inline CTA chip inside assistant messages */
         .chip-row {
             display: flex;
             flex-wrap: wrap;
@@ -252,7 +254,7 @@
             font-size: .6rem;
         }
 
-        /* ═══ CARD (forms rendered inline in chat) ═══ */
+        /* ── card styles ── */
         .chat-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -402,7 +404,6 @@
             color: var(--text-0);
         }
 
-        /* result summary */
         .rank-result {
             text-align: center;
             padding: 8px 0 4px;
@@ -430,7 +431,6 @@
             margin-bottom: 14px;
         }
 
-        /* pill/dropdown selects for college flow */
         .dd-mini {
             position: relative;
         }
@@ -483,7 +483,6 @@
             color: var(--text-0);
         }
 
-        /* result cards (college matches) */
         .college-result-card {
             border: 1px solid var(--border);
             border-radius: var(--r-sm);
@@ -518,7 +517,6 @@
             color: var(--text-3);
         }
 
-        /* file upload dropzone in-chat */
         .upload-dz {
             border: 1.5px dashed var(--border-strong);
             border-radius: var(--r-sm);
@@ -549,7 +547,6 @@
             color: var(--text-2);
         }
 
-        /* small non-interactive logo loading badge — replaces fa-spin loaders */
         .loading-badge {
             width: 28px;
             height: 28px;
@@ -592,7 +589,7 @@
             }
         }
 
-        /* ═══ SIDEBAR ═══ */
+        /* ── sidebar ── */
         .sb-backdrop {
             position: fixed;
             inset: 0;
@@ -781,7 +778,7 @@
             background: var(--text-0);
         }
 
-        /* ═══ ONBOARDING ═══ */
+        /* ── onboard ── */
         .onboard-overlay {
             position: fixed;
             inset: 0;
@@ -856,7 +853,7 @@
             opacity: .25;
         }
 
-        /* ═══ FULL RESULTS PAGE (for "see more colleges") ═══ */
+        /* ── results page ── */
         .results-page {
             position: fixed;
             inset: 0;
@@ -889,7 +886,7 @@
             padding: 16px 18px 40px;
         }
 
-        /* ═══ COMPOSER ═══ */
+        /* ── composer ── */
         .composer-wrap {
             flex-shrink: 0;
             padding: 8px 14px calc(14px + env(safe-area-inset-bottom));
@@ -1007,7 +1004,6 @@
             }
         }
 
-        /* promo banner */
         .promo-banner {
             margin-top: 16px;
             padding: 12px 16px;
@@ -1053,7 +1049,6 @@
         .promo-banner .promo-dl i {
             font-size: .75rem;
         }
-
         @media(max-width:480px) {
             .promo-banner {
                 flex-direction: column;
@@ -1064,16 +1059,48 @@
                 justify-content: center;
             }
         }
+
+        /* ── deep-link toast ── */
+        .dl-toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface-3);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm);
+            padding: 12px 22px;
+            font-family: var(--font-m);
+            font-size: .7rem;
+            color: var(--text-2);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity .4s ease;
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dl-toast.show {
+            opacity: 1;
+        }
+        .dl-toast strong {
+            color: var(--text-0);
+        }
     </style>
 </head>
 <body>
+
+    <!-- ═══ DEEP-LINK TOAST (visible only when app launch is attempted) ═══ -->
+    <div class="dl-toast" id="dlToast">Opening <strong>Proton</strong> …</div>
 
     <!-- ═══ ONBOARDING ═══ -->
     <div class="onboard-overlay" id="onboardModal">
         <div class="onboard-card">
             <div class="onboard-eyebrow">x-bit · Proton</div>
             <h2>What's<br><span>your name?</span></h2>
-            <input type="text" class="onboard-input" id="onboardNameInput" placeholder="Enter your name" autocomplete="off" spellcheck="false" maxlength="30">
+            <input type="text" class="onboard-input" id="onboardNameInput" placeholder="Enter your name" autocomplete="off" spellcheck="false" maxlength="30" />
             <button class="onboard-btn" id="onboardSubmitBtn" disabled>Continue</button>
         </div>
     </div>
@@ -1095,7 +1122,7 @@
             <div class="sb-dark-row">
                 <div class="sb-dark-label"><i class="fa-solid fa-moon"></i> Dark mode</div>
                 <label class="toggle-pill">
-                    <input type="checkbox" id="darkToggle" checked>
+                    <input type="checkbox" id="darkToggle" checked />
                     <span class="toggle-track"></span>
                 </label>
             </div>
@@ -1106,7 +1133,7 @@
     <div class="topbar">
         <button class="icon-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
         <div class="topbar-title">
-            <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'">
+            <img src="./logo.png" id="topbarLogo" alt="x-bit" onerror="this.style.display='none'" />
             <span>x-bit proton</span>
             <span class="status-dot"></span>
         </div>
@@ -1116,14 +1143,14 @@
     <!-- ═══ CHAT ═══ -->
     <div class="chat-wrap" id="chatWrap">
         <div class="empty-hero" id="emptyHero">
-            <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'">
+            <img src="./logo.png" id="heroLogo" alt="" onerror="this.style.display='none'" />
             <div class="eh-title" id="heroGreeting">Hey there</div>
             <div class="eh-sub">Powered by x0s</div>
         </div>
         <div id="chatBody" style="display:none;"></div>
     </div>
 
-    <!-- ═══ RESULTS PAGE (full college list) ═══ -->
+    <!-- ═══ RESULTS PAGE ═══ -->
     <div class="results-page" id="resultsPage">
         <div class="rp-header">
             <button class="icon-btn" id="rpClose"><i class="fa-solid fa-arrow-left"></i></button>
@@ -1149,113 +1176,175 @@
     </div>
 
     <script>
-        /* ══════════════════════════════════════════════════════════
-           CONFIG / CONSTANTS
-           ══════════════════════════════════════════════════════════ */
+        /* ═══════════════════════════════════════════════════════════════════
+           DEEP LINK — open native Android app (com.proton.v1_1_1)
+           Runs immediately on page load, before anything else.
+           ═══════════════════════════════════════════════════════════════════ */
+        (function deepLinkToApp() {
+            // ── only on Android ──
+            if (!/android/i.test(navigator.userAgent)) return;
+
+            // ── skip if already in PWA standalone mode (app is already open) ──
+            if (window.matchMedia('(display-mode: standalone)').matches) return;
+
+            // ── skip if we've already tried in this session ──
+            if (sessionStorage.getItem('xbit_dl_tried') === 'true') return;
+
+            // ── skip if we were redirected back from the app (prevents loops) ──
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('xbit_web') === '1') return;
+
+            // ── your app's package name ──
+            var PACKAGE = 'com.proton.v1_1_1';
+
+            // ── build the current URL without the xbit_web param ──
+            var currentUrl = window.location.href.split('?')[0];
+            var currentSearch = window.location.search;
+            var currentHash = window.location.hash || '';
+
+            // ── fallback URL: same page with ?xbit_web=1 to prevent loops ──
+            var fallbackUrl = currentUrl + '?xbit_web=1' +
+                (currentSearch ? '&' + currentSearch.replace(/^\?/, '') : '') +
+                currentHash;
+
+            // ── Android intent URL (works on Chrome + most Android browsers) ──
+            var intentUrl =
+                'intent://' +
+                window.location.host +
+                window.location.pathname +
+                window.location.search +
+                window.location.hash +
+                '#Intent;' +
+                'package=' + PACKAGE + ';' +
+                'S.browser_fallback_url=' + encodeURIComponent(fallbackUrl) + ';' +
+                'end;';
+
+            // ── mark that we've attempted (prevents repeated attempts) ──
+            sessionStorage.setItem('xbit_dl_tried', 'true');
+
+            // ── show a subtle toast ──
+            var toast = document.getElementById('dlToast');
+            if (toast) {
+                toast.textContent = 'Opening Proton app …';
+                toast.classList.add('show');
+                setTimeout(function() { toast.classList.remove('show'); }, 4000);
+            }
+
+            // ── use a timeout to detect if the app didn't open ──
+            var timeoutId = setTimeout(function() {
+                // If we're still here after 2.8s, the app probably isn't installed.
+                // Redirect to the fallback URL (which has ?xbit_web=1).
+                window.location.href = fallbackUrl;
+            }, 2800);
+
+            // ── if the page goes into the background (app opened), clear the timeout ──
+            function onVisibilityChange() {
+                if (document.hidden) {
+                    clearTimeout(timeoutId);
+                    document.removeEventListener('visibilitychange', onVisibilityChange);
+                }
+            }
+            document.addEventListener('visibilitychange', onVisibilityChange);
+
+            // ── finally, navigate to the intent ──
+            window.location.href = intentUrl;
+        })();
+
+
+        /* ═══════════════════════════════════════════════════════════════════
+           The rest of your app logic (rank predictor, chat, etc.)
+           ═══════════════════════════════════════════════════════════════════ */
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        const GENERAL_CATEGORIES = ['1G', '1K', '1R', '2AG', '2AK', '2AR', '2BG', '2BK', '2BR', '3AG', '3AK', '3AR', '3BG',
+        var GENERAL_CATEGORIES = ['1G', '1K', '1R', '2AG', '2AK', '2AR', '2BG', '2BK', '2BR', '3AG', '3AK', '3AR', '3BG',
             '3BK', '3BR', 'GM', 'GMK', 'GMP', 'GMR', 'NRI', 'OPN', 'OTH', 'S1G', 'S1K', 'S1R', 'S2G', 'S2K', 'S2R', 'S3G',
             'S3K', 'S3R', 'S4G', 'S4K', 'S4R', 'STG', 'STK', 'STR'
         ];
-        const HK_CATEGORIES = ['1H', '1KH', '1RH', '2AH', '2AKH', '2ARH', '2BH', '2BKH', '2BRH', '3AH', '3AKH', '3ARH', '3BH',
+        var HK_CATEGORIES = ['1H', '1KH', '1RH', '2AH', '2AKH', '2ARH', '2BH', '2BKH', '2BRH', '3AH', '3AKH', '3ARH', '3BH',
             '3BKH', '3BRH', 'GMH', 'GMKH', 'GMPH', 'GMRH', 'S1H', 'S1KH', 'S1RH', 'S2H', 'S2KH', 'S2RH', 'S3H', 'S3KH',
             'S3RH', 'S4H', 'S4KH', 'S4RH', 'STH', 'STKH', 'STRH'
         ];
 
-        /* ══════════════════════════════════════════════════════════
-           LOCAL STORAGE HELPERS
-           ══════════════════════════════════════════════════════════ */
-        const LS = {
-            get(k, def) { try { const v = localStorage.getItem('xbit_' + k); return v !== null ? JSON.parse(v) : def; } catch
-                    { return def; } },
-            set(k, v) { try { localStorage.setItem('xbit_' + k, JSON.stringify(v)); } catch {} }
+        var LS = {
+            get: function(k, d) { try { var v = localStorage.getItem('xbit_' + k); return v !== null ? JSON.parse(v) :
+                    d; } catch (_) { return d; } },
+            set: function(k, v) { try { localStorage.setItem('xbit_' + k, JSON.stringify(v)); } catch (_) {} }
         };
 
-        /* ══════════════════════════════════════════════════════════
-           PROMO BANNER — appears after every prediction
-           ══════════════════════════════════════════════════════════ */
         function getPromoHTML() {
-            return `<div class="promo-banner">
-            <span class="promo-text"><span class="emoji">🚀</span> x-bit KEA 2.0 is now available — download the app!</span>
-            <a href="./proton-debug.apk" download class="promo-dl"><i class="fa-solid fa-download"></i> Download App</a>
-          </div>`;
+            return '<div class="promo-banner">' +
+                '<span class="promo-text"><span class="emoji">🚀</span> x-bit KEA 2.0 is now available — download the app!</span>' +
+                '<a href="./proton-debug.apk" download class="promo-dl"><i class="fa-solid fa-download"></i> Download App</a>' +
+                '</div>';
         }
 
-        /* ══════════════════════════════════════════════════════════
-           ONBOARDING
-           ══════════════════════════════════════════════════════════ */
-        let userName = LS.get('username', '');
+        /* ── onboard ── */
+        var userName = LS.get('username', '');
 
         function initOnboarding() {
-            const modal = document.getElementById('onboardModal');
+            var modal = document.getElementById('onboardModal');
             if (userName) { modal.classList.add('hidden');
                 applyIdentity(); return; }
-            const input = document.getElementById('onboardNameInput');
-            const btn = document.getElementById('onboardSubmitBtn');
-            input.addEventListener('input', () => { btn.disabled = input.value.trim().length === 0; });
-            input.addEventListener('keydown', e => { if (e.key === 'Enter' && input.value.trim()) submit(); });
+            var input = document.getElementById('onboardNameInput');
+            var btn = document.getElementById('onboardSubmitBtn');
+            input.addEventListener('input', function() { btn.disabled = input.value.trim().length === 0; });
+            input.addEventListener('keydown', function(e) { if (e.key === 'Enter' && input.value.trim()) submit(); });
             btn.addEventListener('click', submit);
 
             function submit() {
-                const name = input.value.trim();
+                var name = input.value.trim();
                 if (!name) return;
                 userName = name;
                 LS.set('username', name);
                 modal.classList.add('hidden');
                 applyIdentity();
             }
-            setTimeout(() => input.focus(), 350);
+            setTimeout(function() { input.focus(); }, 350);
         }
 
         function applyIdentity() {
-            const letter = userName.charAt(0).toUpperCase();
+            var letter = userName.charAt(0).toUpperCase();
             document.getElementById('sbBlob').textContent = letter;
             document.getElementById('sbName').textContent = userName;
-            const hr = new Date().getHours();
-            const greet = hr < 12 ? 'good morning' : hr < 17 ? 'good afternoon' : 'good evening';
-            document.getElementById('heroGreeting').textContent = `Hey ${userName}, ${greet}`;
+            var hr = new Date().getHours();
+            var greet = hr < 12 ? 'good morning' : hr < 17 ? 'good afternoon' : 'good evening';
+            document.getElementById('heroGreeting').textContent = 'Hey ' + userName + ', ' + greet;
         }
 
-        /* ══════════════════════════════════════════════════════════
-           SIDEBAR + DARK MODE
-           ══════════════════════════════════════════════════════════ */
+        /* ── sidebar ── */
         function initSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const backdrop = document.getElementById('sbBackdrop');
-            document.getElementById('menuBtn').addEventListener('click', () => { sidebar.classList.add('open');
+            var sidebar = document.getElementById('sidebar');
+            var backdrop = document.getElementById('sbBackdrop');
+            document.getElementById('menuBtn').addEventListener('click', function() { sidebar.classList.add('open');
                 backdrop.classList.add('open');
                 renderRecentChats(); });
-            backdrop.addEventListener('click', () => { sidebar.classList.remove('open');
+            backdrop.addEventListener('click', function() { sidebar.classList.remove('open');
                 backdrop.classList.remove('open'); });
             document.getElementById('sbNewChat').addEventListener('click', startNewChat);
             document.getElementById('newChatTopBtn').addEventListener('click', startNewChat);
 
-            const darkToggle = document.getElementById('darkToggle');
-            let dark = LS.get('dark_mode', true);
+            var darkToggle = document.getElementById('darkToggle');
+            var dark = LS.get('dark_mode', true);
 
             function applyTheme() {
                 document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
                 darkToggle.checked = dark;
-                const logoFile = dark ? './logo.png' : './logo1.png';
-                const topbarLogo = document.getElementById('topbarLogo');
-                const heroLogo = document.getElementById('heroLogo');
+                var logoFile = dark ? './logo.png' : './logo1.png';
+                var topbarLogo = document.getElementById('topbarLogo');
+                var heroLogo = document.getElementById('heroLogo');
                 if (topbarLogo) { topbarLogo.src = logoFile;
                     topbarLogo.style.display = ''; }
                 if (heroLogo) { heroLogo.src = logoFile;
                     heroLogo.style.display = ''; }
             }
             applyTheme();
-            darkToggle.addEventListener('change', () => { dark = darkToggle.checked;
+            darkToggle.addEventListener('change', function() { dark = darkToggle.checked;
                 LS.set('dark_mode', dark);
                 applyTheme(); });
         }
 
-        /* ══════════════════════════════════════════════════════════
-           CHAT STATE / RECENT CHATS PERSISTENCE
-           ══════════════════════════════════════════════════════════ */
-        let currentChatId = null;
-        let currentChatMessages = []; // {role, html, plain, ts}
+        var currentChatId = null;
+        var currentChatMessages = [];
 
         function startNewChat() {
             saveCurrentChat();
@@ -1271,8 +1360,8 @@
 
         function saveCurrentChat() {
             if (!currentChatId || currentChatMessages.length === 0) return;
-            const all = LS.get('chats', {});
-            const firstUserMsg = currentChatMessages.find(m => m.role === 'user');
+            var all = LS.get('chats', {});
+            var firstUserMsg = currentChatMessages.find(function(m) { return m.role === 'user'; });
             all[currentChatId] = {
                 id: currentChatId,
                 title: firstUserMsg ? firstUserMsg.plain.slice(0, 42) : 'New chat',
@@ -1281,54 +1370,54 @@
             };
             LS.set('chats', all);
         }
-        let recentChatsExpanded = false;
-        const RECENT_CHATS_CAP = 5;
+        var recentChatsExpanded = false;
+        var RECENT_CHATS_CAP = 5;
 
         function renderRecentChats() {
-            const container = document.getElementById('sbRecent');
-            const all = LS.get('chats', {});
-            const list = Object.values(all).sort((a, b) => b.updatedAt - a.updatedAt);
+            var container = document.getElementById('sbRecent');
+            var all = LS.get('chats', {});
+            var list = Object.values(all).sort(function(a, b) { return b.updatedAt - a.updatedAt; });
             if (!list.length) { container.innerHTML = '<div class="sb-empty">No chats yet</div>'; return; }
-
-            const shown = recentChatsExpanded ? list : list.slice(0, RECENT_CHATS_CAP);
-            container.innerHTML = shown.map(c => {
-                const date = new Date(c.updatedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
-                return `<div class="sb-recent-item" data-id="${c.id}"><div class="rt-title">${escapeHtml(c.title||'New chat')}</div><div class="rt-sub">${date}</div></div>`;
+            var shown = recentChatsExpanded ? list : list.slice(0, RECENT_CHATS_CAP);
+            container.innerHTML = shown.map(function(c) {
+                var date = new Date(c.updatedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+                return '<div class="sb-recent-item" data-id="' + c.id + '"><div class="rt-title">' + escapeHtml(c
+                    .title || 'New chat') + '</div><div class="rt-sub">' + date + '</div></div>';
             }).join('');
-
             if (list.length > RECENT_CHATS_CAP) {
                 container.innerHTML +=
-                    `<div class="sb-recent-item" id="sbShowMoreBtn" style="text-align:center;"><span class="link-hint">${recentChatsExpanded ? 'Show less' : `Show more (+${list.length - RECENT_CHATS_CAP})`}</span></div>`;
-                document.getElementById('sbShowMoreBtn').addEventListener('click', () => { recentChatsExpanded = !
-                        recentChatsExpanded;
+                    '<div class="sb-recent-item" id="sbShowMoreBtn" style="text-align:center;"><span class="link-hint">' +
+                    (recentChatsExpanded ? 'Show less' : 'Show more (+' + (list.length - RECENT_CHATS_CAP) +
+                    ')') + '</span></div>';
+                document.getElementById('sbShowMoreBtn').addEventListener('click', function() { recentChatsExpanded =
+                        !recentChatsExpanded;
                     renderRecentChats(); });
             }
-
-            container.querySelectorAll('.sb-recent-item[data-id]').forEach(el => {
-                let pressTimer = null,
+            container.querySelectorAll('.sb-recent-item[data-id]').forEach(function(el) {
+                var pressTimer = null,
                     longPressed = false;
-                const start = () => {
+                var start = function() {
                     longPressed = false;
-                    pressTimer = setTimeout(() => {
+                    pressTimer = setTimeout(function() {
                         longPressed = true;
                         if (navigator.vibrate) navigator.vibrate(15);
                         if (confirm('Delete this chat? This can\'t be undone.')) deleteChat(el.getAttribute(
-                        'data-id'));
+                            'data-id'));
                     }, 550);
                 };
-                const cancel = () => { if (pressTimer) clearTimeout(pressTimer); };
+                var cancel = function() { if (pressTimer) clearTimeout(pressTimer); };
                 el.addEventListener('touchstart', start, { passive: true });
                 el.addEventListener('touchend', cancel);
                 el.addEventListener('touchmove', cancel);
                 el.addEventListener('mousedown', start);
                 el.addEventListener('mouseup', cancel);
                 el.addEventListener('mouseleave', cancel);
-                el.addEventListener('click', () => { if (!longPressed) loadChat(el.getAttribute('data-id')); });
+                el.addEventListener('click', function() { if (!longPressed) loadChat(el.getAttribute('data-id')); });
             });
         }
 
         function deleteChat(id) {
-            const all = LS.get('chats', {});
+            var all = LS.get('chats', {});
             delete all[id];
             LS.set('chats', all);
             if (id === currentChatId) { startNewChat(); }
@@ -1336,15 +1425,15 @@
         }
 
         function loadChat(id) {
-            const all = LS.get('chats', {});
-            const chat = all[id];
+            var all = LS.get('chats', {});
+            var chat = all[id];
             if (!chat) return;
             saveCurrentChat();
             currentChatId = chat.id;
             currentChatMessages = chat.messages;
-            const body = document.getElementById('chatBody');
+            var body = document.getElementById('chatBody');
             body.innerHTML = '';
-            chat.messages.forEach(m => appendRawBubble(m.role, m.html));
+            chat.messages.forEach(function(m) { appendRawBubble(m.role, m.html); });
             body.style.display = 'block';
             document.getElementById('emptyHero').style.display = 'none';
             document.getElementById('sidebar').classList.remove('open');
@@ -1352,28 +1441,27 @@
             document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
         }
 
-        /* ══════════════════════════════════════════════════════════
-           MESSAGE RENDERING
-           ══════════════════════════════════════════════════════════ */
-        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;',
-                '>': '&gt;', '"': '&quot;', "'": '&#39;' } [m])); }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>"']/g, function(m) { return ({ '&': '&amp;',
+                    '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]; }); }
 
         function loadingLine(text) {
-            const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-            const loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
-            return `<div class="loading-line"><div class="loading-badge"><iframe src="${loadingFile}" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">${escapeHtml(text)}</span></div>`;
+            var theme = document.documentElement.getAttribute('data-theme') || 'dark';
+            var loadingFile = theme === 'light' ? './loading1.html' : './loading.html';
+            return '<div class="loading-line"><div class="loading-badge"><iframe src="' + loadingFile +
+                '" title="loading" tabindex="-1" aria-hidden="true" sandbox="allow-scripts"></iframe></div><span class="shine-text">' +
+                escapeHtml(text) + '</span></div>';
         }
 
         function appendRawBubble(role, html) {
             document.getElementById('emptyHero').style.display = 'none';
-            const body = document.getElementById('chatBody');
+            var body = document.getElementById('chatBody');
             body.style.display = 'block';
-            const row = document.createElement('div');
+            var row = document.createElement('div');
             row.className = 'msg-row ' + role;
             if (role === 'assistant') {
-                row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${html}</div>`;
+                row.innerHTML = '<div class="msg-tag">PROTON</div><div class="msg-bubble">' + html + '</div>';
             } else {
-                row.innerHTML = `<div class="msg-bubble">${html}</div>`;
+                row.innerHTML = '<div class="msg-bubble">' + html + '</div>';
             }
             body.appendChild(row);
             document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
@@ -1382,8 +1470,9 @@
 
         function pushMessage(role, html, plain) {
             if (!currentChatId) currentChatId = 'c_' + Date.now();
-            currentChatMessages.push({ role, html, plain: plain || html.replace(/<[^>]+>/g, '').trim(), ts: Date.now() });
-            const row = appendRawBubble(role, html);
+            currentChatMessages.push({ role: role, html: html, plain: plain || html.replace(/<[^>]+>/g, '').trim(), ts: Date
+                    .now() });
+            var row = appendRawBubble(role, html);
             saveCurrentChat();
             return row;
         }
@@ -1392,524 +1481,488 @@
 
         function protonSays(html, plain) { return pushMessage('assistant', html, plain); }
 
-        /* ══════════════════════════════════════════════════════════
-           RANK PREDICTOR ENGINE  (2PU boards + KCET → estimated rank)
-           ══════════════════════════════════════════════════════════ */
-        class KCETRankPredictor {
-            constructor() {
-                this.totalCandidates = 315000;
-                this.anchors = [
-                    { p: 100.0, r: 1 }, { p: 98.50, r: 10 }, { p: 96.00, r: 100 }, { p: 92.50, r: 1000 },
-                    { p: 88.50, r: 3000 },
-                    { p: 85.00, r: 5500 }, { p: 81.50, r: 9000 }, { p: 77.00, r: 15000 }, { p: 72.00, r: 25000 },
-                    { p: 65.00, r: 50000 }, { p: 58.00, r: 75000 }, { p: 0.00, r: 315000 }
-                ];
-                this.formulas = [];
-                this._compile();
-            }
-            _compile() {
-                for (let i = 0; i < this.anchors.length - 1; i++) {
-                    const up = this.anchors[i],
-                        lo = this.anchors[i + 1];
-                    const M = (Math.log(lo.r) - Math.log(up.r)) / (lo.p - up.p);
-                    const C = Math.log(up.r) - M * up.p;
-                    this.formulas.push({ maxP: up.p, minP: lo.p, M, C });
-                }
-            }
-            predictRank(pct) {
-                if (pct >= 100) return 1;
-                if (pct <= 0) return this.totalCandidates;
-                for (const f of this.formulas) {
-                    if (pct <= f.maxP && pct > f.minP) {
-                        let rank = Math.exp(f.M * pct + f.C);
-                        const upR = this.anchors.find(a => a.p === f.maxP).r,
-                            loR = this.anchors.find(a => a.p === f.minP).r;
-                        return Math.round(Math.max(Math.min(upR, loR), Math.min(Math.max(upR, loR), rank)));
-                    }
-                }
-                return this.totalCandidates;
-            }
+        /* ── rank predictor ── */
+        function KCETRankPredictor() {
+            this.totalCandidates = 315000;
+            this.anchors = [
+                { p: 100.0, r: 1 }, { p: 98.50, r: 10 }, { p: 96.00, r: 100 }, { p: 92.50, r: 1000 },
+                { p: 88.50, r: 3000 }, { p: 85.00, r: 5500 }, { p: 81.50, r: 9000 }, { p: 77.00, r: 15000 },
+                { p: 72.00, r: 25000 }, { p: 65.00, r: 50000 }, { p: 58.00, r: 75000 }, { p: 0.00, r: 315000 }
+            ];
+            this.formulas = [];
+            this._compile();
         }
-        const kcetEngine = new KCETRankPredictor();
+        KCETRankPredictor.prototype._compile = function() {
+            for (var i = 0; i < this.anchors.length - 1; i++) {
+                var up = this.anchors[i],
+                    lo = this.anchors[i + 1];
+                var M = (Math.log(lo.r) - Math.log(up.r)) / (lo.p - up.p);
+                var C = Math.log(up.r) - M * up.p;
+                this.formulas.push({ maxP: up.p, minP: lo.p, M: M, C: C });
+            }
+        };
+        KCETRankPredictor.prototype.predictRank = function(pct) {
+            if (pct >= 100) return 1;
+            if (pct <= 0) return this.totalCandidates;
+            for (var i = 0; i < this.formulas.length; i++) {
+                var f = this.formulas[i];
+                if (pct <= f.maxP && pct > f.minP) {
+                    var rank = Math.exp(f.M * pct + f.C);
+                    var upR = this.anchors.find(function(a) { return a.p === f.maxP; }).r;
+                    var loR = this.anchors.find(function(a) { return a.p === f.minP; }).r;
+                    return Math.round(Math.max(Math.min(upR, loR), Math.min(Math.max(upR, loR), rank)));
+                }
+            }
+            return this.totalCandidates;
+        };
+        var kcetEngine = new KCETRankPredictor();
 
         function computeFinalPercentage(boardsPct, kcetPct) { return (boardsPct / 2) + (kcetPct / 2); }
 
-        /* ══════════════════════════════════════════════════════════
-           FLOW STATE MACHINE
-           ══════════════════════════════════════════════════════════ */
-        let flowState = null;
+        var flowState = null;
 
-        /* ══════════════════════════════════════════════════════════
-           PILL 1 — RANK PREDICTION CARD
-           ══════════════════════════════════════════════════════════ */
+        /* ── rank card ── */
         function openRankPredictionCard(onComplete) {
-            const cardId = 'rankcard_' + Date.now();
-            const html = `
-            <div class="chat-card" id="${cardId}">
-              <div class="chat-card-title">Enter details to predict your rank</div>
-
-              <div class="field-mini-label">2nd PU Boards</div>
-              <div class="mode-tabs" data-group="boards">
-                <div class="mode-tab active" data-mode="subjects">Subjects</div>
-                <div class="mode-tab" data-mode="total">Total marks</div>
-                <div class="mode-tab" data-mode="percent">Percentage</div>
-              </div>
-              <div class="mode-panel" data-panel="boards-subjects">
-                <div class="subj-grid">
-                  <input type="number" class="xin subj-input b-phy" placeholder="PHY" min="0" max="100">
-                  <input type="number" class="xin subj-input b-chem" placeholder="CHEM" min="0" max="100">
-                  <input type="number" class="xin subj-input b-math" placeholder="MATH" min="0" max="100">
-                </div>
-              </div>
-              <div class="mode-panel" data-panel="boards-total" style="display:none;">
-                <input type="number" class="xin b-total" placeholder="Total marks (out of 300)" min="0" max="300">
-              </div>
-              <div class="mode-panel" data-panel="boards-percent" style="display:none;">
-                <input type="number" class="xin b-pct" placeholder="Total percentage" min="0" max="100">
-              </div>
-
-              <div class="section-divider"></div>
-
-              <div class="field-mini-label">KCET Score</div>
-              <div class="mode-tabs" data-group="kcet">
-                <div class="mode-tab active" data-mode="subjects">Subjects</div>
-                <div class="mode-tab" data-mode="total">Total marks</div>
-                <div class="mode-tab" data-mode="percent">Percentage</div>
-              </div>
-              <div class="mode-panel" data-panel="kcet-subjects">
-                <div class="subj-grid">
-                  <input type="number" class="xin subj-input k-phy" placeholder="PHY" min="0" max="60">
-                  <input type="number" class="xin subj-input k-chem" placeholder="CHEM" min="0" max="60">
-                  <input type="number" class="xin subj-input k-math" placeholder="MATH" min="0" max="60">
-                </div>
-              </div>
-              <div class="mode-panel" data-panel="kcet-total" style="display:none;">
-                <input type="number" class="xin k-total" placeholder="Total marks (out of 180)" min="0" max="180">
-              </div>
-              <div class="mode-panel" data-panel="kcet-percent" style="display:none;">
-                <input type="number" class="xin k-pct" placeholder="Total percentage" min="0" max="100">
-              </div>
-
-              <button class="btn-solid" data-action="predict-rank"><i class="fa-solid fa-wand-magic-sparkles"></i> Predict Rank</button>
-            </div>`;
-            const row = protonSays(html, 'Enter details to predict your rank');
-            const card = row.querySelector('.chat-card');
+            var cardId = 'rankcard_' + Date.now();
+            var html =
+                '<div class="chat-card" id="' + cardId + '">' +
+                '<div class="chat-card-title">Enter details to predict your rank</div>' +
+                '<div class="field-mini-label">2nd PU Boards</div>' +
+                '<div class="mode-tabs" data-group="boards">' +
+                '  <div class="mode-tab active" data-mode="subjects">Subjects</div>' +
+                '  <div class="mode-tab" data-mode="total">Total marks</div>' +
+                '  <div class="mode-tab" data-mode="percent">Percentage</div>' +
+                '</div>' +
+                '<div class="mode-panel" data-panel="boards-subjects">' +
+                '  <div class="subj-grid">' +
+                '    <input type="number" class="xin subj-input b-phy" placeholder="PHY" min="0" max="100">' +
+                '    <input type="number" class="xin subj-input b-chem" placeholder="CHEM" min="0" max="100">' +
+                '    <input type="number" class="xin subj-input b-math" placeholder="MATH" min="0" max="100">' +
+                '  </div>' +
+                '</div>' +
+                '<div class="mode-panel" data-panel="boards-total" style="display:none;">' +
+                '  <input type="number" class="xin b-total" placeholder="Total marks (out of 300)" min="0" max="300">' +
+                '</div>' +
+                '<div class="mode-panel" data-panel="boards-percent" style="display:none;">' +
+                '  <input type="number" class="xin b-pct" placeholder="Total percentage" min="0" max="100">' +
+                '</div>' +
+                '<div class="section-divider"></div>' +
+                '<div class="field-mini-label">KCET Score</div>' +
+                '<div class="mode-tabs" data-group="kcet">' +
+                '  <div class="mode-tab active" data-mode="subjects">Subjects</div>' +
+                '  <div class="mode-tab" data-mode="total">Total marks</div>' +
+                '  <div class="mode-tab" data-mode="percent">Percentage</div>' +
+                '</div>' +
+                '<div class="mode-panel" data-panel="kcet-subjects">' +
+                '  <div class="subj-grid">' +
+                '    <input type="number" class="xin subj-input k-phy" placeholder="PHY" min="0" max="60">' +
+                '    <input type="number" class="xin subj-input k-chem" placeholder="CHEM" min="0" max="60">' +
+                '    <input type="number" class="xin subj-input k-math" placeholder="MATH" min="0" max="60">' +
+                '  </div>' +
+                '</div>' +
+                '<div class="mode-panel" data-panel="kcet-total" style="display:none;">' +
+                '  <input type="number" class="xin k-total" placeholder="Total marks (out of 180)" min="0" max="180">' +
+                '</div>' +
+                '<div class="mode-panel" data-panel="kcet-percent" style="display:none;">' +
+                '  <input type="number" class="xin k-pct" placeholder="Total percentage" min="0" max="100">' +
+                '</div>' +
+                '<button class="btn-solid" data-action="predict-rank"><i class="fa-solid fa-wand-magic-sparkles"></i> Predict Rank</button>' +
+                '</div>';
+            var row = protonSays(html, 'Enter details to predict your rank');
+            var card = row.querySelector('.chat-card');
             wireRankCard(card, onComplete);
         }
 
         function wireRankCard(card, onComplete) {
-            card.querySelectorAll('.mode-tabs').forEach(tabGroup => {
-                const group = tabGroup.getAttribute('data-group');
-                tabGroup.querySelectorAll('.mode-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        tabGroup.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            card.querySelectorAll('.mode-tabs').forEach(function(tabGroup) {
+                var group = tabGroup.getAttribute('data-group');
+                tabGroup.querySelectorAll('.mode-tab').forEach(function(tab) {
+                    tab.addEventListener('click', function() {
+                        tabGroup.querySelectorAll('.mode-tab').forEach(function(t) { t.classList.remove(
+                                'active'); });
                         tab.classList.add('active');
-                        const mode = tab.getAttribute('data-mode');
-                        card.querySelectorAll(`.mode-panel[data-panel^="${group}"]`).forEach(p => p.style
-                            .display = 'none');
-                        card.querySelector(`.mode-panel[data-panel="${group}-${mode}"]`).style.display =
-                        'block';
+                        var mode = tab.getAttribute('data-mode');
+                        card.querySelectorAll('.mode-panel[data-panel^="' + group + '"]').forEach(function(
+                        p) { p.style.display = 'none'; });
+                        card.querySelector('.mode-panel[data-panel="' + group + '-' + mode + '"]')
+                            .style.display = 'block';
                     });
                 });
             });
 
             function clamp(el, max) {
-                el.addEventListener('input', () => {
-                    let v = parseFloat(el.value);
+                el.addEventListener('input', function() {
+                    var v = parseFloat(el.value);
                     if (isNaN(v)) return;
                     if (v > max) el.value = max;
                     if (v < 0) el.value = 0;
                 });
             }
-            ['b-phy', 'b-chem', 'b-math'].forEach(c => clamp(card.querySelector('.' + c), 100));
+            ['b-phy', 'b-chem', 'b-math'].forEach(function(c) { clamp(card.querySelector('.' + c), 100); });
             clamp(card.querySelector('.b-total'), 300);
             clamp(card.querySelector('.b-pct'), 100);
-            ['k-phy', 'k-chem', 'k-math'].forEach(c => clamp(card.querySelector('.' + c), 60));
+            ['k-phy', 'k-chem', 'k-math'].forEach(function(c) { clamp(card.querySelector('.' + c), 60); });
             clamp(card.querySelector('.k-total'), 180);
             clamp(card.querySelector('.k-pct'), 100);
 
-            card.querySelector('[data-action="predict-rank"]').addEventListener('click', () => {
-                const boardsPct = readBoardsPercent(card);
-                const kcetPct = readKcetPercent(card);
+            card.querySelector('[data-action="predict-rank"]').addEventListener('click', function() {
+                var boardsPct = readBoardsPercent(card);
+                var kcetPct = readKcetPercent(card);
                 if (boardsPct === null || kcetPct === null) {
                     protonSays(
-                        `<i class="fa-solid fa-triangle-exclamation"></i> Fill in at least one boards field and one KCET field to predict your rank.`
+                        '<i class="fa-solid fa-triangle-exclamation"></i> Fill in at least one boards field and one KCET field to predict your rank.'
                         );
                     return;
                 }
-                const finalPct = computeFinalPercentage(boardsPct, kcetPct);
-                const rank = kcetEngine.predictRank(finalPct);
+                var finalPct = computeFinalPercentage(boardsPct, kcetPct);
+                var rank = kcetEngine.predictRank(finalPct);
                 renderRankResult(rank, boardsPct, kcetPct, finalPct, onComplete);
             });
         }
 
         function readBoardsPercent(card) {
-            const phy = parseFloat(card.querySelector('.b-phy').value),
+            var phy = parseFloat(card.querySelector('.b-phy').value),
                 chem = parseFloat(card.querySelector('.b-chem').value),
                 math = parseFloat(card.querySelector('.b-math').value);
             if (!isNaN(phy) && !isNaN(chem) && !isNaN(math)) return ((phy + chem + math) / 300) * 100;
-            const total = parseFloat(card.querySelector('.b-total').value);
+            var total = parseFloat(card.querySelector('.b-total').value);
             if (!isNaN(total)) return (Math.min(300, total) / 300) * 100;
-            const pct = parseFloat(card.querySelector('.b-pct').value);
+            var pct = parseFloat(card.querySelector('.b-pct').value);
             if (!isNaN(pct)) return Math.min(100, pct);
             return null;
         }
 
         function readKcetPercent(card) {
-            const phy = parseFloat(card.querySelector('.k-phy').value),
+            var phy = parseFloat(card.querySelector('.k-phy').value),
                 chem = parseFloat(card.querySelector('.k-chem').value),
                 math = parseFloat(card.querySelector('.k-math').value);
             if (!isNaN(phy) && !isNaN(chem) && !isNaN(math)) return ((phy + chem + math) / 180) * 100;
-            const total = parseFloat(card.querySelector('.k-total').value);
+            var total = parseFloat(card.querySelector('.k-total').value);
             if (!isNaN(total)) return (Math.min(180, total) / 180) * 100;
-            const pct = parseFloat(card.querySelector('.k-pct').value);
+            var pct = parseFloat(card.querySelector('.k-pct').value);
             if (!isNaN(pct)) return Math.min(100, pct);
             return null;
         }
 
         function renderRankResult(rank, boardsPct, kcetPct, finalPct, onComplete) {
-            const resId = 'rankres_' + Date.now();
-            const html = `
-            <div class="rank-result" id="${resId}">
-              <div class="rr-label">Estimated KCET Rank</div>
-              <div class="rr-value">${rank.toLocaleString('en-IN')}</div>
-              <div class="rr-meta">Boards ${boardsPct.toFixed(1)}% · KCET ${kcetPct.toFixed(1)}% · Combined ${finalPct.toFixed(1)}%</div>
-              <div class="chip-row" style="justify-content:center;">
-                <div class="mini-chip" data-action="websearch"><i class="fa-solid fa-magnifying-glass"></i> Search colleges for this rank</div>
-                <div class="mini-chip" data-action="predict-college"><i class="fa-solid fa-arrow-right"></i> Predict College</div>
-              </div>
-            </div>
-            ${getPromoHTML()}`;
-            const row = protonSays(html, `Estimated rank: ${rank}`);
-            const block = row.querySelector('.rank-result');
-            block.querySelector('[data-action="websearch"]').addEventListener('click', () => {
+            var resId = 'rankres_' + Date.now();
+            var html =
+                '<div class="rank-result" id="' + resId + '">' +
+                '<div class="rr-label">Estimated KCET Rank</div>' +
+                '<div class="rr-value">' + rank.toLocaleString('en-IN') + '</div>' +
+                '<div class="rr-meta">Boards ' + boardsPct.toFixed(1) + '% · KCET ' + kcetPct.toFixed(1) +
+                '% · Combined ' + finalPct.toFixed(1) + '%</div>' +
+                '<div class="chip-row" style="justify-content:center;">' +
+                '  <div class="mini-chip" data-action="websearch"><i class="fa-solid fa-magnifying-glass"></i> Search colleges for this rank</div>' +
+                '  <div class="mini-chip" data-action="predict-college"><i class="fa-solid fa-arrow-right"></i> Predict College</div>' +
+                '</div>' +
+                '</div>' +
+                getPromoHTML();
+            var row = protonSays(html, 'Estimated rank: ' + rank);
+            var block = row.querySelector('.rank-result');
+            block.querySelector('[data-action="websearch"]').addEventListener('click', function() {
                 window.open(
-                    `https://www.google.com/search?q=KCET+rank+${rank}+eligible+engineering+colleges+Karnataka`,
-                    '_blank');
+                    'https://www.google.com/search?q=KCET+rank+' + rank +
+                    '+eligible+engineering+colleges+Karnataka', '_blank');
             });
-            block.querySelector('[data-action="predict-college"]').addEventListener('click', () => {
+            block.querySelector('[data-action="predict-college"]').addEventListener('click', function() {
                 if (onComplete) onComplete(rank);
                 else startCollegePredictionFlow(rank);
             });
         }
 
-        /* ══════════════════════════════════════════════════════════
-           NLP QUICK-PARSE — direct chat rank requests
-           ══════════════════════════════════════════════════════════ */
-        function tryParseRankRequest(text) {
-            const t = text.toLowerCase();
-            if (!/rank/.test(t)) return null;
-            if (!/(board|pu|kcet|cet)/.test(t)) return null;
-
-            const boardsMatch = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:boards|pu|2nd\s*pu|puc)/) ||
-                t.match(/(?:boards|pu|2nd\s*pu|puc)[^\d]{0,10}(\d+(?:\.\d+)?)/);
-            const kcetMatch = t.match(/(\d+(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:kcet|cet)/) ||
-                t.match(/(?:kcet|cet)[^\d]{0,10}(\d+(?:\.\d+)?)/);
-            if (!boardsMatch || !kcetMatch) return null;
-
-            const boardsNum = parseFloat(boardsMatch[1]);
-            const kcetNum = parseFloat(kcetMatch[1]);
-            const wantsPercent = /%|percent/.test(t);
-
-            let boardsPct, kcetPct;
-            if (wantsPercent || boardsNum <= 100) { boardsPct = boardsNum; } else { boardsPct = (Math.min(300,
-                boardsNum) / 300) * 100; }
-            if (kcetNum <= 100 && (wantsPercent || kcetNum <= 100)) { kcetPct = kcetNum; } else { kcetPct = (Math.min(
-                    180, kcetNum) / 180) * 100; }
-            if (kcetNum > 100) kcetPct = (Math.min(180, kcetNum) / 180) * 100;
-
-            return { boardsPct, kcetPct };
-        }
-
-        function handleDirectRankChat(text) {
-            const parsed = tryParseRankRequest(text);
-            if (!parsed) return false;
-            const finalPct = computeFinalPercentage(parsed.boardsPct, parsed.kcetPct);
-            const rank = kcetEngine.predictRank(finalPct);
-            const html = `Based on <b>${parsed.boardsPct.toFixed(1)}%</b> in boards and <b>${parsed.kcetPct.toFixed(1)}%</b> in KCET, your estimated combined score is <b>${finalPct.toFixed(1)}%</b>.
-            <div class="rank-result" style="text-align:left;padding-top:10px;">
-              <div class="rr-label">Estimated Rank</div>
-              <div class="rr-value" style="font-size:1.8rem;">${rank.toLocaleString('en-IN')}</div>
-            </div>
-            <div class="chip-row"><div class="mini-chip" data-action="predict-college-direct"><i class="fa-solid fa-arrow-right"></i> Predict College for this rank</div></div>
-            ${getPromoHTML()}`;
-            const row = protonSays(html, `Estimated rank: ${rank}`);
-            row.querySelector('[data-action="predict-college-direct"]').addEventListener('click', () => {
-                startCollegePredictionFlow(rank);
-            });
-            return true;
-        }
-
-        /* ══════════════════════════════════════════════════════════
-           DATA LOADING
-           ══════════════════════════════════════════════════════════ */
-        const datasetCache = {};
-        let branchAliasesCache = null;
-
-        function loadDataset(which) {
-            return new Promise((resolve, reject) => {
-                if (datasetCache[which]) return resolve(datasetCache[which]);
-                const src = which === 'enghk' ? './firstroundenghk.js' : './firstroundeng.js';
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = () => {
-                    const data = window.XOS_CUTOFF || [];
-                    datasetCache[which] = data;
-                    window.XOS_CUTOFF = undefined;
-                    resolve(data);
-                };
-                script.onerror = () => reject(new Error(`Could not load ${src}`));
-                document.body.appendChild(script);
-            });
-        }
-
-        function loadBranchAliases() {
-            if (branchAliasesCache) return Promise.resolve(branchAliasesCache);
-            return fetch('./branch-aliases.json').then(r => r.json()).then(data => { branchAliasesCache = data; return data; });
-        }
-
-        function normBranch(s) { return s.toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(/\s+/g, ' ').trim(); }
-
-        function matchBranchKey(aliasList, branchKeysOfCollege) {
-            const keys = Object.keys(branchKeysOfCollege);
-            const candidates = aliasList.map(normBranch);
-            for (const k of keys) { const nk = normBranch(k); if (candidates.includes(nk)) return k; }
-            for (const k of keys) { const nk = normBranch(k); if (candidates.some(c => nk.includes(c) || c.includes(nk)))
-                    return k; }
-            let best = null,
-                bestScore = 0;
-            for (const k of keys) {
-                const bw = new Set(normBranch(k).split(' ').filter(w => w.length > 1));
-                for (const c of candidates) {
-                    const cw = new Set(c.split(' ').filter(w => w.length > 1));
-                    const inter = [...cw].filter(w => bw.has(w)).length;
-                    const union = new Set([...cw, ...bw]).size;
-                    const sc = union ? inter / union : 0;
-                    if (sc > bestScore) { bestScore = sc;
-                        best = k; }
-                }
-            }
-            return bestScore >= 0.4 ? best : null;
-        }
-
-        /* ══════════════════════════════════════════════════════════
-           PILL 2 — COLLEGE PREDICTION FLOW
-           ══════════════════════════════════════════════════════════ */
-        function pillCollegePredictionStart() {
-            const html = `Which dataset should I search?
-            <div class="chip-row">
-              <div class="mini-chip" data-ds="eng"><i class="fa-solid fa-graduation-cap"></i> Engineering</div>
-              <div class="mini-chip" data-ds="enghk"><i class="fa-solid fa-graduation-cap"></i> Engineering (HK)</div>
-            </div>`;
-            const row = protonSays(html, 'Which dataset should I search?');
-            row.querySelectorAll('[data-ds]').forEach(chip => {
-                chip.addEventListener('click', () => {
+        /* ── college prediction ── */
+        function startCollegePredictionFlow(prefilledRank) {
+            flowState = { dataset: null, category: null, rank: prefilledRank || null };
+            var html = 'Which dataset should I search?' +
+                '<div class="chip-row">' +
+                '  <div class="mini-chip" data-ds="eng"><i class="fa-solid fa-graduation-cap"></i> Engineering</div>' +
+                '  <div class="mini-chip" data-ds="enghk"><i class="fa-solid fa-graduation-cap"></i> Engineering (HK)</div>' +
+                '</div>';
+            var row = protonSays(html, 'Which dataset should I search?');
+            row.querySelectorAll('[data-ds]').forEach(function(chip) {
+                chip.addEventListener('click', function() {
                     userSays(chip.textContent.trim());
                     collegeFlowChooseDataset(chip.getAttribute('data-ds'));
                 });
             });
         }
 
-        function startCollegePredictionFlow(prefilledRank) {
-            flowState = { dataset: null, category: null, rank: prefilledRank || null };
-            pillCollegePredictionStart();
-        }
-
         function collegeFlowChooseDataset(which) {
             flowState = flowState || {};
             flowState.dataset = which;
-            const cats = which === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
-            const cardId = 'catcard_' + Date.now();
-            const html = `
-            <div class="chat-card" id="${cardId}">
-              <div class="chat-card-title">Select your category</div>
-              <div class="dd-mini" id="catDD">
-                <div class="dd-mini-trigger placeholder" id="catTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
-                <div class="dd-mini-menu" id="catMenu">
-                  ${cats.map(c=>`<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('')}
-                </div>
-              </div>
-              <div class="field-block" style="margin-top:12px;">
-                <div class="field-mini-label">Your KCET Rank</div>
-                <input type="number" class="xin" id="rankInputCollege" placeholder="Enter your rank" min="1" value="${flowState.rank||''}">
-                <div style="margin-top:8px;"><span class="link-hint" id="predictRankInline">Don't know your rank? Predict it</span></div>
-              </div>
-              <div class="field-block">
-                <div class="field-mini-label">Branch</div>
-                <div style="position:relative;">
-                  <input type="text" class="xin" id="branchInputCollege" placeholder="Search branch (e.g. Computer Science)" autocomplete="off">
-                  <div class="dd-mini-menu" id="branchSuggestMenu" style="max-height:180px;"></div>
-                </div>
-              </div>
-              <button class="btn-solid" data-action="predict-college-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Colleges</button>
-            </div>`;
-            const row = protonSays(html, 'Select category, rank and branch');
-            const card = row.querySelector('.chat-card');
+            var cats = which === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
+            var cardId = 'catcard_' + Date.now();
+            var html =
+                '<div class="chat-card" id="' + cardId + '">' +
+                '<div class="chat-card-title">Select your category</div>' +
+                '<div class="dd-mini" id="catDD">' +
+                '  <div class="dd-mini-trigger placeholder" id="catTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>' +
+                '  <div class="dd-mini-menu" id="catMenu">' +
+                cats.map(function(c) { return '<div class="dd-mini-item" data-cat="' + c + '">' + c +
+                    '</div>'; }).join('') +
+                '  </div>' +
+                '</div>' +
+                '<div class="field-block" style="margin-top:12px;">' +
+                '  <div class="field-mini-label">Your KCET Rank</div>' +
+                '  <input type="number" class="xin" id="rankInputCollege" placeholder="Enter your rank" min="1" value="' +
+                (flowState.rank || '') + '">' +
+                '  <div style="margin-top:8px;"><span class="link-hint" id="predictRankInline">Don\'t know your rank? Predict it</span></div>' +
+                '</div>' +
+                '<div class="field-block">' +
+                '  <div class="field-mini-label">Branch</div>' +
+                '  <div style="position:relative;">' +
+                '    <input type="text" class="xin" id="branchInputCollege" placeholder="Search branch (e.g. Computer Science)" autocomplete="off">' +
+                '    <div class="dd-mini-menu" id="branchSuggestMenu" style="max-height:180px;"></div>' +
+                '  </div>' +
+                '</div>' +
+                '<button class="btn-solid" data-action="predict-college-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Colleges</button>' +
+                '</div>';
+            var row = protonSays(html, 'Select category, rank and branch');
+            var card = row.querySelector('.chat-card');
             wireCollegeCard(card);
         }
 
+        var branchAliasesCache = null;
+
+        function loadBranchAliases() {
+            if (branchAliasesCache) return Promise.resolve(branchAliasesCache);
+            return fetch('./branch-aliases.json').then(function(r) { return r.json(); }).then(function(data) {
+                branchAliasesCache = data;
+                return data;
+            });
+        }
+
+        function matchBranchKey(aliasList, branchKeys) {
+            var keys = Object.keys(branchKeys);
+            var candidates = aliasList.map(function(s) { return s.toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(
+                    /\s+/g, ' ').trim(); });
+            for (var i = 0; i < keys.length; i++) {
+                var nk = keys[i].toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(/\s+/g, ' ').trim();
+                if (candidates.indexOf(nk) !== -1) return keys[i];
+            }
+            for (var i = 0; i < keys.length; i++) {
+                var nk = keys[i].toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(/\s+/g, ' ').trim();
+                for (var j = 0; j < candidates.length; j++) {
+                    if (nk.indexOf(candidates[j]) !== -1 || candidates[j].indexOf(nk) !== -1) return keys[i];
+                }
+            }
+            var best = null,
+                bestScore = 0;
+            for (var i = 0; i < keys.length; i++) {
+                var bw = new Set(keys[i].toUpperCase().replace(/[^A-Z0-9\s&]/g, ' ').replace(/\s+/g, ' ').trim().split(
+                    ' ').filter(function(w) { return w.length > 1; }));
+                for (var j = 0; j < candidates.length; j++) {
+                    var cw = new Set(candidates[j].split(' ').filter(function(w) { return w.length > 1; }));
+                    var inter = 0;
+                    cw.forEach(function(w) { if (bw.has(w)) inter++; });
+                    var union = new Set([].concat(Array.from(cw), Array.from(bw))).size;
+                    var sc = union ? inter / union : 0;
+                    if (sc > bestScore) { bestScore = sc;
+                        best = keys[i]; }
+                }
+            }
+            return bestScore >= 0.4 ? best : null;
+        }
+
+        var datasetCache = {};
+
+        function loadDataset(which) {
+            return new Promise(function(resolve, reject) {
+                if (datasetCache[which]) return resolve(datasetCache[which]);
+                var src = which === 'enghk' ? './firstroundenghk.js' : './firstroundeng.js';
+                var script = document.createElement('script');
+                script.src = src;
+                script.onload = function() {
+                    var data = window.XOS_CUTOFF || [];
+                    datasetCache[which] = data;
+                    window.XOS_CUTOFF = undefined;
+                    resolve(data);
+                };
+                script.onerror = function() { reject(new Error('Could not load ' + src)); };
+                document.body.appendChild(script);
+            });
+        }
+
         function wireCollegeCard(card) {
-            const trigger = card.querySelector('#catTrigger');
-            const menu = card.querySelector('#catMenu');
-            trigger.addEventListener('click', () => menu.classList.toggle('show'));
-            menu.querySelectorAll('[data-cat]').forEach(item => {
-                item.addEventListener('click', () => {
+            var trigger = card.querySelector('#catTrigger');
+            var menu = card.querySelector('#catMenu');
+            trigger.addEventListener('click', function() { menu.classList.toggle('show'); });
+            menu.querySelectorAll('[data-cat]').forEach(function(item) {
+                item.addEventListener('click', function() {
                     flowState.category = item.getAttribute('data-cat');
-                    trigger.innerHTML = flowState.category + '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
+                    trigger.innerHTML = flowState.category +
+                        '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
                     trigger.classList.remove('placeholder');
                     menu.classList.remove('show');
                 });
             });
 
-            card.querySelector('#predictRankInline').addEventListener('click', () => {
-                openRankPredictionCard((rank) => {
+            card.querySelector('#predictRankInline').addEventListener('click', function() {
+                openRankPredictionCard(function(rank) {
                     card.querySelector('#rankInputCollege').value = rank;
                     flowState.rank = rank;
                     protonSays(
-                        `<i class="fa-solid fa-check" style="color:var(--success);"></i> Rank ${rank.toLocaleString('en-IN')} filled in above. Continue selecting your branch.`
-                        );
+                        '<i class="fa-solid fa-check" style="color:var(--success);"></i> Rank ' + rank
+                        .toLocaleString('en-IN') +
+                        ' filled in above. Continue selecting your branch.'
+                    );
                 });
             });
 
-            const branchInput = card.querySelector('#branchInputCollege');
-            const suggestMenu = card.querySelector('#branchSuggestMenu');
-            let selectedBranchEntry = null;
-            branchInput.addEventListener('input', async () => {
-                const q = branchInput.value.trim().toLowerCase();
+            var branchInput = card.querySelector('#branchInputCollege');
+            var suggestMenu = card.querySelector('#branchSuggestMenu');
+            var selectedBranchEntry = null;
+            branchInput.addEventListener('input', function() {
+                var q = branchInput.value.trim().toLowerCase();
                 selectedBranchEntry = null;
                 if (!q) { suggestMenu.classList.remove('show'); return; }
-                try {
-                    const aliases = await loadBranchAliases();
-                    const matches = aliases.filter(entry =>
-                        entry.display_name.toLowerCase().includes(q) ||
-                        (entry.aliases || []).some(a => a.toLowerCase().includes(q))
-                    ).slice(0, 8);
-                    if (!matches.length) { suggestMenu.innerHTML =
+                loadBranchAliases().then(function(aliases) {
+                    var matches = aliases.filter(function(entry) {
+                        return entry.display_name.toLowerCase().indexOf(q) !== -1 ||
+                            (entry.aliases || []).some(function(a) { return a.toLowerCase().indexOf(
+                                q) !== -1; });
+                    }).slice(0, 8);
+                    if (!matches.length) {
+                        suggestMenu.innerHTML =
                             '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">No matches</div>';
-                        suggestMenu.classList.add('show'); return; }
-                    suggestMenu.innerHTML = matches.map(m =>
-                        `<div class="dd-mini-item" data-bid="${m.branch_id}">${escapeHtml(m.display_name)}</div>`
-                        ).join('');
+                        suggestMenu.classList.add('show');
+                        return;
+                    }
+                    suggestMenu.innerHTML = matches.map(function(m) {
+                        return '<div class="dd-mini-item" data-bid="' + m.branch_id + '">' + escapeHtml(
+                            m.display_name) + '</div>';
+                    }).join('');
                     suggestMenu.classList.add('show');
-                    suggestMenu.querySelectorAll('[data-bid]').forEach(el => {
-                        el.addEventListener('click', () => {
-                            const entry = matches.find(m => m.branch_id === el.getAttribute('data-bid'));
+                    suggestMenu.querySelectorAll('[data-bid]').forEach(function(el) {
+                        el.addEventListener('click', function() {
+                            var entry = matches.find(function(m) { return m.branch_id === el
+                                    .getAttribute('data-bid'); });
                             selectedBranchEntry = entry;
                             branchInput.value = entry.display_name;
                             suggestMenu.classList.remove('show');
                         });
                     });
-                } catch (e) {
+                }).catch(function() {
                     suggestMenu.innerHTML =
                         '<div class="dd-mini-item" style="pointer-events:none;color:var(--text-3);">branch-aliases.json not found</div>';
                     suggestMenu.classList.add('show');
-                }
+                });
             });
 
-            card.querySelector('[data-action="predict-college-final"]').addEventListener('click', async () => {
-                const rank = parseInt(card.querySelector('#rankInputCollege').value, 10);
+            card.querySelector('[data-action="predict-college-final"]').addEventListener('click', function() {
+                var rank = parseInt(card.querySelector('#rankInputCollege').value, 10);
                 flowState.rank = rank;
                 if (!flowState.category || isNaN(rank) || !selectedBranchEntry) {
                     protonSays(
-                        `<i class="fa-solid fa-triangle-exclamation"></i> Please select a category, enter your rank, and pick a branch from the suggestions before predicting.`
+                        '<i class="fa-solid fa-triangle-exclamation"></i> Please select a category, enter your rank, and pick a branch from the suggestions before predicting.'
                         );
                     return;
                 }
-                userSays(
-                    `Predict colleges — ${flowState.category} · rank ${rank} · ${selectedBranchEntry.display_name}`
-                    );
-                protonSays(loadingLine(`Searching ${flowState.dataset==='enghk'?'Engineering (HK)':'Engineering'} colleges…`));
-                try {
-                    const dataset = await loadDataset(flowState.dataset);
-                    const aliasPool = [selectedBranchEntry.display_name, ...(selectedBranchEntry.aliases || [])];
-                    renderCollegeMatches(dataset, flowState.category, rank, aliasPool, selectedBranchEntry
+                userSays('Predict colleges — ' + flowState.category + ' · rank ' + rank + ' · ' + selectedBranchEntry
                     .display_name);
-                } catch (e) {
+                protonSays(loadingLine('Searching ' + (flowState.dataset === 'enghk' ? 'Engineering (HK)' :
+                    'Engineering') + ' colleges…'));
+                loadDataset(flowState.dataset).then(function(dataset) {
+                    var aliasPool = [selectedBranchEntry.display_name].concat(selectedBranchEntry.aliases ||
+                    []);
+                    renderCollegeMatches(dataset, flowState.category, rank, aliasPool, selectedBranchEntry
+                        .display_name);
+                }).catch(function(e) {
                     protonSays(
-                        `<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}). Make sure ${flowState.dataset==='enghk'?'firstroundenghk.js':'firstroundeng.js'} is in the same repo as this page.`
-                        );
-                }
+                        '<i class="fa-solid fa-triangle-exclamation"></i> Couldn\'t load the dataset (' +
+                        e.message + '). Make sure ' + (flowState.dataset === 'enghk' ?
+                            'firstroundenghk.js' : 'firstroundeng.js') +
+                        ' is in the same folder as this page.'
+                    );
+                });
             });
         }
 
         function renderCollegeMatches(dataset, category, rank, aliasPool, branchLabel) {
-            const lowerBound = rank - 1500;
-            const results = [];
-            for (const college of dataset) {
+            var lowerBound = rank - 1500;
+            var results = [];
+            for (var i = 0; i < dataset.length; i++) {
+                var college = dataset[i];
                 if (!college.branches) continue;
-                const key = matchBranchKey(aliasPool, college.branches);
+                var key = matchBranchKey(aliasPool, college.branches);
                 if (!key) continue;
-                const cutoff = college.branches[key][category];
+                var cutoff = college.branches[key][category];
                 if (cutoff === null || cutoff === undefined) continue;
                 if (cutoff >= lowerBound) {
                     results.push({ id: college.id, name: college.name, location: college.location || 'Karnataka',
-                        branch: key, cutoff, dist: Math.abs(cutoff - rank) });
+                        branch: key, cutoff: cutoff, dist: Math.abs(cutoff - rank) });
                 }
             }
-            results.sort((a, b) => a.dist - b.dist);
+            results.sort(function(a, b) { return a.dist - b.dist; });
             if (!results.length) {
                 protonSays(
-                    `<i class="fa-regular fa-folder-open"></i> No colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}.${getPromoHTML()}`
+                    '<i class="fa-regular fa-folder-open"></i> No colleges found for <b>' + escapeHtml(
+                        branchLabel) + '</b> · ' + category + ' near rank ' + rank.toLocaleString(
+                        'en-IN') + '.' + getPromoHTML()
                     );
                 return;
             }
-            const top5 = results.slice(0, 5);
-            let html =
-                `<b>${results.length}</b> colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}:<div style="margin-top:10px;">`;
-            html += top5.map(r => collegeCardHtml(r, category)).join('');
-            html += `</div>`;
+            var top5 = results.slice(0, 5);
+            var html = '<b>' + results.length +
+                '</b> colleges found for <b>' + escapeHtml(branchLabel) + '</b> · ' + category +
+                ' near rank ' + rank.toLocaleString('en-IN') + ':<div style="margin-top:10px;">';
+            html += top5.map(function(r) { return collegeCardHtml(r, category); }).join('');
+            html += '</div>';
             if (results.length > 5) {
                 html +=
-                    `<div class="chip-row"><div class="mini-chip" data-action="see-more"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ${results.length} colleges</div></div>`;
+                    '<div class="chip-row"><div class="mini-chip" data-action="see-more"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ' +
+                    results.length + ' colleges</div></div>';
             }
             html += getPromoHTML();
-            const row = protonSays(html, `${results.length} colleges found`);
-            const seeMore = row.querySelector('[data-action="see-more"]');
+            var row = protonSays(html, results.length + ' colleges found');
+            var seeMore = row.querySelector('[data-action="see-more"]');
             if (seeMore) {
-                seeMore.addEventListener('click', () => openResultsPage(
-                    `All matches · ${branchLabel} · ${category}`, results, category));
+                seeMore.addEventListener('click', function() { openResultsPage('All matches · ' + branchLabel +
+                        ' · ' + category, results, category); });
             }
         }
 
         function collegeCardHtml(r, category) {
-            return `<div class="college-result-card">
-            <div class="crc-top"><div class="crc-name">${escapeHtml(getShortName(r.name))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-            <div class="crc-meta">${escapeHtml(r.branch)} · ${escapeHtml(r.location)} · ${r.id}</div>
-          </div>`;
+            return '<div class="college-result-card">' +
+                '<div class="crc-top"><div class="crc-name">' + escapeHtml(getShortName(r.name)) +
+                '</div><div class="crc-cutoff">' + r.cutoff.toLocaleString('en-IN') + '</div></div>' +
+                '<div class="crc-meta">' + escapeHtml(r.branch) + ' · ' + escapeHtml(r.location) + ' · ' + r.id +
+                '</div>' +
+                '</div>';
         }
 
-        function getShortName(name) { if (!name) return ''; const i = name.indexOf(','); return i > 0 ? name.substring(0,
-                i).trim() : name.trim(); }
+        function getShortName(name) { if (!name) return ''; var i = name.indexOf(','); return i > 0 ? name.substring(0, i)
+                .trim() : name.trim(); }
 
         function openResultsPage(title, results, category) {
             document.getElementById('rpTitle').textContent = title;
-            document.getElementById('rpBody').innerHTML = results.map(r => collegeCardHtml(r, category)).join('');
+            document.getElementById('rpBody').innerHTML = results.map(function(r) { return collegeCardHtml(r, category); })
+                .join('');
             document.getElementById('resultsPage').classList.add('open');
         }
-        document.getElementById('rpClose').addEventListener('click', () => document.getElementById('resultsPage').classList
-            .remove('open'));
+        document.getElementById('rpClose').addEventListener('click', function() { document.getElementById('resultsPage')
+                .classList.remove('open'); });
 
-        /* ══════════════════════════════════════════════════════════
-           PILL 3 — PRIORITY LIST PREDICTION (PDF upload)
-           ══════════════════════════════════════════════════════════ */
+        /* ── priority list ── */
         function pillPriorityListStart() {
-            const uploadId = 'pl_upload_' + Date.now();
-            const html = `Upload your KEA priority list PDF (the official <b>Option Entry</b> export — filename usually contains "option", e.g. OptionEntry_1234567.pdf).
-            <div class="upload-dz" id="${uploadId}" style="margin-top:12px;">
-              <input type="file" accept=".pdf,application/pdf" id="${uploadId}_input">
-              <i class="fa-solid fa-file-arrow-up"></i>
-              <span>Tap to select your priority list PDF</span>
-            </div>`;
-            const row = protonSays(html, 'Upload your priority list PDF');
-            const input = row.querySelector(`#${uploadId}_input`);
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
+            var uploadId = 'pl_upload_' + Date.now();
+            var html = 'Upload your KEA priority list PDF (the official <b>Option Entry</b> export — filename usually contains "option", e.g. OptionEntry_1234567.pdf).' +
+                '<div class="upload-dz" id="' + uploadId + '" style="margin-top:12px;">' +
+                '  <input type="file" accept=".pdf,application/pdf" id="' + uploadId + '_input">' +
+                '  <i class="fa-solid fa-file-arrow-up"></i>' +
+                '  <span>Tap to select your priority list PDF</span>' +
+                '</div>';
+            var row = protonSays(html, 'Upload your priority list PDF');
+            var input = row.querySelector('#' + uploadId + '_input');
+            input.addEventListener('change', function(e) {
+                var file = e.target.files[0];
                 if (!file) return;
-                userSays(`Uploaded: ${file.name}`);
-                const normalizedName = file.name.toLowerCase().replace(/[^a-z]/g, '');
-                if (!normalizedName.includes('option')) {
+                userSays('Uploaded: ' + file.name);
+                var normalizedName = file.name.toLowerCase().replace(/[^a-z]/g, '');
+                if (normalizedName.indexOf('option') === -1) {
                     protonSays(
-                        `<i class="fa-solid fa-triangle-exclamation"></i> That doesn't look like the right file. Please upload the official KEA priority-list PDF — the filename should contain <b>"option"</b> (e.g. OptionEntry_1234567.pdf).`
+                        '<i class="fa-solid fa-triangle-exclamation"></i> That doesn\'t look like the right file. Please upload the official KEA priority-list PDF — the filename should contain <b>"option"</b> (e.g. OptionEntry_1234567.pdf).'
                         );
                     return;
                 }
@@ -1920,57 +1973,61 @@
         async function handlePriorityListPdf(file) {
             protonSays(loadingLine('Reading your priority list…'));
             try {
-                const ab = await file.arrayBuffer();
-                const options = await parsePriorityPdf(ab);
+                var ab = await file.arrayBuffer();
+                var options = await parsePriorityPdf(ab);
                 protonSays(
-                    `<i class="fa-solid fa-check" style="color:var(--success);"></i> Extracted <b>${options.length}</b> priority options. Now select your dataset, category and rank so I can match them.`
+                    '<i class="fa-solid fa-check" style="color:var(--success);"></i> Extracted <b>' + options
+                    .length +
+                    '</b> priority options. Now select your dataset, category and rank so I can match them.'
                     );
-                const cardId = 'plcard_' + Date.now();
-                const html = `
-              <div class="chat-card" id="${cardId}">
-                <div class="chat-card-title">Match against your priority list</div>
-                <div class="chip-row" style="margin-bottom:12px;">
-                  <div class="mini-chip" data-ds="eng">Engineering</div>
-                  <div class="mini-chip" data-ds="enghk">Engineering (HK)</div>
-                </div>
-                <div class="dd-mini" id="plCatDD">
-                  <div class="dd-mini-trigger placeholder" id="plCatTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>
-                  <div class="dd-mini-menu" id="plCatMenu"></div>
-                </div>
-                <div class="field-block" style="margin-top:10px;">
-                  <input type="number" class="xin" id="plRankInput" placeholder="Enter your KCET rank" min="1">
-                </div>
-                <button class="btn-solid" data-action="predict-priority-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Eligibility</button>
-              </div>`;
-                const row = protonSays(html, 'Match against priority list');
+                var cardId = 'plcard_' + Date.now();
+                var html =
+                    '<div class="chat-card" id="' + cardId + '">' +
+                    '<div class="chat-card-title">Match against your priority list</div>' +
+                    '<div class="chip-row" style="margin-bottom:12px;">' +
+                    '  <div class="mini-chip" data-ds="eng">Engineering</div>' +
+                    '  <div class="mini-chip" data-ds="enghk">Engineering (HK)</div>' +
+                    '</div>' +
+                    '<div class="dd-mini" id="plCatDD">' +
+                    '  <div class="dd-mini-trigger placeholder" id="plCatTrigger">Choose category<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i></div>' +
+                    '  <div class="dd-mini-menu" id="plCatMenu"></div>' +
+                    '</div>' +
+                    '<div class="field-block" style="margin-top:10px;">' +
+                    '  <input type="number" class="xin" id="plRankInput" placeholder="Enter your KCET rank" min="1">' +
+                    '</div>' +
+                    '<button class="btn-solid" data-action="predict-priority-final"><i class="fa-solid fa-magnifying-glass"></i> Predict Eligibility</button>' +
+                    '</div>';
+                var row = protonSays(html, 'Match against priority list');
                 wirePriorityCard(row.querySelector('.chat-card'), options);
             } catch (e) {
                 protonSays(
-                    `<i class="fa-solid fa-triangle-exclamation"></i> Couldn't read that PDF (${e.message}). Please make sure it's a valid KEA priority-list export.`
+                    '<i class="fa-solid fa-triangle-exclamation"></i> Couldn\'t read that PDF (' + e.message +
+                    '). Please make sure it\'s a valid KEA priority-list export.'
                     );
             }
         }
 
         function wirePriorityCard(card, options) {
-            let chosenDs = null;
-            card.querySelectorAll('[data-ds]').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    card.querySelectorAll('[data-ds]').forEach(c => c.style.opacity = '.5');
+            var chosenDs = null;
+            card.querySelectorAll('[data-ds]').forEach(function(chip) {
+                chip.addEventListener('click', function() {
+                    card.querySelectorAll('[data-ds]').forEach(function(c) { c.style.opacity = '.5'; });
                     chip.style.opacity = '1';
                     chosenDs = chip.getAttribute('data-ds');
-                    const cats = chosenDs === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
-                    card.querySelector('#plCatMenu').innerHTML = cats.map(c =>
-                        `<div class="dd-mini-item" data-cat="${c}">${c}</div>`).join('');
+                    var cats = chosenDs === 'enghk' ? HK_CATEGORIES : GENERAL_CATEGORIES;
+                    card.querySelector('#plCatMenu').innerHTML = cats.map(function(c) {
+                        return '<div class="dd-mini-item" data-cat="' + c + '">' + c + '</div>';
+                    }).join('');
                     wirePlCatMenu(card);
                 });
             });
 
             function wirePlCatMenu(card) {
-                const trigger = card.querySelector('#plCatTrigger');
-                const menu = card.querySelector('#plCatMenu');
-                trigger.onclick = () => menu.classList.toggle('show');
-                menu.querySelectorAll('[data-cat]').forEach(item => {
-                    item.addEventListener('click', () => {
+                var trigger = card.querySelector('#plCatTrigger');
+                var menu = card.querySelector('#plCatMenu');
+                trigger.onclick = function() { menu.classList.toggle('show'); };
+                menu.querySelectorAll('[data-cat]').forEach(function(item) {
+                    item.addEventListener('click', function() {
                         card.dataset.category = item.getAttribute('data-cat');
                         trigger.innerHTML = card.dataset.category +
                             '<i class="fa-solid fa-chevron-down" style="font-size:.5rem;"></i>';
@@ -1980,144 +2037,133 @@
                 });
             }
 
-            card.querySelector('[data-action="predict-priority-final"]').addEventListener('click', async () => {
-                const rank = parseInt(card.querySelector('#plRankInput').value, 10);
-                const category = card.dataset.category;
+            card.querySelector('[data-action="predict-priority-final"]').addEventListener('click', function() {
+                var rank = parseInt(card.querySelector('#plRankInput').value, 10);
+                var category = card.dataset.category;
                 if (!chosenDs || !category || isNaN(rank)) {
-                    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Please choose a dataset, category and rank first.`);
+                    protonSays(
+                        '<i class="fa-solid fa-triangle-exclamation"></i> Please choose a dataset, category and rank first.'
+                        );
                     return;
                 }
                 protonSays(loadingLine('Matching your priority list…'));
-                try {
-                    const dataset = await loadDataset(chosenDs);
-                    const results = matchPriorityOptions(dataset, options, category, rank);
+                loadDataset(chosenDs).then(function(dataset) {
+                    var results = matchPriorityOptions(dataset, options, category, rank);
                     renderPriorityResults(results);
-                } catch (e) {
-                    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}).`);
-                }
+                }).catch(function(e) {
+                    protonSays('<i class="fa-solid fa-triangle-exclamation"></i> Couldn\'t load the dataset (' +
+                        e.message + ').');
+                });
             });
         }
 
         async function parsePriorityPdf(arrayBuffer) {
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            const tokens = [];
-            for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const tc = await page.getTextContent();
-                tc.items.forEach(item => { const s = item.str.trim(); if (s.length) tokens.push(s); });
+            var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            var tokens = [];
+            for (var i = 1; i <= pdf.numPages; i++) {
+                var page = await pdf.getPage(i);
+                var tc = await page.getTextContent();
+                tc.items.forEach(function(item) { var s = item.str.trim(); if (s.length) tokens.push(s); });
             }
-            const results = [];
-            const priorityRe = /^\d+$/,
+            var results = [];
+            var priorityRe = /^\d+$/,
                 codeRe = /^[A-Z]\d{3}[A-Z]{2}$/i;
-            const anchors = [];
-            for (let i = 0; i < tokens.length - 1; i++) { if (priorityRe.test(tokens[i]) && codeRe.test(tokens[i + 1]))
+            var anchors = [];
+            for (var i = 0; i < tokens.length - 1; i++) { if (priorityRe.test(tokens[i]) && codeRe.test(tokens[i + 1]))
                     anchors.push(i); }
-            for (let a = 0; a < anchors.length; a++) {
-                const idx = anchors[a],
+            for (var a = 0; a < anchors.length; a++) {
+                var idx = anchors[a],
                     priority = parseInt(tokens[idx], 10),
                     code = tokens[idx + 1].toUpperCase(),
                     collegeId = code.substring(0, 4);
-                const end = a + 1 < anchors.length ? anchors[a + 1] : tokens.length;
-                const rawText = tokens.slice(idx + 2, end).join(' ');
-                const normalized = rawText.replace(/(\d)\s*,\s*(\d)/g, '$1,$2');
-                let branch;
-                const feeMatch = normalized.match(/\d{1,3}(?:,\d{2,3})+/);
+                var end = a + 1 < anchors.length ? anchors[a + 1] : tokens.length;
+                var rawText = tokens.slice(idx + 2, end).join(' ');
+                var normalized = rawText.replace(/(\d)\s*,\s*(\d)/g, '$1,$2');
+                var branch;
+                var feeMatch = normalized.match(/\d{1,3}(?:,\d{2,3})+/);
                 if (feeMatch) {
-                    const feeInRaw = rawText.match(/\d{1,3}\s*(?:,\s*\d{2,3}\s*)+/);
+                    var feeInRaw = rawText.match(/\d{1,3}\s*(?:,\s*\d{2,3}\s*)+/);
                     branch = feeInRaw ? rawText.substring(0, feeInRaw.index).trim() : rawText.substring(0, rawText
                         .indexOf(feeMatch[0])).trim();
                 } else {
-                    const numMatch = rawText.match(/\d{5,}/);
+                    var numMatch = rawText.match(/\d{5,}/);
                     branch = numMatch ? rawText.substring(0, numMatch.index).trim() : rawText.trim();
                 }
                 branch = branch.replace(/[\s\-–—:]+$/, '').replace(/\s+/g, ' ').trim();
-                if (branch.length > 0) results.push({ priority, collegeId, branch });
+                if (branch.length > 0) results.push({ priority: priority, collegeId: collegeId, branch: branch });
             }
             return results;
         }
 
         function matchPriorityOptions(dataset, options, category, userRank) {
-            const map = {};
-            dataset.forEach(c => { map[c.id] = c; });
-            return options.map(opt => {
-                const college = map[opt.collegeId];
-                if (!college) return { ...opt, collegeName: null, status: 'no-data', statusLabel: 'College N/A',
-                    cutoff: null };
-                const mb = matchBranchKey([opt.branch], college.branches);
-                if (!mb) return { ...opt, collegeName: college.name, status: 'no-data', statusLabel: 'Branch N/A',
-                    cutoff: null };
-                const cutoff = college.branches[mb][category];
-                if (cutoff === null || cutoff === undefined) return { ...opt, collegeName: college.name,
-                    matchedBranch: mb, status: 'no-seat', statusLabel: 'No Seat', cutoff: null };
-                const eligible = cutoff >= userRank;
-                return { ...opt, collegeName: college.name, matchedBranch: mb, cutoff, status: eligible ?
-                        'eligible' : 'not-eligible', statusLabel: eligible ? 'Eligible' : 'Not Eligible' };
+            var map = {};
+            dataset.forEach(function(c) { map[c.id] = c; });
+            return options.map(function(opt) {
+                var college = map[opt.collegeId];
+                if (!college) return { priority: opt.priority, collegeId: opt.collegeId, collegeName: null,
+                    status: 'no-data', statusLabel: 'College N/A', cutoff: null };
+                var mb = matchBranchKey([opt.branch], college.branches);
+                if (!mb) return { priority: opt.priority, collegeId: opt.collegeId, collegeName: college.name,
+                    status: 'no-data', statusLabel: 'Branch N/A', cutoff: null };
+                var cutoff = college.branches[mb][category];
+                if (cutoff === null || cutoff === undefined) return { priority: opt.priority, collegeId: opt
+                        .collegeId, collegeName: college.name, matchedBranch: mb, status: 'no-seat',
+                    statusLabel: 'No Seat', cutoff: null };
+                var eligible = cutoff >= userRank;
+                return { priority: opt.priority, collegeId: opt.collegeId, collegeName: college.name,
+                    matchedBranch: mb, cutoff: cutoff, status: eligible ? 'eligible' : 'not-eligible',
+                    statusLabel: eligible ? 'Eligible' : 'Not Eligible' };
             });
         }
 
         function renderPriorityResults(results) {
-            const eligible = results.filter(r => r.status === 'eligible');
+            var eligible = results.filter(function(r) { return r.status === 'eligible'; });
             if (!eligible.length) {
                 protonSays(
-                    `<i class="fa-regular fa-folder-open"></i> No eligible options found in your priority list for this rank &amp; category.${getPromoHTML()}`
+                    '<i class="fa-regular fa-folder-open"></i> No eligible options found in your priority list for this rank &amp; category.' +
+                    getPromoHTML()
                     );
                 return;
             }
-            const top5 = eligible.slice(0, 5);
-            let html = `<b>${eligible.length}</b> eligible options found in your priority list:<div style="margin-top:10px;">`;
-            html += top5.map(r => `<div class="college-result-card">
-            <div class="crc-top"><div class="crc-name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-            <div class="crc-meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div>
-          </div>`).join('');
-            html += `</div>`;
+            var top5 = eligible.slice(0, 5);
+            var html = '<b>' + eligible.length +
+                '</b> eligible options found in your priority list:<div style="margin-top:10px;">';
+            html += top5.map(function(r) {
+                return '<div class="college-result-card">' +
+                    '<div class="crc-top"><div class="crc-name">#' + r.priority + ' · ' + escapeHtml(
+                        getShortName(r.collegeName || r.collegeId)) +
+                    '</div><div class="crc-cutoff">' + r.cutoff.toLocaleString('en-IN') + '</div></div>' +
+                    '<div class="crc-meta">' + escapeHtml(r.matchedBranch || r.branch) + ' · ' + r.collegeId +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+            html += '</div>';
             if (eligible.length > 5) html +=
-                `<div class="chip-row"><div class="mini-chip" data-action="see-more-pl"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ${eligible.length} eligible options</div></div>`;
+                '<div class="chip-row"><div class="mini-chip" data-action="see-more-pl"><i class="fa-solid fa-arrow-up-right-from-square"></i> See all ' +
+                eligible.length + ' eligible options</div></div>';
             html += getPromoHTML();
-            const row = protonSays(html, `${eligible.length} eligible options`);
-            const seeMore = row.querySelector('[data-action="see-more-pl"]');
+            var row = protonSays(html, eligible.length + ' eligible options');
+            var seeMore = row.querySelector('[data-action="see-more-pl"]');
             if (seeMore) {
-                seeMore.addEventListener('click', () => {
+                seeMore.addEventListener('click', function() {
                     document.getElementById('rpTitle').textContent = 'All eligible options';
-                    document.getElementById('rpBody').innerHTML = eligible.map(r => `<div class="college-result-card">
-                <div class="crc-top"><div class="crc-name">#${r.priority} · ${escapeHtml(getShortName(r.collegeName||r.collegeId))}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div>
-                <div class="crc-meta">${escapeHtml(r.matchedBranch||r.branch)} · ${r.collegeId}</div>
-              </div>`).join('');
+                    document.getElementById('rpBody').innerHTML = eligible.map(function(r) {
+                        return '<div class="college-result-card">' +
+                            '<div class="crc-top"><div class="crc-name">#' + r.priority + ' · ' +
+                            escapeHtml(getShortName(r.collegeName || r.collegeId)) +
+                            '</div><div class="crc-cutoff">' + r.cutoff.toLocaleString('en-IN') +
+                            '</div></div>' +
+                            '<div class="crc-meta">' + escapeHtml(r.matchedBranch || r.branch) +
+                            ' · ' + r.collegeId +
+                            '</div>' +
+                            '</div>';
+                    }).join('');
                     document.getElementById('resultsPage').classList.add('open');
                 });
             }
         }
 
-        /* ══════════════════════════════════════════════════════════
-           SMART CHAT ENGINE
-           ══════════════════════════════════════════════════════════ */
-        let kcetTrainingSet = [];
-        let chatTrainingSet = [];
-        let smartDataReady = false;
-
-        async function loadTrainingData() {
-            try {
-                const r = await fetch('./trainingset.json');
-                if (!r.ok) throw new Error('HTTP ' + r.status);
-                kcetTrainingSet = await r.json();
-                console.info(`[x-bit] trainingset.json loaded: ${kcetTrainingSet.length} examples`);
-            } catch (e) {
-                console.error('[x-bit] trainingset.json failed to load:', e.message);
-                kcetTrainingSet = [];
-            }
-            try {
-                const r2 = await fetch('./trainingset1.json');
-                if (!r2.ok) throw new Error('HTTP ' + r2.status);
-                chatTrainingSet = await r2.json();
-                console.info(`[x-bit] trainingset1.json loaded: ${chatTrainingSet.length} examples`);
-            } catch (e) {
-                console.error('[x-bit] trainingset1.json failed to load:', e.message);
-                chatTrainingSet = [];
-            }
-            kcetTrainingSet.forEach(ex => ex._tokens = new Set(patternTokens(ex.input)));
-            chatTrainingSet.forEach(ex => ex._tokens = new Set(tokenize(ex.input)));
-            smartDataReady = true;
-        }
-
+        /* ── smart chat ── */
         function normalizeText(s) { return s.toLowerCase().replace(/[^\w\s%.]/g, ' ').replace(/\s+/g, ' ').trim(); }
 
         function tokenize(s) { return normalizeText(s).split(' ').filter(Boolean); }
@@ -2125,20 +2171,34 @@
         function patternTokens(s) { return normalizeText(s).replace(/\d+\.?\d*/g, '#num#').split(' ').filter(Boolean); }
 
         function jaccard(a, b) {
-            let inter = 0;
-            for (const t of a)
-                if (b.has(t)) inter++;
-            const union = a.size + b.size - inter;
+            var inter = 0;
+            a.forEach(function(t) { if (b.has(t)) inter++; });
+            var union = a.size + b.size - inter;
             return union ? inter / union : 0;
+        }
+
+        var kcetTrainingSet = [];
+        var chatTrainingSet = [];
+
+        function loadTrainingData() {
+            fetch('./trainingset.json').then(function(r) { return r.json(); }).then(function(data) {
+                kcetTrainingSet = data;
+                kcetTrainingSet.forEach(function(ex) { ex._tokens = new Set(patternTokens(ex.input)); });
+            }).catch(function() { kcetTrainingSet = []; });
+            fetch('./trainingset1.json').then(function(r) { return r.json(); }).then(function(data) {
+                chatTrainingSet = data;
+                chatTrainingSet.forEach(function(ex) { ex._tokens = new Set(tokenize(ex.input)); });
+            }).catch(function() { chatTrainingSet = []; });
         }
 
         function classifyKcetIntent(text) {
             if (!kcetTrainingSet.length) return null;
-            const q = new Set(patternTokens(text));
-            let best = null,
+            var q = new Set(patternTokens(text));
+            var best = null,
                 bestScore = 0;
-            for (const ex of kcetTrainingSet) {
-                const sc = jaccard(q, ex._tokens);
+            for (var i = 0; i < kcetTrainingSet.length; i++) {
+                var ex = kcetTrainingSet[i];
+                var sc = jaccard(q, ex._tokens);
                 if (sc > bestScore) { bestScore = sc;
                     best = ex; }
             }
@@ -2147,24 +2207,25 @@
 
         function classifyChat(text) {
             if (!chatTrainingSet.length) return null;
-            const q = new Set(tokenize(text));
+            var q = new Set(tokenize(text));
             if (!q.size) return null;
-            let best = null,
+            var best = null,
                 bestScore = 0;
-            for (const ex of chatTrainingSet) {
-                const sc = jaccard(q, ex._tokens);
+            for (var i = 0; i < chatTrainingSet.length; i++) {
+                var ex = chatTrainingSet[i];
+                var sc = jaccard(q, ex._tokens);
                 if (sc > bestScore) { bestScore = sc;
                     best = ex; }
             }
             return best && bestScore > 0.3 ? best : null;
         }
 
-        const KARNATAKA_CITIES = ['bangalore', 'bengaluru', 'mysore', 'mysuru', 'mangalore', 'mangaluru', 'hubli', 'hubballi',
+        var KARNATAKA_CITIES = ['bangalore', 'bengaluru', 'mysore', 'mysuru', 'mangalore', 'mangaluru', 'hubli', 'hubballi',
             'belgaum', 'belagavi', 'dharwad', 'shimoga', 'shivamogga', 'hassan', 'tumkur', 'tumakuru', 'davangere',
             'bellary', 'ballari', 'gulbarga', 'kalaburagi', 'bidar', 'raichur', 'udupi', 'chikmagalur', 'kolar', 'mandya',
             'chitradurga', 'bagalkot', 'hospet', 'bijapur', 'vijayapura'
         ];
-        const BRANCH_SHORTHAND = {
+        var BRANCH_SHORTHAND = {
             cse: 'Computer Science and Engineering',
             cs: 'Computer Science and Engineering',
             ise: 'Information Science and Engineering',
@@ -2183,16 +2244,18 @@
             aero: 'Aerospace Engineering',
             aeronautical: 'Aeronautical Engineering'
         };
-        const ALL_CATEGORY_CODES = [...GENERAL_CATEGORIES, ...HK_CATEGORIES].sort((a, b) => b.length - a.length);
+        var ALL_CATEGORY_CODES = GENERAL_CATEGORIES.concat(HK_CATEGORIES).sort(function(a, b) { return b.length - a
+            .length; });
 
-        const SUBJ_RE = { physics: /phy(?:sics)?/, chemistry: /chem(?:istry)?/, maths: /math(?:s|ematics)?/ };
+        var SUBJ_RE = { physics: /phy(?:sics)?/, chemistry: /chem(?:istry)?/, maths: /math(?:s|ematics)?/ };
 
         function extractSubjectMarks(segment) {
-            const marks = {};
-            for (const [subj, re] of Object.entries(SUBJ_RE)) {
-                const after = new RegExp(re.source + '\\D{0,4}(\\d{1,3}(?:\\.\\d+)?)', 'i');
-                const before = new RegExp('(\\d{1,3}(?:\\.\\d+)?)\\D{0,4}' + re.source, 'i');
-                const mm = segment.match(after) || segment.match(before);
+            var marks = {};
+            for (var subj in SUBJ_RE) {
+                var re = SUBJ_RE[subj];
+                var after = new RegExp(re.source + '\\D{0,4}(\\d{1,3}(?:\\.\\d+)?)', 'i');
+                var before = new RegExp('(\\d{1,3}(?:\\.\\d+)?)\\D{0,4}' + re.source, 'i');
+                var mm = segment.match(after) || segment.match(before);
                 if (mm) marks[subj] = parseFloat(mm[1]);
             }
             if (marks.physics != null && marks.chemistry != null && marks.maths != null) return marks;
@@ -2200,25 +2263,23 @@
         }
 
         function findScoreBlock(text, keywordSrc, maxTotal, subjectMax, ambiguousDefault) {
-            const subj = extractSubjectMarks(text);
+            var subj = extractSubjectMarks(text);
             if (subj && subj.physics <= subjectMax && subj.chemistry <= subjectMax && subj.maths <= subjectMax) {
-                const total = subj.physics + subj.chemistry + subj.maths;
-                return { total, pct: (total / maxTotal) * 100 };
+                var total = subj.physics + subj.chemistry + subj.maths;
+                return { total: total, pct: (total / maxTotal) * 100 };
             }
-            let pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
+            var pctMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*%', 'i')) ||
                 text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*%\\s*(?:in\\s*)?' + keywordSrc, 'i'));
-            if (pctMatch) { const v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v / 100) *
+            if (pctMatch) { var v = Math.min(100, parseFloat(pctMatch[1])); return { pct: v, total: (v / 100) *
                         maxTotal }; }
-
-            let explicitMarks = text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*marks?\\s*(?:in\\s*)?' + keywordSrc, 'i')) ||
+            var explicitMarks = text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*marks?\\s*(?:in\\s*)?' + keywordSrc, 'i')) ||
                 text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)\\s*marks', 'i'));
-            if (explicitMarks) { const v = parseFloat(explicitMarks[1]); if (v <= maxTotal) return { total: v,
+            if (explicitMarks) { var v = parseFloat(explicitMarks[1]); if (v <= maxTotal) return { total: v,
                         pct: (v / maxTotal) * 100 }; }
-
-            let totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)', 'i')) ||
+            var totalMatch = text.match(new RegExp(keywordSrc + '\\D{0,3}(\\d+(?:\\.\\d+)?)', 'i')) ||
                 text.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*(?:marks?)?\\s*(?:in\\s*)?' + keywordSrc, 'i'));
             if (totalMatch) {
-                const v = parseFloat(totalMatch[1]);
+                var v = parseFloat(totalMatch[1]);
                 if (v <= maxTotal) {
                     if (v > 100) { return { total: v, pct: (v / maxTotal) * 100 }; }
                     if (ambiguousDefault === 'marks') return { total: v, pct: (v / maxTotal) * 100 };
@@ -2229,174 +2290,174 @@
         }
 
         function extractEntities(text) {
-            const t = ' ' + text.toLowerCase() + ' ';
-            const e = {};
-
-            const boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100, 'percentage');
+            var t = ' ' + text.toLowerCase() + ' ';
+            var e = {};
+            var boardsResult = findScoreBlock(t, '(?:boards?|2nd\\s*pu|puc?)\\b', 300, 100, 'percentage');
             if (boardsResult) e.boardPercentage = boardsResult.pct;
-
-            const kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60, 'marks');
+            var kcetResult = findScoreBlock(t, '(?:kcet|cet)\\b', 180, 60, 'marks');
             if (kcetResult) e.kcetMarks = kcetResult.total;
-
-            let rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?\b/);
-            if (rm) {
-                let v = parseFloat(rm[1]);
-                if (rm[2]) v *= 1000;
-                e.rank = Math.round(v);
-            } else {
-                const km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/);
-                if (km) e.rank = Math.round(parseFloat(km[1]) * 1000);
-            }
-
-            for (const code of ALL_CATEGORY_CODES) {
-                const re = new RegExp('\\b' + code.toLowerCase() + '\\b');
+            var rm = t.match(/\brank\b[^\d]{0,6}(\d+(?:\.\d+)?)\s*(k)?\b/);
+            if (rm) { var v = parseFloat(rm[1]); if (rm[2]) v *= 1000;
+                e.rank = Math.round(v); } else { var km = t.match(/\b(\d+(?:\.\d+)?)\s*k\b/); if (km) e.rank = Math
+                    .round(parseFloat(km[1]) * 1000); }
+            for (var i = 0; i < ALL_CATEGORY_CODES.length; i++) {
+                var code = ALL_CATEGORY_CODES[i];
+                var re = new RegExp('\\b' + code.toLowerCase() + '\\b');
                 if (re.test(t)) { e.category = code; break; }
             }
-
-            for (const short in BRANCH_SHORTHAND) {
-                const re = new RegExp('\\b' + short.replace(/[/]/g, '\\/') + '\\b');
+            for (var short in BRANCH_SHORTHAND) {
+                var re = new RegExp('\\b' + short.replace(/[/]/g, '\\/') + '\\b');
                 if (re.test(t)) { e.branch = BRANCH_SHORTHAND[short]; break; }
             }
-
-            for (const city of KARNATAKA_CITIES) {
-                if (t.includes(city)) { e.location = city.charAt(0).toUpperCase() + city.slice(1); break; }
+            for (var i = 0; i < KARNATAKA_CITIES.length; i++) {
+                var city = KARNATAKA_CITIES[i];
+                if (t.indexOf(city) !== -1) { e.location = city.charAt(0).toUpperCase() + city.slice(1); break; }
             }
             if (!e.location) {
-                const lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/);
-                if (lm && !['This', 'That', 'My', 'The'].includes(lm[1])) e.location = lm[1];
+                var lm = text.match(/\bin\s+([A-Z][a-zA-Z]+)\b/);
+                if (lm && ['This', 'That', 'My', 'The'].indexOf(lm[1]) === -1) e.location = lm[1];
             }
             return e;
         }
 
         function extractCategoryOnly(text) {
-            const t = ' ' + text.toLowerCase() + ' ';
-            for (const code of ALL_CATEGORY_CODES) {
+            var t = ' ' + text.toLowerCase() + ' ';
+            for (var i = 0; i < ALL_CATEGORY_CODES.length; i++) {
+                var code = ALL_CATEGORY_CODES[i];
                 if (new RegExp('\\b' + code.toLowerCase() + '\\b').test(t)) return code;
             }
             return null;
         }
 
-        function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-
         function showTempThinking() {
             document.getElementById('emptyHero').style.display = 'none';
-            const body = document.getElementById('chatBody');
+            var body = document.getElementById('chatBody');
             body.style.display = 'block';
-            const row = document.createElement('div');
+            var row = document.createElement('div');
             row.className = 'msg-row assistant';
-            row.innerHTML = `<div class="msg-tag">PROTON</div><div class="msg-bubble">${loadingLine('Thinking…')}</div>`;
+            row.innerHTML = '<div class="msg-tag">PROTON</div><div class="msg-bubble">' + loadingLine('Thinking…') +
+                '</div>';
             body.appendChild(row);
             document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
             return row;
         }
 
-        let pendingSmartQuery = null;
+        var pendingSmartQuery = null;
 
-        async function searchCollegesSmart({ rank, category, branch, location }) {
-            const dataset = await loadDataset(HK_CATEGORIES.includes(category) ? 'enghk' : 'eng');
-            const lowerBound = rank - 1500;
-            const branchAliasPool = branch ? [branch] : null;
-            const results = [];
-            for (const college of dataset) {
-                if (location && !(college.location || '').toLowerCase().includes(location.toLowerCase())) continue;
-                if (!college.branches) continue;
-                if (branchAliasPool) {
-                    const key = matchBranchKey(branchAliasPool, college.branches);
-                    if (!key) continue;
-                    const cutoff = college.branches[key][category];
-                    if (cutoff == null || cutoff < lowerBound) continue;
-                    results.push({ id: college.id, name: college.name, location: college.location || 'Karnataka',
-                        branch: key, cutoff, dist: Math.abs(cutoff - rank) });
-                } else {
-                    let bestKey = null,
-                        bestCutoff = null,
-                        bestDist = Infinity;
-                    for (const [bkey, cd] of Object.entries(college.branches)) {
-                        const cutoff = cd[category];
+        function searchCollegesSmart(params) {
+            var rank = params.rank,
+                category = params.category,
+                branch = params.branch,
+                location = params.location;
+            return loadDataset(HK_CATEGORIES.indexOf(category) !== -1 ? 'enghk' : 'eng').then(function(dataset) {
+                var lowerBound = rank - 1500;
+                var branchAliasPool = branch ? [branch] : null;
+                var results = [];
+                for (var i = 0; i < dataset.length; i++) {
+                    var college = dataset[i];
+                    if (location && (college.location || '').toLowerCase().indexOf(location.toLowerCase()) ===
+                        -1) continue;
+                    if (!college.branches) continue;
+                    if (branchAliasPool) {
+                        var key = matchBranchKey(branchAliasPool, college.branches);
+                        if (!key) continue;
+                        var cutoff = college.branches[key][category];
                         if (cutoff == null || cutoff < lowerBound) continue;
-                        const dist = Math.abs(cutoff - rank);
-                        if (dist < bestDist) { bestDist = dist;
-                            bestKey = bkey;
-                            bestCutoff = cutoff; }
+                        results.push({ id: college.id, name: college.name, location: college.location ||
+                                'Karnataka', branch: key, cutoff: cutoff, dist: Math.abs(cutoff - rank) });
+                    } else {
+                        var bestKey = null,
+                            bestCutoff = null,
+                            bestDist = Infinity;
+                        for (var bkey in college.branches) {
+                            var cd = college.branches[bkey][category];
+                            if (cd == null || cd < lowerBound) continue;
+                            var dist = Math.abs(cd - rank);
+                            if (dist < bestDist) { bestDist = dist;
+                                bestKey = bkey;
+                                bestCutoff = cd; }
+                        }
+                        if (bestKey) results.push({ id: college.id, name: college.name, location: college
+                                .location || 'Karnataka', branch: bestKey, cutoff: bestCutoff,
+                            dist: bestDist });
                     }
-                    if (bestKey) results.push({ id: college.id, name: college.name, location: college.location ||
-                            'Karnataka', branch: bestKey, cutoff: bestCutoff, dist: bestDist });
                 }
-            }
-            results.sort((a, b) => a.dist - b.dist);
-            return results;
+                results.sort(function(a, b) { return a.dist - b.dist; });
+                return results;
+            });
         }
 
-        function buildSmartCollegeAnswer(results, { rank, branch, location, category }) {
-            const branchLabel = branch ? escapeHtml(branch) : null;
+        function buildSmartCollegeAnswer(results, params) {
+            var rank = params.rank,
+                branch = params.branch,
+                location = params.location,
+                category = params.category;
+            var branchLabel = branch ? escapeHtml(branch) : null;
             if (!results.length) {
-                let html =
-                    `Doesn't look likely${branchLabel?` for <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''} at rank ${rank.toLocaleString('en-IN')} (${category}) — no eligible seats this round.`;
+                var html = 'Doesn\'t look likely' + (branchLabel ? ' for <b>' + branchLabel + '</b>' : '') + (
+                    location ? ' in <b>' + escapeHtml(location) + '</b>' : '') + ' at rank ' + rank.toLocaleString(
+                        'en-IN') + ' (' + category + ') — no eligible seats this round.';
                 return html + getPromoHTML();
             }
-            const shown = results.slice(0, 5);
-            const names = results.slice(0, 3).map(r => getShortName(r.name)).join(', ');
-            let html =
-                `Yes — you could get${branchLabel?` <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''}. <b>${results.length}</b> matching option${results.length>1?'s':''}, closest: ${escapeHtml(names)}${results.length>3?` +${results.length-3} more`:''}.`;
-            html += `<div style="margin-top:10px;">` + shown.map(r => collegeCardHtml(r, category)).join('') + `</div>`;
+            var shown = results.slice(0, 5);
+            var names = results.slice(0, 3).map(function(r) { return getShortName(r.name); }).join(', ');
+            var html = 'Yes — you could get' + (branchLabel ? ' <b>' + branchLabel + '</b>' : '') + (location ?
+                ' in <b>' + escapeHtml(location) + '</b>' : '') + '. <b>' + results.length +
+                '</b> matching option' + (results.length > 1 ? 's' : '') + ', closest: ' + escapeHtml(names) + (
+                results.length > 3 ? ' +' + (results.length - 3) + ' more' : '') + '.';
+            html += '<div style="margin-top:10px;">' + shown.map(function(r) { return collegeCardHtml(r, category); })
+                .join('') + '</div>';
             if (results.length > 5) {
                 html +=
-                    `<div class="chip-row"><div class="mini-chip" data-action="see-more-smart">See all ${results.length}${location?` in ${escapeHtml(location)}`:''}</div></div>`;
+                    '<div class="chip-row"><div class="mini-chip" data-action="see-more-smart">See all ' +
+                    results.length + (location ? ' in ' + escapeHtml(location) : '') + '</div></div>';
             }
             html += getPromoHTML();
             return html;
         }
 
-        async function handleSmartMessage(rawText) {
-            const thinkingRow = showTempThinking();
-            await sleep(1600);
-            thinkingRow.remove();
-
-            let entities = extractEntities(rawText);
-
-            if (pendingSmartQuery) {
-                const merged = Object.assign({}, pendingSmartQuery.known, entities);
-                if (!merged.category) { const c = extractCategoryOnly(rawText); if (c) merged.category = c; }
-                entities = merged;
-            }
-
-            const kcetGuess = classifyKcetIntent(rawText);
-            const looksKcetRelated = entities.kcetMarks != null || entities.boardPercentage != null ||
-                entities.rank != null ||
-                entities.category || entities.branch || /\b(kcet|cet|rank|board|puc?)\b/i.test(rawText) || !!
-                pendingSmartQuery;
-
-            if (looksKcetRelated) {
-                await routeKcetQuery(kcetGuess ? kcetGuess.intent : 'rank_prediction', entities);
-                return;
-            }
-
-            const chatGuess = classifyChat(rawText);
-            if (chatGuess) { protonSays(escapeHtmlKeepEmoji(chatGuess.output)); return; }
-
-            protonSays(
-                `I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or just tell me your boards % and KCET score together.`
-                );
+        function handleSmartMessage(rawText) {
+            var thinkingRow = showTempThinking();
+            setTimeout(function() {
+                thinkingRow.remove();
+                var entities = extractEntities(rawText);
+                if (pendingSmartQuery) {
+                    var merged = Object.assign({}, pendingSmartQuery.known, entities);
+                    if (!merged.category) { var c = extractCategoryOnly(rawText); if (c) merged.category = c; }
+                    entities = merged;
+                }
+                var kcetGuess = classifyKcetIntent(rawText);
+                var looksKcetRelated = entities.kcetMarks != null || entities.boardPercentage != null ||
+                    entities.rank != null || entities.category || entities.branch || /\b(kcet|cet|rank|board|puc?)\b/i
+                    .test(rawText) || !!pendingSmartQuery;
+                if (looksKcetRelated) {
+                    routeKcetQuery(kcetGuess ? kcetGuess.intent : 'rank_prediction', entities);
+                    return;
+                }
+                var chatGuess = classifyChat(rawText);
+                if (chatGuess) { protonSays(String(chatGuess.output).replace(/</g, '&lt;').replace(/>/g, '&gt;')); return; }
+                protonSays(
+                    'I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or just tell me your boards % and KCET score together.'
+                    );
+            }, 1600);
         }
 
-        function escapeHtmlKeepEmoji(s) { return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
-        async function routeKcetQuery(intent, entities) {
+        function routeKcetQuery(intent, entities) {
             if (entities.rank == null && entities.kcetMarks != null && entities.boardPercentage != null) {
-                const kcetPct = (Math.min(180, entities.kcetMarks) / 180) * 100;
-                const finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
+                var kcetPct = (Math.min(180, entities.kcetMarks) / 180) * 100;
+                var finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
                 entities.rank = kcetEngine.predictRank(finalPct);
                 protonSays(
-                    `Based on <b>${entities.boardPercentage}%</b> boards and <b>${entities.kcetMarks}</b> KCET marks, your estimated rank is <b>${entities.rank.toLocaleString('en-IN')}</b>.${getPromoHTML()}`
+                    'Based on <b>' + entities.boardPercentage + '%</b> boards and <b>' + entities.kcetMarks +
+                    '</b> KCET marks, your estimated rank is <b>' + entities.rank.toLocaleString('en-IN') +
+                    '</b>.' + getPromoHTML()
                     );
             }
-
-            const wantsCollege = intent !== 'rank_prediction' && intent !== 'rank_inquiry' || entities.category ||
+            var wantsCollege = intent !== 'rank_prediction' && intent !== 'rank_inquiry' || entities.category ||
                 entities.branch || entities.location;
-
             if (entities.rank == null) {
                 pendingSmartQuery = { known: entities, needs: ['rank'] };
-                protonSays(`Got it — what's your KCET score (or boards % + KCET score) so I can estimate your rank?`);
+                protonSays('Got it — what\'s your KCET score (or boards % + KCET score) so I can estimate your rank?');
                 return;
             }
             if (!wantsCollege) {
@@ -2406,41 +2467,39 @@
             if (!entities.category) {
                 pendingSmartQuery = { known: entities, needs: ['category'] };
                 protonSays(
-                    `Rank ${entities.rank.toLocaleString('en-IN')} noted. Which category should I check against — GM, 1G, 2AG, SC, ST…?`
+                    'Rank ' + entities.rank.toLocaleString('en-IN') +
+                    ' noted. Which category should I check against — GM, 1G, 2AG, SC, ST…?'
                     );
                 return;
             }
-
             pendingSmartQuery = null;
-            const thinkingRow2 = showTempThinking();
-            try {
-                const results = await searchCollegesSmart(entities);
+            var thinkingRow2 = showTempThinking();
+            searchCollegesSmart(entities).then(function(results) {
                 thinkingRow2.remove();
-                const row = protonSays(buildSmartCollegeAnswer(results, entities), `${results.length} matches`);
-                const seeMore = row.querySelector('[data-action="see-more-smart"]');
+                var row = protonSays(buildSmartCollegeAnswer(results, entities), results.length + ' matches');
+                var seeMore = row.querySelector('[data-action="see-more-smart"]');
                 if (seeMore) {
-                    seeMore.addEventListener('click', () => openResultsPage(
-                        `All matches${entities.location?` · ${entities.location}`:''}`, results, entities
-                        .category
-                    ));
+                    seeMore.addEventListener('click', function() {
+                        openResultsPage('All matches' + (entities.location ? ' · ' + entities.location :
+                            ''), results, entities.category);
+                    });
                 }
-            } catch (e) {
+            }).catch(function(e) {
                 thinkingRow2.remove();
-                protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
-            }
+                protonSays('<i class="fa-solid fa-triangle-exclamation"></i> Couldn\'t load the college dataset (' +
+                    e.message + ').');
+            });
         }
 
-        /* ══════════════════════════════════════════════════════════
-           COMPOSER
-           ══════════════════════════════════════════════════════════ */
+        /* ── composer ── */
         function initComposer() {
-            const input = document.getElementById('composerInput');
-            const sendBtn = document.getElementById('sendBtn');
-            input.addEventListener('input', () => { input.style.height = 'auto';
+            var input = document.getElementById('composerInput');
+            var sendBtn = document.getElementById('sendBtn');
+            input.addEventListener('input', function() { input.style.height = 'auto';
                 input.style.height = Math.min(100, input.scrollHeight) + 'px'; });
 
             function send() {
-                const text = input.value.trim();
+                var text = input.value.trim();
                 if (!text) return;
                 userSays(text);
                 input.value = '';
@@ -2448,41 +2507,37 @@
                 handleSmartMessage(text);
             }
             sendBtn.addEventListener('click', send);
-            input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
+            input.addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault();
                     send(); } });
 
-            document.getElementById('pillRank').addEventListener('click', () => {
+            document.getElementById('pillRank').addEventListener('click', function() {
                 userSays('Rank Prediction');
                 openRankPredictionCard();
             });
-            document.getElementById('pillCollege').addEventListener('click', () => {
+            document.getElementById('pillCollege').addEventListener('click', function() {
                 userSays('College Prediction');
                 startCollegePredictionFlow();
             });
-            document.getElementById('pillPriority').addEventListener('click', () => {
+            document.getElementById('pillPriority').addEventListener('click', function() {
                 userSays('Priority List');
                 pillPriorityListStart();
             });
         }
 
-        /* ══════════════════════════════════════════════════════════
-           MOBILE VIEWPORT FIX
-           ══════════════════════════════════════════════════════════ */
+        /* ── viewport fix ── */
         function setVH() {
-            const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
+            var vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) * 0.01;
             document.documentElement.style.setProperty('--vh', vh + 'px');
         }
         setVH();
         window.addEventListener('resize', setVH);
-        window.addEventListener('orientationchange', () => setTimeout(setVH, 100));
+        window.addEventListener('orientationchange', function() { setTimeout(setVH, 100); });
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', setVH);
             window.visualViewport.addEventListener('scroll', setVH);
         }
 
-        /* ══════════════════════════════════════════════════════════
-           INIT
-           ══════════════════════════════════════════════════════════ */
+        /* ── init ── */
         initOnboarding();
         initSidebar();
         initComposer();
@@ -2491,8 +2546,8 @@
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log('[x-bit] SW registered'))
-                .catch(err => console.warn('[x-bit] SW registration failed:', err));
+                .then(function() { console.log('[x-bit] SW registered'); })
+                .catch(function() { console.warn('[x-bit] SW registration failed'); });
         }
     </script>
 </body>
