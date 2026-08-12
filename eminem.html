@@ -1462,9 +1462,9 @@
         }
 
         /* ══════════════════════════════════════════════════════════
-           MODEL SELECTOR
+           MODEL SELECTOR — default to 2.0
            ══════════════════════════════════════════════════════════ */
-        let xbitVersion = LS.get('xbit_version', '1.0');
+        let xbitVersion = LS.get('xbit_version', '2.0'); // default 2.0
 
         function initModelSelector() {
             const toggle = document.getElementById('xbitVersionToggle');
@@ -1687,12 +1687,7 @@
 
         /* ══════════════════════════════════════════════════════════
            SHARE SYSTEM — SMART COMPACT ENCODING
-           Supports: Rank (R), College (C), Priority (P)
-           Format:  TYPE:data|TYPE:data|...
-             R: boardsPct,kcetPct,rank
-             C: branchId,rank,category
-             P: rank,category,opt1;opt2;...  where opt = priority^collegeId^branch
-           All URL-encoded.
+           Now rounds percentages to 2 decimals in encoding.
            ══════════════════════════════════════════════════════════ */
         const SHARE_BASE_URL = 'https://unknownxsuperman-prog.github.io/x-bit-kea/eminem.html';
 
@@ -1701,7 +1696,10 @@
             const parts = [];
             for (const p of log) {
                 if (p.type === 'rank') {
-                    parts.push(`R:${p.boardsPct},${p.kcetPct},${p.rank}`);
+                    // round to 2 decimals
+                    const bp = Math.round(p.boardsPct * 100) / 100;
+                    const kp = Math.round(p.kcetPct * 100) / 100;
+                    parts.push(`R:${bp},${kp},${p.rank}`);
                 } else if (p.type === 'college') {
                     parts.push(`C:${p.branchId},${p.rank},${p.category}`);
                 } else if (p.type === 'priority') {
@@ -1768,18 +1766,23 @@
         }
 
         function logPrediction(type, data) {
-            // avoid duplicates: if the same prediction already exists in log, skip
+            // For rank, round percentages before storing to keep links clean
+            let storeData = { ...data };
+            if (type === 'rank') {
+                storeData.boardsPct = Math.round(data.boardsPct * 100) / 100;
+                storeData.kcetPct = Math.round(data.kcetPct * 100) / 100;
+            }
             const exists = chatShareLog.some(p => {
                 if (p.type !== type) return false;
-                if (type === 'rank') return p.boardsPct === data.boardsPct && p.kcetPct === data.kcetPct && p
-                .rank === data.rank;
-                if (type === 'college') return p.branchId === data.branchId && p.rank === data.rank && p.category ===
-                    data.category;
-                if (type === 'priority') return p.rank === data.rank && p.category === data.category;
+                if (type === 'rank') return p.boardsPct === storeData.boardsPct && p.kcetPct === storeData
+                    .kcetPct && p.rank === storeData.rank;
+                if (type === 'college') return p.branchId === storeData.branchId && p.rank === storeData.rank &&
+                    p.category === storeData.category;
+                if (type === 'priority') return p.rank === storeData.rank && p.category === storeData.category;
                 return false;
             });
             if (!exists) {
-                chatShareLog.push({ type, ...data });
+                chatShareLog.push({ type, ...storeData });
                 saveCurrentChat();
             }
         }
@@ -1927,7 +1930,7 @@
                 const which = isHk ? 'enghk' : 'eng';
                 const entry = await branchEntryById(branchId);
                 const branchLabel = entry ? entry.display_name : branchId;
-                const aliasPool = entry ? [entry.display_name, ...(entry.aliases || [])] : [branchLabel];
+                const aliasPool = entry ? [entry.display_name, ...(entry.aliases || [])] : [branchId];
                 userSays(`Predict colleges — ${category} · rank ${rank} · ${branchLabel}`);
                 protonSays(loadingLine(`Searching ${isHk?'Engineering (HK)':'Engineering'} colleges…`));
                 try {
@@ -2286,6 +2289,7 @@
 
         /* ══════════════════════════════════════════════════════════
            PILL 2 — COLLEGE PREDICTION FLOW
+           FIX: Use branchLabel consistently in college cards to avoid category leakage.
            ══════════════════════════════════════════════════════════ */
         function pillCollegePredictionStart() {
             const html = `Which dataset should I search?
@@ -2453,7 +2457,8 @@
             const top5 = results.slice(0, 5);
             let html =
                 `<b>${results.length}</b> colleges found for <b>${escapeHtml(branchLabel)}</b> · ${category} near rank ${rank.toLocaleString('en-IN')}:<div style="margin-top:10px;">`;
-            html += top5.map(r => collegeCardHtml(r, category)).join('');
+            // Pass branchLabel to each card
+            html += top5.map(r => collegeCardHtml(r, category, branchLabel)).join('');
             html += `</div>`;
             if (results.length > 5) {
                 html +=
@@ -2463,15 +2468,16 @@
             const seeMore = row.querySelector('[data-action="see-more"]');
             if (seeMore) {
                 seeMore.addEventListener('click', () => openResultsPage(
-                `All matches · ${branchLabel} · ${category}`, results, category));
+                    `All matches · ${branchLabel} · ${category}`, results, category, branchLabel));
             }
         }
 
-        function collegeCardHtml(r, category) {
+        function collegeCardHtml(r, category, branchDisplayName) {
             const code = r.id;
             const name = escapeHtml(getShortName(r.name));
             const cutoff = r.cutoff.toLocaleString('en-IN');
-            const branch = escapeHtml(r.branch);
+            // Use branchDisplayName if provided, else fallback to r.branch
+            const branch = escapeHtml(branchDisplayName || r.branch);
             const location = escapeHtml(r.location);
             return `<div class="college-result-card" onclick="openXosLink('${code}')">
             <div class="crc-top">
@@ -2485,9 +2491,10 @@
         function getShortName(name) { if (!name) return ''; const i = name.indexOf(','); return i > 0 ? name.substring(0, i)
                 .trim() : name.trim(); }
 
-        function openResultsPage(title, results, category) {
+        function openResultsPage(title, results, category, branchLabel) {
             document.getElementById('rpTitle').textContent = title;
-            document.getElementById('rpBody').innerHTML = results.map(r => collegeCardHtml(r, category)).join('');
+            document.getElementById('rpBody').innerHTML = results.map(r => collegeCardHtml(r, category, branchLabel || r
+                .branch)).join('');
             document.getElementById('resultsPage').classList.add('open');
         }
         document.getElementById('rpClose').addEventListener('click', () => document.getElementById('resultsPage').classList
@@ -2969,7 +2976,8 @@
             const names = results.slice(0, 3).map(r => getShortName(r.name)).join(', ');
             let html =
                 `Yes — you could get${branchLabel?` <b>${branchLabel}</b>`:''}${location?` in <b>${escapeHtml(location)}</b>`:''}. <b>${results.length}</b> matching option${results.length>1?'s':''}, closest: ${escapeHtml(names)}${results.length>3?` +${results.length-3} more`:''}.`;
-            html += `<div style="margin-top:10px;">` + shown.map(r => collegeCardHtml(r, category)).join('') + `</div>`;
+            html += `<div style="margin-top:10px;">` + shown.map(r => collegeCardHtml(r, category, branchLabel || r
+                .branch)).join('') + `</div>`;
             if (results.length > 5) {
                 html +=
                     `<div class="chip-row"><div class="mini-chip" data-action="see-more-smart">See all ${results.length}${location?` in ${escapeHtml(location)}`:''}</div></div>`;
@@ -3061,7 +3069,8 @@
                 const seeMore = row.querySelector('[data-action="see-more-smart"]');
                 if (seeMore) {
                     seeMore.addEventListener('click', () => openResultsPage(
-                        `All matches${entities.location?` · ${entities.location}`:''}`, results, entities.category
+                        `All matches${entities.location?` · ${entities.location}`:''}`, results, entities.category,
+                        entities.branch || 'Branch'
                     ));
                 }
                 if (entities.branch) {
