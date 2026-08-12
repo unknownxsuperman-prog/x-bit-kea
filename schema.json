@@ -1,0 +1,423 @@
+{
+  "schema": {
+    "input": "string",
+
+    "keywords": {
+      "academic_marks": {
+        "mark_boards": "number",
+        "mark_boards_math": "number",
+        "mark_boards_phy": "number",
+        "mark_boards_che": "number",
+
+        "mark_kcet": "number",
+        "mark_kcet_math": "number",
+        "mark_kcet_phy": "number",
+        "mark_kcet_che": "number"
+      },
+
+      "rank": {
+        "predicted_rank": "number",
+        "rank": "number"
+      },
+
+      "college": {
+        "college": "string",
+        "college_id": "string"
+      },
+
+      "branch": {
+        "branch": "string",
+        "branch_aliases": [
+          "CSE",
+          "ISE",
+          "ECE",
+          "EEE",
+          "Mechanical",
+          "Civil",
+          "AIML",
+          "AI & ML",
+          "AI",
+          "Data Science",
+          "Biotechnology"
+        ]
+      },
+
+      "category": {
+        "category": "string",
+        "possible_values": [
+          "GM",
+          "1G",
+          "1R",
+          "2A",
+          "2AR",
+          "2B",
+          "2BR",
+          "3A",
+          "3AR",
+          "3B",
+          "3BR",
+          "SC",
+          "SCR",
+          "ST",
+          "STR"
+        ]
+      },
+
+      "location": {
+        "location": "string",
+        "location_filter": [
+          "near",
+          "around",
+          "only",
+          "in"
+        ]
+      },
+
+      "round": {
+        "round": "string",
+        "possible_values": [
+          "mock",
+          "mock_cutoff",
+          "provisional",
+          "first_round",
+          "second_round",
+          "third_round",
+          "final_round"
+        ]
+      },
+
+      "intent": {
+        "intent": "string",
+        "possible_values": [
+          "predict_rank",
+          "predict_college",
+          "check_specific_college",
+          "check_cutoff",
+          "check_mock_cutoff",
+          "compare_colleges",
+          "college_search",
+          "branch_search",
+          "location_search"
+        ]
+      }
+    },
+
+    "missing": {
+      "required": [
+        "string"
+      ],
+      "trigger": "string or null"
+    },
+
+    "actions": [
+      "string"
+    ]
+  },
+
+  "input_feature_types": {
+    "mark_boards": {
+      "type": "number",
+      "meaning": "Total board marks, normally out of 300",
+      "examples": [
+        "280 in boards",
+        "280/300 in boards",
+        "I scored 280 boards",
+        "my board marks are 280"
+      ]
+    },
+
+    "mark_boards_math": {
+      "type": "number",
+      "meaning": "Board Mathematics marks",
+      "examples": [
+        "92 in maths",
+        "maths board mark is 92"
+      ]
+    },
+
+    "mark_boards_phy": {
+      "type": "number",
+      "meaning": "Board Physics marks",
+      "examples": [
+        "88 in physics",
+        "physics board mark is 88"
+      ]
+    },
+
+    "mark_boards_che": {
+      "type": "number",
+      "meaning": "Board Chemistry marks",
+      "examples": [
+        "94 in chemistry",
+        "chemistry board mark is 94"
+      ]
+    },
+
+    "mark_kcet": {
+      "type": "number",
+      "meaning": "Total KCET marks",
+      "examples": [
+        "130 in KCET",
+        "KCET score is 130",
+        "I got 130 KCET marks"
+      ]
+    },
+
+    "mark_kcet_math": {
+      "type": "number",
+      "meaning": "KCET Mathematics marks"
+    },
+
+    "mark_kcet_phy": {
+      "type": "number",
+      "meaning": "KCET Physics marks"
+    },
+
+    "mark_kcet_che": {
+      "type": "number",
+      "meaning": "KCET Chemistry marks"
+    },
+
+    "category": {
+      "type": "string",
+      "meaning": "KCET reservation/category",
+      "examples": [
+        "GM",
+        "2A",
+        "2B",
+        "3A",
+        "3B",
+        "SC",
+        "ST"
+      ]
+    },
+
+    "branch": {
+      "type": "string",
+      "meaning": "Engineering branch requested by the user",
+      "examples": [
+        "CSE",
+        "ISE",
+        "ECE",
+        "EEE",
+        "Mechanical",
+        "Civil",
+        "AIML",
+        "AI & ML",
+        "Data Science"
+      ]
+    },
+
+    "location": {
+      "type": "string",
+      "meaning": "Requested city or geographic area",
+      "examples": [
+        "Bangalore",
+        "Mysore",
+        "Mangalore",
+        "Hubli",
+        "Dharwad",
+        "Tumkur",
+        "Belagavi",
+        "Davangere"
+      ]
+    },
+
+    "location_filter": {
+      "type": "string",
+      "meaning": "How strictly the location should be applied",
+      "examples": [
+        "near Bangalore",
+        "around Mysore",
+        "only Bangalore",
+        "in Mangalore"
+      ]
+    },
+
+    "college": {
+      "type": "string",
+      "meaning": "Specific college mentioned by the user",
+      "examples": [
+        "RVCE",
+        "BMSCE",
+        "MSRIT",
+        "UVCE"
+      ]
+    },
+
+    "round": {
+      "type": "string",
+      "meaning": "Counselling/prediction mode requested by the user",
+      "values": [
+        "mock",
+        "mock_cutoff",
+        "provisional",
+        "first_round",
+        "second_round",
+        "third_round",
+        "final_round"
+      ]
+    }
+  },
+
+  "intents": {
+    "predict_rank": {
+      "meaning": "Predict KCET rank from board and KCET marks"
+    },
+
+    "predict_college": {
+      "meaning": "Predict possible colleges using predicted rank and user preferences"
+    },
+
+    "check_specific_college": {
+      "meaning": "Check whether the user can get a particular college"
+    },
+
+    "check_cutoff": {
+      "meaning": "Check a college/branch/category cutoff"
+    },
+
+    "check_mock_cutoff": {
+      "meaning": "Check or predict mock-round cutoff"
+    },
+
+    "compare_colleges": {
+      "meaning": "Compare multiple colleges"
+    },
+
+    "college_search": {
+      "meaning": "Search colleges based on branch/category/location/rank"
+    },
+
+    "branch_search": {
+      "meaning": "Find branches available for the user's rank/preferences"
+    },
+
+    "location_search": {
+      "meaning": "Find colleges matching a requested location"
+    }
+  },
+
+  "missing_rules": {
+    "rank_prediction": {
+      "required": [
+        "board_marks",
+        "kcet_marks"
+      ],
+      "trigger": "ask_missing_input"
+    },
+
+    "college_prediction": {
+      "required": [
+        "predicted_rank",
+        "branch",
+        "category"
+      ],
+      "optional": [
+        "location",
+        "round"
+      ],
+      "trigger": "ask_missing_input"
+    },
+
+    "specific_college_check": {
+      "required": [
+        "predicted_rank",
+        "college",
+        "branch",
+        "category"
+      ],
+      "optional": [
+        "round"
+      ],
+      "trigger": "ask_missing_input"
+    },
+
+    "location_filtered_prediction": {
+      "required": [
+        "predicted_rank",
+        "branch",
+        "category",
+        "location"
+      ],
+      "trigger": "ask_missing_input"
+    }
+  },
+
+  "triggers": {
+    "ask_missing_input": {
+      "meaning": "Required information is missing before the requested prediction can be executed"
+    },
+
+    "predict_rank": {
+      "meaning": "Enough academic marks are available to calculate/predict rank"
+    },
+
+    "predict_college": {
+      "meaning": "Enough information is available to predict colleges"
+    },
+
+    "verify_location": {
+      "meaning": "User specified a location that must be applied as a geographic filter"
+    },
+
+    "calculate_board_total": {
+      "meaning": "Individual board subject marks need to be combined"
+    },
+
+    "calculate_kcet_total": {
+      "meaning": "Individual KCET subject marks need to be combined"
+    }
+  },
+
+  "actions": {
+    "ask_missing_input": {
+      "format": "ask_missing_input(feature)",
+      "examples": [
+        "ask_missing_input(mark_kcet)",
+        "ask_missing_input(category)",
+        "ask_missing_input(branch)",
+        "ask_missing_input(branch, category)"
+      ]
+    },
+
+    "calculate_board_total": {
+      "format": "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)"
+    },
+
+    "calculate_kcet_total": {
+      "format": "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)"
+    },
+
+    "predict_rank": {
+      "formats": [
+        "predict_rank(mark_boards, mark_kcet)",
+        "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+        "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)"
+      ]
+    },
+
+    "predict_college": {
+      "formats": [
+        "predict_college(predict_rank, category, branch)",
+        "predict_college(predict_rank, category, branch, location)",
+        "predict_college(predict_rank, mock, category, branch)",
+        "predict_college(predict_rank, mock_cutoff, category, branch)",
+        "predict_college(predict_rank, provisional, category, branch)",
+        "predict_college(predict_rank, first_round, category, branch)"
+      ]
+    },
+
+    "check_college": {
+      "format": "check_college(predict_rank, college, branch, category)"
+    },
+
+    "verify_location": {
+      "formats": [
+        "verify_location(Bangalore)",
+        "verify_location(Mysore)",
+        "verify_location(Bangalore, near=true)"
+      ]
+    }
+  }
+}
