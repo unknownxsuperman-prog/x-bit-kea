@@ -4,101 +4,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KCET AI</title>
+<title>KCET Tester Alpha</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-body {
-    margin: 0;
-    background: #000;
-    color: #fff;
-    font-family: monospace;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+    body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+        font-family: monospace;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 
-#header {
-    padding: 16px;
-    border-bottom: 1px solid #222;
-    font-size: 15px;
-}
+    #header {
+        padding: 16px 18px;
+        border-bottom: 1px solid #222;
+    }
 
-#status {
-    color: #666;
-    font-size: 11px;
-    margin-top: 5px;
-}
+    #title {
+        font-size: 15px;
+    }
 
-#chat {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
+    #status {
+        margin-top: 5px;
+        color: #666;
+        font-size: 11px;
+    }
 
-.message {
-    margin-bottom: 20px;
-    max-width: 900px;
-}
+    #chat {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
 
-.user {
-    color: #fff;
-}
+    .message {
+        margin-bottom: 20px;
+    }
 
-.ai {
-    color: #aaa;
-}
+    .label {
+        color: #555;
+        font-size: 11px;
+        margin-bottom: 7px;
+    }
 
-.label {
-    color: #555;
-    margin-bottom: 5px;
-}
+    .userText {
+        color: #fff;
+        white-space: pre-wrap;
+    }
 
-pre {
-    margin: 0;
-    padding: 12px;
-    background: #080808;
-    border: 1px solid #222;
-    overflow-x: auto;
-    white-space: pre-wrap;
-}
+    pre {
+        margin: 0;
+        padding: 14px;
+        background: #080808;
+        border: 1px solid #222;
+        color: #ccc;
+        white-space: pre-wrap;
+        overflow-x: auto;
+        line-height: 1.5;
+    }
 
-#inputBar {
-    display: flex;
-    border-top: 1px solid #222;
-    padding: 12px;
-    gap: 8px;
-}
+    #inputBar {
+        display: flex;
+        gap: 8px;
+        padding: 12px;
+        border-top: 1px solid #222;
+    }
 
-#input {
-    flex: 1;
-    background: #080808;
-    color: #fff;
-    border: 1px solid #333;
-    padding: 13px;
-    font-family: monospace;
-    outline: none;
-}
+    #input {
+        flex: 1;
+        min-width: 0;
+        padding: 13px;
+        background: #080808;
+        color: #fff;
+        border: 1px solid #333;
+        outline: none;
+        font-family: monospace;
+        font-size: 14px;
+    }
 
-#send {
-    background: #fff;
-    color: #000;
-    border: 0;
-    padding: 0 20px;
-    font-family: monospace;
-    cursor: pointer;
-}
+    #input:focus {
+        border-color: #666;
+    }
+
+    #send {
+        padding: 0 18px;
+        background: #fff;
+        color: #000;
+        border: none;
+        font-family: monospace;
+        cursor: pointer;
+    }
+
+    #send:hover {
+        opacity: .8;
+    }
 </style>
 </head>
 
 <body>
 
 <div id="header">
-    KCET AI
-    <div id="status">Loading...</div>
+    <div id="title">KCET TESTER ALPHA</div>
+    <div id="status">Loading training data...</div>
 </div>
 
 <div id="chat"></div>
@@ -107,7 +119,8 @@ pre {
 
     <input
         id="input"
-        placeholder="Ask your KCET question..."
+        type="text"
+        placeholder="Type your KCET query..."
         autocomplete="off"
     >
 
@@ -118,52 +131,33 @@ pre {
 
 <script>
 
+/* ==================================================
+   DATA
+================================================== */
+
 let TRAINING = [];
 let SCHEMA = {};
 
-
-// ==================================================
-// CONVERSATION STATE
-// ==================================================
-
-let STATE = {
-    mark_boards: null,
-
-    mark_boards_math: null,
-    mark_boards_phy: null,
-    mark_boards_che: null,
-
-    mark_kcet: null,
-
-    mark_kcet_math: null,
-    mark_kcet_phy: null,
-    mark_kcet_che: null,
-
-    predicted_rank: null,
-
-    college: null,
-    branch: null,
-    category: null,
-
-    location: null,
-    location_filter: null,
-
-    round: null,
-
-    intent: null
-};
+let conversation = {};
 
 
-// ==================================================
-// LOAD JSON FILES
-// ==================================================
+/* ==================================================
+   LOAD trainy.json + schema.json
+================================================== */
 
-async function loadFiles() {
+async function loadModel() {
 
     try {
 
         const trainResponse =
             await fetch("./trainy.json");
+
+        if (!trainResponse.ok) {
+            throw new Error(
+                "trainy.json HTTP " +
+                trainResponse.status
+            );
+        }
 
         TRAINING =
             await trainResponse.json();
@@ -172,47 +166,61 @@ async function loadFiles() {
         const schemaResponse =
             await fetch("./schema.json");
 
+        if (!schemaResponse.ok) {
+            throw new Error(
+                "schema.json HTTP " +
+                schemaResponse.status
+            );
+        }
+
         SCHEMA =
             await schemaResponse.json();
 
 
+        if (!Array.isArray(TRAINING)) {
+
+            throw new Error(
+                "trainy.json must contain an array"
+            );
+        }
+
+
         document.getElementById("status").textContent =
-            "Model ready • " +
+            "READY • " +
             TRAINING.length +
             " training examples";
 
 
-        addAI(
-            "KCET AI ready.\n\n" +
-            "Training examples: " +
-            TRAINING.length
-        );
+        addAI({
+            status: "ready",
+            training_examples: TRAINING.length
+        });
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(error);
 
         document.getElementById("status").textContent =
-            "Failed to load model";
+            "ERROR";
 
-        addAI(
-            "ERROR\n\n" +
-            "Make sure these files are in the same GitHub folder:\n\n" +
-            "index.html\n" +
-            "trainy.json\n" +
-            "schema.json"
-        );
+        addAI({
+            error: error.message,
+            hint:
+                "Make sure testeralpha.html, trainy.json and schema.json are in the same GitHub directory."
+        });
     }
 }
 
 
-// ==================================================
-// NORMALIZE
-// ==================================================
+/* ==================================================
+   NORMALIZE TEXT
+================================================== */
 
 function normalize(text) {
 
-    return text
+    return String(text)
         .toLowerCase()
         .replace(/[^\w\s./+-]/g, " ")
         .replace(/\s+/g, " ")
@@ -220,9 +228,9 @@ function normalize(text) {
 }
 
 
-// ==================================================
-// TOKENIZE
-// ==================================================
+/* ==================================================
+   TOKENIZE
+================================================== */
 
 function tokenize(text) {
 
@@ -232,43 +240,67 @@ function tokenize(text) {
 }
 
 
-// ==================================================
-// TEXT SIMILARITY
-// ==================================================
+/* ==================================================
+   SIMILARITY
+================================================== */
 
-function similarity(a, b) {
+function similarity(input, example) {
 
-    const A = new Set(tokenize(a));
-    const B = new Set(tokenize(b));
+    const a = new Set(
+        tokenize(input)
+    );
 
-    if (!A.size || !B.size)
+    const b = new Set(
+        tokenize(example)
+    );
+
+    if (!a.size || !b.size)
         return 0;
 
-    let common = 0;
 
-    for (const word of A) {
+    let matches = 0;
 
-        if (B.has(word))
-            common++;
+    for (const word of a) {
+
+        if (b.has(word)) {
+            matches++;
+        }
     }
 
-    return common /
-        Math.sqrt(A.size * B.size);
+
+    return matches /
+        Math.sqrt(
+            a.size * b.size
+        );
 }
 
 
-// ==================================================
-// FIND TRAINING EXAMPLES
-// ==================================================
+/* ==================================================
+   FIND CLOSEST TRAINING EXAMPLES
+================================================== */
 
-function findExamples(input) {
+function findMatches(input) {
 
     const results = [];
 
-    for (const example of TRAINING) {
 
-        if (!example.input)
+    for (
+        let i = 0;
+        i < TRAINING.length;
+        i++
+    ) {
+
+        const example =
+            TRAINING[i];
+
+
+        if (
+            !example ||
+            typeof example.input !== "string"
+        ) {
             continue;
+        }
+
 
         const score =
             similarity(
@@ -276,647 +308,771 @@ function findExamples(input) {
                 example.input
             );
 
+
         results.push({
+
             score,
+            index: i,
             example
         });
     }
 
+
     results.sort(
-        (a, b) => b.score - a.score
+        (a, b) =>
+            b.score - a.score
     );
 
-    return results.slice(0, 5);
+
+    return results;
 }
 
 
-// ==================================================
-// NUMBER EXTRACTION
-// ==================================================
+/* ==================================================
+   VALUE EXTRACTION FROM USER INPUT
+==================================================
 
-function numbers(text) {
+   This is intentionally generic.
 
-    const matches =
-        text.match(/\d+(?:\.\d+)?/g);
+   It doesn't contain a hard-coded KCET
+   intent system.
 
-    if (!matches)
-        return [];
+   It uses the keywords that exist in
+   your training examples.
+================================================== */
 
-    return matches.map(Number);
-}
+function extractValues(input, matchedExamples) {
 
-
-// ==================================================
-// MARK EXTRACTION
-// ==================================================
-
-function extractMarks(text) {
-
-    const t = normalize(text);
-
-    const nums = numbers(text);
-
-    if (!nums.length)
-        return;
-
-
-    // ----------------------------------------------
-    // BOARDS
-    // ----------------------------------------------
-
-    if (
-        t.includes("board") ||
-        t.includes("boards") ||
-        t.includes("puc")
-    ) {
-
-        const board =
-            nums.find(n => n <= 300);
-
-        if (
-            board !== undefined &&
-            !t.includes("kcet")
-        ) {
-
-            STATE.mark_boards = board;
-        }
-    }
-
-
-    // ----------------------------------------------
-    // KCET TOTAL
-    // ----------------------------------------------
-
-    if (
-        t.includes("kcet") ||
-        t.includes("cet")
-    ) {
-
-        const kcet =
-            nums.find(n => n <= 180);
-
-        if (
-            kcet !== undefined
-        ) {
-
-            STATE.mark_kcet = kcet;
-        }
-    }
-}
-
-
-// ==================================================
-// BRANCH EXTRACTION
-// ==================================================
-
-function extractBranch(text) {
-
-    const t = normalize(text);
-
-    const branches = {
-
-        "computer science engineering": "CSE",
-        "computer science": "CSE",
-        "cse": "CSE",
-
-        "information science engineering": "ISE",
-        "information science": "ISE",
-        "ise": "ISE",
-
-        "electronics and communication": "ECE",
-        "electronics communication": "ECE",
-        "ece": "ECE",
-
-        "electrical and electronics": "EEE",
-        "electrical": "EEE",
-        "eee": "EEE",
-
-        "mechanical engineering": "Mechanical",
-        "mechanical": "Mechanical",
-
-        "civil engineering": "Civil",
-        "civil": "Civil",
-
-        "artificial intelligence and machine learning": "AIML",
-        "artificial intelligence": "AIML",
-        "ai ml": "AIML",
-        "aiml": "AIML",
-
-        "data science": "Data Science"
-    };
-
-
-    for (const key in branches) {
-
-        if (t.includes(key)) {
-
-            STATE.branch =
-                branches[key];
-
-            return;
-        }
-    }
-}
-
-
-// ==================================================
-// CATEGORY EXTRACTION
-// ==================================================
-
-function extractCategory(text) {
-
-    const t =
-        normalize(text)
-        .toUpperCase();
-
-    const categories = [
-
-        "2AR",
-        "2BR",
-        "3AR",
-        "3BR",
-
-        "GM",
-        "1G",
-        "1R",
-
-        "2A",
-        "2B",
-
-        "3A",
-        "3B",
-
-        "SC",
-        "SCR",
-
-        "ST",
-        "STR"
-    ];
-
-
-    for (const category of categories) {
-
-        if (
-            new RegExp(
-                "\\b" +
-                category +
-                "\\b"
-            ).test(t)
-        ) {
-
-            STATE.category =
-                category;
-
-            return;
-        }
-    }
-}
-
-
-// ==================================================
-// LOCATION EXTRACTION
-// ==================================================
-
-function extractLocation(text) {
-
-    const t = normalize(text);
-
-    const locations = {
-
-        "bangalore": "Bangalore",
-        "bengaluru": "Bangalore",
-
-        "mysore": "Mysore",
-        "mysuru": "Mysore",
-
-        "mangalore": "Mangalore",
-        "mangaluru": "Mangalore",
-
-        "hubli": "Hubli",
-        "hubballi": "Hubli",
-
-        "dharwad": "Dharwad",
-
-        "tumkur": "Tumkur",
-        "tumakuru": "Tumkur",
-
-        "belgaum": "Belagavi",
-        "belagavi": "Belagavi",
-
-        "davangere": "Davangere",
-
-        "shivamogga": "Shivamogga",
-        "shimoga": "Shivamogga"
-    };
-
-
-    for (const key in locations) {
-
-        if (t.includes(key)) {
-
-            STATE.location =
-                locations[key];
-
-            if (
-                t.includes("near") ||
-                t.includes("around")
-            ) {
-
-                STATE.location_filter =
-                    "near";
-            }
-
-            return;
-        }
-    }
-}
-
-
-// ==================================================
-// ROUND EXTRACTION
-// ==================================================
-
-function extractRound(text) {
-
-    const t = normalize(text);
-
-
-    if (
-        t.includes("mock cutoff") ||
-        t.includes("mock cutoff")
-    ) {
-
-        STATE.round =
-            "mock_cutoff";
-
-    }
-
-    else if (
-        t.includes("mock")
-    ) {
-
-        STATE.round =
-            "mock";
-
-    }
-
-    else if (
-        t.includes("provisional")
-    ) {
-
-        STATE.round =
-            "provisional";
-
-    }
-
-    else if (
-        t.includes("first round")
-    ) {
-
-        STATE.round =
-            "first_round";
-
-    }
-
-    else if (
-        t.includes("second round")
-    ) {
-
-        STATE.round =
-            "second_round";
-
-    }
-
-    else if (
-        t.includes("third round")
-    ) {
-
-        STATE.round =
-            "third_round";
-    }
-}
-
-
-// ==================================================
-// INTENT EXTRACTION
-// ==================================================
-
-function extractIntent(text) {
-
-    const t = normalize(text);
-
-
-    if (
-        t.includes("what college") ||
-        t.includes("which college") ||
-        t.includes("what colleges") ||
-        t.includes("college can i get") ||
-        t.includes("colleges can i get")
-    ) {
-
-        STATE.intent =
-            "predict_college";
-
-    }
-
-    else if (
-        t.includes("predict rank") ||
-        t.includes("my rank") ||
-        t.includes("what rank")
-    ) {
-
-        STATE.intent =
-            "predict_rank";
-
-    }
-
-    else if (
-        t.includes("cutoff")
-    ) {
-
-        STATE.intent =
-            "check_cutoff";
-    }
-}
-
-
-// ==================================================
-// APPLY TRAINING KEYWORDS
-// ==================================================
-
-function applyTrainingKeywords(matches) {
-
-    if (!matches.length)
-        return;
+    const result = {};
 
 
     /*
-       Only use reasonably similar examples.
-       This prevents a random example from
-       overwriting the actual user input.
+       First take keyword structures from
+       the closest training examples.
     */
 
-    const best =
-        matches[0];
+    for (
+        const match of matchedExamples.slice(0, 5)
+    ) {
+
+        if (match.score <= 0)
+            continue;
 
 
-    if (best.score < 0.20)
+        const keywords =
+            match.example.keywords;
+
+
+        if (!keywords)
+            continue;
+
+
+        for (
+            const key of Object.keys(keywords)
+        ) {
+
+            const value =
+                keywords[key];
+
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                continue;
+            }
+
+
+            /*
+               Don't overwrite something
+               already found from a stronger
+               match.
+            */
+
+            if (
+                result[key] === undefined
+            ) {
+
+                result[key] = value;
+            }
+        }
+    }
+
+
+    /*
+       Now try to extract numeric values
+       using the feature names appearing
+       in the training data.
+    */
+
+    extractNumericFeatures(
+        input,
+        result
+    );
+
+
+    /*
+       Try to extract known categorical
+       values from the training dataset.
+    */
+
+    extractCategoricalFeatures(
+        input,
+        result
+    );
+
+
+    return result;
+}
+
+
+/* ==================================================
+   NUMERIC FEATURE EXTRACTION
+================================================== */
+
+function extractNumericFeatures(
+    input,
+    result
+) {
+
+    const text =
+        normalize(input);
+
+
+    const nums =
+        text.match(
+            /\b\d+(?:\.\d+)?\b/g
+        );
+
+
+    if (!nums)
         return;
 
 
-    const keywords =
-        best.example.keywords || {};
+    const numbers =
+        nums.map(Number);
 
 
-    for (const key of Object.keys(keywords)) {
+    /*
+       Discover numeric feature names
+       from the training data.
+    */
+
+    const numericFeatures =
+        new Set();
+
+
+    for (const example of TRAINING) {
+
+        if (!example.keywords)
+            continue;
+
+
+        for (
+            const key of Object.keys(
+                example.keywords
+            )
+        ) {
+
+            const value =
+                example.keywords[key];
+
+
+            if (
+                typeof value === "number"
+            ) {
+
+                numericFeatures.add(key);
+            }
+        }
+    }
+
+
+    /*
+       Direct feature-name references.
+
+       Example:
+
+       "mark_kcet 130"
+
+       "per_boards 280"
+    */
+
+    for (
+        const feature of numericFeatures
+    ) {
+
+        const regex =
+            new RegExp(
+                feature.replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    "\\$&"
+                ) +
+                "\\s*[:=]?\\s*(\\d+(?:\\.\\d+)?)",
+                "i"
+            );
+
+
+        const match =
+            input.match(regex);
+
+
+        if (match) {
+
+            result[feature] =
+                Number(match[1]);
+        }
+    }
+
+
+    /*
+       Handle natural-language board marks.
+
+       This is intentionally generic and
+       only activates when training data
+       contains per_boards.
+    */
+
+    if (
+        numericFeatures.has("per_boards") &&
+        (
+            text.includes("board") ||
+            text.includes("boards")
+        )
+    ) {
+
+        const boardNumbers =
+            numbers.filter(
+                n => n <= 300
+            );
+
+
+        if (
+            boardNumbers.length
+        ) {
+
+            /*
+               Prefer a number near "board".
+            */
+
+            const match =
+                input.match(
+                    /(\d+(?:\.\d+)?)\s*(?:\/\s*300)?\s*(?:in\s*)?boards?/i
+                );
+
+
+            if (match) {
+
+                result.per_boards =
+                    Number(match[1]);
+
+            } else {
+
+                /*
+                   Only use this if there is
+                   exactly one sensible board value.
+                */
+
+                if (
+                    boardNumbers.length === 1
+                ) {
+
+                    result.per_boards =
+                        boardNumbers[0];
+                }
+            }
+        }
+    }
+
+
+    /*
+       KCET marks.
+    */
+
+    if (
+        numericFeatures.has("mark_kcet") &&
+        (
+            text.includes("kcet") ||
+            text.includes("cet")
+        )
+    ) {
+
+        const match =
+            input.match(
+                /(\d+(?:\.\d+)?)\s*(?:\/\s*180)?\s*(?:in\s*)?kcet/i
+            );
+
+
+        if (match) {
+
+            result.mark_kcet =
+                Number(match[1]);
+
+        } else {
+
+            const kcetNumbers =
+                numbers.filter(
+                    n => n <= 180
+                );
+
+
+            if (
+                kcetNumbers.length === 1
+            ) {
+
+                result.mark_kcet =
+                    kcetNumbers[0];
+            }
+        }
+    }
+}
+
+
+/* ==================================================
+   CATEGORICAL FEATURE EXTRACTION
+================================================== */
+
+function extractCategoricalFeatures(
+    input,
+    result
+) {
+
+    const text =
+        normalize(input);
+
+
+    /*
+       Collect categorical values
+       from training data.
+    */
+
+    const values = {};
+
+
+    for (const example of TRAINING) {
+
+        if (!example.keywords)
+            continue;
+
+
+        for (
+            const key of Object.keys(
+                example.keywords
+            )
+        ) {
+
+            const value =
+                example.keywords[key];
+
+
+            if (
+                typeof value === "string"
+            ) {
+
+                if (!values[key])
+                    values[key] = new Set();
+
+
+                values[key].add(
+                    normalize(value)
+                );
+            }
+        }
+    }
+
+
+    /*
+       Look for known values in user text.
+    */
+
+    for (
+        const feature of Object.keys(values)
+    ) {
+
+        /*
+           Don't overwrite an already
+           extracted feature.
+        */
+
+        if (
+            result[feature] !== undefined
+        ) {
+            continue;
+        }
+
+
+        const candidates =
+            [...values[feature]];
+
+
+        /*
+           Longest first so that something
+           like "computer science engineering"
+           is checked before "computer".
+        */
+
+        candidates.sort(
+            (a, b) =>
+                b.length - a.length
+        );
+
+
+        for (
+            const candidate of candidates
+        ) {
+
+            if (!candidate)
+                continue;
+
+
+            const escaped =
+                candidate.replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    "\\$&"
+                );
+
+
+            const regex =
+                new RegExp(
+                    "\\b" +
+                    escaped +
+                    "\\b",
+                    "i"
+                );
+
+
+            if (
+                regex.test(text)
+            ) {
+
+                /*
+                   Find original casing/value
+                   from training data.
+                */
+
+                for (
+                    const example of TRAINING
+                ) {
+
+                    if (!example.keywords)
+                        continue;
+
+
+                    const value =
+                        example.keywords[feature];
+
+
+                    if (
+                        typeof value === "string" &&
+                        normalize(value) === candidate
+                    ) {
+
+                        result[feature] =
+                            value;
+
+                        break;
+                    }
+                }
+
+
+                break;
+            }
+        }
+    }
+}
+
+
+/* ==================================================
+   MERGE CONVERSATION STATE
+================================================== */
+
+function mergeState(newKeywords) {
+
+    for (
+        const key of Object.keys(
+            newKeywords
+        )
+    ) {
 
         const value =
-            keywords[key];
+            newKeywords[key];
 
 
         if (
             value === null ||
-            value === undefined
-        )
+            value === undefined ||
+            value === ""
+        ) {
             continue;
+        }
 
 
-        /*
-           Don't blindly overwrite values that
-           the user has explicitly provided.
-        */
+        conversation[key] =
+            value;
+    }
+
+
+    return {
+        ...conversation
+    };
+}
+
+
+/* ==================================================
+   DETERMINE MISSING FEATURES
+==================================================
+
+   IMPORTANT:
+
+   Missing information comes from the
+   training examples.
+
+   We don't blindly invent required
+   features here.
+================================================== */
+
+function determineMissing(
+    keywords,
+    matches
+) {
+
+    const required = [];
+
+
+    /*
+       Use missing.required from the
+       strongest relevant examples.
+    */
+
+    for (
+        const match of matches.slice(0, 5)
+    ) {
 
         if (
-            STATE[key] === null ||
-            STATE[key] === undefined
+            match.score <= 0
+        ) {
+            continue;
+        }
+
+
+        const missing =
+            match.example.missing;
+
+
+        if (
+            !missing ||
+            !Array.isArray(
+                missing.required
+            )
+        ) {
+            continue;
+        }
+
+
+        for (
+            const feature of
+            missing.required
         ) {
 
-            STATE[key] = value;
+            /*
+               If the user has now supplied
+               the feature, don't keep it missing.
+            */
+
+            if (
+                keywords[feature] === undefined ||
+                keywords[feature] === null ||
+                keywords[feature] === ""
+            ) {
+
+                if (
+                    !required.includes(
+                        feature
+                    )
+                ) {
+
+                    required.push(
+                        feature
+                    );
+                }
+            }
         }
     }
+
+
+    return required;
 }
 
 
-// ==================================================
-// MISSING FEATURES
-// ==================================================
+/* ==================================================
+   DETERMINE ACTIONS
+==================================================
 
-function getMissing() {
+   Actions are inherited from training
+   examples.
 
-    const missing = [];
+   Missing-input action is generated only
+   when a matching training example
+   actually says missing input is needed.
+================================================== */
 
-
-    // ----------------------------------------------
-    // RANK REQUIREMENTS
-    // ----------------------------------------------
-
-    const hasBoards =
-        STATE.mark_boards !== null ||
-        (
-            STATE.mark_boards_math !== null &&
-            STATE.mark_boards_phy !== null &&
-            STATE.mark_boards_che !== null
-        );
-
-
-    const hasKCET =
-        STATE.mark_kcet !== null ||
-        (
-            STATE.mark_kcet_math !== null &&
-            STATE.mark_kcet_phy !== null &&
-            STATE.mark_kcet_che !== null
-        );
-
-
-    if (!hasBoards)
-        missing.push("mark_boards");
-
-
-    if (!hasKCET)
-        missing.push("mark_kcet");
-
-
-    // ----------------------------------------------
-    // COLLEGE PREDICTION
-    // ----------------------------------------------
-
-    if (
-        STATE.intent ===
-        "predict_college"
-    ) {
-
-        if (!STATE.branch)
-            missing.push("branch");
-
-        if (!STATE.category)
-            missing.push("category");
-    }
-
-
-    // ----------------------------------------------
-    // SPECIFIC COLLEGE
-    // ----------------------------------------------
-
-    if (
-        STATE.intent ===
-        "check_specific_college"
-    ) {
-
-        if (!STATE.college)
-            missing.push("college");
-
-        if (!STATE.branch)
-            missing.push("branch");
-
-        if (!STATE.category)
-            missing.push("category");
-    }
-
-
-    return [
-        ...new Set(missing)
-    ];
-}
-
-
-// ==================================================
-// BUILD ACTIONS
-// ==================================================
-
-function buildActions(missing) {
+function determineActions(
+    keywords,
+    missing,
+    matches
+) {
 
     const actions = [];
 
 
-    const hasBoards =
-        STATE.mark_boards !== null;
+    /*
+       Take actions from strongest examples.
+    */
 
-
-    const hasKCET =
-        STATE.mark_kcet !== null;
-
-
-    // ----------------------------------------------
-    // RANK
-    // ----------------------------------------------
-
-    if (
-        hasBoards &&
-        hasKCET
+    for (
+        const match of matches.slice(0, 5)
     ) {
-
-        actions.push(
-            "predict_rank(mark_boards, mark_kcet)"
-        );
-    }
-
-
-    // ----------------------------------------------
-    // COLLEGE
-    // ----------------------------------------------
-
-    if (
-        STATE.intent ===
-        "predict_college" &&
-        hasBoards &&
-        hasKCET &&
-        STATE.branch &&
-        STATE.category
-    ) {
-
-        if (STATE.round) {
-
-            actions.push(
-                `predict_college(predict_rank, ${STATE.round}, category, branch)`
-            );
-
-        } else {
-
-            actions.push(
-                "predict_college(predict_rank, category, branch)"
-            );
-        }
-    }
-
-
-    // ----------------------------------------------
-    // LOCATION
-    // ----------------------------------------------
-
-    if (STATE.location) {
 
         if (
-            STATE.location_filter ===
-            "near"
+            match.score <= 0
+        ) {
+            continue;
+        }
+
+
+        const example =
+            match.example;
+
+
+        if (
+            !Array.isArray(
+                example.action
+            )
+        ) {
+            continue;
+        }
+
+
+        for (
+            const action of
+            example.action
         ) {
 
-            actions.push(
-                `verify_location(${STATE.location}, near=true)`
-            );
+            if (
+                typeof action !== "string"
+            ) {
+                continue;
+            }
 
-        } else {
 
-            actions.push(
-                `verify_location(${STATE.location})`
-            );
+            /*
+               Don't duplicate.
+            */
+
+            if (
+                !actions.includes(
+                    action
+                )
+            ) {
+
+                actions.push(
+                    action
+                );
+            }
         }
     }
 
 
-    // ----------------------------------------------
-    // MISSING
-    // ----------------------------------------------
+    /*
+       Remove actions whose required
+       feature has now been supplied,
+       when they are explicitly
+       ask_missing_input actions.
+    */
 
-    if (missing.length) {
+    return actions.filter(
+        action => {
 
-        actions.push(
-            `ask_missing_input(${missing.join(", ")})`
-        );
-    }
+            if (
+                !action.startsWith(
+                    "ask_missing_input"
+                )
+            ) {
+                return true;
+            }
 
 
-    return actions;
+            /*
+               If no missing features remain,
+               remove the ask action.
+            */
+
+            return missing.length > 0;
+        }
+    );
 }
 
 
-// ==================================================
-// PROCESS INPUT
-// ==================================================
+/* ==================================================
+   PROCESS USER INPUT
+================================================== */
 
-function process(input) {
+function processInput(input) {
 
     const matches =
-        findExamples(input);
+        findMatches(input);
 
 
-    // Training-derived information
-    applyTrainingKeywords(matches);
+    /*
+       Extract information from the
+       training examples + user sentence.
+    */
+
+    const extracted =
+        extractValues(
+            input,
+            matches
+        );
 
 
-    // Direct user extraction
-    extractMarks(input);
-    extractBranch(input);
-    extractCategory(input);
-    extractLocation(input);
-    extractRound(input);
-    extractIntent(input);
+    /*
+       Keep previous conversation state.
+    */
 
+    const keywords =
+        mergeState(
+            extracted
+        );
+
+
+    /*
+       Determine what is still missing.
+    */
 
     const missing =
-        getMissing();
+        determineMissing(
+            keywords,
+            matches
+        );
 
+
+    /*
+       Determine actions from training data.
+    */
 
     const actions =
-        buildActions(missing);
+        determineActions(
+            keywords,
+            missing,
+            matches
+        );
 
 
     return {
 
         input,
 
-        keywords: {
-            ...STATE
-        },
+        keywords,
 
         missing: {
 
@@ -924,104 +1080,153 @@ function process(input) {
                 missing,
 
             trigger:
-                missing.length
+                missing.length > 0
                     ? "ask_missing_input"
                     : null
         },
 
-        action: actions,
+        action:
+            actions,
 
         matched_examples:
-            matches.slice(0, 3).map(x => ({
-                input:
-                    x.example.input,
+            matches
+                .slice(0, 5)
+                .map(
+                    match => ({
 
-                similarity:
-                    Number(
-                        x.score.toFixed(3)
-                    )
-            }))
+                        similarity:
+                            Number(
+                                match.score
+                                    .toFixed(4)
+                            ),
+
+                        input:
+                            match.example.input
+                    })
+                )
     };
 }
 
 
-// ==================================================
-// CHAT UI
-// ==================================================
+/* ==================================================
+   UI
+================================================== */
 
 function addUser(text) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     div.className =
-        "message user";
+        "message";
+
 
     div.innerHTML =
-        `<div class="label">YOU</div>${escapeHTML(text)}`;
+        `
+        <div class="label">YOU</div>
+        <div class="userText">
+            ${escapeHTML(text)}
+        </div>
+        `;
+
 
     document
         .getElementById("chat")
         .appendChild(div);
 
-    scrollBottom();
+
+    scrollChat();
 }
 
 
-function addAI(result) {
+function addAI(data) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     div.className =
-        "message ai";
+        "message";
+
 
     div.innerHTML =
-        `<div class="label">KCET AI</div>
-         <pre>${escapeHTML(
-             JSON.stringify(
-                 result,
-                 null,
-                 2
-             )
-         )}</pre>`;
+        `
+        <div class="label">MODEL OUTPUT</div>
+
+        <pre>${escapeHTML(
+            JSON.stringify(
+                data,
+                null,
+                2
+            )
+        )}</pre>
+        `;
+
 
     document
         .getElementById("chat")
         .appendChild(div);
 
-    scrollBottom();
+
+    scrollChat();
 }
 
 
 function escapeHTML(text) {
 
     return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
-function scrollBottom() {
+function scrollChat() {
 
     const chat =
-        document.getElementById("chat");
+        document.getElementById(
+            "chat"
+        );
+
 
     chat.scrollTop =
         chat.scrollHeight;
 }
 
 
-// ==================================================
-// SEND
-// ==================================================
+/* ==================================================
+   SEND
+================================================== */
 
-function send() {
+function sendMessage() {
 
     const input =
-        document.getElementById("input");
+        document.getElementById(
+            "input"
+        );
+
 
     const text =
         input.value.trim();
@@ -1031,14 +1236,25 @@ function send() {
         return;
 
 
+    if (!TRAINING.length) {
+
+        addAI({
+            error:
+                "Training data has not loaded yet."
+        });
+
+        return;
+    }
+
+
     addUser(text);
 
 
-    const result =
-        process(text);
+    const output =
+        processInput(text);
 
 
-    addAI(result);
+    addAI(output);
 
 
     input.value = "";
@@ -1047,9 +1263,17 @@ function send() {
 }
 
 
-// ==================================================
-// ENTER
-// ==================================================
+/* ==================================================
+   EVENTS
+================================================== */
+
+document
+    .getElementById("send")
+    .addEventListener(
+        "click",
+        sendMessage
+    );
+
 
 document
     .getElementById("input")
@@ -1061,25 +1285,17 @@ document
                 event.key === "Enter"
             ) {
 
-                send();
+                sendMessage();
             }
         }
     );
 
 
-document
-    .getElementById("send")
-    .addEventListener(
-        "click",
-        send
-    );
+/* ==================================================
+   START
+================================================== */
 
-
-// ==================================================
-// START
-// ==================================================
-
-loadFiles();
+loadModel();
 
 </script>
 
