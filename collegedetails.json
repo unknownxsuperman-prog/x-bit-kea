@@ -1,0 +1,626 @@
+[
+  {
+    "id": "E001",
+    "College": "Univesity of Visvesvaraya College of Engineering (A State Autonomous Public University on IIT Model) K R Circle",
+    "shortform": "UVCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E002",
+    "College": "Govt.S K S J T Institute of Engineering, Bangalore AMBEDKAR VEEDHI, K.R. CIRCLE, BANGALORE-01",
+    "shortform": "SKSJT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E003",
+    "College": "B M S College of Engineering, Basavanagudi, Bangalore (AUTONOMOUS) POST BOX NO 1908, BULL TEMPLE ROAD,BANGALORE",
+    "shortform": "BMSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E004",
+    "College": "Dr. Ambedkar Institute of Technology, Bangalore(AUTONOMOUS) OUTER RING ROAD,NEAR JNANA BHARATHI CAMPUS,MALLATHAHALLI,BANGALORE-560056",
+    "shortform": "Dr. AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E005",
+    "College": "R. V. College of Engineering, Bangalore(AUTONOMOUS) R.V. VIDYANIKETAN POST, MYSORE ROAD,BANGALORE",
+    "shortform": "RVCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E006",
+    "College": "M S Ramaiah Institute of Technology, Bangalore(AUTONOMOUS) VIDYA SOUDHA,MSR NAGAR,MSRIT POST,BANGALORE - 560054.",
+    "shortform": "MSRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E007",
+    "College": "Dayananda Sagar College of Engineering, Bangalore(AUTONOMOUS) SHAVIGE MALLESHWARA HILLS, KUMARASWAMY LAYOUT, BANGALORE-560078",
+    "shortform": "DSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E008",
+    "College": "Bangalore Institute of Technology, K.R.Road, Bangalore (AUTONOMOUS) K.R.ROAD, V.V.PURA, BANGALORE-560004",
+    "shortform": "BIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E009",
+    "College": "PES University 100 Feet Ring Road, Banashankari, 3rd Stage, Hosakerehalli, Near DSERT, , Bangalore KARNATAKA, pin code -560085",
+    "shortform": "PESU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E011",
+    "College": "M V J College of Engineering, Bangalore(AUTONOMOUS) NEAR ITPB,CHANNASANDRA,KADUGODI POST,BANGALORE",
+    "shortform": "MVJCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E012",
+    "College": "Sir M.Visvesvaraya Institute of Technology, Bangalore KRISHNADEVARAYANAGAR, HUNASAMARANAHALLI, VIA YELAHANKA,BANGALORE - 562 157",
+    "shortform": "Sir MVIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E013",
+    "College": "Ghousia Engineering College, Ramanagara BANGALORE - MYSORE ROAD,RAMANAGARA",
+    "shortform": "GEC",
+    "location": "Ramanagara"
+  },
+  {
+    "id": "E014",
+    "College": "S J C Institute of Technology, Chickkaballapur(AUTONOMOUS) P B NO. 20, B B ROAD, CHICKBALLAPUR, CHICKBALLAPUR (DISTRICT)",
+    "shortform": "SJCIT",
+    "location": "Chickkaballapur"
+  },
+  {
+    "id": "E015",
+    "College": "Dr.T.Thimmaiah Institute of Technology, KGF 00RGAUM POST,KOLAR GOLD FIELDS - 563 120",
+    "shortform": "Dr. TTIT",
+    "location": "Kolar Gold Fields"
+  },
+  {
+    "id": "E016",
+    "College": "Siddaganga Institute of Technology, Tumkur(AUTONOMOUS) B.H.ROAD,TUMKUR",
+    "shortform": "SIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E017",
+    "College": "Sri Siddhartha Institute of Technology MARALUR ,TUMKUR",
+    "shortform": "SSIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E018",
+    "College": "Kalpatharu Institute of Technology, Tiptur B.H.ROAD,HASSAN CIRCLE,TIPTUR-572202",
+    "shortform": "KIT",
+    "location": "Tiptur"
+  },
+  {
+    "id": "E021",
+    "College": "Sri Jayachamarajendra College of Engineering(Constituent College of JSS Science & Technology University), Mysore JSS TECHNICAL INSTITUTIONS CAMPUS,MANASAGANGOTHRI PO,MYSORE",
+    "shortform": "SJCE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E022",
+    "College": "The National Institute of Engineering, Mysore(AUTONOMOUS) MANANDAVADI ROAD,MYSORE",
+    "shortform": "NIE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E023",
+    "College": "P E S College of Engineering, Mandya(AUTONOMOUS) MANDYA: 571 401",
+    "shortform": "PESCE",
+    "location": "Mandya"
+  },
+  {
+    "id": "E024",
+    "College": "Malnad College of Engineering, Hassan(AUTONOMOUS) P.B. NO. 21, SALAGAME ROAD,HASSSAN",
+    "shortform": "MCE",
+    "location": "Hassan"
+  },
+  {
+    "id": "E028",
+    "College": "Tontadarya College of Engineering, Gadag MUNDARAGI ROAD ,GADAG - 582101",
+    "shortform": "TCE",
+    "location": "Gadag"
+  },
+  {
+    "id": "E029",
+    "College": "Maratha Mandal Engineering College, Belgaum RS. NO.104, HALBHAVI VILLAGE, POST: NEW VANTMURI, VIA KAKATI, TALUKA & DIST. BELGAUM-591113",
+    "shortform": "MMEC",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E031",
+    "College": "B V V Sangha`s Basaveshwara Engineering College , Bagalkote (AUTONOMOUS) NIJALINGAPPA ROAD,BAGALKOT 587102",
+    "shortform": "BEC",
+    "location": "Bagalkote"
+  },
+  {
+    "id": "E032",
+    "College": "R.T.E. Soceity's Rural Engineering College, Hulkoti HULKOTI -582 205,GADAG",
+    "shortform": "REC",
+    "location": "Hulkoti"
+  },
+  {
+    "id": "E033",
+    "College": "Sri Taralabalu Jagadguru Institute of Technology, Ranebennur P B ROAD (NH4),RANEBENNUR-581 115,HAVERI DISTRICT",
+    "shortform": "STJIT",
+    "location": "Ranebennur"
+  },
+  {
+    "id": "E034",
+    "College": "SDM College of Engineering, Dharwad (AUTONOMOUS) DHAVALAGIRI, KALGHATGI ROAD, DHARWAD",
+    "shortform": "SDMCET",
+    "location": "Dharwad"
+  },
+  {
+    "id": "E035",
+    "College": "Anjuman Institute of Technology & Management, Bhatkal ANJUMANABAD, BHATKAL (UK DIST), PIN 581320",
+    "shortform": "AITM",
+    "location": "Bhatkal"
+  },
+  {
+    "id": "E036",
+    "College": "KLE Technological Univeristy, Belgaum Campus (Formerly KLE Dr M.S.Sheshagiri College of Engineering and Technology) UDYAMBAGH,BELGAUM",
+    "shortform": "KLE Tech",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E037",
+    "College": "K.LS. Gogie Institute of Technology, Belgaum (AUTONOMOUS) \"JNANA GANGA\", UDYAMBAG BELGAUM",
+    "shortform": "KLS GIT",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E038",
+    "College": "BLDEA's VP. Dr.P.G. Hallakatti College of Engineering & Technology, Bijapur ASHRAM ROAD,BIJAPUR - 586103",
+    "shortform": "BLDEA",
+    "location": "Bijapur"
+  },
+  {
+    "id": "E040",
+    "College": "Hira Sugar Institute of Technology, Nidasoshi NIDAOSHI,TALUKA: HUKERI,DISTRICT: BELGAUM",
+    "shortform": "HSIT",
+    "location": "Nidasoshi"
+  },
+  {
+    "id": "E041",
+    "College": "P D A College of Engineering, Gulbarga(AUTONOMOUS) AIWAN-E-SHAHI AREA,STATION ROAD,GULBARGA-585102",
+    "shortform": "PDACE",
+    "location": "Gulbarga"
+  },
+  {
+    "id": "E042",
+    "College": "Khaja Bandanawaz University KBN University Street, Khaja Colony, Kalaburagi, Karnataka 585104",
+    "shortform": "KBNU",
+    "location": "Kalaburagi"
+  },
+  {
+    "id": "E043",
+    "College": "Gurunanak Dev Engineering College, Bidar MAILOOR ROAD,BIDAR 585403",
+    "shortform": "GNTEC",
+    "location": "Bidar"
+  },
+  {
+    "id": "E044",
+    "College": "Bheemanna Khandre Institute of Technology, Bhalki BHALKI-HUMNABAD ROAD,BHALKI- 585328,DIST. BIDAR",
+    "shortform": "BKIT",
+    "location": "Bhalki"
+  },
+  {
+    "id": "E045",
+    "College": "Rao Bahadur Y.Mahabaleswarappa Engineering College, Bellary CONTONMENT, BELLARY-583104",
+    "shortform": "RYMEC",
+    "location": "Bellary"
+  },
+  {
+    "id": "E046",
+    "College": "H K E's Society's Sir M Visvesvaraya College of Engineering, Raichur YERAMARUS CAMP,RAICHUR-584 135,",
+    "shortform": "SMVCE",
+    "location": "Raichur"
+  },
+  {
+    "id": "E047",
+    "College": "Malnad College of Engineering, Hassan(AUTONOMOUS) P.B. NO. 21, SALAGAME ROAD,HASSSAN",
+    "shortform": "MCE",
+    "location": "Hassan"
+  },
+  {
+    "id": "E048",
+    "College": "B M S College of Engineering, Basavanagudi, Bangalore (AUTONOMOUS) POST BOX NO 1908, BULL TEMPLE ROAD,BANGALORE",
+    "shortform": "BMSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E049",
+    "College": "B V V Sangha`s Basaveshwara Engineering College , Bagalkote (AUTONOMOUS) NIJALINGAPPA ROAD,BAGALKOT 587102",
+    "shortform": "BEC",
+    "location": "Bagalkote"
+  },
+  {
+    "id": "E054",
+    "College": "K V G College of Engineering, Sullia KURUNJIBHAG, SULLIA TALUK,DAKSHINA KANNADA - 574327",
+    "shortform": "KVGCE",
+    "location": "Sullia"
+  },
+  {
+    "id": "E055",
+    "College": "P A College of Engineering, Kairangal, Bantwala Tq,. Mangalore NADUPADAV, NEAR MANGALORE UNIVERSITY,MONTEPADAV POST, KAIRANGALA VILLAGE,BANTWAL-MANGALORE",
+    "shortform": "PACE",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E056",
+    "College": "The National Institute of Engineering, Mysore(AUTONOMOUS) MANANDAVADI ROAD,MYSORE",
+    "shortform": "NIE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E057",
+    "College": "JSS Science and Technology University JSS TECHNICAL INSTITUTIONS CAMPUS, MANASAGANGOTHRI, MYSURU 570006",
+    "shortform": "JSS STU",
+    "location": "Mysuru"
+  },
+  {
+    "id": "E058",
+    "College": "P E S College of Engineering, Mandya(AUTONOMOUS) MANDYA: 571 401",
+    "shortform": "PESCE",
+    "location": "Mandya"
+  },
+  {
+    "id": "E059",
+    "College": "Bapuji Institute of Engineering and Technology, Davangere P.O.BOX NO. 325, TELEVISION STATION ROAD,DAVANGERE",
+    "shortform": "BIET",
+    "location": "Davangere"
+  },
+  {
+    "id": "E061",
+    "College": "Acharya Institute of Technology, Bangalore SOLDEVANAHALLI, HESARAGHATTA MAIN ROAD, BANGALORE-560090",
+    "shortform": "AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E062",
+    "College": "Atria Institute of Technology, Bangalore ASKB CAMPUS, NAGASHETTYHALLI, RMV II STAGE, BANGALORE-560094",
+    "shortform": "AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E063",
+    "College": "B N M Institute of Technology, Bangalore(AUTONOMOUS) 12TH MAIN, 27TH CROSS, BAPUJI NAGAR, BANASHANKARI 2ND STAGE, BANGALORE-560070",
+    "shortform": "BNMIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E064",
+    "College": "Cambridge Institute of Technology, Bangalore KRISHNAPURA, KEPPALAGARAHALLI, BASAVANAPURA, KRAM RAMPURA POST, OFF OLD MADRAS ROAD, BANGALORE",
+    "shortform": "CIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E065",
+    "College": "C M R Institute of Technology, Bangalore(AUTONOMOUS) 132, AECS LAYOUT, ITPL MAIN ROAD, KUNDALAHALLI, BANGALORE-560037",
+    "shortform": "CMRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E066",
+    "College": "Dayananda Sagar Academy of Technology & Management, Bangalore UDAYAPURA, KANAKAPURA ROAD, BANGALORE-560082",
+    "shortform": "DSATM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E067",
+    "College": "Don Bosco Institute of Technology, Bangalore KENGERI, MYSORE ROAD, BANGALORE-560074",
+    "shortform": "DBIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E068",
+    "College": "Dr. S. Radhakrishnan Institute of Technology, Bangalore (defunct/renamed or specific entry)",
+    "shortform": "SRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E069",
+    "College": "East West Institute of Technology, Bangalore MAGADI MAIN ROAD, BHEEMANAHALLI, VISWANEEDAM POST, BANGALORE-560091",
+    "shortform": "EWIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E070",
+    "College": "Global Academy of Technology, Bangalore(AUTONOMOUS) IDEAL HOMES TOWNSHIP, RAJARAJESHWARINAGAR, BANGALORE-560098",
+    "shortform": "GAT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E071",
+    "College": "J S S Academy of Technical Education, Bangalore UTTARAHALLI-KENGERI ROAD, BANGALORE-560060",
+    "shortform": "JSSATE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E072",
+    "College": "K S Institute of Technology, Bangalore #14, RAGHUVANAHALLI, KANAKAPURA ROAD, BANGALORE-560062",
+    "shortform": "KSIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E073",
+    "College": "New Horizon College of Engineering, Bangalore(AUTONOMOUS) OUTER RING ROAD, BELLANDUR POST, BANGALORE-560103",
+    "shortform": "NHCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E074",
+    "College": "Nitte Meenakshi Institute of Technology, Bangalore(AUTONOMOUS) GOVINDAPURA, YELAHANKA, BANGALORE-560064",
+    "shortform": "NMIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E075",
+    "College": "P E S School of Engineering (PES University Electronic City Campus) HOSUR ROAD, ELECTRONIC CITY, BANGALORE-560100",
+    "shortform": "PES EC",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E076",
+    "College": "R R Institute of Technology, Bangalore CHIKKA BANAVARA, BANGALORE-560090",
+    "shortform": "RRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E077",
+    "College": "Rajiv Gandhi Institute of Technology, Bangalore CHOLANAGAR, R.T. NAGAR POST, BANGALORE-560032",
+    "shortform": "RGIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E078",
+    "College": "BMS Institute of Technology and Management, Bangalore(AUTONOMOUS) DODDABALLAPUR MAIN ROAD, YELAHANKA, BANGALORE-560064",
+    "shortform": "BMSIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E079",
+    "College": "Sridevi Institute of Engineering & Technology, Tumkur SIRA ROAD, TUMKUR-572106",
+    "shortform": "SIET",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E080",
+    "College": "Adichunchanagiri Institute of Technology, Chikkamagaluru PB NO. 75, HIGHER EDUCATION COLONY, CHIKKAMAGALURU-577102",
+    "shortform": "AIT",
+    "location": "Chikkamagaluru"
+  },
+  {
+    "id": "E081",
+    "College": "P.E.S. College of Engineering, Mandya (Duplicate entry reference)",
+    "shortform": "PESCE",
+    "location": "Mandya"
+  },
+  {
+    "id": "E082",
+    "College": "KLE Institute of Technology, Hubli GOKUL ROAD, HUBLI-580030",
+    "shortform": "KLEIT",
+    "location": "Hubli"
+  },
+  {
+    "id": "E083",
+    "College": "Basaveshwar Engineering College, Bagalkot (Duplicate entry reference)",
+    "shortform": "BEC",
+    "location": "Bagalkote"
+  },
+  {
+    "id": "E084",
+    "College": "Angadi Institute of Technology and Management, Belagavi SAVAGAON ROAD, BELAGAVI-590009",
+    "shortform": "AITM",
+    "location": "Belagavi"
+  },
+  {
+    "id": "E085",
+    "College": "Secab Institute of Engineering and Technology, Vijayapura NAUBAG, VIJAYAPURA-586101",
+    "shortform": "SIET",
+    "location": "Vijayapura"
+  },
+  {
+    "id": "E086",
+    "College": "G M Institute of Technology, Davangere P.B. NO. 4, PN HALLI POST, DAVANGERE-577006",
+    "shortform": "GMIT",
+    "location": "Davangere"
+  },
+  {
+    "id": "E087",
+    "College": "Jawaharlal Nehru New College of Engineering, Shivamogga(AUTONOMOUS) NAVULE, SHIVAMOGGA-577204",
+    "shortform": "JNNCE",
+    "location": "Shivamogga"
+  },
+  {
+    "id": "E088",
+    "College": "K.S.R.M. College of Engineering / or other regional engineering colleges in Karnataka",
+    "shortform": "KSRM",
+    "location": "Kadapa/Karnataka border"
+  },
+  {
+    "id": "E090",
+    "College": "Sahyadri College of Engineering and Management, Mangaluru ADYAPARADKA, KNAPADAVU, MANGALURU-575007",
+    "shortform": "Sahyadri",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E091",
+    "College": "Shri Madhwa Vadiraja Institute of Technology and Management, Bantakal UDUPI DIST, BANTAKAL-574115",
+    "shortform": "SMVITM",
+    "location": "Udupi"
+  },
+  {
+    "id": "E092",
+    "College": "Canara Engineering College, Bantwal Benjanapadavu, MANGALURU-574219",
+    "shortform": "CEC",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E093",
+    "College": "Yenepoya Institute of Technology, Mangaluru THOWBA NAGAR, MIJAR, MOODBIDRI, MANGALURU-574225",
+    "shortform": "YIT",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E094",
+    "College": "Mangalore Institute of Technology and Engineering, Mangaluru BADAGA MIJAR, MOODBIDRI, MANGALURU-574225",
+    "shortform": "MITE",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E095",
+    "College": "St. Joseph Engineering College, Mangaluru VAMANJOOR, MANGALURU-575028",
+    "shortform": "SJEC",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E096",
+    "College": "Bearys Institute of Technology, Mangaluru INOLI, NEAR MANGALORE UNIVERSITY, MANGALURU-574199",
+    "shortform": "BIT",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E097",
+    "College": "Srinivas Institute of Technology, Mangaluru VALACHIL, FARANGIPETE POST, MANGALURU-574143",
+    "shortform": "SIT",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E098",
+    "College": "Alva's Institute of Engineering and Technology, Moodbidri MIJAR, MOODBIDRI, D.K.-574225",
+    "shortform": "AIET",
+    "location": "Moodbidri"
+  },
+  {
+    "id": "E100",
+    "College": "Reva University - School of Engineering, Bangalore RUKMINI KUPPAHAYYA, YELAHANKA, BANGALORE-560064",
+    "shortform": "REVA",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E101",
+    "College": "Presidency University - School of Engineering, Bangalore ITGAL, RAJANUKUNTE, YELAHANKA, BANGALORE-560064",
+    "shortform": "Presidency",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E102",
+    "College": "Alliance University - Alliance College of Engineering and Design, Bangalore Anekal, CHANDAPURA, BANGALORE-562106",
+    "shortform": "Alliance",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E103",
+    "College": "Dayananda Sagar University - School of Engineering, Bangalore DEVARAKAGGALAHALLI, KANAKAPURA ROAD, RAMANAGARA DIST",
+    "shortform": "DSU",
+    "location": "Bangalore/Ramanagara"
+  },
+  {
+    "id": "E104",
+    "College": "CMR University - School of Engineering and Technology, Bangalore BAGALUR, SARJAPUR, BANGALORE",
+    "shortform": "CMRU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E105",
+    "College": "MS Ramaiah University of Applied Sciences - Faculty of Engineering and Technology, Bangalore PEENYA, BANGALORE-560058",
+    "shortform": "MSRUAS",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E106",
+    "College": "B.N.M. Institute of Technology, Bangalore (Additional Listing)",
+    "shortform": "BNMIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E108",
+    "College": "East West College of Engineering, Bangalore BHEEMANAHALLI, MAGADI ROAD, BANGALORE-560091",
+    "shortform": "EWCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E109",
+    "College": "The Oxford College of Engineering, Bangalore BOMMANAHALLI, HOSUR ROAD, BANGALORE-560068",
+    "shortform": "TOCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E110",
+    "College": "Vemana Institute of Technology, Bangalore 100 FEET ROAD, KORAMANGALA, BANGALORE-560034",
+    "shortform": "Vemana",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E111",
+    "College": "BTL Institute of Technology, Bangalore HOSUR ROAD, BOMMASANDRA, BANGALORE-560099",
+    "shortform": "BTLIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E112",
+    "College": "Gopalan College of Engineering and Management, Bangalore HOODI, WHITEFIELD, BANGALORE-560048",
+    "shortform": "GCEM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E113",
+    "College": "HMS Institute of Technology, Tumkur B.H. ROAD, KEMPAIAH COLONY, TUMKUR-572103",
+    "shortform": "HMSIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E114",
+    "College": "Sri Siddhartha Institute of Technology, Tumkur (Alternative listing)",
+    "shortform": "SSIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E115",
+    "College": "Bapuji Institute of Engineering and Technology, Davangere (Alternative listing)",
+    "shortform": "BIET",
+    "location": "Davangere"
+  },
+  {
+    "id": "E116",
+    "College": "University B.D.T. College of Engineering, Davangere (Constituent College of Davangere University) P.B. ROAD, DAVANGERE-577004",
+    "shortform": "UBDTCE",
+    "location": "Davangere"
+  },
+  {
+    "id": "E117",
+    "College": "Sha-Shib College of Engineering, Chikkaballapur ARALUMALLIGE, DODDABALLAPUR, CHIKKABALLAPUR-561203",
+    "shortform": "SSCE",
+    "location": "Chikkaballapur"
+  },
+  {
+    "id": "E118",
+    "College": "East West Institute of Technology, Bangalore (Alternative listing)",
+    "shortform": "EWIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E119",
+    "College": "KNS Institute of Technology, Bangalore THIRMENAHALLI, HEGDE NAGAR, YELAHANKA, BANGALORE-560064",
+    "shortform": "KNSIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E120",
+    "College": "Jnana Vikas Institute of Technology, Bangalore BIDADI, RAMANAGARA DIST-562109",
+    "shortform": "JVIT",
+    "location": "Bidadi"
+  }
+]
