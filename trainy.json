@@ -1,0 +1,1079 @@
+[
+{
+"input": "I scored 93 in boards and 130 in KCET. What rank can I expect?",
+"keywords": {
+"per_boards": 93,
+"mark_kcet": 130,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "My KCET score is 130 and my 2nd PUC percentage is 95. What college can I get?",
+"keywords": {
+"mark_kcet": 130,
+"per_boards": 95,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "I got 80 in KCET and 75% in boards. What is my estimated rank?",
+"keywords": {
+"mark_kcet": 80,
+"per_boards": 75,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "KCET 130, boards 92%. Can you predict my rank?",
+"keywords": {
+"mark_kcet": 130,
+"per_boards": 92,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 120 in KCET, but I don't know my board percentage. What rank?",
+"keywords": {
+"mark_kcet": 120,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "90% in PUC and 145 in KCET. What is my expected rank?",
+"keywords": {
+"per_boards": 90,
+"mark_kcet": 145,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "My KCET score is 105. I need to know my rank.",
+"keywords": {
+"mark_kcet": 105,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "I got 135 in KCET. What if my boards were 94%?",
+"keywords": {
+"mark_kcet": 135,
+"per_boards": 94,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 128 in KCET. I want to know my chances.",
+"keywords": {
+"mark_kcet": 128,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "95% in PUC, 138 KCET. Estimate my rank.",
+"keywords": {
+"per_boards": 95,
+"mark_kcet": 138,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "What college can I get with 130 KCET and 90 boards?",
+"keywords": {
+"mark_kcet": 130,
+"per_boards": 90,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "I got 92% in boards and 108 KCET. I want to know my chances.",
+"keywords": {
+"per_boards": 92,
+"mark_kcet": 108,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "KCET 132, boards are 94. What is my expected rank?",
+"keywords": {
+"mark_kcet": 132,
+"per_boards": 94,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 85% in PUC, what rank should I aim for if my KCET is 110?",
+"keywords": {
+"per_boards": 85,
+"mark_kcet": 110,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "I scored 140 in KCET, but I don't know my boards.",
+"keywords": {
+"mark_kcet": 140,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "Can you estimate my rank? My KCET marks are 125.",
+"keywords": {
+"mark_kcet": 125,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "90 boards, 135 KCET. How far am I from a good college?",
+"keywords": {
+"per_boards": 90,
+"mark_kcet": 135,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "I got 98% in PUC and 150 in KCET. What rank do I have?",
+"keywords": {
+"per_boards": 98,
+"mark_kcet": 150,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "My KCET score is 80. I got 72% in PUC.",
+"keywords": {
+"mark_kcet": 80,
+"per_boards": 72,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "130 KCET, 93 boards. What college in Bangalore can I get?",
+"keywords": {
+"mark_kcet": 130,
+"per_boards": 93,
+"location": "Bangalore",
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank)",
+"verify_location(Bangalore)"
+]
+},
+{
+"input": "I scored 125 KCET, and my boards were 88%. What is my rank?",
+"keywords": {
+"mark_kcet": 125,
+"per_boards": 88,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 115 KCET. I need to know my PUC score helps.",
+"keywords": {
+"mark_kcet": 115,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "91% in PUC, 130 KCET. What college?",
+"keywords": {
+"per_boards": 91,
+"mark_kcet": 130,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "My KCET is 135, boards are 94. I am interested in CSE.",
+"keywords": {
+"mark_kcet": 135,
+"per_boards": 94,
+"branch": "CSE",
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank, branch)"
+]
+},
+{
+"input": "I got 82% in PUC and 105 KCET. What rank?",
+"keywords": {
+"per_boards": 82,
+"mark_kcet": 105,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "120 KCET, 90 boards. Can you predict my rank?",
+"keywords": {
+"mark_kcet": 120,
+"per_boards": 90,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 132 KCET, but I missed my PUC percentage. Rank please.",
+"keywords": {
+"mark_kcet": 132,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "My KCET is 128, boards are 93. What about my rank?",
+"keywords": {
+"mark_kcet": 128,
+"per_boards": 93,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 130 in boards and 95 in KCET. Which colleges can I target?",
+"keywords": {
+"per_boards": 130,
+"mark_kcet": 95,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "KCET 120, PUC 90%. Predict my rank.",
+"keywords": {
+"mark_kcet": 120,
+"per_boards": 90,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I got 145 in KCET, but what about my boards? Need rank.",
+"keywords": {
+"mark_kcet": 145,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "My boards were 92%. KCET score was 108. Predict rank.",
+"keywords": {
+"per_boards": 92,
+"mark_kcet": 108,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "What colleges can I get if my KCET is 135 and boards were 94?",
+"keywords": {
+"mark_kcet": 135,
+"per_boards": 94,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "I scored 130 KCET, pursuing CSE. What rank?",
+"keywords": {
+"mark_kcet": 130,
+"branch": "CSE",
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "90 PUC, 120 KCET. What is my rank expectation?",
+"keywords": {
+"per_boards": 90,
+"mark_kcet": 120,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "KCET 125, boards unknown. Rank please.",
+"keywords": {
+"mark_kcet": 125,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "My boards are 98%, KCET 150. What rank?",
+"keywords": {
+"per_boards": 98,
+"mark_kcet": 150,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "132 KCET, 94 boards. Estimate my rank.",
+"keywords": {
+"mark_kcet": 132,
+"per_boards": 94,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "91 PUC, 130 KCET. What kind of college can I aim for?",
+"keywords": {
+"per_boards": 91,
+"mark_kcet": 130,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "I scored 105 KCET, boards unknown. Rank needed.",
+"keywords": {
+"mark_kcet": 105,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "92 PUC, 108 KCET. Rank prediction.",
+"keywords": {
+"per_boards": 92,
+"mark_kcet": 108,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "120 KCET, 90 boards. Rank what can you say?",
+"keywords": {
+"mark_kcet": 120,
+"per_boards": 90,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "KCET 130, boards unknown. Predict rank.",
+"keywords": {
+"mark_kcet": 130,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "My PUC was 95%, KCET 138. Predict rank please.",
+"keywords": {
+"per_boards": 95,
+"mark_kcet": 138,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "93 PUC, 130 KCET. What kind of college?",
+"keywords": {
+"per_boards": 93,
+"mark_kcet": 130,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "I scored 128 KCET, boards 93. What rank?",
+"keywords": {
+"mark_kcet": 128,
+"per_boards": 93,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "140 KCET, PUC percentage unknown. Rank?",
+"keywords": {
+"mark_kcet": 140,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "90 PUC, 120 KCET. Chances are good?",
+"keywords": {
+"per_boards": 90,
+"mark_kcet": 120,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "My KCET is 105, but I don't know my PUC.",
+"keywords": {
+"mark_kcet": 105,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "135 KCET, 94 boards. What colleges in Mysore?",
+"keywords": {
+"mark_kcet": 135,
+"per_boards": 94,
+"location": "Mysore",
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank)",
+"verify_location(Mysore)"
+]
+},
+{
+"input": "92 PUC, 108 KCET. Rank estimation.",
+"keywords": {
+"per_boards": 92,
+"mark_kcet": 108,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "Can I get into CSE with 130 KCET, but boards were only 90%?",
+"keywords": {
+"mark_kcet": 130,
+"per_boards": 90,
+"branch": "CSE",
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)",
+"predict_college(predict_rank, branch)"
+]
+},
+{
+"input": "My KCET is 120. How good are my chances?",
+"keywords": {
+"mark_kcet": 120,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "I scored 145 KCET. I don't remember my PUC grade.",
+"keywords": {
+"mark_kcet": 145,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "94 PUC, 132 KCET. What is the predicted rank?",
+"keywords": {
+"per_boards": 94,
+"mark_kcet": 132,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "125 KCET, boards unknown. Rank estimation.",
+"keywords": {
+"mark_kcet": 125,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "I got 90 PUC and 135 KCET. What colleges can I get?",
+"keywords": {
+"per_boards": 90,
+"mark_kcet": 135,
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)"
+]
+},
+{
+"input": "My KCET score is 130. PUC percentage was good.",
+"keywords": {
+"mark_kcet": 130,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "95 PUC, 138 KCET. Check my rank.",
+"keywords": {
+"per_boards": 95,
+"mark_kcet": 138,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "108 KCET, 92 PUC. Predict rank.",
+"keywords": {
+"mark_kcet": 108,
+"per_boards": 92,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I got 120 KCET, boards unknown. Predict rank.",
+"keywords": {
+"mark_kcet": 120,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "90 PUC, 120 KCET. What CSE colleges can I get?",
+"keywords": {
+"per_boards": 90,
+"mark_kcet": 120,
+"branch": "CSE",
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank, branch)"
+]
+},
+{
+"input": "KCET 132. My PUC was around 94%. What rank?",
+"keywords": {
+"mark_kcet": 132,
+"per_boards": 94,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "I scored 125 KCET. My PUC is unknown.",
+"keywords": {
+"mark_kcet": 125,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "93 PUC, 130 KCET. Check possibilities in Bangalore.",
+"keywords": {
+"per_boards": 93,
+"mark_kcet": 130,
+"location": "Bangalore",
+"intent": "predict_college"
+},
+"missing": {
+"required": ["category", "branch"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)",
+"predict_college(predict_rank)",
+"verify_location(Bangalore)"
+]
+},
+{
+"input": "140 KCET. PUC score missing. Rank?",
+"keywords": {
+"mark_kcet": 140,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)"
+]
+},
+{
+"input": "My boards were 75%, KCET was 80. What rank?",
+"keywords": {
+"per_boards": 75,
+"mark_kcet": 80,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(per_boards, mark_kcet)"
+]
+},
+{
+"input": "135 KCET, 94 PUC. Predict rank.",
+"keywords": {
+"mark_kcet": 135,
+"per_boards": 94,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+},
+{
+"input": "KCET 128. I only know my KCET score.",
+"keywords": {
+"mark_kcet": 128,
+"intent": "predict_rank"
+},
+"missing": {
+"required": ["per_boards"],
+"trigger": "ask_missing_input"
+},
+"action": [
+"predict_rank(mark_kcet)",
+"ask_missing_input(per_boards)",
+]
+},
+{
+"input": "My KCET is 128, boards are 93. What about my rank?",
+"keywords": {
+"mark_kcet": 128,
+"per_boards": 93,
+"intent": "predict_rank"
+},
+"missing": {
+"required": [],
+"trigger": null
+},
+"action": [
+"predict_rank(mark_kcet, per_boards)"
+]
+}
+]
+  
