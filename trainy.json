@@ -1074,6 +1074,707 @@
 "action": [
 "predict_rank(mark_kcet, per_boards)"
 ]
-}
+},
+
+ {
+    "input": "I got 93% in boards and 130 in KCET. What CSE colleges can I get in Bangalore under GM?",
+    "keywords": {
+      "per_boards": 93,
+      "mark_kcet": 130,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "I scored 90 in boards and 125 in KCET. Which engineering colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "per_boards": 90,
+      "mark_kcet": 125,
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Mysore)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 95% in boards and 135 KCET marks. Can I get ECE in Bangalore?",
+    "keywords": {
+      "per_boards": 95,
+      "mark_kcet": 135,
+      "branch": "ECE",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I have 92% in boards and 128 in KCET. What CSE colleges near Bangalore can I get under GM?",
+    "keywords": {
+      "per_boards": 92,
+      "mark_kcet": 128,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore, near=true)"
+    ]
+  },
+  {
+    "input": "My board percentage is 88 and I scored 118 in KCET. Which engineering colleges in Mangalore can I get for ECE under 3A?",
+    "keywords": {
+      "per_boards": 88,
+      "mark_kcet": 118,
+      "branch": "ECE",
+      "category": "3A",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "I scored 91% in boards and 122 KCET. What colleges can I get in Tumkur for Mechanical?",
+    "keywords": {
+      "per_boards": 91,
+      "mark_kcet": 122,
+      "branch": "Mechanical",
+      "location": "Tumkur",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Tumkur)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 94% in boards and 132 in KCET. Can I get ISE in Bangalore under 2B?",
+    "keywords": {
+      "per_boards": 94,
+      "mark_kcet": 132,
+      "branch": "ISE",
+      "category": "2B",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "I got 89 in boards and 115 in KCET. Show me colleges around Hubli for CSE under GM.",
+    "keywords": {
+      "per_boards": 89,
+      "mark_kcet": 115,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Hubli",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Hubli, near=true)"
+    ]
+  },
+  {
+    "input": "I scored 96% in boards and 140 in KCET. Which CSE colleges in Bangalore can I get?",
+    "keywords": {
+      "per_boards": 96,
+      "mark_kcet": 140,
+      "branch": "CSE",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 87% in boards and 110 KCET marks. What engineering colleges can I get in Dharwad under 2A?",
+    "keywords": {
+      "per_boards": 87,
+      "mark_kcet": 110,
+      "category": "2A",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(per_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Dharwad)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 279 out of 300 in boards and 130 in KCET. What CSE colleges can I get in Bangalore under GM?",
+    "keywords": {
+      "mark_boards": 279,
+      "mark_kcet": 130,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "I scored 270/300 in boards and 125 in KCET. Which engineering colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "mark_boards": 270,
+      "mark_kcet": 125,
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Mysore)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 285 out of 300 in boards and 135 KCET marks. Can I get ECE in Bangalore?",
+    "keywords": {
+      "mark_boards": 285,
+      "mark_kcet": 135,
+      "branch": "ECE",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I have 276/300 in boards and 128 in KCET. What CSE colleges near Bangalore can I get under GM?",
+    "keywords": {
+      "mark_boards": 276,
+      "mark_kcet": 128,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore, near=true)"
+    ]
+  },
+  {
+    "input": "I scored 264 out of 300 in boards and 118 in KCET. Which colleges in Mangalore can I get for ECE under 3A?",
+    "keywords": {
+      "mark_boards": 264,
+      "mark_kcet": 118,
+      "branch": "ECE",
+      "category": "3A",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "I got 273/300 in boards and 122 in KCET. What colleges can I get in Tumkur for Mechanical?",
+    "keywords": {
+      "mark_boards": 273,
+      "mark_kcet": 122,
+      "branch": "Mechanical",
+      "location": "Tumkur",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Tumkur)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I scored 282 out of 300 in boards and 132 in KCET. Can I get ISE in Bangalore under 2B?",
+    "keywords": {
+      "mark_boards": 282,
+      "mark_kcet": 132,
+      "branch": "ISE",
+      "category": "2B",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "I got 267/300 in boards and 115 in KCET. Show me CSE colleges around Hubli under GM.",
+    "keywords": {
+      "mark_boards": 267,
+      "mark_kcet": 115,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Hubli",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Hubli, near=true)"
+    ]
+  },
+  {
+    "input": "I got 288 out of 300 in boards and 140 in KCET. Which CSE colleges in Bangalore can I get?",
+    "keywords": {
+      "mark_boards": 288,
+      "mark_kcet": 140,
+      "branch": "CSE",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I scored 261/300 in boards and 110 KCET marks. What engineering colleges can I get in Dharwad under 2A?",
+    "keywords": {
+      "mark_boards": 261,
+      "mark_kcet": 110,
+      "category": "2A",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Dharwad)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 274 out of 300 in boards and 126 in KCET. Can I get CSE in Bangalore under 3B?",
+    "keywords": {
+      "mark_boards": 274,
+      "mark_kcet": 126,
+      "branch": "CSE",
+      "category": "3B",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My board marks are 280/300 and KCET marks are 130. Which ISE colleges can I get in Bangalore?",
+    "keywords": {
+      "mark_boards": 280,
+      "mark_kcet": 130,
+      "branch": "ISE",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I scored 258/300 in boards and 108 in KCET. What engineering colleges can I get near Belgaum under GM?",
+    "keywords": {
+      "mark_boards": 258,
+      "mark_kcet": 108,
+      "category": "GM",
+      "location": "Belgaum",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Belgaum, near=true)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 291/300 in boards and 142 KCET. Which CSE colleges in Bangalore can I get under GM?",
+    "keywords": {
+      "mark_boards": 291,
+      "mark_kcet": 142,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "I have 269 marks out of 300 in boards and 120 in KCET. What EEE colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "mark_boards": 269,
+      "mark_kcet": 120,
+      "branch": "EEE",
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore)"
+    ]
+  },
+  {
+    "input": "I scored 277/300 in boards and 127 in KCET. Can I get AI and ML in Bangalore?",
+    "keywords": {
+      "mark_boards": 277,
+      "mark_kcet": 127,
+      "branch": "AI and ML",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 252/300 in boards and 105 KCET marks. Which engineering colleges in Davangere can I get under SC?",
+    "keywords": {
+      "mark_boards": 252,
+      "mark_kcet": 105,
+      "category": "SC",
+      "location": "Davangere",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Davangere)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 283 out of 300 in boards and 136 in KCET. What CSE colleges near Bangalore can I get?",
+    "keywords": {
+      "mark_boards": 283,
+      "mark_kcet": 136,
+      "branch": "CSE",
+      "location": "Bangalore",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Bangalore, near=true)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "My boards score is 271/300 and KCET is 124. Which ECE colleges can I get in Mangalore under GM?",
+    "keywords": {
+      "mark_boards": 271,
+      "mark_kcet": 124,
+      "branch": "ECE",
+      "category": "GM",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "I scored 286/300 in boards and 134 in KCET. I want CSE only in Bangalore under 2A. What can I get?",
+    "keywords": {
+      "mark_boards": 286,
+      "mark_kcet": 134,
+      "branch": "CSE",
+      "category": "2A",
+      "location": "Bangalore",
+      "location_filter": "only",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore, only=true)"
+    ]
+  },
+  {
+    "input": "I got 263/300 in boards and 116 in KCET. What Mechanical colleges can I get around Tumkur under 3A?",
+    "keywords": {
+      "mark_boards": 263,
+      "mark_kcet": 116,
+      "branch": "Mechanical",
+      "category": "3A",
+      "location": "Tumkur",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Tumkur, near=true)"
+    ]
+  },
+  {
+    "input": "I scored 278 out of 300 in boards and 129 KCET marks. Which engineering colleges can I get in Bangalore under GM?",
+    "keywords": {
+      "mark_boards": 278,
+      "mark_kcet": 129,
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "branch"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category)",
+      "verify_location(Bangalore)",
+      "ask_missing_input(branch)"
+    ]
+  },
+  {
+    "input": "I got 284/300 in boards and 138 in KCET. Can I get CSE in Mysore under GM?",
+    "keywords": {
+      "mark_boards": 284,
+      "mark_kcet": 138,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "predict_rank(mark_boards, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore)"
+    ]
+  }
 ]
   
