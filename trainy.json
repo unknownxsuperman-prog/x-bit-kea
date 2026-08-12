@@ -1775,6 +1775,869 @@
       "predict_college(predict_rank, category, branch)",
       "verify_location(Mysore)"
     ]
+  },
+  {
+    "input": "I got 92 in maths, 88 in physics and 94 in chemistry in boards, and 130 in KCET. What CSE colleges can I get in Bangalore under GM?",
+    "keywords": {
+      "mark_boards_math": 92,
+      "mark_boards_phy": 88,
+      "mark_boards_che": 94,
+      "mark_kcet": 130,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My board marks are 85 maths, 91 physics and 89 chemistry. I scored 125 in KCET. Which ECE colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "mark_boards_math": 85,
+      "mark_boards_phy": 91,
+      "mark_boards_che": 89,
+      "mark_kcet": 125,
+      "branch": "ECE",
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore)"
+    ]
+  },
+  {
+    "input": "I scored 90 in maths, 87 in physics and 93 in chemistry in boards, with 128 KCET marks. Can I get ISE in Mangalore under GM?",
+    "keywords": {
+      "mark_boards_math": 90,
+      "mark_boards_phy": 87,
+      "mark_boards_che": 93,
+      "mark_kcet": 128,
+      "branch": "ISE",
+      "category": "GM",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "My maths board mark is 86, physics is 84 and chemistry is 90. My KCET score is 118. What CSE colleges can I get around Tumkur under 3A?",
+    "keywords": {
+      "mark_boards_math": 86,
+      "mark_boards_phy": 84,
+      "mark_boards_che": 90,
+      "mark_kcet": 118,
+      "branch": "CSE",
+      "category": "3A",
+      "location": "Tumkur",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Tumkur, near=true)"
+    ]
+  },
+  {
+    "input": "I got 95 maths, 89 physics and 92 chemistry in boards and 135 in KCET. Which engineering colleges in Hubli can I get for CSE?",
+    "keywords": {
+      "mark_boards_math": 95,
+      "mark_boards_phy": 89,
+      "mark_boards_che": 92,
+      "mark_kcet": 135,
+      "branch": "CSE",
+      "location": "Hubli",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Hubli)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "My board marks are 82 in maths, 86 in physics and 88 in chemistry. I got 115 in KCET. What ECE colleges can I get in Dharwad under 2B?",
+    "keywords": {
+      "mark_boards_math": 82,
+      "mark_boards_phy": 86,
+      "mark_boards_che": 88,
+      "mark_kcet": 115,
+      "branch": "ECE",
+      "category": "2B",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Dharwad)"
+    ]
+  },
+
+  {
+    "input": "I got 280 out of 300 in boards and 92 maths, 84 physics and 88 chemistry in KCET. Can I get CSE in Bangalore under GM?",
+    "keywords": {
+      "mark_boards": 280,
+      "mark_kcet_math": 92,
+      "mark_kcet_phy": 84,
+      "mark_kcet_che": 88,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My boards total is 270/300 and my KCET subject marks are 86 maths, 80 physics and 84 chemistry. Which ECE colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "mark_boards": 270,
+      "mark_kcet_math": 86,
+      "mark_kcet_phy": 80,
+      "mark_kcet_che": 84,
+      "branch": "ECE",
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore)"
+    ]
+  },
+  {
+    "input": "I scored 285/300 in boards. In KCET I got 90 in maths, 87 in physics and 91 in chemistry. What CSE colleges can I get in Mangalore under GM?",
+    "keywords": {
+      "mark_boards": 285,
+      "mark_kcet_math": 90,
+      "mark_kcet_phy": 87,
+      "mark_kcet_che": 91,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "My board total is 260 out of 300 and I got 78 maths, 82 physics and 80 chemistry in KCET. Which engineering colleges can I get around Tumkur for Mechanical?",
+    "keywords": {
+      "mark_boards": 260,
+      "mark_kcet_math": 78,
+      "mark_kcet_phy": 82,
+      "mark_kcet_che": 80,
+      "branch": "Mechanical",
+      "location": "Tumkur",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Tumkur, near=true)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 275/300 in boards and my KCET marks are 94 maths, 90 physics and 92 chemistry. Can I get ISE colleges in Hubli under 3A?",
+    "keywords": {
+      "mark_boards": 275,
+      "mark_kcet_math": 94,
+      "mark_kcet_phy": 90,
+      "mark_kcet_che": 92,
+      "branch": "ISE",
+      "category": "3A",
+      "location": "Hubli",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Hubli)"
+    ]
+  },
+  {
+    "input": "I have 268 marks out of 300 in boards and scored 85 in maths, 79 in physics and 83 in chemistry in KCET. Which CSE colleges can I get in Dharwad?",
+    "keywords": {
+      "mark_boards": 268,
+      "mark_kcet_math": 85,
+      "mark_kcet_phy": 79,
+      "mark_kcet_che": 83,
+      "branch": "CSE",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Dharwad)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 92 in maths, 88 in physics and 94 in chemistry in boards, and 130 in KCET. What CSE colleges can I get in Bangalore under GM?",
+    "keywords": {
+      "mark_boards_math": 92,
+      "mark_boards_phy": 88,
+      "mark_boards_che": 94,
+      "mark_kcet": 130,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My board marks are 85 maths, 91 physics and 89 chemistry. I scored 125 in KCET. Which ECE colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "mark_boards_math": 85,
+      "mark_boards_phy": 91,
+      "mark_boards_che": 89,
+      "mark_kcet": 125,
+      "branch": "ECE",
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore)"
+    ]
+  },
+  {
+    "input": "I scored 90 in maths, 87 in physics and 93 in chemistry in boards, with 128 KCET marks. Can I get ISE in Mangalore under GM?",
+    "keywords": {
+      "mark_boards_math": 90,
+      "mark_boards_phy": 87,
+      "mark_boards_che": 93,
+      "mark_kcet": 128,
+      "branch": "ISE",
+      "category": "GM",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "My maths board mark is 86, physics is 84 and chemistry is 90. My KCET score is 118. What CSE colleges can I get around Tumkur under 3A?",
+    "keywords": {
+      "mark_boards_math": 86,
+      "mark_boards_phy": 84,
+      "mark_boards_che": 90,
+      "mark_kcet": 118,
+      "branch": "CSE",
+      "category": "3A",
+      "location": "Tumkur",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Tumkur, near=true)"
+    ]
+  },
+  {
+    "input": "I got 95 maths, 89 physics and 92 chemistry in boards and 135 in KCET. Which engineering colleges in Hubli can I get for CSE?",
+    "keywords": {
+      "mark_boards_math": 95,
+      "mark_boards_phy": 89,
+      "mark_boards_che": 92,
+      "mark_kcet": 135,
+      "branch": "CSE",
+      "location": "Hubli",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Hubli)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "My board marks are 82 in maths, 86 in physics and 88 in chemistry. I got 115 in KCET. What ECE colleges can I get in Dharwad under 2B?",
+    "keywords": {
+      "mark_boards_math": 82,
+      "mark_boards_phy": 86,
+      "mark_boards_che": 88,
+      "mark_kcet": 115,
+      "branch": "ECE",
+      "category": "2B",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Dharwad)"
+    ]
+  },
+
+  {
+    "input": "I got 280 out of 300 in boards and 92 maths, 84 physics and 88 chemistry in KCET. Can I get CSE in Bangalore under GM?",
+    "keywords": {
+      "mark_boards": 280,
+      "mark_kcet_math": 92,
+      "mark_kcet_phy": 84,
+      "mark_kcet_che": 88,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My boards total is 270/300 and my KCET subject marks are 86 maths, 80 physics and 84 chemistry. Which ECE colleges can I get in Mysore under 2A?",
+    "keywords": {
+      "mark_boards": 270,
+      "mark_kcet_math": 86,
+      "mark_kcet_phy": 80,
+      "mark_kcet_che": 84,
+      "branch": "ECE",
+      "category": "2A",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore)"
+    ]
+  },
+  {
+    "input": "I scored 285/300 in boards. In KCET I got 90 in maths, 87 in physics and 91 in chemistry. What CSE colleges can I get in Mangalore under GM?",
+    "keywords": {
+      "mark_boards": 285,
+      "mark_kcet_math": 90,
+      "mark_kcet_phy": 87,
+      "mark_kcet_che": 91,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "My board total is 260 out of 300 and I got 78 maths, 82 physics and 80 chemistry in KCET. Which engineering colleges can I get around Tumkur for Mechanical?",
+    "keywords": {
+      "mark_boards": 260,
+      "mark_kcet_math": 78,
+      "mark_kcet_phy": 82,
+      "mark_kcet_che": 80,
+      "branch": "Mechanical",
+      "location": "Tumkur",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Tumkur, near=true)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 275/300 in boards and my KCET marks are 94 maths, 90 physics and 92 chemistry. Can I get ISE colleges in Hubli under 3A?",
+    "keywords": {
+      "mark_boards": 275,
+      "mark_kcet_math": 94,
+      "mark_kcet_phy": 90,
+      "mark_kcet_che": 92,
+      "branch": "ISE",
+      "category": "3A",
+      "location": "Hubli",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Hubli)"
+    ]
+  },
+  {
+    "input": "I have 268 marks out of 300 in boards and scored 85 in maths, 79 in physics and 83 in chemistry in KCET. Which CSE colleges can I get in Dharwad?",
+    "keywords": {
+      "mark_boards": 268,
+      "mark_kcet_math": 85,
+      "mark_kcet_phy": 79,
+      "mark_kcet_che": 83,
+      "branch": "CSE",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Dharwad)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 91 in maths, 86 in physics and 93 in chemistry in boards, and 127 in KCET. Can I get CSE in Bangalore under 2A?",
+    "keywords": {
+      "mark_boards_math": 91,
+      "mark_boards_phy": 86,
+      "mark_boards_che": 93,
+      "mark_kcet": 127,
+      "branch": "CSE",
+      "category": "2A",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My board subject marks are 88 maths, 90 physics and 85 chemistry. I scored 121 in KCET. Which ECE colleges can I get near Mysore under GM?",
+    "keywords": {
+      "mark_boards_math": 88,
+      "mark_boards_phy": 90,
+      "mark_boards_che": 85,
+      "mark_kcet": 121,
+      "branch": "ECE",
+      "category": "GM",
+      "location": "Mysore",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mysore, near=true)"
+    ]
+  },
+  {
+    "input": "I scored 94 in maths, 92 in physics and 89 in chemistry in boards with 133 KCET marks. What ISE colleges can I get in Mangalore?",
+    "keywords": {
+      "mark_boards_math": 94,
+      "mark_boards_phy": 92,
+      "mark_boards_che": 89,
+      "mark_kcet": 133,
+      "branch": "ISE",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Mangalore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "My maths mark is 83, physics is 87 and chemistry is 91 in boards. I got 119 in KCET. Which Mechanical colleges can I get in Tumkur under 3B?",
+    "keywords": {
+      "mark_boards_math": 83,
+      "mark_boards_phy": 87,
+      "mark_boards_che": 91,
+      "mark_kcet": 119,
+      "branch": "Mechanical",
+      "category": "3B",
+      "location": "Tumkur",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Tumkur)"
+    ]
+  },
+  {
+    "input": "I got 97 maths, 90 physics and 95 chemistry in boards and 138 in KCET. Which CSE colleges can I get around Hubli?",
+    "keywords": {
+      "mark_boards_math": 97,
+      "mark_boards_phy": 90,
+      "mark_boards_che": 95,
+      "mark_kcet": 138,
+      "branch": "CSE",
+      "location": "Hubli",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Hubli, near=true)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I scored 81 in maths, 85 in physics and 88 in chemistry in boards. My KCET score is 112. Can I get EEE in Dharwad under SC?",
+    "keywords": {
+      "mark_boards_math": 81,
+      "mark_boards_phy": 85,
+      "mark_boards_che": 88,
+      "mark_kcet": 112,
+      "branch": "EEE",
+      "category": "SC",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_board_total(mark_boards_math, mark_boards_phy, mark_boards_che)",
+      "predict_rank(mark_boards_math, mark_boards_phy, mark_boards_che, mark_kcet)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Dharwad)"
+    ]
+  },
+
+  {
+    "input": "I have 278/300 in boards and got 89 in maths, 86 in physics and 90 in chemistry in KCET. What CSE colleges can I get in Bangalore under GM?",
+    "keywords": {
+      "mark_boards": 278,
+      "mark_kcet_math": 89,
+      "mark_kcet_phy": 86,
+      "mark_kcet_che": 90,
+      "branch": "CSE",
+      "category": "GM",
+      "location": "Bangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Bangalore)"
+    ]
+  },
+  {
+    "input": "My board total is 265/300 and my KCET marks are 84 maths, 81 physics and 86 chemistry. Which ECE colleges can I get in Mysore?",
+    "keywords": {
+      "mark_boards": 265,
+      "mark_kcet_math": 84,
+      "mark_kcet_phy": 81,
+      "mark_kcet_che": 86,
+      "branch": "ECE",
+      "location": "Mysore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Mysore)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I scored 289/300 in boards and got 95 in maths, 91 in physics and 94 in chemistry in KCET. Can I get ISE in Mangalore under 2B?",
+    "keywords": {
+      "mark_boards": 289,
+      "mark_kcet_math": 95,
+      "mark_kcet_phy": 91,
+      "mark_kcet_che": 94,
+      "branch": "ISE",
+      "category": "2B",
+      "location": "Mangalore",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Mangalore)"
+    ]
+  },
+  {
+    "input": "My boards total is 255/300 and I got 76 maths, 79 physics and 82 chemistry in KCET. Which Mechanical colleges can I get around Tumkur?",
+    "keywords": {
+      "mark_boards": 255,
+      "mark_kcet_math": 76,
+      "mark_kcet_phy": 79,
+      "mark_kcet_che": 82,
+      "branch": "Mechanical",
+      "location": "Tumkur",
+      "location_filter": "near",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Tumkur, near=true)",
+      "ask_missing_input(category)"
+    ]
+  },
+  {
+    "input": "I got 282/300 in boards and 92 maths, 88 physics and 93 chemistry in KCET. Which CSE colleges can I get in Hubli under 3A?",
+    "keywords": {
+      "mark_boards": 282,
+      "mark_kcet_math": 92,
+      "mark_kcet_phy": 88,
+      "mark_kcet_che": 93,
+      "branch": "CSE",
+      "category": "3A",
+      "location": "Hubli",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [],
+      "trigger": null
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, category, branch)",
+      "verify_location(Hubli)"
+    ]
+  },
+  {
+    "input": "My board marks are 272/300 and I scored 83 in maths, 80 in physics and 85 in chemistry in KCET. What EEE colleges can I get in Dharwad?",
+    "keywords": {
+      "mark_boards": 272,
+      "mark_kcet_math": 83,
+      "mark_kcet_phy": 80,
+      "mark_kcet_che": 85,
+      "branch": "EEE",
+      "location": "Dharwad",
+      "intent": "predict_college"
+    },
+    "missing": {
+      "required": [
+        "category"
+      ],
+      "trigger": "ask_missing_input"
+    },
+    "action": [
+      "calculate_kcet_total(mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_rank(mark_boards, mark_kcet_math, mark_kcet_phy, mark_kcet_che)",
+      "predict_college(predict_rank, branch)",
+      "verify_location(Dharwad)",
+      "ask_missing_input(category)"
+    ]
   }
 ]
+
+
+
   
