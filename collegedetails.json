@@ -1,0 +1,1454 @@
+[
+  {
+    "id": "E001",
+    "College": "University of Visvesvaraya College of Engineering (A State Autonomous Public University on IIT Model) K R Circle",
+    "shortform": "UVCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E002",
+    "College": "Govt.SKSJT Institute of Engineering, Bangalore",
+    "shortform": "SKSJT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E003",
+    "College": "MS College of Engineering, Basavanagudi, Bangalore (AUTONOMOUS)",
+    "shortform": "MSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E004",
+    "College": "Dr. Ambedkar Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "Dr. AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E005",
+    "College": "R. V. College of Engineering, Bangalore (AUTONOMOUS)",
+    "shortform": "RVCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E006",
+    "College": "M S Ramaiah Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "MSRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E007",
+    "College": "Dayananda Sagar College of Engineering, Bangalore (AUTONOMOUS)",
+    "shortform": "DSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E008",
+    "College": "Bangalore Institute of Technology, K.R.Road, Bangalore (AUTONOMOUS)",
+    "shortform": "BIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E009",
+    "College": "PES University, Bangalore",
+    "shortform": "PESU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E011",
+    "College": "MVJ College of Engineering, Bangalore (AUTONOMOUS)",
+    "shortform": "MVJCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E012",
+    "College": "Sir M.Visvesvaraya Institute of Technology, Bangalore",
+    "shortform": "Sir MVIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E013",
+    "College": "Ghousia Engineering College, Ramanagara",
+    "shortform": "GEC",
+    "location": "Ramanagara"
+  },
+  {
+    "id": "E014",
+    "College": "SJC Institute of Technology, Chickkaballapur (AUTONOMOUS)",
+    "shortform": "SJCIT",
+    "location": "Chickkaballapur"
+  },
+  {
+    "id": "E015",
+    "College": "Dr.T.Thimmalah Institute of Technology, KGF",
+    "shortform": "TIT",
+    "location": "KGF"
+  },
+  {
+    "id": "E016",
+    "College": "Siddaganga Institute of Technology, Tumkur (AUTONOMOUS)",
+    "shortform": "SIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E017",
+    "College": "Sri Siddhartha Institute of Technology, Maralur, Tumkur",
+    "shortform": "SSIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E018",
+    "College": "Kalpatharu Institute of Technology, Tiptur",
+    "shortform": "KIT",
+    "location": "Tiptur"
+  },
+  {
+    "id": "E021",
+    "College": "Sri Jayachamarajendra College of Engineering (Constituent College of JSS Science & Technology University), Mysore",
+    "shortform": "SJCE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E022",
+    "College": "The National Institute of Engineering, Mysore (AUTONOMOUS)",
+    "shortform": "NIE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E023",
+    "College": "PES College of Engineering, Mandya (AUTONOMOUS)",
+    "shortform": "PESCE",
+    "location": "Mandya"
+  },
+  {
+    "id": "E024",
+    "College": "Malnad College of Engineering, Hassan (AUTONOMOUS)",
+    "shortform": "MCE",
+    "location": "Hassan"
+  },
+  {
+    "id": "E028",
+    "College": "Tontadarya College of Engineering, Gadag",
+    "shortform": "TCE",
+    "location": "Gadag"
+  },
+  {
+    "id": "E029",
+    "College": "Maratha Mandal Engineering College, Belgaum",
+    "shortform": "MMEC",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E031",
+    "College": "BVV Sangha's Basaveshwara Engineering College, Bagalkote (AUTONOMOUS)",
+    "shortform": "BEC",
+    "location": "Bagalkot"
+  },
+  {
+    "id": "E032",
+    "College": "R.T.E. Society's Rural Engineering College, Hulkoti",
+    "shortform": "REC",
+    "location": "Hulkoti"
+  },
+  {
+    "id": "E033",
+    "College": "Sri Taralabalu Jagadguru Institute of Technology, Ranebennur",
+    "shortform": "STJIT",
+    "location": "Ranebennur"
+  },
+  {
+    "id": "E034",
+    "College": "SDM College of Engineering, Dharwad (AUTONOMOUS)",
+    "shortform": "SDMCET",
+    "location": "Dharwad"
+  },
+  {
+    "id": "E035",
+    "College": "Anjuman Institute of Technology & Management, Bhatkal",
+    "shortform": "AITM",
+    "location": "Bhatkal"
+  },
+  {
+    "id": "E036",
+    "College": "KLE Technological University, Belgaum Campus",
+    "shortform": "KLE Tech",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E037",
+    "College": "K.L.S. Gogte Institute of Technology, Belgaum (AUTONOMOUS)",
+    "shortform": "GIT",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E038",
+    "College": "BLDEA's VP. Dr.P.G. Hallakatti College of Engineering & Technology, Bijapur",
+    "shortform": "BLDEA",
+    "location": "Bijapur"
+  },
+  {
+    "id": "E040",
+    "College": "Hira Sugar Institute of Technology, Nidasoshi",
+    "shortform": "HSIT",
+    "location": "Nidasoshi"
+  },
+  {
+    "id": "E041",
+    "College": "PDA College of Engineering, Gulbarga (AUTONOMOUS)",
+    "shortform": "PDACE",
+    "location": "Gulbarga"
+  },
+  {
+    "id": "E042",
+    "College": "Khaja Bandanawaz University, Gulbarga",
+    "shortform": "KBNU",
+    "location": "Gulbarga"
+  },
+  {
+    "id": "E043",
+    "College": "Gurunanak Dev Engineering College, Bidar",
+    "shortform": "GNEC",
+    "location": "Bidar"
+  },
+  {
+    "id": "E044",
+    "College": "Bheemanna Khandre Institute of Technology, Bhalki",
+    "shortform": "BKIT",
+    "location": "Bhalki"
+  },
+  {
+    "id": "E045",
+    "College": "Rao Bahadur Y Mahabaleswarappa Engineering College, Bellary",
+    "shortform": "RYMEC",
+    "location": "Bellary"
+  },
+  {
+    "id": "E046",
+    "College": "HKE's Society's Sir M Visvesvaraya College of Engineering, Raichur",
+    "shortform": "SMVCER",
+    "location": "Raichur"
+  },
+  {
+    "id": "E047",
+    "College": "Malnad College of Engineering, Hassan (AUTONOMOUS)",
+    "shortform": "MCE",
+    "location": "Hassan"
+  },
+  {
+    "id": "E048",
+    "College": "BMS College of Engineering, Basavanagudi, Bangalore (AUTONOMOUS)",
+    "shortform": "BMSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E049",
+    "College": "BVV Sangha's Basaveshwara Engineering College, Bagalkote (AUTONOMOUS)",
+    "shortform": "BEC",
+    "location": "Bagalkot"
+  },
+  {
+    "id": "E054",
+    "College": "KVG College of Engineering, Sullia",
+    "shortform": "KVGCE",
+    "location": "Sullia"
+  },
+  {
+    "id": "E055",
+    "College": "P A College of Engineering, Kairangal, Bantwal To, Mangalore",
+    "shortform": "PACE",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E056",
+    "College": "The National Institute of Engineering, Mysore (AUTONOMOUS)",
+    "shortform": "NIE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E057",
+    "College": "JSS Science and Technology University, Mysuru",
+    "shortform": "JSSTU",
+    "location": "Mysuru"
+  },
+  {
+    "id": "E058",
+    "College": "PES College of Engineering, Mandya (AUTONOMOUS)",
+    "shortform": "PESCE",
+    "location": "Mandya"
+  },
+  {
+    "id": "E059",
+    "College": "PDA College of Engineering, Gulbarga (AUTONOMOUS)",
+    "shortform": "PDACE",
+    "location": "Gulbarga"
+  },
+  {
+    "id": "E060",
+    "College": "Dr. Ambedkar Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "Dr. AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E061",
+    "College": "University B.D.T College of Engineering, Davanagere",
+    "shortform": "UBDTCE",
+    "location": "Davanagere"
+  },
+  {
+    "id": "E062",
+    "College": "Bapuji Institute of Engineering & Technology, Davangere (AUTONOMOUS)",
+    "shortform": "BIET",
+    "location": "Davangere"
+  },
+  {
+    "id": "E063",
+    "College": "Sri Jagadguru Murugharajendra University (SJM Institute of Technology), Chitradurga",
+    "shortform": "SJMIT",
+    "location": "Chitradurga"
+  },
+  {
+    "id": "E064",
+    "College": "Adhichunchanagiri Institute of Technology, Chickamagalur",
+    "shortform": "AIT",
+    "location": "Chickamagalur"
+  },
+  {
+    "id": "E065",
+    "College": "Jawaharlal Nehru New College of Engineering, Shimoga",
+    "shortform": "JNNCE",
+    "location": "Shimoga"
+  },
+  {
+    "id": "E066",
+    "College": "University B.D.T College of Engineering, Davanagere",
+    "shortform": "UBDTCE",
+    "location": "Davanagere"
+  },
+  {
+    "id": "E070",
+    "College": "Bahubali College of Engineering, Shravanabelagola, Hassan",
+    "shortform": "BCE",
+    "location": "Hassan"
+  },
+  {
+    "id": "E071",
+    "College": "Vidya Vardhaka College of Engineering, Mysore (AUTONOMOUS)",
+    "shortform": "VVCE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E075",
+    "College": "Ballari Institute of Technology & Management, Bellary (AUTONOMOUS)",
+    "shortform": "BITM",
+    "location": "Bellary"
+  },
+  {
+    "id": "E076",
+    "College": "Proudadevaraya Institute of Technology, Hospet",
+    "shortform": "PDIT",
+    "location": "Hospet"
+  },
+  {
+    "id": "E077",
+    "College": "Vidya Vikas Institute of Engineering & Technology, Mysore",
+    "shortform": "VVIET",
+    "location": "Mysore"
+  },
+  {
+    "id": "E078",
+    "College": "The Oxford College of Engineering, Bangalore",
+    "shortform": "TOCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E079",
+    "College": "Acharya Institute of Technology, Bangalore",
+    "shortform": "AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E081",
+    "College": "Sri Siddhartha School of Engineering, Tumkur",
+    "shortform": "SSSE",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E082",
+    "College": "JSS Academy of Technical Education, Bangalore",
+    "shortform": "JSSATE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E083",
+    "College": "H.K.B.K. College of Engineering, Bangalore",
+    "shortform": "HKBK",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E085",
+    "College": "APS College of Engineering, Somanahalli, Bangalore",
+    "shortform": "APSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E086",
+    "College": "Sri Sairam College Of Engineering, Anekal, Bangalore",
+    "shortform": "SSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E087",
+    "College": "Vivekananda Institute of Technology, Kengeri, Bangalore",
+    "shortform": "VKIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E088",
+    "College": "New Horizon College of Engineering, Varthur, Bangalore (AUTONOMOUS)",
+    "shortform": "NHCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E090",
+    "College": "Sri Revana Siddeswara Institute of Technology, Bangalore",
+    "shortform": "SRSIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E091",
+    "College": "K S Institute of Technology, Raghuvanshalli, Bangalore (AUTONOMOUS)",
+    "shortform": "KSIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E092",
+    "College": "Vemana Institute of Technology, Bangalore",
+    "shortform": "VIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E093",
+    "College": "Basavakalyana Engineering College, Basavakalyana, Bidar District",
+    "shortform": "BKEC",
+    "location": "Basavakalyana"
+  },
+  {
+    "id": "E094",
+    "College": "Coorg Institute of Technology, Kunda, Ponnampet",
+    "shortform": "CIT",
+    "location": "Coorg"
+  },
+  {
+    "id": "E095",
+    "College": "AMC Engineering College, Bannerghatta Road, Bangalore (AUTONOMOUS)",
+    "shortform": "AMCEC",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E096",
+    "College": "East Point College of Engineering & Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "EPCET",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E097",
+    "College": "CMR Institute of Technology, Kundala Halli village, Bangalore",
+    "shortform": "CMRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E098",
+    "College": "Atria Institute of Technology, Anand Nagar, Hebbal PO, Bangalore (AUTONOMOUS)",
+    "shortform": "AIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E100",
+    "College": "K S School of Engineering and Management, Bangalore",
+    "shortform": "KSSEM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E101",
+    "College": "Channabasaveshwara Institute of Technology, Gubbi, Tumkur",
+    "shortform": "CIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E102",
+    "College": "Don Bosco Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "DBIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E103",
+    "College": "Global Academy of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "GAT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E104",
+    "College": "Nagarjuna College of Engineering & Technology, Devanahalli, Bangalore Rural (AUTONOMOUS)",
+    "shortform": "NCET",
+    "location": "Bangalore Rural"
+  },
+  {
+    "id": "E106",
+    "College": "East West Institute Of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "EWIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E107",
+    "College": "BNM Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "BNMIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E108",
+    "College": "Sapthagiri NPS University, Bengaluru",
+    "shortform": "SNPSU",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E109",
+    "College": "City Engineering College, Doddakallasandra, Bangalore South",
+    "shortform": "CEC",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E111",
+    "College": "Sri Venkateshwara College of Engineering, Bangalore (AUTONOMOUS)",
+    "shortform": "SVCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E112",
+    "College": "Sri Krishna Institute of Technology, Bangalore",
+    "shortform": "SKIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E113",
+    "College": "Sambhram Institute of Technology, Bangalore",
+    "shortform": "SaIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E114",
+    "College": "G M Institute of Technology, Davanagere",
+    "shortform": "GMIT",
+    "location": "Davanagere"
+  },
+  {
+    "id": "E115",
+    "College": "SJB Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "SJBIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E116",
+    "College": "R.L. Jalappa Institute of Technology, Doddaballapura",
+    "shortform": "RLJIT",
+    "location": "Doddaballapura"
+  },
+  {
+    "id": "E118",
+    "College": "RNS Institute of Technology, Bangalore (AUTONOMOUS)",
+    "shortform": "RNSIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E119",
+    "College": "KCT Engineering College, Gulbarga",
+    "shortform": "KCTEC",
+    "location": "Gulbarga"
+  },
+  {
+    "id": "E120",
+    "College": "Jnanavikasa Institute of Technology, Bidadi, Ramanagar",
+    "shortform": "JIT",
+    "location": "Ramanagar"
+  },
+  {
+    "id": "E121",
+    "College": "Vivekananda College of Engineering Technology, Puttur",
+    "shortform": "VCET",
+    "location": "Puttur"
+  },
+  {
+    "id": "E123",
+    "College": "Canara Engineering College, Bantwal",
+    "shortform": "CEC",
+    "location": "Bantwal"
+  },
+  {
+    "id": "E124",
+    "College": "Rajiv Gandhi Institute of Technology, Bangalore",
+    "shortform": "RGIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E126",
+    "College": "MS Institute of Technology & Management, Yelahanka, Bangalore (AUTONOMOUS)",
+    "shortform": "MSITM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E127",
+    "College": "MS Engineering College, Bangalore",
+    "shortform": "MSEC",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E128",
+    "College": "Sharanbasava University (Formerly Appa Institute of Engineering and Tech), Kalaburagi",
+    "shortform": "SBU",
+    "location": "Kalaburagi"
+  },
+  {
+    "id": "E129",
+    "College": "St. Joseph Engineering College, Mangalore (AUTONOMOUS)",
+    "shortform": "SJEC",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E130",
+    "College": "Shridevi Institute of Engineering & Technology, Tumkur",
+    "shortform": "SIET",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E132",
+    "College": "Secab Institute of Engineering & Technology, Bijapur",
+    "shortform": "SIET",
+    "location": "Bijapur"
+  },
+  {
+    "id": "E133",
+    "College": "SSS Institute of Engineering & Technology for Women, Mysore",
+    "shortform": "SSSIETW",
+    "location": "Mysore"
+  },
+  {
+    "id": "E134",
+    "College": "Smt. Kamala & Sri Venkappa M. Agadi College of Engineering & Technology, Gadag",
+    "shortform": "AGADI",
+    "location": "Gadag"
+  },
+  {
+    "id": "E135",
+    "College": "KLS Viswanathrao Deshpande Institute of Technology, Haliyal",
+    "shortform": "VDIT",
+    "location": "Haliyal"
+  },
+  {
+    "id": "E136",
+    "College": "Moodalakatte Institute of Technology, Kundapura, Udupi",
+    "shortform": "MITK",
+    "location": "Udupi"
+  },
+  {
+    "id": "E138",
+    "College": "BLDE Association's VP Dr. P.G. Halakatti College of Engineering and Technology, Vijayapura",
+    "shortform": "BLDEACET",
+    "location": "Vijayapura"
+  },
+  {
+    "id": "E139",
+    "College": "Impact College of Engineering & Applied Sciences, Bangalore",
+    "shortform": "ICEAS",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E141",
+    "College": "PES University (Electronic City Campus), Bengaluru",
+    "shortform": "PESU EC",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E142",
+    "College": "Adhichunchanagiri University (Formerly BGS Institute of Technology), Mandya",
+    "shortform": "ACU",
+    "location": "Mandya"
+  },
+  {
+    "id": "E144",
+    "College": "Srinivas Institute of Technology, Mangalore",
+    "shortform": "SIT",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E145",
+    "College": "Rajarajeswari College of Engineering, Bangalore (AUTONOMOUS)",
+    "shortform": "RRCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E146",
+    "College": "Shreedevi Institute of Technology, Mangalore",
+    "shortform": "SIT",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E147",
+    "College": "T. John Institute of Technology, Bangalore",
+    "shortform": "TJIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E149",
+    "College": "Cambridge Institute of Technology, K.R. Puram, Bangalore (AUTONOMOUS)",
+    "shortform": "CIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E150",
+    "College": "PES Institute of Technology & Management, Shimoga",
+    "shortform": "PESITM",
+    "location": "Shimoga"
+  },
+  {
+    "id": "E151",
+    "College": "Mangalore Institute of Technology & Engineering, Moodabidri, Mangalore (AUTONOMOUS)",
+    "shortform": "MITE",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E152",
+    "College": "SDM Institute of Tech, Ujire, Dakshina Kannada",
+    "shortform": "SDMIT",
+    "location": "Ujire"
+  },
+  {
+    "id": "E153",
+    "College": "S E A College of Engineering & Technology, Virgonagar, Bangalore",
+    "shortform": "SEA",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E154",
+    "College": "Government Engineering College, Chamarajanagara",
+    "shortform": "GEC",
+    "location": "Chamarajanagara"
+  },
+  {
+    "id": "E155",
+    "College": "Government Engineering College, Hassan",
+    "shortform": "GEC",
+    "location": "Hassan"
+  },
+  {
+    "id": "E156",
+    "College": "Government Engineering College, KR Pet, Mandya",
+    "shortform": "GEC",
+    "location": "KR Pet"
+  },
+  {
+    "id": "E157",
+    "College": "Government Engineering College, Ramanagaram",
+    "shortform": "GEC",
+    "location": "Ramanagaram"
+  },
+  {
+    "id": "E158",
+    "College": "Maharaja Institute of Technology Mysore, Srirangapatna, Mandya (AUTONOMOUS)",
+    "shortform": "MITM",
+    "location": "Mandya"
+  },
+  {
+    "id": "E159",
+    "College": "Karavali Institute of Technology, Neermarga, Mangalore",
+    "shortform": "KIT",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E160",
+    "College": "Sahyadri College Of Engineering & Management, Adyar, Mangalore (AUTONOMOUS)",
+    "shortform": "SCEM",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E161",
+    "College": "Government Engineering College, Kushalanagar",
+    "shortform": "GEC",
+    "location": "Kushalanagar"
+  },
+  {
+    "id": "E162",
+    "College": "Government Engineering College, Raichur",
+    "shortform": "GEC",
+    "location": "Raichur"
+  },
+  {
+    "id": "E163",
+    "College": "Government Engineering College, Haveri",
+    "shortform": "GEC",
+    "location": "Haveri"
+  },
+  {
+    "id": "E164",
+    "College": "Government Engineering College, Hoovina Hadagali",
+    "shortform": "GEC",
+    "location": "Hoovina Hadagali"
+  },
+  {
+    "id": "E165",
+    "College": "Yenepoya Institute Of Technology, Mangalore",
+    "shortform": "YIT",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E167",
+    "College": "KLES'S KLE College of Engineering & Technology, Chikkodi, Belgaum",
+    "shortform": "KLE",
+    "location": "Chikkodi"
+  },
+  {
+    "id": "E168",
+    "College": "Amruta Institute of Engineering & Management Science (AIEMS), Ramanagar",
+    "shortform": "AIEMS",
+    "location": "Ramanagar"
+  },
+  {
+    "id": "E169",
+    "College": "Alva's Institute of Engineering & Technology, Moodabidre, D.K (AUTONOMOUS)",
+    "shortform": "AIET",
+    "location": "Moodabidre"
+  },
+  {
+    "id": "E171",
+    "College": "Brindavan College of Engineering, Yelahanka, Bangalore",
+    "shortform": "BCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E172",
+    "College": "R.R. Institute of Technology, Chikkabanavara, Bangalore (AUTONOMOUS)",
+    "shortform": "RRIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E173",
+    "College": "Sai Vidya Institute of Technology, Rajanukunte, Bangalore",
+    "shortform": "SVIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E174",
+    "College": "Dr. Sri Sri Sri Shivakumara Mahaswamyji College of Engineering, Byranayakanahalli, Bangalore Rural",
+    "shortform": "SMCE",
+    "location": "Bangalore Rural"
+  },
+  {
+    "id": "E175",
+    "College": "S.G. Balekundri Institute of Technology, Belgaum",
+    "shortform": "SGBIT",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E176",
+    "College": "Navodaya Institute of Technology, Raichur (AUTONOMOUS)",
+    "shortform": "NIT",
+    "location": "Raichur"
+  },
+  {
+    "id": "E177",
+    "College": "Rajeev Institute of Technology, Hassan (AUTONOMOUS)",
+    "shortform": "RIT",
+    "location": "Hassan"
+  },
+  {
+    "id": "E178",
+    "College": "The National Institute of Engineering, Mysore (AUTONOMOUS)",
+    "shortform": "NIE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E180",
+    "College": "Beary's Institute of Technology, Boliyar Village, Bantwal Tq, Mangalore",
+    "shortform": "BIT",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E181",
+    "College": "Sri Basaveswara Institute of Technology, Madenur Gate, Tiptur",
+    "shortform": "SBIT",
+    "location": "Tiptur"
+  },
+  {
+    "id": "E184",
+    "College": "C Byre Gowda Institute of Technology, Kolar",
+    "shortform": "CBGIT",
+    "location": "Kolar"
+  },
+  {
+    "id": "E185",
+    "College": "Angadi Institute of Technology and Management, Belgaum",
+    "shortform": "AITM",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E186",
+    "College": "Dr. ACS College of Engineering, Mysore Road, Bangalore",
+    "shortform": "ACSCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E188",
+    "College": "Vijaya Vittala Institute of Technology, Bangalore",
+    "shortform": "VVIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E189",
+    "College": "Naavkis College of Engineering, Hassan",
+    "shortform": "NCE",
+    "location": "Hassan"
+  },
+  {
+    "id": "E191",
+    "College": "Akshaya Institute of Technology, Lingapura, Tumkur Dist.",
+    "shortform": "AIT",
+    "location": "Tumkur"
+  },
+  {
+    "id": "E193",
+    "College": "Srinivas University, Mukka, Mangaluru",
+    "shortform": "SU",
+    "location": "Mangaluru"
+  },
+  {
+    "id": "E194",
+    "College": "Government Engineering College, Karwar",
+    "shortform": "GEC",
+    "location": "Karwar"
+  },
+  {
+    "id": "E196",
+    "College": "Jain College of Engineering, Belgaum",
+    "shortform": "JCE",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E197",
+    "College": "Veerappa Nisty Engineering College, Shorapur, Yadgir",
+    "shortform": "VNEC",
+    "location": "Yadgir"
+  },
+  {
+    "id": "E198",
+    "College": "Sharanbasava University (Exclusively for Women), Kalaburagi",
+    "shortform": "SBUW",
+    "location": "Kalaburagi"
+  },
+  {
+    "id": "E199",
+    "College": "AGM Rural Engineering College, Varur, Hubli",
+    "shortform": "AGMREC",
+    "location": "Hubli"
+  },
+  {
+    "id": "E201",
+    "College": "Gopalan College of Engineering & Management, Bangalore (AUTONOMOUS)",
+    "shortform": "GCEM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E202",
+    "College": "Sampoorna Group of Institutions, Channapatana, Bangalore South",
+    "shortform": "SGI",
+    "location": "Channapatana"
+  },
+  {
+    "id": "E203",
+    "College": "KS School of Engineering & Management, Bangalore",
+    "shortform": "KSSEM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E204",
+    "College": "Bangalore Technological Institute, Sarjapura Road, Bangalore",
+    "shortform": "BTI",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E205",
+    "College": "ATME College of Engineering, Mysore",
+    "shortform": "ATMECE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E206",
+    "College": "Shri Madhwa Vadiraja Institute of Technology and Management, Udupi (AUTONOMOUS)",
+    "shortform": "SMVITM",
+    "location": "Udupi"
+  },
+  {
+    "id": "E207",
+    "College": "VSM's Somashekhar R Kothiwale Institute of Technology, Nippani, Belgaum",
+    "shortform": "VKIT",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E209",
+    "College": "Jyothi Institute of Technology, Kanakapura Road, Bangalore",
+    "shortform": "JIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E210",
+    "College": "G Madegowda Institute of Technology, Bharathinagara, Maddur, Mandya",
+    "shortform": "GMIT",
+    "location": "Mandya"
+  },
+  {
+    "id": "E211",
+    "College": "Jain Institute of Technology, Davanagere",
+    "shortform": "JIT",
+    "location": "Davanagere"
+  },
+  {
+    "id": "E212",
+    "College": "Dayananda Sagar Academy of Technology & Management, Bangalore (AUTONOMOUS)",
+    "shortform": "DSATM",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E213",
+    "College": "Lingarajappa Engineering College, Bidar",
+    "shortform": "LEC",
+    "location": "Bidar"
+  },
+  {
+    "id": "E216",
+    "College": "Shetty Institute of Technology, Gulbarga",
+    "shortform": "SIT",
+    "location": "Gulbarga"
+  },
+  {
+    "id": "E220",
+    "College": "Alliance University Central Campus, Bengaluru",
+    "shortform": "AU",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E221",
+    "College": "Biluru Gurubasava Mahaswamiji Institute of Technology, Mudhol, Bagalkote",
+    "shortform": "BGMIT",
+    "location": "Mudhol"
+  },
+  {
+    "id": "E222",
+    "College": "Cambridge Institute Of Technology, North Campus, Devanahalli, Bangalore",
+    "shortform": "CIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E225",
+    "College": "SJB School of Architecture & Planning, Kengeri, Bangalore",
+    "shortform": "SJBSAP",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E227",
+    "College": "Cauvery Institute of Technology, Mandya",
+    "shortform": "CIT",
+    "location": "Mandya"
+  },
+  {
+    "id": "E232",
+    "College": "REVA University, Bangalore",
+    "shortform": "REVA",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E235",
+    "College": "M. S. Ramaiah University of Applied Sciences, Bangalore",
+    "shortform": "MSRUAS",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E237",
+    "College": "Presidency University, Bengaluru",
+    "shortform": "PU",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E238",
+    "College": "Mysuru Royal Institute Of Technology, Mandya",
+    "shortform": "MRIT",
+    "location": "Mandya"
+  },
+  {
+    "id": "E239",
+    "College": "East West College Of Engineering, Yelahanka, Bangalore",
+    "shortform": "EWCE",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E240",
+    "College": "Dayananda Sagar University, Ramanagar Dist",
+    "shortform": "DSU",
+    "location": "Ramanagar"
+  },
+  {
+    "id": "E241",
+    "College": "KLE Technological University (Formerly BVBCET), Hubballi",
+    "shortform": "KLE Tech",
+    "location": "Hubballi"
+  },
+  {
+    "id": "E252",
+    "College": "Mysore College Of Engineering and Management, Mysore",
+    "shortform": "MCEM",
+    "location": "Mysore"
+  },
+  {
+    "id": "E254",
+    "College": "A J Institute Of Engineering And Technology, Mangalore",
+    "shortform": "AJIET",
+    "location": "Mangalore"
+  },
+  {
+    "id": "E255",
+    "College": "Gandhi Institute of Technology and Management (GITAM), Bengaluru",
+    "shortform": "GITAM",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E256",
+    "College": "Rai Technological University, Doddaballapur, Bengaluru",
+    "shortform": "RTU",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E257",
+    "College": "CMR University Main Campus, Bangalore",
+    "shortform": "CMRU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E258",
+    "College": "Maharaja Institute of Technology, Tandavapura, Mysore",
+    "shortform": "MITT",
+    "location": "Mysore"
+  },
+  {
+    "id": "E259",
+    "College": "Sir MV School of Architecture, Hunasamaranahalli, Bangalore",
+    "shortform": "SMVSA",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E263",
+    "College": "School of Planning and Architecture, University of Mysore",
+    "shortform": "SPA Mysore",
+    "location": "Mysore"
+  },
+  {
+    "id": "E264",
+    "College": "Basava Engineering School of Technology, Vijayapura",
+    "shortform": "BEST",
+    "location": "Vijayapura"
+  },
+  {
+    "id": "E265",
+    "College": "Jain College of Engineering and Technology, Hubballi",
+    "shortform": "JCET",
+    "location": "Hubballi"
+  },
+  {
+    "id": "E266",
+    "College": "BMS College of Architecture, Design and Planning, Basavangudi, Bangalore",
+    "shortform": "BMSCA",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E269",
+    "College": "Jain College Of Engineering and Research, Belgaum",
+    "shortform": "JCER",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E272",
+    "College": "Government Engineering College, Talakal, Koppal",
+    "shortform": "GEC",
+    "location": "Koppal"
+  },
+  {
+    "id": "E273",
+    "College": "Government Engineering College, Gangavathi, Koppal",
+    "shortform": "GEC",
+    "location": "Koppal"
+  },
+  {
+    "id": "E274",
+    "College": "Government Engineering College, Mosale Hosahalli, Hassan",
+    "shortform": "GEC",
+    "location": "Hassan"
+  },
+  {
+    "id": "E275",
+    "College": "R V Institute Of Technology and Management, Bengaluru",
+    "shortform": "RVITM",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E278",
+    "College": "Visvesvaraya Technological University, Muddenahalli Campus, Chikkaballapur",
+    "shortform": "VTU CPGS",
+    "location": "Chikkaballapur"
+  },
+  {
+    "id": "E279",
+    "College": "Visvesvaraya Technological University, Belagavi Campus, Belagavi",
+    "shortform": "VTU Belagavi",
+    "location": "Belagavi"
+  },
+  {
+    "id": "E280",
+    "College": "Visvesvaraya Technological University, CPGS, Kalaburagi",
+    "shortform": "VTU CPGS",
+    "location": "Kalaburagi"
+  },
+  {
+    "id": "E281",
+    "College": "Government Engineering College, Challakere, Chitradurga",
+    "shortform": "GEC",
+    "location": "Chitradurga"
+  },
+  {
+    "id": "E283",
+    "College": "University of Mysuru B.N. Bahadur Institute of Management Sciences, Mysore",
+    "shortform": "BIMS",
+    "location": "Mysore"
+  },
+  {
+    "id": "E284",
+    "College": "Sri Jayachamarajendra College of Engineering (Constituent College of JSS Science & Technology University), Mysore",
+    "shortform": "SJCE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E285",
+    "College": "RV University, Bangalore",
+    "shortform": "RVU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E286",
+    "College": "BGS College of Engineering & Technology, Bangalore",
+    "shortform": "BGSCET",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E287",
+    "College": "Vidyashilp University, Bengaluru",
+    "shortform": "VU",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E288",
+    "College": "Garden City University, Bangalore",
+    "shortform": "GCU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E290",
+    "College": "Visvesvaraya Technological University, CPGS, Mysuru",
+    "shortform": "VTU CPGS",
+    "location": "Mysuru"
+  },
+  {
+    "id": "E291",
+    "College": "Government Engineering College, Naragund, Gadag",
+    "shortform": "GEC",
+    "location": "Gadag"
+  },
+  {
+    "id": "E292",
+    "College": "Government Engineering College, Mailur, Bidar",
+    "shortform": "GEC",
+    "location": "Bidar"
+  },
+  {
+    "id": "E297",
+    "College": "Aditya College of Engineering and Technology, Yelahanka, Bengaluru",
+    "shortform": "ACET",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E299",
+    "College": "Ghousia Institute of Technology for Women, Bangalore",
+    "shortform": "GITW",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E300",
+    "College": "Akash Institute of Engineering and Technology, Bengaluru",
+    "shortform": "AIET",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E301",
+    "College": "Kishkinda University, Ballari District",
+    "shortform": "KU",
+    "location": "Ballari"
+  },
+  {
+    "id": "E302",
+    "College": "Amity University, Devanahalli, Bengaluru",
+    "shortform": "Amity",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E303",
+    "College": "GM University, Davangere",
+    "shortform": "GMU",
+    "location": "Davangere"
+  },
+  {
+    "id": "E304",
+    "College": "Anuvarthik Mirji Bharatesh Institute of Technology, Belagavi",
+    "shortform": "AMBIT",
+    "location": "Belagavi"
+  },
+  {
+    "id": "E305",
+    "College": "HNN College of Engineering, Bengaluru",
+    "shortform": "HNNCE",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E306",
+    "College": "The Chanakya University, Devanahalli, Bengaluru",
+    "shortform": "CU",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E307",
+    "College": "Seshadripuram Institute of Technology, Mysuru",
+    "shortform": "SIT",
+    "location": "Mysuru"
+  },
+  {
+    "id": "E308",
+    "College": "Constituent College of VTU, Chintamani, Chikkaballapura Dist",
+    "shortform": "VTU Chintamani",
+    "location": "Chintamani"
+  },
+  {
+    "id": "E309",
+    "College": "Constituent College of VTU, Chintamani, Chikkaballapura Dist",
+    "shortform": "VTU Chintamani",
+    "location": "Chintamani"
+  },
+  {
+    "id": "E310",
+    "College": "Government Engineering College, Arasikere, Hassan District",
+    "shortform": "GEC",
+    "location": "Arasikere"
+  },
+  {
+    "id": "E311",
+    "College": "Rathinam Institute of Technology, Bengaluru South",
+    "shortform": "RIT",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E312",
+    "College": "New Ebenezer Institute of Technology, Bengaluru Urban",
+    "shortform": "NEIT",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E313",
+    "College": "Harsha Institute of Technology, Nelamangala Taluk, Bengaluru Rural",
+    "shortform": "HIT",
+    "location": "Bengaluru Rural"
+  },
+  {
+    "id": "E314",
+    "College": "Cauvery College of Engineering, Mysore",
+    "shortform": "CCE",
+    "location": "Mysore"
+  },
+  {
+    "id": "E315",
+    "College": "Ramaiah University College of Engineering (M.S. Ramaiah University of Applied Sciences), Bengaluru",
+    "shortform": "MSRUAS",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E316",
+    "College": "RV University, Nanjanagudu",
+    "shortform": "RVU",
+    "location": "Nanjanagudu"
+  },
+  {
+    "id": "E317",
+    "College": "VTU Constituent Engineering College, Gokak",
+    "shortform": "VTU Gokak",
+    "location": "Gokak"
+  },
+  {
+    "id": "E318",
+    "College": "BMS University, Bangalore",
+    "shortform": "BMSU",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E320",
+    "College": "Koshys Institute of Technology, Bengaluru",
+    "shortform": "KIT",
+    "location": "Bengaluru"
+  },
+  {
+    "id": "E321",
+    "College": "University of Mysuru B.N. Bahadur Institute of Management Sciences, Mysore",
+    "shortform": "BIMS",
+    "location": "Mysore"
+  },
+  {
+    "id": "E322",
+    "College": "CMN Institute Of Technology, Bangalore",
+    "shortform": "CMNIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E323",
+    "College": "Future Forge Engineering Academy, Hubli",
+    "shortform": "FFEA",
+    "location": "Hubli"
+  },
+  {
+    "id": "E324",
+    "College": "ISBR College of Engineering and Technology, Electronic City, Bangalore",
+    "shortform": "ISBR",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E325",
+    "College": "Dhanwantari Institute of Technology, Bangalore",
+    "shortform": "DIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E326",
+    "College": "Krupanidhi Institute of Technology, Varthur Hobli, Bangalore",
+    "shortform": "KIT",
+    "location": "Bangalore"
+  },
+  {
+    "id": "E327",
+    "College": "AGM College of Engineering and Technology, Belgaum",
+    "shortform": "AGMCET",
+    "location": "Belgaum"
+  },
+  {
+    "id": "E328",
+    "College": "Shri Swami Nagabhushan Gurukul College of Engineering and Technology, Vijayapura",
+    "shortform": "SSNGCET",
+    "location": "Vijayapura"
+  }
+]
