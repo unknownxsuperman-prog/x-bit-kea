@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
     </script>
+    <script src="./engine.js"></script>
     <style>
         *,
         *::before,
@@ -1510,6 +1511,7 @@
             document.getElementById('sbBackdrop').classList.remove('open');
             flowState = null;
             pendingSmartQuery = null;
+            engineSession = { known: {}, goal: null };
         }
 
         function saveCurrentChat() {
@@ -2727,7 +2729,8 @@
         }
 
         /* ══════════════════════════════════════════════════════════
-           SMART CHAT ENGINE
+           SMART CHAT ENGINE (legacy regex NLU — retained as an
+           automatic fallback in case engine.js fails to load)
            ══════════════════════════════════════════════════════════ */
         let kcetTrainingSet = [];
         let chatTrainingSet = [];
@@ -2930,13 +2933,17 @@
 
         function escapeHtmlKeepEmoji(s) { return String(s).replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-        async function searchCollegesSmart({ rank, category, branch, location }) {
+        async function searchCollegesSmart({ rank, category, branch, location, locationGroup }) {
             const dataset = await loadDataset(HK_CATEGORIES.includes(category) ? 'enghk' : 'eng');
             const lowerBound = rank - 1500;
             const branchAliasPool = branch ? [branch] : null;
             const results = [];
             for (const college of dataset) {
-                if (location && !(college.location || '').toLowerCase().includes(location.toLowerCase())) continue;
+                if (locationGroup && locationGroup.length) {
+                    const collegeLoc = (college.location || '').toLowerCase();
+                    const matchesLoc = locationGroup.some(g => collegeLoc.includes(g) || g.includes(collegeLoc));
+                    if (!matchesLoc) continue;
+                } else if (location && !(college.location || '').toLowerCase().includes(location.toLowerCase())) continue;
                 if (!college.branches) continue;
                 if (branchAliasPool) {
                     const key = matchBranchKey(branchAliasPool, college.branches);
@@ -2985,8 +2992,8 @@
             return html;
         }
 
-        /* ── MAIN ROUTER ── */
-        async function handleSmartMessage(rawText) {
+        /* ── LEGACY ROUTER (fallback path only) ── */
+        async function legacyHandleSmartMessage(rawText) {
             const thinkingRow = showTempThinking();
             await sleep(1600);
             thinkingRow.remove();
@@ -3082,6 +3089,194 @@
                 thinkingRow2.remove();
                 protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
             }
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           PROTON ENGINE INTEGRATION (engine.js) — this is the primary
+           NLU path. trainy.json / branch-aliases.json / collegedetails.json
+           / location.json / answers.json feed ProtonEngine.init(); the
+           legacy regex router above only runs if engine.js failed to load.
+           ══════════════════════════════════════════════════════════ */
+        let engineSession = { known: {}, goal: null };
+
+        async function initProtonEngine() {
+            if (!window.ProtonEngine) {
+                console.warn('[x-bit] engine.js not found — falling back to legacy NLU only.');
+                return;
+            }
+            try {
+                const [trainingExamples, branchAliases, collegeDetails, locationData, answerData] = await Promise.all([
+                    fetch('./trainy.json').then(r => r.ok ? r.json() : []).catch(() => []),
+                    loadBranchAliases().catch(() => []),
+                    fetch('./collegedetails.json').then(r => r.ok ? r.json() : []).catch(() => []),
+                    fetch('./location.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
+                    fetch('./answers.json').then(r => r.ok ? r.json() : {}).catch(() => ({}))
+                ]);
+                window.ProtonEngine.init({ trainingExamples, branchAliases, collegeDetails, locationData, answerData });
+                console.info('[x-bit] ProtonEngine ready:', trainingExamples.length, 'trainy examples,',
+                    branchAliases.length, 'branch aliases,', collegeDetails.length, 'colleges.');
+            } catch (e) {
+                console.error('[x-bit] ProtonEngine init failed, will fall back to legacy NLU:', e.message);
+            }
+        }
+
+        // resolve a rank from engine entities (direct rank, or computed from boards+kcet)
+        function resolveRankFromEntities(entities) {
+            if (entities.rank != null) return { rank: entities.rank, computed: false };
+            if (entities.boardPercentage != null && entities.kcetMarks != null) {
+                const kcetPct = (Math.min(180, entities.kcetMarks) / 180) * 100;
+                const finalPct = computeFinalPercentage(entities.boardPercentage, kcetPct);
+                const rank = kcetEngine.predictRank(finalPct);
+                return { rank, computed: true, kcetPct, finalPct };
+            }
+            return { rank: null, computed: false };
+        }
+
+        // look up a single named college's cutoff(s) — powers check_specific_college / check_cutoff
+        async function handleCheckSpecificCollege(entities) {
+            const isHk = HK_CATEGORIES.includes(entities.category);
+            const which = isHk ? 'enghk' : 'eng';
+            protonSays(loadingLine(`Checking ${entities.college.name.split(',')[0]}…`));
+            try {
+                const dataset = await loadDataset(which);
+                const collegeObj = dataset.find(c => c.id === entities.college.id);
+                if (!collegeObj) {
+                    protonSays(`<i class="fa-regular fa-folder-open"></i> Couldn't find live cutoff data for <b>${escapeHtml(getShortName(entities.college.name))}</b> in this dataset.`);
+                    return;
+                }
+                let rows;
+                if (entities.branch) {
+                    const key = matchBranchKey([entities.branch], collegeObj.branches);
+                    rows = key ? [{ branch: key, cutoff: collegeObj.branches[key][entities.category] }] : [];
+                } else {
+                    rows = Object.entries(collegeObj.branches).map(([b, cd]) => ({ branch: b, cutoff: cd[entities.category] }));
+                }
+                rows = rows.filter(r => r.cutoff != null);
+                if (!rows.length) {
+                    protonSays(`<i class="fa-regular fa-folder-open"></i> No ${entities.category} cutoff found for <b>${escapeHtml(getShortName(collegeObj.name))}</b>${entities.branch?` · ${escapeHtml(entities.branch)}`:''}.`);
+                    return;
+                }
+                rows.sort((a, b) => a.cutoff - b.cutoff);
+                let lead = '';
+                if (entities.rank != null) {
+                    const eligible = rows.some(r => r.cutoff >= entities.rank);
+                    lead = eligible ?
+                        `Good news — at rank <b>${entities.rank.toLocaleString('en-IN')}</b> you have a real shot here.<br>` :
+                        `At rank <b>${entities.rank.toLocaleString('en-IN')}</b>, this looks tough at this college this round — here's the cutoff data anyway.<br>`;
+                }
+                let html = lead + `Cutoffs for <b>${escapeHtml(getShortName(collegeObj.name))}</b> (${entities.category}):<div style="margin-top:10px;">`;
+                html += rows.map(r => `<div class="college-result-card"><div class="crc-top"><div class="crc-name">${escapeHtml(r.branch)}</div><div class="crc-cutoff">${r.cutoff.toLocaleString('en-IN')}</div></div></div>`).join('');
+                html += `</div>`;
+                protonSays(html, `Cutoff check for ${collegeObj.name}`);
+                if (entities.branchId && entities.rank != null) {
+                    logPrediction('college', { branchId: entities.branchId, rank: entities.rank, category: entities.category });
+                }
+            } catch (e) {
+                protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the dataset (${e.message}).`);
+            }
+        }
+
+        // dispatches a completed ProtonEngine analysis to the right UI action
+        async function dispatchEngineResult(analysis) {
+            const resp = window.ProtonEngine.respond(analysis);
+            const { intent, entities, missing } = analysis;
+
+            if (resp.roundNote) {
+                protonSays(`<i class="fa-solid fa-clock-rotate-left"></i> ${escapeHtml(resp.roundNote)}`);
+            }
+
+            if (missing && missing.length) {
+                if (missing.includes('rank_or_scores')) {
+                    protonSays(`Sure — what's your KCET score (and boards %, or your KCET rank directly) so I can check this?`);
+                } else {
+                    protonSays(resp.text || `I still need a bit more — ${missing.join(', ')}.`);
+                }
+                return;
+            }
+
+            const { rank, computed, kcetPct } = resolveRankFromEntities(entities);
+            if (computed && rank != null) {
+                protonSays(
+                    `Based on <b>${entities.boardPercentage}%</b> boards and <b>${entities.kcetMarks}</b> KCET marks, your estimated rank is <b>${rank.toLocaleString('en-IN')}</b>.`
+                    );
+                logPrediction('rank', { boardsPct: entities.boardPercentage, kcetPct, rank });
+            }
+
+            if (intent === 'predict_rank') return; // rank already shown above
+
+            if (rank == null) {
+                protonSays(`I need your KCET score (and boards %, or your rank) before I can check colleges.`);
+                return;
+            }
+
+            if (intent === 'check_specific_college' || intent === 'check_cutoff') {
+                await handleCheckSpecificCollege(Object.assign({}, entities, { rank }));
+                return;
+            }
+
+            if (intent === 'predict_college') {
+                protonSays(loadingLine(`Searching ${entities.branch || 'engineering'} colleges…`));
+                try {
+                    const results = await searchCollegesSmart({
+                        rank, category: entities.category, branch: entities.branch,
+                        location: entities.location, locationGroup: entities.locationGroup
+                    });
+                    const row = protonSays(buildSmartCollegeAnswer(results, {
+                        rank, branch: entities.branch, location: entities.location, category: entities.category
+                    }), `${results.length} matches`);
+                    const seeMore = row.querySelector('[data-action="see-more-smart"]');
+                    if (seeMore) {
+                        seeMore.addEventListener('click', () => openResultsPage(
+                            `All matches${entities.location?` · ${entities.location}`:''}`, results, entities.category,
+                            entities.branch || 'Branch'
+                        ));
+                    }
+                    if (entities.branchId) logPrediction('college', { branchId: entities.branchId, rank, category: entities.category });
+                } catch (e) {
+                    protonSays(`<i class="fa-solid fa-triangle-exclamation"></i> Couldn't load the college dataset (${e.message}).`);
+                }
+            }
+        }
+
+        /* ── MAIN ROUTER — ProtonEngine first, legacy regex router as fallback ── */
+        async function handleSmartMessage(rawText) {
+            if (!(window.ProtonEngine && window.ProtonEngine.isReady())) {
+                await legacyHandleSmartMessage(rawText);
+                return;
+            }
+
+            const thinkingRow = showTempThinking();
+            await sleep(1200);
+            thinkingRow.remove();
+
+            // the live-KEA round-cutoff PDF pipeline (x-bit 2.0) is a distinct
+            // feature from the offline dataset search ProtonEngine drives —
+            // keep it as an explicit early check
+            if (xbitVersion === '2.0' && /\bcut\s*-?off\b/i.test(rawText)) {
+                let detectedRound = null;
+                if (/\bmock\b/i.test(rawText)) detectedRound = 'mock';
+                else if (/\bprovisional\b/i.test(rawText)) detectedRound = 'provisional';
+                else if (/\b(first\s*round|round\s*-?\s*1|round\s*one|final\s*(result|round))\b/i.test(rawText))
+                    detectedRound = 'round1';
+                if (detectedRound) {
+                    await startRoundCutoffFlow(detectedRound);
+                    return;
+                }
+            }
+
+            const analysis = window.ProtonEngine.analyze(rawText, engineSession);
+            engineSession = analysis.session;
+
+            if (analysis.intent === 'unknown') {
+                const chatGuess = classifyChat(rawText);
+                if (chatGuess) { protonSays(escapeHtmlKeepEmoji(chatGuess.output)); return; }
+                protonSays(
+                    `I can help with <b>rank prediction</b>, <b>college prediction</b>, or matching your <b>priority list</b> — use the pills above, or just tell me your boards % and KCET score together.`
+                    );
+                return;
+            }
+
+            await dispatchEngineResult(analysis);
         }
 
         /* ══════════════════════════════════════════════════════════
@@ -3507,6 +3702,7 @@
         initModelSelector();
         initComposer();
         loadTrainingData();
+        initProtonEngine();
         currentChatId = 'c_' + Date.now();
         handleIncomingCollegeData();
 
