@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proton — powered by X-Bit</title>
+<title>X0S Private Limited</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -16,7 +16,6 @@
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
-
   html{scroll-behavior:smooth;}
 
   body{
@@ -29,7 +28,6 @@
 
   ::selection{background:var(--red);color:#000;}
 
-  /* dot grid backdrop */
   .grid-bg{
     position:fixed;
     inset:0;
@@ -48,7 +46,6 @@
     padding:0 28px;
   }
 
-  /* NAV */
   nav{
     display:flex;
     align-items:center;
@@ -56,23 +53,18 @@
     padding:32px 0;
     border-bottom:1px solid var(--line);
   }
-  .logo-mark{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .logo-mark img{
-    width:26px;
-    height:26px;
-    object-fit:contain;
-    display:block;
+  .logo-mark{display:flex;align-items:center;gap:10px;}
+  .logo-dot{
+    width:10px;height:10px;
+    background:var(--red);
+    border-radius:50%;
+    box-shadow:0 0 10px var(--red);
   }
   .logo-mark span{
     font-family:'JetBrains Mono',monospace;
     font-size:13px;
     letter-spacing:.28em;
     text-transform:uppercase;
-    color:var(--fg);
   }
   .nav-tag{
     font-family:'JetBrains Mono',monospace;
@@ -80,6 +72,33 @@
     letter-spacing:.15em;
     color:var(--dim);
   }
+
+  /* BANNER */
+  .banner{
+    margin-top:1px;
+    width:100%;
+    aspect-ratio:16/6;
+    background:#0a0a0a url('xosbanner.png') center/cover no-repeat;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .banner::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.85) 100%);
+  }
+  .banner-caption{
+    position:absolute;
+    bottom:18px;left:28px;
+    z-index:2;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--dim);
+  }
+  @media(max-width:600px){.banner{aspect-ratio:4/5;}}
 
   /* HERO */
   .hero{
@@ -99,33 +118,29 @@
   }
   .eyebrow::before{
     content:'';
-    width:6px;
-    height:6px;
+    width:6px;height:6px;
     border-radius:50%;
     background:var(--red);
     box-shadow:0 0 8px var(--red);
   }
   h1{
     font-weight:300;
-    font-size:clamp(48px,9vw,96px);
-    line-height:.95;
+    font-size:clamp(44px,8.5vw,88px);
+    line-height:.97;
     letter-spacing:-.02em;
   }
   h1 b{font-weight:700;}
   .hero p{
     margin-top:28px;
-    max-width:520px;
+    max-width:540px;
     font-size:17px;
     line-height:1.65;
     color:#b8b8b8;
     font-weight:300;
   }
 
-  /* SPEC / ABOUT BLOCK */
-  .section{
-    padding:64px 0;
-    border-bottom:1px solid var(--line);
-  }
+  /* SECTIONS */
+  .section{padding:64px 0;border-bottom:1px solid var(--line);}
   .section-label{
     font-family:'JetBrains Mono',monospace;
     font-size:11px;
@@ -139,14 +154,9 @@
     line-height:1.7;
     font-weight:300;
     max-width:640px;
-    color:var(--fg);
   }
-  .about-text strong{
-    font-weight:500;
-    color:#fff;
-  }
+  .about-text strong{font-weight:500;color:#fff;}
 
-  /* SPEC ROWS */
   .spec-row{
     display:flex;
     justify-content:space-between;
@@ -156,61 +166,74 @@
     font-family:'JetBrains Mono',monospace;
   }
   .spec-row:last-child{border-bottom:none;}
-  .spec-key{
-    font-size:12px;
-    letter-spacing:.15em;
-    text-transform:uppercase;
-    color:var(--dim);
-  }
-  .spec-val{
-    font-size:14px;
-    color:var(--fg);
-    text-align:right;
-  }
+  .spec-key{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+  .spec-val{font-size:14px;text-align:right;}
   .spec-val .accent{color:var(--red);}
 
-  /* CTA */
-  .cta-section{
-    padding:96px 0 72px;
-    text-align:center;
+  /* X-BIT 2.0 STRIP */
+  .ticker{
     border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+    background:#0a0a0a;
   }
-  .cta-title{
-    font-weight:300;
-    font-size:clamp(32px,6vw,52px);
+  .ticker-track{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--fg);
+    padding:14px 0;
+    animation:scroll 22s linear infinite;
+  }
+  .ticker-track span{color:var(--red);margin:0 14px;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* PRODUCT CARD */
+  .product-card{
+    border:1px solid var(--line);
+    padding:40px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .product-head{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .product-head img{width:48px;height:27px;object-fit:contain;}
+  .product-head h3{
+    font-weight:500;
+    font-size:22px;
     letter-spacing:-.01em;
-    margin-bottom:40px;
   }
-  .cta-btn{
+  .product-card p{
+    font-size:15px;
+    line-height:1.65;
+    color:#b8b8b8;
+    font-weight:300;
+    max-width:520px;
+  }
+  .know-more{
+    align-self:flex-start;
     display:inline-flex;
     align-items:center;
-    gap:14px;
-    padding:18px 40px;
-    border:1px solid var(--fg);
+    gap:10px;
     color:var(--fg);
     text-decoration:none;
     font-family:'JetBrains Mono',monospace;
-    font-size:13px;
-    letter-spacing:.2em;
+    font-size:12px;
+    letter-spacing:.18em;
     text-transform:uppercase;
-    position:relative;
-    overflow:hidden;
-    transition:color .35s ease;
-    z-index:0;
+    padding-bottom:4px;
+    border-bottom:1px solid var(--line);
+    transition:border-color .25s ease, color .25s ease;
   }
-  .cta-btn::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:var(--red);
-    transform:translateX(-101%);
-    transition:transform .35s ease;
-    z-index:-1;
-  }
-  .cta-btn:hover{color:#000;border-color:var(--red);}
-  .cta-btn:hover::before{transform:translateX(0);}
-  .cta-btn .arrow{transition:transform .35s ease;}
-  .cta-btn:hover .arrow{transform:translateX(4px);}
+  .know-more:hover{color:var(--red);border-color:var(--red);}
+  .know-more .arrow{transition:transform .3s ease;}
+  .know-more:hover .arrow{transform:translateX(4px);}
 
   /* FOOTER */
   footer{
@@ -228,6 +251,7 @@
     color:var(--dim);
   }
   .footer-brand b{color:var(--fg);font-weight:500;}
+  .footer-links{display:flex;align-items:center;gap:24px;}
 
   .ig-link{
     display:inline-flex;
@@ -246,9 +270,9 @@
 
   @media(max-width:600px){
     nav{padding:24px 0;}
-    .hero{padding:64px 0 48px;}
+    .hero{padding:56px 0 48px;}
     .section{padding:48px 0;}
-    .cta-section{padding:64px 0 48px;}
+    .product-card{padding:28px;}
     footer{flex-direction:column;align-items:flex-start;}
   }
 
@@ -257,9 +281,11 @@
     transform:translateY(18px);
     transition:opacity .7s ease, transform .7s ease;
   }
-  [data-reveal].in{
-    opacity:1;
-    transform:translateY(0);
+  [data-reveal].in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion:reduce){
+    [data-reveal]{opacity:1;transform:none;transition:none;}
+    .ticker-track{animation:none;}
   }
 </style>
 </head>
@@ -271,67 +297,65 @@
 
   <nav>
     <div class="logo-mark">
-      <img src="logo.png" alt="Proto logo">
-      <span>Proton</span>
+      <div class="logo-dot"></div>
+      <span>X0S</span>
     </div>
-    <div class="nav-tag">X0S PRIVATE LIMITED</div>
+    <div class="nav-tag">PRIVATE LIMITED</div>
   </nav>
 
+  <div class="banner">
+    <div class="banner-caption">X0S / INDIA</div>
+  </div>
+
   <section class="hero" data-reveal>
-    <div class="eyebrow">About / 01</div>
-    <h1>This is<br><b>Proton.</b></h1>
-    <p>An AI tool built to predict kea results in a precise way. advaced model specifically trained for kcet predictions</p>
+    <div class="eyebrow">X0S / Private Limited</div>
+    <h1>We build<br><b>precise</b> things.</h1>
+    <p>X0S Private Limited is a tech company out of India, building self-contained software with one rule — no decoration without a reason. Our first product line runs on X-Bit, our own AI engine.</p>
   </section>
 
+  <div class="ticker">
+    <div class="ticker-track">
+      X-BIT 2.0 IS NOW AVAILABLE <span>//</span> FASTER, SHARPER PREDICTIONS <span>//</span> X0S PRIVATE LIMITED <span>//</span> X-BIT 2.0 IS NOW AVAILABLE <span>//</span> FASTER, SHARPER PREDICTIONS <span>//</span> X0S PRIVATE LIMITED <span>//</span>
+    </div>
+  </div>
+
   <section class="section" data-reveal>
-    <div class="section-label">What it is</div>
+    <div class="section-label">Who we are</div>
     <p class="about-text">
-      Proto is <strong>X0S Private Limited's</strong> AI model, engineered for precision over decoration. It runs on <strong>X-Bit</strong>, our purpose-built engine designed to give straight, reliable answers without wasting your time.
+      <strong>X0S Private Limited</strong> is an independent tech company building tools without the noise — monochrome interfaces, dot-grid textures, and software that says exactly what it means. We design, build, and ship end to end.
     </p>
   </section>
 
   <section class="section" data-reveal>
-    <div class="section-label">Specification</div>
-    <div class="spec-row">
-      <span class="spec-key">Product</span>
-      <span class="spec-val">Proton</span>
+    <div class="section-label">Our creation</div>
+    <div class="product-card">
+      <div class="product-head">
+        <img src="logo.svg" alt="Proton logo">
+        <h3>Proton</h3>
+      </div>
+      <p>An AI model built to predict KEA results with precision — trained specifically for KCET counselling, now running on <strong style="color:#fff;font-weight:500;">X-Bit 2.0</strong>.</p>
+      <a class="know-more" href="about.html">Know more <span class="arrow">→</span></a>
     </div>
-    <div class="spec-row">
-      <span class="spec-key">Engine</span>
-      <span class="spec-val"><span class="accent">X-Bit-Kea 1.0</span></span>
-    </div>
-    <div class="spec-row">
-      <span class="spec-key">Built by</span>
-      <span class="spec-val">X0S Private Limited</span>
-    </div>
-    <div class="spec-row">
-      <span class="spec-key">Design language</span>
-      <span class="spec-val">Monochrome / Precision</span>
-    </div>
-  </section>
-
-  <section class="cta-section" data-reveal>
-    <div class="cta-title">Ready when<br>you are.</div>
-    <a class="cta-btn" href="https://unknownxsuperman-prog.github.io/x-bit-kea/new.html" target="_blank" rel="noopener">
-      Start using Proto <span class="arrow">→</span>
-    </a>
   </section>
 
   <footer>
-    <div class="footer-brand"><b>Proton</b> — powered by X-Bit / X0S Private Limited</div>
-    <a class="ig-link" href="https://www.instagram.com/x0s_tech?igsh=YW92OXJ4eGk2aGhv" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" stroke-width="1.6">
-        <rect x="3" y="3" width="18" height="18" rx="5"/>
-        <circle cx="12" cy="12" r="4"/>
-        <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
-      </svg>
-      @x0s_tech
-    </a>
+    <div class="footer-brand"><b>X0S Private Limited</b> — Karnataka, India</div>
+    <div class="footer-links">
+      <a class="ig-link" href="https://www.instagram.com/x0s_tech?igsh=YW92OXJ4eGk2aGhv" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" stroke-width="1.6">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        @x0s_tech
+      </a>
+    </div>
   </footer>
 
 </div>
 
 <script>
+  // reveal-on-scroll
   const items = document.querySelectorAll('[data-reveal]');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
