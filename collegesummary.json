@@ -1,0 +1,2187 @@
+{
+"meta": {
+"title": "Karnataka Engineering Colleges Comprehensive Summary Directory",
+"total_records": 147,
+"description": "Comprehensive structured summary of engineering institutions, autonomous colleges, government institutes, and private universities across Karnataka."
+},
+"colleges": [
+{
+"id": "E001",
+"college_name": "University of Visvesvaraya College of Engineering (UVCE)",
+"shortform": "UVCE",
+"location": "Bangalore",
+"established": 1917,
+"standing_and_status": "State Autonomous Public University (IIT Model) | Tier 1 Public Engineering Institution",
+"summary": "Founded in 1917 by Bharat Ratna Sir M. Visvesvaraya, UVCE is the fifth engineering college established in India and one of Karnataka's premier public technical institutions. Reorganized on the IIT governance model, it is renowned for strong academic legacy, top CET rank cutoffs, and distinguished alumni across global industry and academia."
+},
+{
+"id": "E002",
+"college_name": "Govt. SKSJT Institute of Engineering",
+"shortform": "SKSJT",
+"location": "Bangalore",
+"established": 1943,
+"standing_and_status": "Government Engineering Institute | Pioneer in Textile Technology",
+"summary": "Established in 1943 in memory of Sri Krishnarajendra, SKSJT is a historic government institution located in central Bengaluru. It is particularly famed for its pioneering specialization in Textile Technology and Silk Technology alongside conventional engineering disciplines."
+},
+{
+"id": "E003",
+"college_name": "BMS College of Engineering (Basavanagudi)",
+"shortform": "BMSCE",
+"location": "Bangalore",
+"established": 1946,
+"standing_and_status": "Autonomous Private Institute | Tier 1 Private Engineering College in India",
+"summary": "Founded in 1946 by Late Sri B. M. Sreenivasaiah, BMSCE holds the distinction of being India's first private sector engineering college. NAAC A++ accredited and consistently top-ranked in NIRF, BMSCE offers world-class research infrastructure, exceptional campus placements, and strong industry linkages."
+},
+{
+"id": "E004",
+"college_name": "Dr. Ambedkar Institute of Technology",
+"shortform": "Dr. AIT",
+"location": "Bangalore",
+"established": 1980,
+"standing_and_status": "Government-Aided Autonomous Institute | NAAC A Grade",
+"summary": "Established in 1980 by M.H. Jayprakash Narayan, Dr. AIT is an autonomous government-aided institution situated near Mallathahalli, Bengaluru. Recognized by NBA and NAAC, it offers diverse UG/PG engineering programs with special focus on inclusive technical education."
+},
+{
+"id": "E005",
+"college_name": "R. V. College of Engineering",
+"shortform": "RVCE",
+"location": "Bangalore",
+"established": 1963,
+"standing_and_status": "Autonomous Private Institute | Premier Top-Ranked Engineering College in Karnataka",
+"summary": "Established in 1963 and run by the Rashtreeya Sikshana Samithi Trust (RSST), RVCE is widely recognized as Karnataka's premier private engineering college. Famous for high cutoff benchmarks, student research projects (such as intercollegiate satellite and hyperloop teams), and top corporate placements."
+},
+{
+"id": "E006",
+"college_name": "M S Ramaiah Institute of Technology",
+"shortform": "MSRIT",
+"location": "Bangalore",
+"established": 1962,
+"standing_and_status": "Autonomous Private Institute | NIRF Top 100 Engineering Institution",
+"summary": "Founded in 1962 by industrialist Dr. M. S. Ramaiah, MSRIT is a leading autonomous institute affiliated with VTU. Situated in Mathikere, Bengaluru, it features extensive research centers, high NAAC accreditation grades, and stellar placement statistics in IT, core engineering, and biotechnology."
+},
+{
+"id": "E007",
+"college_name": "Dayananda Sagar College of Engineering",
+"shortform": "DSCE",
+"location": "Bangalore",
+"established": 1979,
+"standing_and_status": "Autonomous Private College | Top Tier Multi-disciplinary Campus",
+"summary": "Spanning a large campus in Kumaraswamy Layout, DSCE was established in 1979 under Mahatma Gandhi Vidya Peetha. It offers the widest range of engineering branches under VTU, supported by state-of-the-art research centers, innovation incubators, and global corporate tie-ups."
+},
+{
+"id": "E008",
+"college_name": "Bangalore Institute of Technology",
+"shortform": "BIT",
+"location": "Bangalore",
+"established": 1979,
+"standing_and_status": "Autonomous Private Institute | Centrally Located Technical Institute",
+"summary": "Located at VV Puram, Bengaluru, BIT was founded in 1979 by the Vokkaligara Sangha. It is renowned for introducing Computer Science engineering early in Karnataka and maintains high academic standards with robust campus recruitment from top tech multinationals."
+},
+{
+"id": "E009",
+"college_name": "PES University (Ring Road Campus)",
+"shortform": "PESU",
+"location": "Bangalore",
+"established": 1972,
+"standing_and_status": "State Private University | Top Ranked Technology & Computer Science Hub",
+"summary": "Originally established as PESIT in 1972 and elevated to a Private University in 2013, PESU is famed for its rigorous academic curriculum, competitive peer group, and world-class technology placements in Computer Science, AI, and Electronics."
+},
+{
+"id": "E011",
+"college_name": "MVJ College of Engineering",
+"shortform": "MVJCE",
+"location": "Bangalore",
+"established": 1982,
+"standing_and_status": "Autonomous Private College | NAAC A Grade",
+"summary": "Established in 1982 near Whitefield IT corridor, MVJCE is the flagship institution of Venkatesha Education Society. It is noted for strong programs in Aeronautical, Aerospace, Computer Science, and Information Technology engineering."
+},
+{
+"id": "E012",
+"college_name": "Sir M. Visvesvaraya Institute of Technology",
+"shortform": "Sir MVIT",
+"location": "Bangalore",
+"established": 1986,
+"standing_and_status": "VTU Affiliated Private College | Reputed Green Campus Near Airport",
+"summary": "Founded in 1986 by Sri Krishnadevaraya Educational Trust on a lush 133-acre campus near Yelahanka/Bengaluru Airport, Sir MVIT is widely respected for solid technical foundations, active student clubs, and consistently high industry placements."
+},
+{
+"id": "E013",
+"college_name": "Ghousia Engineering College",
+"shortform": "GEC",
+"location": "Ramanagara",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Minority College",
+"summary": "Established in 1980 by the Ghousia Educational Association, GEC Ramanagara provides accessible technical education along the Bengaluru-Mysuru corridor with focus on core engineering domains and community outreach."
+},
+{
+"id": "E014",
+"college_name": "SJC Institute of Technology",
+"shortform": "SJCIT",
+"location": "Chickballapur",
+"established": 1986,
+"standing_and_status": "Autonomous Private College | Sri Adichunchanagiri Trust",
+"summary": "Founded in 1986 under the divine patronage of Sri Adichunchanagiri Mahasamsthana Math, SJCIT provides strong technical and professional education in Chikkaballapur, featuring modern laboratory infrastructure and autonomous VTU curriculum."
+},
+{
+"id": "E015",
+"college_name": "Dr. T. Thimmaiah Institute of Technology",
+"shortform": "TIT",
+"location": "KGF",
+"established": 1986,
+"standing_and_status": "VTU Affiliated Private Institute | Mining & Core Engineering Focus",
+"summary": "Formerly known as Golden Valley Institute of Technology (GVIT), Dr. TTIT was founded in 1986 at Kolar Gold Fields. It holds a unique position in Karnataka for specialized programs in Mining Engineering alongside conventional disciplines."
+},
+{
+"id": "E016",
+"college_name": "Siddaganga Institute of Technology",
+"shortform": "SIT",
+"location": "Tumkur",
+"established": 1963,
+"standing_and_status": "Autonomous Govt-Aided Institute | NIRF Ranked Technical Center",
+"summary": "Established in 1963 by Karnataka Ratna Sri Sri Sri Shivakumara Swamiji of Siddaganga Math, SIT Tumkur is a premier autonomous government-aided institution known for holistic education, top academic results, and vast campus infrastructure."
+},
+{
+"id": "E017",
+"college_name": "Sri Siddhartha Institute of Technology",
+"shortform": "SSIT",
+"location": "Tumkur",
+"established": 1979,
+"standing_and_status": "Constituent College of Sri Siddhartha Academy of Higher Education (Deemed Univ)",
+"summary": "Founded in 1979 by Dr. H. M. Gangadharaiah, SSIT is located in Maralur, Tumakuru. As part of a Deemed University, it emphasizes research, technical innovation, and rural community development."
+},
+{
+"id": "E018",
+"college_name": "Kalpatharu Institute of Technology",
+"shortform": "KIT",
+"location": "Tiptur",
+"established": 1986,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Established in 1986 under Kalpatharu Development Educational Society in Tiptur, KIT provides structured engineering training serving students across central and rural Karnataka."
+},
+{
+"id": "E021",
+"college_name": "Sri Jayachamarajendra College of Engineering (JSS STU)",
+"shortform": "SJCE",
+"location": "Mysore",
+"established": 1963,
+"standing_and_status": "Constituent College of JSS Science & Technology University | Tier 1 Institute",
+"summary": "Established in 1963 by JSS Mahavidyapeetha, SJCE Mysuru is one of South India's finest engineering centers. Integrated into JSS STU, it attracts top rankers for Computer Science, Electronics, and Chemical Engineering, backed by extensive international research collaborations."
+},
+{
+"id": "E022",
+"college_name": "The National Institute of Engineering",
+"shortform": "NIE",
+"location": "Mysore",
+"established": 1946,
+"standing_and_status": "Government-Aided Autonomous Institute | Historic Premier Institution",
+"summary": "Founded in 1946, NIE Mysuru is the second oldest engineering college in Karnataka. With alumni including prominent industrialists and technocrats, NIE is famous for its strong mechanical, civil, and electrical engineering research traditions."
+},
+{
+"id": "E023",
+"college_name": "PES College of Engineering",
+"shortform": "PESCE",
+"location": "Mandya",
+"established": 1962,
+"standing_and_status": "Government-Aided Autonomous Institute | Major Regional Engineering Hub",
+"summary": "Established in 1962 under People's Education Society Mandya, PESCE is a prominent autonomous institute receiving government aid. It boasts a expansive 62-acre campus and strong technical foundation."
+},
+{
+"id": "E024",
+"college_name": "Malnad College of Engineering",
+"shortform": "MCE",
+"location": "Hassan",
+"established": 1960,
+"standing_and_status": "Government-Aided Autonomous Institute | Joint Venture Govt & MTE Society",
+"summary": "Founded in 1960 as a joint initiative between Govt of India, Govt of Karnataka, and Malnad Technical Education Society, MCE Hassan is an autonomous institution known for excellence in core engineering fields."
+},
+{
+"id": "E028",
+"college_name": "Tontadarya College of Engineering",
+"shortform": "TCE",
+"location": "Gadag",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Established in 1997 under S.J.M. Vidyapeetha, TCE Gadag delivers accredited engineering education and skill development tailored for students in North Karnataka."
+},
+{
+"id": "E029",
+"college_name": "Maratha Mandal Engineering College",
+"shortform": "MMEC",
+"location": "Belgaum",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Founded in 1997 by Maratha Mandal Belagavi, MMEC offers technical programs across key streams with focus on practical training and local industrial exposure."
+},
+{
+"id": "E031",
+"college_name": "Basaveshwara Engineering College (BVV Sangha)",
+"shortform": "BEC",
+"location": "Bagalkot",
+"established": 1963,
+"standing_and_status": "Autonomous Govt-Aided Institute | World Bank TEQIP Beneficiary",
+"summary": "Established in 1963 by Shri Basaveshwar Veerashaiva Vidyavardhak Sangha, BEC Bagalkote is a renowned autonomous college supported by TEQIP programs, known for high academic output in North Karnataka."
+},
+{
+"id": "E032",
+"college_name": "Rural Engineering College",
+"shortform": "REC",
+"location": "Hulkoti",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Institute | India's First Rural Engineering College",
+"summary": "Founded in 1980 by Sri K. H. Patil in Hulkoti, Gadag district, REC holds the distinction of being the first engineering college established in a rural village setting in India to promote rural technology advancement."
+},
+{
+"id": "E033",
+"college_name": "Sri Taralabalu Jagadguru Institute of Technology",
+"shortform": "STJIT",
+"location": "Ranebennur",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Established in 1980 under the aegis of STJ Vidya Peetha, STJIT Ranebennur provides engineering opportunities with emphasis on rural empowerment and technical proficiency."
+},
+{
+"id": "E034",
+"college_name": "SDM College of Engineering and Technology",
+"shortform": "SDMCET",
+"location": "Dharwad",
+"established": 1979,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade",
+"summary": "Managed by SDM Educational Society under the leadership of Dr. D. Veerendra Heggade, SDMCET Dharwad (Est. 1979) is a premier autonomous institution in North Karnataka recognized for ethics, quality teaching, and research."
+},
+{
+"id": "E035",
+"college_name": "Anjuman Institute of Technology & Management",
+"shortform": "AITM",
+"location": "Bhatkal",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Minority Institution",
+"summary": "Founded in 1980 by Anjuman Hami-e-Muslimeen Bhatkal, AITM serves the coastal Uttara Kannada region with professional engineering and management programs."
+},
+{
+"id": "E036",
+"college_name": "KLE Technological University (Belgaum Campus)",
+"shortform": "KLE Tech",
+"location": "Belgaum",
+"established": 2008,
+"standing_and_status": "Constituent Campus of KLE Technological University",
+"summary": "Part of the prestigious KLE Society network, this Belagavi campus provides modern outcomes-based engineering education integrated into KLE Technological University's curriculum."
+},
+{
+"id": "E037",
+"college_name": "K.L.S. Gogte Institute of Technology",
+"shortform": "GIT",
+"location": "Belgaum",
+"established": 1979,
+"standing_and_status": "Autonomous Private Institute | Premier Belagavi Technical Center",
+"summary": "Established in 1979 by Karnatak Law Society, KLS GIT is Belagavi's flagship autonomous engineering college. It features NBA-accredited programs, incubation hubs, and extensive alumni presence in automotive and software sectors."
+},
+{
+"id": "E038",
+"college_name": "BLDEA's VP Dr. P.G. Halakatti College of Engineering",
+"shortform": "BLDEA",
+"location": "Bijapur",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Founded in 1980 by Bijapur Liberal District Educational Association (BLDEA), this institution is a cornerstone of technical education in Vijayapura district."
+},
+{
+"id": "E040",
+"college_name": "Hira Sugar Institute of Technology",
+"shortform": "HSIT",
+"location": "Nidasoshi",
+"established": 1996,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Established in 1996 in Belagavi district, HSIT Nidasoshi provides structured engineering degrees to rural youth in northern Karnataka."
+},
+{
+"id": "E041",
+"college_name": "PDA College of Engineering",
+"shortform": "PDACE",
+"location": "Gulbarga",
+"established": 1958,
+"standing_and_status": "Government-Aided Autonomous Institute | First Engineering College in Kalyana-Karnataka",
+"summary": "Founded in 1958 by Hyderabad Karnataka Education (HKE) Society, Poojya Doddappa Appa College of Engineering is the pioneer engineering institution in the Kalyana-Karnataka region with TEQIP support."
+},
+{
+"id": "E042",
+"college_name": "Khaja Bandanawaz University",
+"shortform": "KBNU",
+"location": "Gulbarga",
+"established": 1980,
+"standing_and_status": "State Private University",
+"summary": "Originally established as Khaja Banda Nawaz College of Engineering in 1980, it was elevated to a private university in 2018, offering multidisciplinary engineering and medical studies."
+},
+{
+"id": "E043",
+"college_name": "Guru Nanak Dev Engineering College",
+"shortform": "GNEC",
+"location": "Bidar",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Minority Institute",
+"summary": "Founded in 1980 by the Prabandhak Committee Gurudwara Nanak Jhira Saheb, GNEC Bidar provides quality technical training in northernmost Karnataka."
+},
+{
+"id": "E044",
+"college_name": "Bheemanna Khandre Institute of Technology",
+"shortform": "BKIT",
+"location": "Bhalki",
+"established": 1982,
+"standing_and_status": "VTU Affiliated Institute | Shanti Vardhak Education Society",
+"summary": "Established in 1982 in Bhalki (Bidar district), BKIT is a well-established engineering center named after veteran leader Dr. Bheemanna Khandre."
+},
+{
+"id": "E045",
+"college_name": "Rao Bahadur Y Mahabaleswarappa Engineering College",
+"shortform": "RYMEC",
+"location": "Bellary",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Institute | V.V. Sangha Ballari",
+"summary": "Founded in 1980 (formerly Vijayanagar Engineering College), RYMEC Ballari is the leading technical college in the steel and mining belt of Ballari."
+},
+{
+"id": "E046",
+"college_name": "HKE Society's Sir M Visvesvaraya College of Engineering",
+"shortform": "SMVCER",
+"location": "Raichur",
+"established": 1986,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Established in 1986 by HKE Society Kalaburagi, SMVCER offers core engineering programs serving Raichur and neighboring districts."
+},
+{
+"id": "E047",
+"college_name": "Malnad College of Engineering (Aided)",
+"shortform": "MCE",
+"location": "Hassan",
+"established": 1960,
+"standing_and_status": "Government-Aided Autonomous College",
+"summary": "Autonomous technical institute offering specialized engineering domains backed by government aid and strong alumni heritage."
+},
+{
+"id": "E048",
+"college_name": "BMS College of Engineering (Main Campus)",
+"shortform": "BMSCE",
+"location": "Bangalore",
+"established": 1946,
+"standing_and_status": "Autonomous Govt-Aided Private College | Tier 1 National Ranker",
+"summary": "Central campus entry for BMSCE Basavanagudi, renowned nationally for high NIRF ratings, advanced research incubation, and corporate placement excellence."
+},
+{
+"id": "E049",
+"college_name": "Basaveshwara Engineering College (Bagalkot)",
+"shortform": "BEC",
+"location": "Bagalkot",
+"established": 1963,
+"standing_and_status": "Autonomous Institute",
+"summary": "Regional autonomous hub providing accredited engineering programs under BVV Sangha."
+},
+{
+"id": "E054",
+"college_name": "KVG College of Engineering",
+"shortform": "KVGCE",
+"location": "Sullia",
+"established": 1989,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Founded in 1989 by Dr. Kurunji Venkatramana Gowda in Dakshina Kannada, KVGCE offers technical education in a scenic western ghats ecosystem."
+},
+{
+"id": "E055",
+"college_name": "P A College of Engineering",
+"shortform": "PACE",
+"location": "Mangalore",
+"established": 1999,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Established in 1999 at Near Mangalore (Bantwal), PACE is managed by PA Educational Trust, providing engineering and research options near the coastal educational hub."
+},
+{
+"id": "E056",
+"college_name": "The National Institute of Engineering (South Campus)",
+"shortform": "NIE",
+"location": "Mysore",
+"established": 1946,
+"standing_and_status": "Autonomous Govt-Aided Institute",
+"summary": "Expansion campus listing for NIE Mysuru, catering to high-demand computing and electronics branches."
+},
+{
+"id": "E057",
+"college_name": "JSS Science and Technology University",
+"shortform": "JSSTU",
+"location": "Mysuru",
+"established": 2016,
+"standing_and_status": "State Private University | Premier Technology University",
+"summary": "Established under the JSS University Act in 2016 building upon SJCE's 60-year legacy, JSSTU is a leading research and technology university in Karnataka."
+},
+{
+"id": "E058",
+"college_name": "PES College of Engineering (Mandya Autonomous)",
+"shortform": "PESCE",
+"location": "Mandya",
+"established": 1962,
+"standing_and_status": "Autonomous Govt-Aided Institute",
+"summary": "Established technical autonomous institution situated in Mandya."
+},
+{
+"id": "E059",
+"college_name": "PDA College of Engineering (Gulbarga Autonomous)",
+"shortform": "PDACE",
+"location": "Gulbarga",
+"established": 1958,
+"standing_and_status": "Autonomous Govt-Aided College",
+"summary": "Autonomous college providing accredited engineering and master's degree programs."
+},
+{
+"id": "E060",
+"college_name": "Dr. Ambedkar Institute of Technology (Bangalore)",
+"shortform": "Dr. AIT",
+"location": "Bangalore",
+"established": 1980,
+"standing_and_status": "Autonomous Govt-Aided College",
+"summary": "Autonomous institute with strong industrial ties and comprehensive AICTE approval."
+},
+{
+"id": "E061",
+"college_name": "University B.D.T College of Engineering",
+"shortform": "UBDTCE",
+"location": "Davanagere",
+"established": 1951,
+"standing_and_status": "Constituent College of VTU | Historic Public College",
+"summary": "Founded in 1951, UBDTCE is the sole constituent engineering college of Visvesvaraya Technological University (VTU), holding immense regional prestige."
+},
+{
+"id": "E062",
+"college_name": "Bapuji Institute of Engineering & Technology",
+"shortform": "BIET",
+"location": "Davangere",
+"established": 1979,
+"standing_and_status": "Autonomous Private Institute | Bapuji Educational Association",
+"summary": "Established in 1979, BIET Davangere is a premier autonomous institution in central Karnataka featuring strong textile, chemical, and software engineering departments."
+},
+{
+"id": "E063",
+"college_name": "SJM Institute of Technology",
+"shortform": "SJMIT",
+"location": "Chitradurga",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Founded in 1980 under Sri Jagadguru Murugharajendra Vidyapeetha in Chitradurga, offering technical degrees across major streams."
+},
+{
+"id": "E064",
+"college_name": "Adichunchanagiri Institute of Technology",
+"shortform": "AIT",
+"location": "Chickamagalur",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Established in 1980 in Chikkamagaluru under Sri Adichunchanagiri Shikshana Trust, providing technical learning in the Malnad region."
+},
+{
+"id": "E065",
+"college_name": "Jawaharlal Nehru New College of Engineering",
+"shortform": "JNNCE",
+"location": "Shimoga",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Institute | NES Shivamogga",
+"summary": "Founded in 1980 by the National Education Society (NES), JNNCE is the premier engineering college in Shivamogga with active research labs."
+},
+{
+"id": "E066",
+"college_name": "University B.D.T College of Engineering (Aided)",
+"shortform": "UBDTCE",
+"location": "Davanagere",
+"established": 1951,
+"standing_and_status": "Constituent VTU College",
+"summary": "Constituent engineering college listing for UBDTCE Davanagere."
+},
+{
+"id": "E070",
+"college_name": "Bahubali College of Engineering",
+"shortform": "BCE",
+"location": "Hassan",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private College | Shravanabelagola",
+"summary": "Established in 1997 under the auspices of H.H. Jagadguru Karmayogi Swamiji of Shravanabelagola, providing quality engineering education."
+},
+{
+"id": "E071",
+"college_name": "Vidya Vardhaka College of Engineering",
+"shortform": "VVCE",
+"location": "Mysore",
+"established": 1997,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade",
+"summary": "Established in 1997 in Gokulam, Mysuru, VVCE is a fast-growing autonomous institution with strong IT industry tie-ups and modern infrastructure."
+},
+{
+"id": "E075",
+"college_name": "Ballari Institute of Technology & Management",
+"shortform": "BITM",
+"location": "Bellary",
+"established": 1997,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade",
+"summary": "Established in 1997, BITM Ballari is an autonomous engineering college equipped with modern labs, cloud centers, and strong placements."
+},
+{
+"id": "E076",
+"college_name": "Proudadevaraya Institute of Technology",
+"shortform": "PDIT",
+"location": "Hospet",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Founded in 1997 near Hampi/Hosapete under V.V. Sangha Ballari, serving the Vijayanagara region."
+},
+{
+"id": "E077",
+"college_name": "Vidya Vikas Institute of Engineering & Technology",
+"shortform": "VVIET",
+"location": "Mysore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Established in 1997 under Vidya Vikas Educational Trust on Bannur Road, Mysuru."
+},
+{
+"id": "E078",
+"college_name": "The Oxford College of Engineering",
+"shortform": "TOCE",
+"location": "Bangalore",
+"established": 2000,
+"standing_and_status": "VTU Affiliated Private Institute | Bommanahalli",
+"summary": "Established in 2000 along Hosur Road, TOCE is part of the Oxford Educational Institutions, providing engineering, architecture, and MCA programs."
+},
+{
+"id": "E079",
+"college_name": "Acharya Institute of Technology",
+"shortform": "AIT",
+"location": "Bangalore",
+"established": 2000,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade Multi-Cultural Campus",
+"summary": "Founded in 2000 at Soladevanahalli, Acharya Institute of Technology features a sprawling 120-acre campus with students from over 60 countries and diverse engineering specializations."
+},
+{
+"id": "E081",
+"college_name": "Sri Siddhartha School of Engineering",
+"shortform": "SSSE",
+"location": "Tumkur",
+"established": 2008,
+"standing_and_status": "Constituent Campus of SSAHE Deemed University",
+"summary": "Technical wing situated in Tumakuru under Sri Siddhartha Academy of Higher Education."
+},
+{
+"id": "E082",
+"college_name": "JSS Academy of Technical Education",
+"shortform": "JSSATE",
+"location": "Bangalore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private College | JSS Mahavidyapeetha",
+"summary": "Established in 1997 at Uttarahalli-Kengeri Main Road, JSSATE Bengaluru is known for disciplined academics, STEP incubator, and consistent campus placements."
+},
+{
+"id": "E083",
+"college_name": "HKBK College of Engineering",
+"shortform": "HKBK",
+"location": "Bangalore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private College | Nagawara Campus",
+"summary": "Founded in 1997 opposite Manyata Tech Park in Nagawara, HKBK provides strategic location benefits for tech internships and employment."
+},
+{
+"id": "E085",
+"college_name": "APS College of Engineering",
+"shortform": "APSCE",
+"location": "Bangalore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private College | Somanahalli",
+"summary": "Established in 1997 on Kanakapura Road by the Acharya Patasala Educational Trust."
+},
+{
+"id": "E086",
+"college_name": "Sri Sairam College Of Engineering",
+"shortform": "SSCE",
+"location": "Bangalore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private Institute | Anekal",
+"summary": "Established in 1997 (formerly Shirdi Sai Engineering College) in Anekal, Bengaluru South."
+},
+{
+"id": "E087",
+"college_name": "Vivekananda Institute of Technology",
+"shortform": "VKIT",
+"location": "Bangalore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private Institute | Janatha Education Society",
+"summary": "Founded in 1997 near Kumbalagodu, Mysuru Road, providing practical technical education."
+},
+{
+"id": "E088",
+"college_name": "New Horizon College of Engineering",
+"shortform": "NHCE",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade | Marathahalli IT Corridor",
+"summary": "Located on the Outer Ring Road near major tech parks, NHCE (Est. 2001) is an autonomous college praised for high-tier industry collaborations, international exchange, and placement records."
+},
+{
+"id": "E090",
+"college_name": "Sri Revana Siddeswara Institute of Technology",
+"shortform": "SRSIT",
+"location": "Bangalore",
+"established": 1997,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Located near Chikkaballapur/North Bengaluru, offering UG engineering streams."
+},
+{
+"id": "E091",
+"college_name": "K S Institute of Technology",
+"shortform": "KSIT",
+"location": "Bangalore",
+"established": 1999,
+"standing_and_status": "Autonomous Private Institute | Kanakapura Road",
+"summary": "Established in 1999 under Kammavari Sangham, KSIT is an autonomous college known for strong computer science, electronics, and mechanical engineering branches."
+},
+{
+"id": "E092",
+"college_name": "Vemana Institute of Technology",
+"shortform": "VIT",
+"location": "Bangalore",
+"established": 1999,
+"standing_and_status": "VTU Affiliated Private College | Koramangala Hub",
+"summary": "Founded in 1999 by the Reddy Jana Sangha in Koramangala, VIT enjoys a central Bengaluru location with easy access to tech startups and corporates."
+},
+{
+"id": "E093",
+"college_name": "Basavakalyan Engineering College",
+"shortform": "BKEC",
+"location": "Basavakalyana",
+"established": 1999,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Located in Bidar district, providing rural access to accredited technical training."
+},
+{
+"id": "E094",
+"college_name": "Coorg Institute of Technology",
+"shortform": "CIT",
+"location": "Coorg",
+"established": 1999,
+"standing_and_status": "VTU Affiliated Private Institute | Ponnampet",
+"summary": "Established in 1999 in Kodagu district under the Kodava Education Society."
+},
+{
+"id": "E095",
+"college_name": "AMC Engineering College",
+"shortform": "AMCEC",
+"location": "Bangalore",
+"established": 1999,
+"standing_and_status": "Autonomous Private Institute | Bannerghatta Road Campus",
+"summary": "Established in 1999 under Paramahamsa Foundation Trust on Bannerghatta Road, featuring autonomous degree programs and extensive technical infrastructure."
+},
+{
+"id": "E096",
+"college_name": "East Point College of Engineering & Technology",
+"shortform": "EPCET",
+"location": "Bangalore",
+"established": 1999,
+"standing_and_status": "Autonomous Private Institute | Avalahalli Campus",
+"summary": "Part of the East Point Group of Institutions in East Bengaluru, offering autonomous engineering degrees alongside healthcare and science campuses."
+},
+{
+"id": "E097",
+"college_name": "CMR Institute of Technology",
+"shortform": "CMRIT",
+"location": "Bangalore",
+"established": 2000,
+"standing_and_status": "Autonomous Private Institute | NAAC A++ Grade | Whitefield IT Hub",
+"summary": "Located in Kundalahalli/Whitefield, CMRIT (Est. 2000) is a top autonomous college renowned for its maker spaces, patent generation, and high tech-industry employment rates."
+},
+{
+"id": "E098",
+"college_name": "Atria Institute of Technology",
+"shortform": "AIT",
+"location": "Bangalore",
+"established": 2000,
+"standing_and_status": "Autonomous Private Institute | Hebbal Bengaluru",
+"summary": "Situated near Hebbal, Atria IT (Est. 2000) offers autonomous programs in CS, AI/ML, and Electronics with active industry-driven centers of excellence."
+},
+{
+"id": "E100",
+"college_name": "K S School of Engineering and Management",
+"shortform": "KSSEM",
+"location": "Bangalore",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private Institute | Mallasandra",
+"summary": "Second campus of Kammavari Sangham established in 2010 on Kanakapura Road, offering integrated management and engineering courses."
+},
+{
+"id": "E101",
+"college_name": "Channabasaveshwara Institute of Technology",
+"shortform": "CIT",
+"location": "Tumkur",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private College | Gubbi",
+"summary": "Established in 2001 in Gubbi, Tumakuru district, offering accredited undergraduate technology degrees."
+},
+{
+"id": "E102",
+"college_name": "Don Bosco Institute of Technology",
+"shortform": "DBIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | Kumbalagodu",
+"summary": "Founded in 2001 on Mysuru Road, DBIT is an autonomous college under Wayanamac Education Trust with active corporate incubation partnerships."
+},
+{
+"id": "E103",
+"college_name": "Global Academy of Technology",
+"shortform": "GAT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | Rajarajeshwarinagar",
+"summary": "Established in 2001 in RR Nagar, GAT is an autonomous institute praised for green campus facilities, active research centers, and strong placements."
+},
+{
+"id": "E104",
+"college_name": "Nagarjuna College of Engineering & Technology",
+"shortform": "NCET",
+"location": "Bangalore Rural",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade | Airport Corridor",
+"summary": "Located near Muddenahalli/Devanahalli, NCET (Est. 2001) is an autonomous institution focused on smart infrastructure, IoT, and autonomous vehicle technologies."
+},
+{
+"id": "E106",
+"college_name": "East West Institute Of Technology",
+"shortform": "EWIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | Off Magadi Road",
+"summary": "Founded in 2001 under East West Group of Institutions, EWIT provides autonomous degree courses in core and emerging technologies."
+},
+{
+"id": "E107",
+"college_name": "BNM Institute of Technology",
+"shortform": "BNMIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade | Banashankari",
+"summary": "Located in Banashankari, BNMIT (Est. 2001) is an autonomous college noted for top academic pass percentages, individualized mentoring, and excellent tech placements."
+},
+{
+"id": "E108",
+"college_name": "Sapthagiri NPS University",
+"shortform": "SNPSU",
+"location": "Bengaluru",
+"established": 2001,
+"standing_and_status": "State Private University (Formerly Sapthagiri College of Engineering)",
+"summary": "Originally founded in 2001 on Hesaraghatta Main Road and upgraded to a Private University, offering specialized technology and health sciences education."
+},
+{
+"id": "E109",
+"college_name": "City Engineering College",
+"shortform": "CEC",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private Institute | Kanakapura Road",
+"summary": "Established in 2001 near Vajarahalli Metro station, providing accessible engineering degree programs."
+},
+{
+"id": "E111",
+"college_name": "Sri Venkateshwara College of Engineering",
+"shortform": "SVCE",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | Near Devanahalli Airport",
+"summary": "Located near Kempegowda International Airport, SVCE (Est. 2001) is an autonomous college under Sri Venkateshwara Education Trust."
+},
+{
+"id": "E112",
+"college_name": "Sri Krishna Institute of Technology",
+"shortform": "SKIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private College | Chikkabanavara",
+"summary": "Established in 2001 under Sri Raghavendra Educational Institutions Society."
+},
+{
+"id": "E113",
+"college_name": "Sambhram Institute of Technology",
+"shortform": "SaIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private College | Jalahalli East",
+"summary": "Founded in 2001 by Sambhram Group, offering engineering, management, and research courses."
+},
+{
+"id": "E114",
+"college_name": "G M Institute of Technology",
+"shortform": "GMIT",
+"location": "Davanagere",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private Institute | Srishyla Trust",
+"summary": "Established in 2001 by Mallikarjuna Educational Trust, GMIT is a leading engineering campus in Davanagere."
+},
+{
+"id": "E115",
+"college_name": "SJB Institute of Technology",
+"shortform": "SJBIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | NAAC A+ Grade | Kengeri",
+"summary": "Founded in 2001 by Sri Adichunchanagiri Shikshana Trust, SJBIT is an autonomous college offering lush green campus facilities, high NAAC accreditation, and modern IT research labs."
+},
+{
+"id": "E116",
+"college_name": "R.L. Jalappa Institute of Technology",
+"shortform": "RLJIT",
+"location": "Doddaballapura",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private College | Sri Devaraj Urs Trust",
+"summary": "Established in 2001 in Doddaballapur, serving North Bengaluru Rural students."
+},
+{
+"id": "E118",
+"college_name": "RNS Institute of Technology",
+"shortform": "RNSIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "Autonomous Private Institute | NAAC A+ Grade | Rajarajeshwarinagar",
+"summary": "Founded in 2001 by industrialist Dr. R. N. Shetty, RNSIT is an autonomous college highly preferred for CSE, ISE, and ECE programs with top placement statistics."
+},
+{
+"id": "E119",
+"college_name": "KCT Engineering College",
+"shortform": "KCTEC",
+"location": "Gulbarga",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Minority Institute",
+"summary": "Established in 2001 in Kalaburagi under Karwan-e-Taleem Trust."
+},
+{
+"id": "E120",
+"college_name": "Jnanavikasa Institute of Technology",
+"shortform": "JIT",
+"location": "Ramanagar",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private Institute | Bidadi",
+"summary": "Located along the Bengaluru-Mysuru expressway near Bidadi industrial area."
+},
+{
+"id": "E121",
+"college_name": "Vivekananda College of Engineering Technology",
+"shortform": "VCET",
+"location": "Puttur",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private College | Dakshina Kannada",
+"summary": "Established in 2001 in Puttur under Vivekananda Vidyavardhaka Sangha."
+},
+{
+"id": "E123",
+"college_name": "Canara Engineering College",
+"shortform": "CEC",
+"location": "Bantwal",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private Institute | Benjanapadavu Mangalore",
+"summary": "Founded in 2001 by Canara High School Association, CEC is a leading engineering institute in coastal Karnataka."
+},
+{
+"id": "E124",
+"college_name": "Rajiv Gandhi Institute of Technology",
+"shortform": "RGIT",
+"location": "Bangalore",
+"established": 2001,
+"standing_and_status": "VTU Affiliated Private Institute | RT Nagar",
+"summary": "Established in 2001 under Sir M. Visvesvaraya Education Trust in Hebbal/RT Nagar."
+},
+{
+"id": "E126",
+"college_name": "MS Institute of Technology & Management",
+"shortform": "MSITM",
+"location": "Bangalore",
+"established": 2002,
+"standing_and_status": "Autonomous Private Institute | Yelahanka",
+"summary": "Autonomous engineering campus catering to North Bengaluru's industrial belt."
+},
+{
+"id": "E127",
+"college_name": "MS Engineering College",
+"shortform": "MSEC",
+"location": "Bangalore",
+"established": 2002,
+"standing_and_status": "VTU Affiliated Private Institute | Navarathna Agrahara",
+"summary": "Located off International Airport Road, MSEC was founded in 2002 under M.S. Educational Trust."
+},
+{
+"id": "E128",
+"college_name": "Sharanbasava University (Faculty of Engg)",
+"shortform": "SBU",
+"location": "Kalaburagi",
+"established": 2017,
+"standing_and_status": "State Private University (Formerly Appa Institute of Engineering)",
+"summary": "Established under Sharanbasaveshwar Vidya Vardhak Sangha, elevated to private university status serving Kalyana-Karnataka."
+},
+{
+"id": "E129",
+"college_name": "St. Joseph Engineering College",
+"shortform": "SJEC",
+"location": "Mangalore",
+"established": 2002,
+"standing_and_status": "Autonomous Private Institute | NAAC A+ Grade | Vamanjoor",
+"summary": "Established in 2002 by the Diocese of Mangalore, SJEC is a top autonomous college in coastal Karnataka with strong academic reputation."
+},
+{
+"id": "E130",
+"college_name": "Shridevi Institute of Engineering & Technology",
+"shortform": "SIET",
+"location": "Tumkur",
+"established": 2002,
+"standing_and_status": "VTU Affiliated Private College | Sri Shridevi Charitable Trust",
+"summary": "Established in 2002 on NH-63 in Tumakuru, providing engineering and postgraduate courses."
+},
+{
+"id": "E132",
+"college_name": "Secab Institute of Engineering & Technology",
+"shortform": "SIET",
+"location": "Bijapur",
+"established": 2002,
+"standing_and_status": "VTU Affiliated Minority Institute",
+"summary": "Founded in 2002 by SECAB Association Vijayapura."
+},
+{
+"id": "E133",
+"college_name": "SSS Institute of Engineering & Technology for Women",
+"shortform": "SSSIETW",
+"location": "Mysore",
+"established": 2003,
+"standing_and_status": "Women's Engineering College | Mysuru",
+"summary": "Specialized women's engineering institute established in Mysuru to encourage female technical participation."
+},
+{
+"id": "E134",
+"college_name": "Smt. Kamala & Sri Venkappa M. Agadi College of Engineering",
+"shortform": "AGADI",
+"location": "Gadag",
+"established": 2003,
+"standing_and_status": "VTU Affiliated Private Institute | Laxmeshwar",
+"summary": "Founded in 2003 in Gadag district, offering technical programs in rural North Karnataka."
+},
+{
+"id": "E135",
+"college_name": "KLS Viswanathrao Deshpande Institute of Technology",
+"shortform": "VDIT",
+"location": "Haliyal",
+"established": 2004,
+"standing_and_status": "VTU Affiliated Private Institute | KLS Belagavi",
+"summary": "Established in 2004 in Haliyal (Uttara Kannada) by Karnatak Law Society."
+},
+{
+"id": "E136",
+"college_name": "Moodalakatte Institute of Technology",
+"shortform": "MITK",
+"location": "Udupi",
+"established": 2004,
+"standing_and_status": "VTU Affiliated Private College | Kundapura",
+"summary": "Founded in 2004 near Kundapura, Udupi district."
+},
+{
+"id": "E138",
+"college_name": "BLDE Association's VP Dr. P.G. Halakatti College of Engineering",
+"shortform": "BLDEACET",
+"location": "Vijayapura",
+"established": 1980,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Vijayapura campus offering NBA-accredited core technical programs under BLDE Association."
+},
+{
+"id": "E139",
+"college_name": "Impact College of Engineering & Applied Sciences",
+"shortform": "ICEAS",
+"location": "Bangalore",
+"established": 2004,
+"standing_and_status": "VTU Affiliated Private College | Sahakaranagar",
+"summary": "Located in Kodigehalli/Sahakaranagar, Bengaluru North."
+},
+{
+"id": "E141",
+"college_name": "PES University (Electronic City Campus)",
+"shortform": "PESU EC",
+"location": "Bengaluru",
+"established": 1988,
+"standing_and_status": "Constituent Campus of PES University | IT Corridor Campus",
+"summary": "Formerly PESIT South Campus, now a constituent campus of PES University located directly in the Hosur Road Electronic City tech hub."
+},
+{
+"id": "E142",
+"college_name": "Adichunchanagiri University (Formerly BGSIT)",
+"shortform": "ACU",
+"location": "Mandya",
+"established": 2005,
+"standing_and_status": "State Private University | BG Nagara Mandya",
+"summary": "Upgraded from BGS Institute of Technology to a constituent faculty of engineering under Adichunchanagiri University in 2018."
+},
+{
+"id": "E144",
+"college_name": "Srinivas Institute of Technology",
+"shortform": "SIT",
+"location": "Mangalore",
+"established": 2006,
+"standing_and_status": "VTU Affiliated Private Institute | Valachil",
+"summary": "Established in 2006 under A. Shama Rao Foundation in Mangaluru."
+},
+{
+"id": "E145",
+"college_name": "Rajarajeswari College of Engineering",
+"shortform": "RRCE",
+"location": "Bangalore",
+"established": 2006,
+"standing_and_status": "Autonomous Private Institute | Mysuru Road",
+"summary": "Established in 2006 under Moogambigai Charitable and Educational Trust, offering autonomous degree programs."
+},
+{
+"id": "E146",
+"college_name": "Shree Devi Institute of Technology",
+"shortform": "SIT",
+"location": "Mangalore",
+"established": 2006,
+"standing_and_status": "VTU Affiliated Private College | Kenjar",
+"summary": "Located near Mangalore International Airport, established under Shree Devi Education Trust."
+},
+{
+"id": "E147",
+"college_name": "T. John Institute of Technology",
+"shortform": "TJIT",
+"location": "Bangalore",
+"established": 2006,
+"standing_and_status": "VTU Affiliated Private College | Bannerghatta Road",
+"summary": "Founded in 2006 under T. John Group of Institutions in Gottigere, Bengaluru."
+},
+{
+"id": "E149",
+"college_name": "Cambridge Institute of Technology (Main Campus)",
+"shortform": "CIT",
+"location": "Bangalore",
+"established": 2007,
+"standing_and_status": "Autonomous Private Institute | NAAC A+ Grade | KR Puram",
+"summary": "Located near KR Puram/ORR tech corridor, CIT (Est. 2007) is an autonomous college praised for startup incubators and strong placement drives."
+},
+{
+"id": "E150",
+"college_name": "PES Institute of Technology & Management",
+"shortform": "PESITM",
+"location": "Shimoga",
+"established": 2007,
+"standing_and_status": "VTU Affiliated Private Institute | PES Trust Shivamogga",
+"summary": "Established in 2007 on Sagar Road, Shivamogga, providing high-quality regional education."
+},
+{
+"id": "E151",
+"college_name": "Mangalore Institute of Technology & Engineering",
+"shortform": "MITE",
+"location": "Mangalore",
+"established": 2007,
+"standing_and_status": "Autonomous Private Institute | NAAC A+ Grade | Moodabidri",
+"summary": "Established in 2007 near Moodabidri, MITE is an autonomous institution with Bosch, Toyota, and Siemens certified skill centers."
+},
+{
+"id": "E152",
+"college_name": "SDM Institute of Technology",
+"shortform": "SDMIT",
+"location": "Ujire",
+"established": 2007,
+"standing_and_status": "VTU Affiliated Private Institute | Belthangady",
+"summary": "Founded in 2007 under SDM Educational Society at the foothills of Dharmasthala/Western Ghats."
+},
+{
+"id": "E153",
+"college_name": "S E A College of Engineering & Technology",
+"shortform": "SEA",
+"location": "Bangalore",
+"established": 2007,
+"standing_and_status": "VTU Affiliated Private Institute | KR Puram Virgonagar",
+"summary": "Established in 2007 by South East Asian Education Trust."
+},
+{
+"id": "E154",
+"college_name": "Government Engineering College, Chamarajanagara",
+"shortform": "GEC",
+"location": "Chamarajanagara",
+"established": 2007,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government engineering college providing affordable, quality engineering degrees in southern Karnataka."
+},
+{
+"id": "E155",
+"college_name": "Government Engineering College, Hassan",
+"shortform": "GEC",
+"location": "Hassan",
+"established": 2007,
+"standing_and_status": "State Government Engineering College",
+"summary": "State government technical college with modern facilities off Dairy Circle, Hassan."
+},
+{
+"id": "E156",
+"college_name": "Government Engineering College, KR Pet",
+"shortform": "GEC",
+"location": "KR Pet",
+"established": 2007,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government institute catering to Mandya district engineering aspirants."
+},
+{
+"id": "E157",
+"college_name": "Government Engineering College, Ramanagaram",
+"shortform": "GEC",
+"location": "Ramanagaram",
+"established": 2007,
+"standing_and_status": "State Government Engineering College",
+"summary": "State-run institute situated in Ramanagara town."
+},
+{
+"id": "E158",
+"college_name": "Maharaja Institute of Technology Mysore",
+"shortform": "MITM",
+"location": "Mandya",
+"established": 2007,
+"standing_and_status": "Autonomous Private Institute | Belawadi/Srirangapatna",
+"summary": "Established in 2007 under Maharaja Education Trust near Mysuru city border."
+},
+{
+"id": "E159",
+"college_name": "Karavali Institute of Technology",
+"shortform": "KIT",
+"location": "Mangalore",
+"established": 2007,
+"standing_and_status": "VTU Affiliated Private Institute | Neermarga",
+"summary": "Founded in 2007 under Karavali Group of Colleges."
+},
+{
+"id": "E160",
+"college_name": "Sahyadri College Of Engineering & Management",
+"shortform": "SCEM",
+"location": "Mangalore",
+"established": 2007,
+"standing_and_status": "Autonomous Private Institute | NAAC A Grade | Adyar Mangalore",
+"summary": "Located on the banks of Netravathi River, SCEM (Est. 2007) is an autonomous college recognized for innovation, robotics labs, and stellar corporate hiring."
+},
+{
+"id": "E161",
+"college_name": "Government Engineering College, Kushalanagar",
+"shortform": "GEC",
+"location": "Kushalanagar",
+"established": 2009,
+"standing_and_status": "State Government Engineering College | Kodagu",
+"summary": "Government technical college serving Kodagu district."
+},
+{
+"id": "E162",
+"college_name": "Government Engineering College, Raichur",
+"shortform": "GEC",
+"location": "Raichur",
+"established": 2009,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government engineering college located in Yermarus, Raichur."
+},
+{
+"id": "E163",
+"college_name": "Government Engineering College, Haveri",
+"shortform": "GEC",
+"location": "Haveri",
+"established": 2009,
+"standing_and_status": "State Government Engineering College",
+"summary": "State institute situated in Devagiri, Haveri."
+},
+{
+"id": "E164",
+"college_name": "Government Engineering College, Hoovina Hadagali",
+"shortform": "GEC",
+"location": "Hoovina Hadagali",
+"established": 2009,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government college catering to Vijayanagara district."
+},
+{
+"id": "E165",
+"college_name": "Yenepoya Institute Of Technology",
+"shortform": "YIT",
+"location": "Mangalore",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private Institute | Moodabidri",
+"summary": "Established in 2008 under Islamic Academy of Education / Yenepoya Group."
+},
+{
+"id": "E167",
+"college_name": "KLE College of Engineering & Technology",
+"shortform": "KLE",
+"location": "Chikkodi",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private College | KLE Society",
+"summary": "Established in 2008 in Chikkodi (Belagavi district)."
+},
+{
+"id": "E168",
+"college_name": "Amruta Institute of Engineering & Management Sciences",
+"shortform": "AIEMS",
+"location": "Ramanagar",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private Institute | Bidadi Industrial Area",
+"summary": "Founded in 2008 under B.S.V. Educational Trust."
+},
+{
+"id": "E169",
+"college_name": "Alva's Institute of Engineering & Technology",
+"shortform": "AIET",
+"location": "Moodabidre",
+"established": 2008,
+"standing_and_status": "Autonomous Private Institute | Alva's Education Foundation",
+"summary": "Established in 2008 in Moodabidri, AIET is an autonomous college known for academic discipline, sports culture, and large-scale placement drives."
+},
+{
+"id": "E171",
+"college_name": "Brindavan College of Engineering",
+"shortform": "BCE",
+"location": "Bangalore",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private Institute | Yelahanka",
+"summary": "Established in 2008 near Yelahanka under N.M.A. Educational Trust."
+},
+{
+"id": "E172",
+"college_name": "R.R. Institute of Technology",
+"shortform": "RRIT",
+"location": "Bangalore",
+"established": 2008,
+"standing_and_status": "Autonomous Private Institute | Chikkabanavara",
+"summary": "Founded in 2008 under PKM Educational Trust in Bengaluru North."
+},
+{
+"id": "E173",
+"college_name": "Sai Vidya Institute of Technology",
+"shortform": "SVIT",
+"location": "Bangalore",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private Institute | Rajanukunte",
+"summary": "Established in 2008 by academicians on Doddaballapur Road, known for dedicated teaching and strong university results."
+},
+{
+"id": "E174",
+"college_name": "Dr. Sri Sri Sri Shivakumara Mahaswamyji College of Engineering",
+"shortform": "SMCE",
+"location": "Bangalore Rural",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private College | Nelamangala",
+"summary": "Located in Byranayakanahalli, Bengaluru Rural district."
+},
+{
+"id": "E175",
+"college_name": "S.G. Balekundri Institute of Technology",
+"shortform": "SGBIT",
+"location": "Belgaum",
+"established": 2008,
+"standing_and_status": "VTU Affiliated Private College | Belagavi",
+"summary": "Established in 2008 named after legendary irrigation engineer S.G. Balekundri."
+},
+{
+"id": "E176",
+"college_name": "Navodaya Institute of Technology",
+"shortform": "NIT",
+"location": "Raichur",
+"established": 2008,
+"standing_and_status": "Autonomous Private Institute | Raichur",
+"summary": "Established in 2008 under Navodaya Educational Trust, offering autonomous technical programs."
+},
+{
+"id": "E177",
+"college_name": "Rajeev Institute of Technology",
+"shortform": "RIT",
+"location": "Hassan",
+"established": 2008,
+"standing_and_status": "Autonomous Private Institute | Hassan",
+"summary": "Founded in 2008 under Rajeev Educational Trust."
+},
+{
+"id": "E178",
+"college_name": "The National Institute of Engineering (North Campus)",
+"shortform": "NIE",
+"location": "Mysore",
+"established": 2008,
+"standing_and_status": "Autonomous Govt-Aided Institute Expansion Campus",
+"summary": "North Campus of NIE Mysuru at Koorgalli, housing computing and IT disciplines."
+},
+{
+"id": "E180",
+"college_name": "Bearys Institute of Technology",
+"shortform": "BIT",
+"location": "Mangalore",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute | Boliyar",
+"summary": "Established in 2009 near Mangalore under Bearys Group, featuring an eco-friendly green architecture campus."
+},
+{
+"id": "E181",
+"college_name": "Sri Basaveswara Institute of Technology",
+"shortform": "SBIT",
+"location": "Tiptur",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Located at Madenur Gate, Tiptur."
+},
+{
+"id": "E184",
+"college_name": "C Byre Gowda Institute of Technology",
+"shortform": "CBGIT",
+"location": "Kolar",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute | Kolar",
+"summary": "Established in 2009 under C. Byregowda Educational and Cultural Trust."
+},
+{
+"id": "E185",
+"college_name": "Angadi Institute of Technology and Management",
+"shortform": "AITM",
+"location": "Belgaum",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute | Suresh Angadi Education Trust",
+"summary": "Established in 2009 in Belagavi by late Union Minister Suresh Angadi."
+},
+{
+"id": "E186",
+"college_name": "Dr. ACS College of Engineering",
+"shortform": "ACSCE",
+"location": "Bangalore",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private College | Kambipura Mysuru Road",
+"summary": "Established in 2009 under Moogambigai Charitable Trust, specializing in Biomedical, Aeronautical, and CSE degrees."
+},
+{
+"id": "E188",
+"college_name": "Vijaya Vittala Institute of Technology",
+"shortform": "VVIT",
+"location": "Bangalore",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute | Hennur-Bagalur Road",
+"summary": "Established in 2009 under Sri Vijaya Vittala Charitable and Educational Trust."
+},
+{
+"id": "E189",
+"college_name": "Naavkis College of Engineering",
+"shortform": "NCE",
+"location": "Hassan",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Technical institute situated in Hassan district."
+},
+{
+"id": "E191",
+"college_name": "Akshaya Institute of Technology",
+"shortform": "AIT",
+"location": "Tumkur",
+"established": 2009,
+"standing_and_status": "VTU Affiliated Private Institute | Lingapura",
+"summary": "Founded in 2009 in Tumakuru under Akshaya Education Trust."
+},
+{
+"id": "E193",
+"college_name": "Srinivas University (Faculty of Engg)",
+"shortform": "SU",
+"location": "Mangaluru",
+"established": 2015,
+"standing_and_status": "State Private University | Mukka Campus",
+"summary": "Established under Srinivas University Act at Mukka, Mangaluru, offering modern specialized B.Tech streams."
+},
+{
+"id": "E194",
+"college_name": "Government Engineering College, Karwar",
+"shortform": "GEC",
+"location": "Karwar",
+"established": 2010,
+"standing_and_status": "State Government Engineering College | Uttara Kannada",
+"summary": "Government engineering college situated in coastal Karwar."
+},
+{
+"id": "E196",
+"college_name": "Jain College of Engineering",
+"shortform": "JCE",
+"location": "Belgaum",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private Institute | Machhe Belagavi",
+"summary": "Established in 2010 under JGI Group."
+},
+{
+"id": "E197",
+"college_name": "Veerappa Nisty Engineering College",
+"shortform": "VNEC",
+"location": "Yadgir",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private Institute | Shorapur",
+"summary": "Founded in 2010 serving Yadgir district."
+},
+{
+"id": "E198",
+"college_name": "Sharanbasava University (Exclusively for Women)",
+"shortform": "SBUW",
+"location": "Kalaburagi",
+"established": 2017,
+"standing_and_status": "Private University Women's Technical Campus",
+"summary": "Dedicated women's engineering campus under Sharanbasava University in Kalaburagi."
+},
+{
+"id": "E199",
+"college_name": "AGM Rural Engineering College",
+"shortform": "AGMREC",
+"location": "Hubli",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private Institute | Varur",
+"summary": "Established in 2010 at Varur near Hubballi."
+},
+{
+"id": "E201",
+"college_name": "Gopalan College of Engineering & Management",
+"shortform": "GCEM",
+"location": "Bangalore",
+"established": 2010,
+"standing_and_status": "Autonomous Private Institute | Hoodi Whitefield",
+"summary": "Established in 2010 near Whitefield IT hub under Gopalan Enterprises."
+},
+{
+"id": "E202",
+"college_name": "Sampoorna Group of Institutions",
+"shortform": "SGI",
+"location": "Channapatana",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Located in Channapatna along Bengaluru-Mysuru corridor."
+},
+{
+"id": "E203",
+"college_name": "KS School of Engineering & Management (Aided/UnAided)",
+"shortform": "KSSEM",
+"location": "Bangalore",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Second campus listing for KSSEM Kanakapura Road."
+},
+{
+"id": "E204",
+"college_name": "Bangalore Technological Institute",
+"shortform": "BTI",
+"location": "Bangalore",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private College | Sarjapur Road",
+"summary": "Established in 2010 near Sarjapur tech corridor."
+},
+{
+"id": "E205",
+"college_name": "ATME College of Engineering",
+"shortform": "ATMECE",
+"location": "Mysore",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private Institute | Bannur Road Mysuru",
+"summary": "Established in 2010, featuring modern laboratory infrastructure."
+},
+{
+"id": "E206",
+"college_name": "Shri Madhwa Vadiraja Institute of Technology and Management",
+"shortform": "SMVITM",
+"location": "Udupi",
+"established": 2010,
+"standing_and_status": "Autonomous Private Institute | Bantakal Udupi",
+"summary": "Established in 2010 under Shri Sode Vadiraja Mutt Education Trust, achieving fast autonomous growth and strong technical outcomes."
+},
+{
+"id": "E207",
+"college_name": "VSM's Somashekhar R Kothiwale Institute of Technology",
+"shortform": "VKIT",
+"location": "Belgaum",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private College | Nippani",
+"summary": "Located in Nippani, Belagavi district."
+},
+{
+"id": "E209",
+"college_name": "Jyothi Institute of Technology",
+"shortform": "JIT",
+"location": "Bangalore",
+"established": 2011,
+"standing_and_status": "VTU Affiliated Private Institute | Kanakapura Road Tataguni",
+"summary": "Established in 2011 under Jyothy Charitable Trust, featuring CIIRC research center."
+},
+{
+"id": "E210",
+"college_name": "G Madegowda Institute of Technology",
+"shortform": "GMIT",
+"location": "Mandya",
+"established": 2011,
+"standing_and_status": "VTU Affiliated Private Institute | Maddur",
+"summary": "Established in 2011 in Bharathinagara, Maddur."
+},
+{
+"id": "E211",
+"college_name": "Jain Institute of Technology",
+"shortform": "JIT",
+"location": "Davanagere",
+"established": 2011,
+"standing_and_status": "VTU Affiliated Private Institute | JGI Group",
+"summary": "Established in 2011 in Davanagere under Jain Group of Institutions."
+},
+{
+"id": "E212",
+"college_name": "Dayananda Sagar Academy of Technology & Management",
+"shortform": "DSATM",
+"location": "Bangalore",
+"established": 2011,
+"standing_and_status": "Autonomous Private Institute | NAAC A+ Grade | Kanakapura Road",
+"summary": "Second engineering campus of Dayananda Sagar Institutions (Est. 2011), featuring autonomous status and modern industry centers."
+},
+{
+"id": "E213",
+"college_name": "Lingarajappa Engineering College",
+"shortform": "LEC",
+"location": "Bidar",
+"established": 2011,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Technical institute situated in Bidar."
+},
+{
+"id": "E216",
+"college_name": "Shetty Institute of Technology",
+"shortform": "SIT",
+"location": "Gulbarga",
+"established": 2011,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Located on Shahabad Road, Kalaburagi."
+},
+{
+"id": "E220",
+"college_name": "Alliance University Central Campus",
+"shortform": "AU",
+"location": "Bengaluru",
+"established": 2010,
+"standing_and_status": "State Private University | Anekal Chandapura",
+"summary": "Comprehensive private university offering B.Tech and M.Tech streams on a green suburban campus."
+},
+{
+"id": "E221",
+"college_name": "Biluru Gurubasava Mahaswamiji Institute of Technology",
+"shortform": "BGMIT",
+"location": "Mudhol",
+"established": 2012,
+"standing_and_status": "VTU Affiliated Private Institute | Bagalkote",
+"summary": "Established in 2012 in Mudhol."
+},
+{
+"id": "E222",
+"college_name": "Cambridge Institute Of Technology (North Campus)",
+"shortform": "CIT",
+"location": "Bangalore",
+"established": 2013,
+"standing_and_status": "VTU Affiliated Private Campus | Devanahalli",
+"summary": "North Bengaluru extension campus near Bengaluru International Airport."
+},
+{
+"id": "E225",
+"college_name": "SJB School of Architecture & Planning",
+"shortform": "SJBSAP",
+"location": "Bangalore",
+"established": 2013,
+"standing_and_status": "VTU Affiliated Architecture School | Kengeri",
+"summary": "Specialized architecture institution under Sri Adichunchanagiri Trust."
+},
+{
+"id": "E227",
+"college_name": "Cauvery Institute of Technology",
+"shortform": "CIT",
+"location": "Mandya",
+"established": 2014,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Established in 2014 along Bengaluru-Mysuru road, Mandya."
+},
+{
+"id": "E232",
+"college_name": "REVA University",
+"shortform": "REVA",
+"location": "Bangalore",
+"established": 2012,
+"standing_and_status": "State Private University | Yelahanka Kattigenahalli",
+"summary": "Sprawling 45-acre university campus providing multidisciplinary engineering, AI, robotics, and design degrees with top placement infrastructure."
+},
+{
+"id": "E235",
+"college_name": "M. S. Ramaiah University of Applied Sciences",
+"shortform": "MSRUAS",
+"location": "Bangalore",
+"established": 2013,
+"standing_and_status": "State Private University | Peenya / Mathikere",
+"summary": "Innovation and industry-focused university established in 2013, providing practical applied science and engineering curricula."
+},
+{
+"id": "E237",
+"college_name": "Presidency University",
+"shortform": "PU",
+"location": "Bengaluru",
+"established": 2013,
+"standing_and_status": "State Private University | Rajanukunte",
+"summary": "Established under Presidency Group in 2013, featuring modern engineering labs, industry tie-ups, and extensive placement drives."
+},
+{
+"id": "E238",
+"college_name": "Mysuru Royal Institute Of Technology",
+"shortform": "MRIT",
+"location": "Mandya",
+"established": 2013,
+"standing_and_status": "VTU Affiliated Private College | Mandya/Mysuru",
+"summary": "Established in 2013 near Palahalli, Mandya district."
+},
+{
+"id": "E239",
+"college_name": "East West College Of Engineering",
+"shortform": "EWCE",
+"location": "Bangalore",
+"established": 2015,
+"standing_and_status": "VTU Affiliated Private Institute | Yelahanka",
+"summary": "Established in 2015 catering to North Bengaluru."
+},
+{
+"id": "E240",
+"college_name": "Dayananda Sagar University",
+"shortform": "DSU",
+"location": "Ramanagar",
+"established": 2014,
+"standing_and_status": "State Private University | Harohalli Innovation Campus",
+"summary": "State-of-the-art private university campus featuring advanced research centers in AI, health tech, and core engineering."
+},
+{
+"id": "E241",
+"college_name": "KLE Technological University (Hubballi Main Campus)",
+"shortform": "KLE Tech",
+"location": "Hubballi",
+"established": 1947,
+"standing_and_status": "State Private University (Formerly BVBCET) | Premier Tech University in North Karnataka",
+"summary": "Formerly B.V. Bhoomaraddi College of Engineering & Technology (Est. 1947), elevated to KLE Technological University in 2014; world-renowned for engineering entrepreneurship and product design."
+},
+{
+"id": "E252",
+"college_name": "Mysore College Of Engineering and Management",
+"shortform": "MCEM",
+"location": "Mysore",
+"established": 2015,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Established in 2015 near Chikkanahalli, Mysuru."
+},
+{
+"id": "E254",
+"college_name": "A J Institute Of Engineering And Technology",
+"shortform": "AJIET",
+"location": "Mangalore",
+"established": 2016,
+"standing_and_status": "VTU Affiliated Private Institute | Kottara Chowki",
+"summary": "Established in 2016 under Laxmi Memorial Education Trust in Mangaluru."
+},
+{
+"id": "E255",
+"college_name": "GITAM University (Bengaluru Campus)",
+"shortform": "GITAM",
+"location": "Bengaluru",
+"established": 2012,
+"standing_and_status": "Deemed University Campus | Nagadenahalli Doddaballapur",
+"summary": "Bengaluru campus of GITAM Deemed University offering multi-disciplinary B.Tech programs."
+},
+{
+"id": "E256",
+"college_name": "Rai Technological University",
+"shortform": "RTU",
+"location": "Bengaluru",
+"established": 2013,
+"standing_and_status": "State Private University | Doddaballapur",
+"summary": "Private university offering agricultural, technology, and engineering degrees."
+},
+{
+"id": "E257",
+"college_name": "CMR University Main Campus",
+"shortform": "CMRU",
+"location": "Bangalore",
+"established": 2013,
+"standing_and_status": "State Private University | Bagalur Campus",
+"summary": "Main university campus of CMR Group offering design thinking integrated technology programs."
+},
+{
+"id": "E258",
+"college_name": "Maharaja Institute of Technology (Tandavapura)",
+"shortform": "MITT",
+"location": "Mysore",
+"established": 2016,
+"standing_and_status": "VTU Affiliated Private Institute | Nanjangud Road",
+"summary": "Second campus of Maharaja Education Trust located in Tandavapura industrial zone."
+},
+{
+"id": "E259",
+"college_name": "Sir MV School of Architecture",
+"shortform": "SMVSA",
+"location": "Bangalore",
+"established": 2017,
+"standing_and_status": "VTU Affiliated Architecture School | Hunasamaranahalli",
+"summary": "Specialized architecture institution under Sri Krishnadevaraya Educational Trust."
+},
+{
+"id": "E263",
+"college_name": "School of Planning and Architecture (Univ of Mysore)",
+"shortform": "SPA Mysore",
+"location": "Mysore",
+"established": 2015,
+"standing_and_status": "University Department | Public Architecture School",
+"summary": "Constituent architecture and planning school under the historic University of Mysore."
+},
+{
+"id": "E264",
+"college_name": "Basava Engineering School of Technology",
+"shortform": "BEST",
+"location": "Vijayapura",
+"established": 2017,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Established in 2017 serving Vijayapura."
+},
+{
+"id": "E265",
+"college_name": "Jain College of Engineering and Technology",
+"shortform": "JCET",
+"location": "Hubballi",
+"established": 2017,
+"standing_and_status": "VTU Affiliated Private Institute | JGI Group",
+"summary": "Hubballi campus of Jain Group of Institutions established in 2017."
+},
+{
+"id": "E266",
+"college_name": "BMS College of Architecture",
+"shortform": "BMSCA",
+"location": "Bangalore",
+"established": 2010,
+"standing_and_status": "Autonomous Architecture School | Basavanagudi",
+"summary": "Premier autonomous architecture college under BMS Educational Trust."
+},
+{
+"id": "E269",
+"college_name": "Jain College Of Engineering and Research",
+"shortform": "JCER",
+"location": "Belgaum",
+"established": 2018,
+"standing_and_status": "VTU Affiliated Private Institute | Udyambag Belagavi",
+"summary": "Research and engineering institution established in 2018 under JGI Group."
+},
+{
+"id": "E272",
+"college_name": "Government Engineering College, Talakal",
+"shortform": "GEC",
+"location": "Koppal",
+"established": 2019,
+"standing_and_status": "State Government Engineering College",
+"summary": "State-of-the-art public engineering campus established in Koppal district."
+},
+{
+"id": "E273",
+"college_name": "Government Engineering College, Gangavathi",
+"shortform": "GEC",
+"location": "Koppal",
+"established": 2019,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government engineering institute in Gangavathi."
+},
+{
+"id": "E274",
+"college_name": "Government Engineering College, Mosale Hosahalli",
+"shortform": "GEC",
+"location": "Hassan",
+"established": 2019,
+"standing_and_status": "State Government Engineering College",
+"summary": "State government institute situated in Hassan district."
+},
+{
+"id": "E275",
+"college_name": "R V Institute Of Technology and Management",
+"shortform": "RVITM",
+"location": "Bengaluru",
+"established": 2019,
+"standing_and_status": "VTU Affiliated Private Institute | JP Nagar Bengaluru",
+"summary": "Second engineering institute by Rashtreeya Sikshana Samithi Trust (RSST), focused on ICT technologies with high rank cutoffs."
+},
+{
+"id": "E278",
+"college_name": "VTU Centre for Postgraduate Studies (Muddenahalli)",
+"shortform": "VTU CPGS",
+"location": "Chikkaballapur",
+"established": 2012,
+"standing_and_status": "VTU University Campus",
+"summary": "Postgraduate and research campus of VTU situated at birth place of Sir M. Visvesvaraya."
+},
+{
+"id": "E279",
+"college_name": "Visvesvaraya Technological University (Main Campus)",
+"shortform": "VTU Belagavi",
+"location": "Belagavi",
+"established": 1998,
+"standing_and_status": "State Technological University Headquarters",
+"summary": "Headquarters campus 'Jnana Sangama' of Karnataka's primary state technological university."
+},
+{
+"id": "E280",
+"college_name": "VTU Centre for Postgraduate Studies (Kalaburagi)",
+"shortform": "VTU CPGS",
+"location": "Kalaburagi",
+"established": 2012,
+"standing_and_status": "VTU Regional University Campus",
+"summary": "Regional PG research center of VTU serving Kalyana-Karnataka region."
+},
+{
+"id": "E281",
+"college_name": "Government Engineering College, Challakere",
+"shortform": "GEC",
+"location": "Chitradurga",
+"established": 2019,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government institute established near Science City Challakere."
+},
+{
+"id": "E283",
+"college_name": "B.N. Bahadur Institute of Management Sciences (Univ of Mysore)",
+"shortform": "BIMS",
+"location": "Mysore",
+"established": 2002,
+"standing_and_status": "University Department | Public Institute",
+"summary": "Premier management and technology department under the University of Mysore."
+},
+{
+"id": "E284",
+"college_name": "Sri Jayachamarajendra College of Engineering (Aided)",
+"shortform": "SJCE",
+"location": "Mysore",
+"established": 1963,
+"standing_and_status": "Constituent College of JSS STU",
+"summary": "Government-aided engineering seats listing for SJCE Mysuru."
+},
+{
+"id": "E285",
+"college_name": "RV University",
+"shortform": "RVU",
+"location": "Bangalore",
+"established": 2021,
+"standing_and_status": "State Private University | Mysuru Road Campus",
+"summary": "Established under RSST in 2021, offering interdisciplinary liberal STEM, design, and computer science degrees."
+},
+{
+"id": "E286",
+"college_name": "BGS College of Engineering & Technology",
+"shortform": "BGSCET",
+"location": "Bangalore",
+"established": 2021,
+"standing_and_status": "VTU Affiliated Private Institute | Mahalakshmi Layout",
+"summary": "Modern technical institute established under Sri Adichunchanagiri Shikshana Trust in central Bengaluru."
+},
+{
+"id": "E287",
+"college_name": "Vidyashilp University",
+"shortform": "VU",
+"location": "Bengaluru",
+"established": 2021,
+"standing_and_status": "State Private University | Yelahanka",
+"summary": "Established in 2021 near Devanahalli airport corridor, offering computational sciences and domain-led engineering."
+},
+{
+"id": "E288",
+"college_name": "Garden City University",
+"shortform": "GCU",
+"location": "Bangalore",
+"established": 2013,
+"standing_and_status": "State Private University | Old Madras Road",
+"summary": "Multidisciplinary private university offering computational and data engineering streams."
+},
+{
+"id": "E290",
+"college_name": "VTU Centre for Postgraduate Studies (Mysuru)",
+"shortform": "VTU CPGS",
+"location": "Mysuru",
+"established": 2012,
+"standing_and_status": "VTU Regional University Campus",
+"summary": "VTU PG and doctoral research center situated at Sathagalli, Mysuru."
+},
+{
+"id": "E291",
+"college_name": "Government Engineering College, Naragund",
+"shortform": "GEC",
+"location": "Gadag",
+"established": 2019,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government engineering college in Gadag district."
+},
+{
+"id": "E292",
+"college_name": "Government Engineering College, Mailur",
+"shortform": "GEC",
+"location": "Bidar",
+"established": 2019,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government engineering college in Bidar."
+},
+{
+"id": "E297",
+"college_name": "Aditya College of Engineering and Technology",
+"shortform": "ACET",
+"location": "Bengaluru",
+"established": 2021,
+"standing_and_status": "VTU Affiliated Private Institute | Yelahanka",
+"summary": "Newly established engineering college in North Bengaluru."
+},
+{
+"id": "E299",
+"college_name": "Ghousia Institute of Technology for Women",
+"shortform": "GITW",
+"location": "Bangalore",
+"established": 2009,
+"standing_and_status": "Women's Minority Technical Institute",
+"summary": "Dedicated women's technical institute managed by Ghousia Educational Association."
+},
+{
+"id": "E300",
+"college_name": "Akash Institute of Engineering and Technology",
+"shortform": "AIET",
+"location": "Bengaluru",
+"established": 2020,
+"standing_and_status": "VTU Affiliated Private Institute | Devanahalli",
+"summary": "Established in 2020 under Akash Group near Bengaluru International Airport."
+},
+{
+"id": "E301",
+"college_name": "Kishkinda University",
+"shortform": "KU",
+"location": "Ballari",
+"established": 2023,
+"standing_and_status": "State Private University | Ballari",
+"summary": "Newly established private university serving Vijayanagara and Ballari region."
+},
+{
+"id": "E302",
+"college_name": "Amity University (Bengaluru Campus)",
+"shortform": "Amity",
+"location": "Bengaluru",
+"established": 2023,
+"standing_and_status": "State Private University | Devanahalli",
+"summary": "Bengaluru campus of Amity University group offering modern tech and AI degrees."
+},
+{
+"id": "E303",
+"college_name": "GM University",
+"shortform": "GMU",
+"location": "Davangere",
+"established": 2023,
+"standing_and_status": "State Private University | Davanagere",
+"summary": "State private university built upon GMIT's technical campus foundation."
+},
+{
+"id": "E304",
+"college_name": "Anuvarthik Mirji Bharatesh Institute of Technology",
+"shortform": "AMBIT",
+"location": "Belagavi",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Engineering institute established under Bharatesh Education Trust."
+},
+{
+"id": "E305",
+"college_name": "HNN College of Engineering",
+"shortform": "HNNCE",
+"location": "Bengaluru",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Technical college situated in Bengaluru Urban."
+},
+{
+"id": "E306",
+"college_name": "The Chanakya University",
+"shortform": "CU",
+"location": "Bengaluru",
+"established": 2021,
+"standing_and_status": "State Private University | Near Airport",
+"summary": "Established near Devanahalli, featuring multidisciplinary technology and management programs."
+},
+{
+"id": "E307",
+"college_name": "Seshadripuram Institute of Technology",
+"shortform": "SIT",
+"location": "Mysuru",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private Institute | Seshadripuram Group",
+"summary": "Technical institute established under Seshadripuram Educational Trust in Mysuru."
+},
+{
+"id": "E308",
+"college_name": "Constituent College of VTU (Chintamani)",
+"shortform": "VTU Chintamani",
+"location": "Chintamani",
+"established": 2021,
+"standing_and_status": "Constituent Public Engineering College of VTU",
+"summary": "Direct constituent college managed by VTU in Chikkaballapura district."
+},
+{
+"id": "E309",
+"college_name": "Constituent College of VTU (Chintamani - Aided)",
+"shortform": "VTU Chintamani",
+"location": "Chintamani",
+"established": 2021,
+"standing_and_status": "Constituent College of VTU",
+"summary": "Additional seats matrix for VTU constituent campus at Chintamani."
+},
+{
+"id": "E310",
+"college_name": "Government Engineering College, Arasikere",
+"shortform": "GEC",
+"location": "Arasikere",
+"established": 2021,
+"standing_and_status": "State Government Engineering College",
+"summary": "Government engineering college serving Hassan district."
+},
+{
+"id": "E311",
+"college_name": "Rathinam Institute of Technology",
+"shortform": "RIT",
+"location": "Bengaluru",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private College | Bengaluru South",
+"summary": "Newer technical institute catering to southern Bengaluru outskirts."
+},
+{
+"id": "E312",
+"college_name": "New Ebenezer Institute of Technology",
+"shortform": "NEIT",
+"location": "Bengaluru",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Technical college situated in Bengaluru Urban."
+},
+{
+"id": "E313",
+"college_name": "Harsha Institute of Technology",
+"shortform": "HIT",
+"location": "Bengaluru Rural",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private Institute | Nelamangala",
+"summary": "Established under Harsha Institutions along NH-48 Nelamangala."
+},
+{
+"id": "E314",
+"college_name": "Cauvery College of Engineering",
+"shortform": "CCE",
+"location": "Mysore",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Technical institution serving Mysuru region."
+},
+{
+"id": "E315",
+"college_name": "Ramaiah University College of Engineering (MSRUAS)",
+"shortform": "MSRUAS",
+"location": "Bengaluru",
+"established": 2013,
+"standing_and_status": "Constituent Faculty of Engineering at MSRUAS",
+"summary": "Engineering faculty under M.S. Ramaiah University of Applied Sciences at Peenya campus."
+},
+{
+"id": "E316",
+"college_name": "RV University (Nanjanagudu Campus)",
+"shortform": "RVU",
+"location": "Nanjanagudu",
+"established": 2023,
+"standing_and_status": "Private University Regional Campus",
+"summary": "Regional campus initiative under RV group near Nanjangud/Mysuru."
+},
+{
+"id": "E317",
+"college_name": "VTU Constituent Engineering College, Gokak",
+"shortform": "VTU Gokak",
+"location": "Gokak",
+"established": 2021,
+"standing_and_status": "Constituent Public Engineering College of VTU",
+"summary": "Direct constituent public engineering college of VTU in Belagavi district."
+},
+{
+"id": "E318",
+"college_name": "BMS University",
+"shortform": "BMSU",
+"location": "Bangalore",
+"established": 2024,
+"standing_and_status": "State Private University | BMS Educational Trust",
+"summary": "State private university established by BMS Educational Trust to offer futuristic technical, design, and computing degrees."
+},
+{
+"id": "E320",
+"college_name": "Koshys Institute of Technology",
+"shortform": "KIT",
+"location": "Bengaluru",
+"established": 2012,
+"standing_and_status": "VTU Affiliated Private Institute | Kannur Bengaluru",
+"summary": "Established in 2012 off Hennur-Bagalur road under Koshys Educational Trust."
+},
+{
+"id": "E321",
+"college_name": "B.N. Bahadur Institute of Management Sciences (Aided)",
+"shortform": "BIMS",
+"location": "Mysore",
+"established": 2002,
+"standing_and_status": "University Management & Tech Department",
+"summary": "University of Mysore specialized institute listing."
+},
+{
+"id": "E322",
+"college_name": "CMN Institute Of Technology",
+"shortform": "CMNIT",
+"location": "Bangalore",
+"established": 2023,
+"standing_and_status": "VTU Affiliated Private Institute",
+"summary": "Engineering institution in Bengaluru."
+},
+{
+"id": "E323",
+"college_name": "Future Forge Engineering Academy",
+"shortform": "FFEA",
+"location": "Hubli",
+"established": 2023,
+"standing_and_status": "VTU Affiliated Technical Institute",
+"summary": "New engineering academy situated in Hubballi."
+},
+{
+"id": "E324",
+"college_name": "ISBR College of Engineering and Technology",
+"shortform": "ISBR",
+"location": "Bangalore",
+"established": 2022,
+"standing_and_status": "VTU Affiliated Private College | Electronic City",
+"summary": "Located in Electronic City Phase 1, offering software and technology programs."
+},
+{
+"id": "E325",
+"college_name": "Dhanwantari Institute of Technology",
+"shortform": "DIT",
+"location": "Bangalore",
+"established": 2023,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Technical college situated in Bengaluru."
+},
+{
+"id": "E326",
+"college_name": "Krupanidhi Institute of Technology",
+"shortform": "KIT",
+"location": "Bangalore",
+"established": 2010,
+"standing_and_status": "VTU Affiliated Private Institute | Varthur Carmelaram",
+"summary": "Established in 2010 near Sarjapur-Varthur corridor under Krupanidhi Educational Trust."
+},
+{
+"id": "E327",
+"college_name": "AGM College of Engineering and Technology",
+"shortform": "AGMCET",
+"location": "Belgaum",
+"established": 2023,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Engineering institution serving Belagavi district."
+},
+{
+"id": "E328",
+"college_name": "Shri Swami Nagabhushan Gurukul College of Engineering",
+"shortform": "SSNGCET",
+"location": "Vijayapura",
+"established": 2023,
+"standing_and_status": "VTU Affiliated Private College",
+"summary": "Technical institute established in Vijayapura."
+}
+]
+}
